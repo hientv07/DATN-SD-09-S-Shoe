@@ -1,8 +1,8 @@
 package com.datnsd09.Datnsd09.controller;
 
 import com.datnsd09.Datnsd09.entity.KichCo;
-import com.datnsd09.Datnsd09.entity.MauSac;
-import com.datnsd09.Datnsd09.service.KichCoService;
+import com.datnsd09.Datnsd09.entity.LoaiDe;
+import com.datnsd09.Datnsd09.service.LoaiDeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,30 +15,30 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Date;
 
 @Controller
-@RequestMapping("/admin/kich-co")
-public class KichCoController {
+@RequestMapping("/admin/loai-de")
+public class LoaiDeController {
     @Autowired
-    private KichCoService kichCoService;
+    private LoaiDeService loaiDeService;
 
     @GetMapping()
     public String getAll(Model model){
-        model.addAttribute("listKichCo", kichCoService.getAll());
-        model.addAttribute("kichCo",new KichCo());
-        return "/admin/kich-co/kich-co";
+        model.addAttribute("listLoaiDe", loaiDeService.getAll());
+        model.addAttribute("loaiDe", new LoaiDe());
+        return "/admin/loai-de/loai-de";
     }
 
     @PostMapping("/add")
-    public String add(@Valid @RequestParam("tenKichCo") String tenKichCo,
+    public String add(@Valid @RequestParam("tenld") String tenld,
                       @RequestParam("ngayTao") String ngayTao,
                       @RequestParam("ngaySua") String ngaySua,
                       @RequestParam("trangThai") String trangThai) {
-        KichCo kichCo = KichCo.builder()
-                .tenKichCo(tenKichCo)
+        LoaiDe loaiDe=LoaiDe.builder()
+                .tenld(tenld)
                 .ngayTao(new Date())
                 .ngaySua(new Date())
                 .trangThai(Integer.valueOf(trangThai))
                 .build();
-        kichCoService.add(kichCo);
-        return "redirect:/admin/kich-co";
+        loaiDeService.add(loaiDe);
+        return "redirect:/admin/loai-de";
     }
 }
