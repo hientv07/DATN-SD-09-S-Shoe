@@ -14,22 +14,21 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
-@Table(name = "loai_de")
+@Table(name = "thuong_hieu")
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class LoaiDe {
+public class ThuongHieu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-    @Column(name = "id_ld")
+    @Column(name = "id_thuong_hieu")
     private Long id;
 
-    @Column(name = "ten_ld",length = 100)
-    @NotBlank(message = "Không được để trống tên")
-    private String tenld;
+    @Column(name = "ten_thuong_hieu", length = 100)
+    @NotBlank(message = "Không được trống tên")
+    private String tenThuongHieu;
 
     @Column(name = "ngay_tao")
     private Date ngayTao;
