@@ -26,7 +26,7 @@ public class MauSacController {
         model.addAttribute("listMauSac", mauSacService.getAll());
         model.addAttribute("mauSac",new MauSac());
 
-        return "/admin/mau_sac/mau_sac";
+        return "/admin/mau-sac/mau-sac";
     }
 
     @PostMapping("/add")
