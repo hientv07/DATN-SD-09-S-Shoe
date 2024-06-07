@@ -1,9 +1,7 @@
 package com.datnsd09.Datnsd09.controller;
 
-import com.datnsd09.Datnsd09.entity.HinhAnhSanPham;
 import com.datnsd09.Datnsd09.entity.SanPham;
-import com.datnsd09.Datnsd09.entity.ThuongHieu;
-import com.datnsd09.Datnsd09.service.HinhAnhSanPhamSerivce;
+
 import com.datnsd09.Datnsd09.service.SanPhamService;
 import com.datnsd09.Datnsd09.service.ThuongHieuService;
 import jakarta.validation.Valid;
