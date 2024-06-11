@@ -28,7 +28,7 @@ public class ThuongHieu {
 
     @Column(name = "ten_thuong_hieu", length = 100)
     @NotBlank(message = "Không được trống tên")
-    private String tenThuongHieu;
+    private String ten;
 
     @Column(name = "ngay_tao")
     private Date ngayTao;

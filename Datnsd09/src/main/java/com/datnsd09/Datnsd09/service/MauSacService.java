@@ -4,15 +4,17 @@ import com.datnsd09.Datnsd09.entity.MauSac;
 
 import java.util.List;
 
+
 public interface MauSacService {
 
     List<MauSac>getAll();
 
-    void deleteById(Long id);
+    Boolean deleteById(Long ma);
+//    void delete(Long id);
 
     MauSac add(MauSac mauSac);
 
-    MauSac update(MauSac mauSac);
+    MauSac update(MauSac mauSac, Long ma);
 
     MauSac getId(Long id);
 

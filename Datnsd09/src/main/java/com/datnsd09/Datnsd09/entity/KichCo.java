@@ -35,7 +35,7 @@ public class KichCo {
     @NotNull(message = "Không được để trống kích cỡ")
     @Min(value = 35, message = "Kích cỡ nhỏ nhất là 35")
     @Max(value = 45, message = "Kích cỡ lớn nhất là 45")
-    private String tenKichCo;
+    private String ten;
 
     @Column(name = "ngay_tao")
     private Date ngayTao;

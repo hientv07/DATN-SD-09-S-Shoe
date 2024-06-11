@@ -28,12 +28,12 @@ public class KichCoController {
     }
 
     @PostMapping("/add")
-    public String add(@Valid @RequestParam("tenKichCo") String tenKichCo,
+    public String add(@Valid @RequestParam("ten") String ten,
                       @RequestParam("ngayTao") String ngayTao,
                       @RequestParam("ngaySua") String ngaySua,
                       @RequestParam("trangThai") String trangThai) {
         KichCo kichCo = KichCo.builder()
-                .tenKichCo(tenKichCo)
+                .ten(ten)
                 .ngayTao(new Date())
                 .ngaySua(new Date())
                 .trangThai(Integer.valueOf(trangThai))

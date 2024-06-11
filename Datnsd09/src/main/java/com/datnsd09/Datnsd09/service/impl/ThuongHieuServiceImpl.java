@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ThuongHieuServiceImpl implements ThuongHieuService {
@@ -29,7 +30,16 @@ public class ThuongHieuServiceImpl implements ThuongHieuService {
     }
 
     @Override
-    public ThuongHieu update(ThuongHieu thuongHieu) {
-        return thuongHieuRepository.save(thuongHieu);
+    public ThuongHieu update(ThuongHieu thuongHieu, Long ma) {
+        Optional<ThuongHieu> optional = thuongHieuRepository.findById(ma);
+        return optional.map(o->{
+            o.setTen(thuongHieu.getTen());
+            o.setNgayTao(thuongHieu.getNgayTao());
+            o.setNgaySua(thuongHieu.getNgaySua());
+            return thuongHieuRepository.save(o);
+        }).orElse(null);
+
     }
+
+
 }

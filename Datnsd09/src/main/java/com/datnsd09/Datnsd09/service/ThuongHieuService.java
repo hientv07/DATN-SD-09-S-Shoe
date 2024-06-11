@@ -11,5 +11,5 @@ public interface ThuongHieuService {
 
     ThuongHieu add(ThuongHieu thuongHieu);
 
-    ThuongHieu update(ThuongHieu thuongHieu);
+    ThuongHieu update(ThuongHieu thuongHieu, Long ma);
 }

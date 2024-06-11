@@ -44,7 +44,7 @@ public class ChiTietSanPham {
     @NotNull(message = "Giá ko được để trống")
     @Min(value = 1, message = "Giá nhỏ nhất là 1")
     @Max(value = 1000000000, message = "Giá lớn nhất là 1000000000")
-    private Long gia;
+    private Long giaHienHanh;
 
     @Column(name = "trang_thai")
     private Integer trangThai;

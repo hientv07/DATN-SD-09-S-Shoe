@@ -35,11 +35,11 @@ public class SanPham {
     private Long id;
 
     @Column(name = "ma_sp", length = 50 , nullable = false)
-    private String maSP;
+    private String ma;
 
     @Column(name = "ten_sp", length = 255)
     @NotBlank(message = "Tên sản phẩm ko được để trống")
-    private String tenSP;
+    private String ten;
 
     @Column(name = "mo_ta")
     @NotBlank(message = "Mô tả sản phẩm ko được để trống")

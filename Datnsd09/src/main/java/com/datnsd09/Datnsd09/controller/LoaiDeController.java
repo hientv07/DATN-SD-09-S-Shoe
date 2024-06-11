@@ -28,12 +28,12 @@ public class LoaiDeController {
     }
 
     @PostMapping("/add")
-    public String add(@Valid @RequestParam("tenld") String tenld,
+    public String add(@Valid @RequestParam("ten") String ten,
                       @RequestParam("ngayTao") String ngayTao,
                       @RequestParam("ngaySua") String ngaySua,
                       @RequestParam("trangThai") String trangThai) {
         LoaiDe loaiDe=LoaiDe.builder()
-                .tenld(tenld)
+                .ten(ten)
                 .ngayTao(new Date())
                 .ngaySua(new Date())
                 .trangThai(Integer.valueOf(trangThai))

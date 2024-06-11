@@ -33,7 +33,7 @@ public class MauSac {
 
     @Column(name = "ten_mau",length = 100)
     @NotBlank(message = "Không được để trống tên")
-    private String tenMau;
+    private String ten;
 
     @Column(name = "ngay_tao")
     private Date ngayTao;

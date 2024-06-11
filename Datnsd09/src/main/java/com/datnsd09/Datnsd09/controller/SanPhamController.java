@@ -36,8 +36,8 @@ public class SanPhamController {
     }
 
     @PostMapping("/add")
-    public String add(@Valid @RequestParam("maSP") String maSP,
-                      @RequestParam("tenSP") String tenSP,
+    public String add(@Valid @RequestParam("ma") String ma,
+                      @RequestParam("ten") String ten,
                       @RequestParam("moTa") String moTa,
                       @RequestParam("ngayTao") String ngayTao,
                       @RequestParam("ngaySua") String ngaySua,
@@ -45,8 +45,8 @@ public class SanPhamController {
                       @RequestParam("nguoiSua") String nguoiSua,
                       @RequestParam("trangThai") String trangThai) {
         SanPham sanPham = SanPham.builder()
-                .maSP(maSP)
-                .tenSP(tenSP)
+                .ma(ma)
+                .ten(ten)
                 .moTa(moTa)
                 .ngayTao(new Date())
                 .ngaySua(new Date())

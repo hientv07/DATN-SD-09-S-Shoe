@@ -29,7 +29,7 @@ public class LoaiDe {
 
     @Column(name = "ten_ld",length = 100)
     @NotBlank(message = "Không được để trống tên")
-    private String tenld;
+    private String ten;
 
     @Column(name = "ngay_tao")
     private Date ngayTao;
