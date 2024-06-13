@@ -69,7 +69,7 @@ public class MauSacController {
             Model model
     ) {
         model.addAttribute("listMauSac", mauSacService.getAllDungHoatDong());
-        model.addAttribute("loaiDe", new MauSac());
+        model.addAttribute("mauSac", new MauSac());
         return "/admin/mau-sac/mau-sac";
     }
 

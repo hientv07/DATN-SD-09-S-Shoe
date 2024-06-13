@@ -197,10 +197,10 @@
                                 <div class="btn-group" role="group" aria-label="Basic outlined example">
                                     <a href="/admin/thuong-hieu" class="btn btn-outline-primary">
                                         Tất cả</a>
-                                    <a href="/admin/mau-sac/dang-hoat-dong"
+                                    <a href="/admin/thuong-hieu/dang-hoat-dong"
                                        class="btn btn-outline-primary">
                                         Đang hoạt động</a>
-                                    <a href="/admin/mau-sac/ngung-hoat-dong"
+                                    <a href="/admin/thuong-hieu/ngung-hoat-dong"
                                        class="btn btn-outline-primary">
                                         Ngừng hoạt động</a>
                                 </div>
@@ -222,7 +222,7 @@
                         <!--     tìm kiếm theo trạng thái end-->
 
                         <!-- Modal thêm thuộc tính -->
-                        <div class="modal fade" id="them-thuong-hieu" tabindex="-1" aria-labelledby="them-mau-sacLabel"
+                        <div class="modal fade" id="them-thuong-hieu" tabindex="-1" aria-labelledby="thuong-hieu-sacLabel"
                              aria-hidden="true">
                             <!--js bật modal khi check-->
                             <script th:if="${checkModal=='modal'}">
@@ -237,7 +237,7 @@
                             <div class="modal-dialog">
                                 <div class="modal-content" style="width: 100%;margin: auto;margin-top: 40%;">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5" id="them-mau-sacLabel">Thêm Thương Hiệu</h1>
+                                        <h1 class="modal-title fs-5" id="them-thuong-hieuLabel">Thêm Thương Hiệu</h1>
                                     </div>
 
                                     <!-- form thêm thuộc tính -->
@@ -247,12 +247,12 @@
 
                                         <div class="modal-body">
                                             <div class="row mb-3" style="margin-top: 3%;">
-                                                <label for="themMauSac" class="col-sm-4 col-form-label"><span
-                                                        style="color: red;">*</span>Màu
-                                                    sắc</label>
+                                                <label for="themThuongHieu" class="col-sm-4 col-form-label"><span
+                                                        style="color: red;">*</span>
+                                                    Thương hiệu</label>
                                                 <div class="col-sm-8">
-                                                    <input type="text" class="form-control" id="themMauSac"
-                                                           placeholder="Nhập màu sắc" name="ten"  th:field="*{ten}" >
+                                                    <input type="text" class="form-control" id="themThuongHieu"
+                                                           placeholder="Nhập thương hiệu" name="ten"  th:field="*{ten}" >
                                                     <span class="check-loi" th:errors="*{ten}"></span>
                                                     <span class="check-loi" th:text="${checkTenTrung}"></span>
                                                 </div>

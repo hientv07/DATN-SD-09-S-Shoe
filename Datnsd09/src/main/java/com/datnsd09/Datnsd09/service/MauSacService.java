@@ -25,8 +25,5 @@ public interface MauSacService {
 
     boolean checkTenTrungSua(Long id, String ten);
 
-//    void delete(Long id);
-//    List<MauSac> getAllDangHoatDong();
-//
-//    List<MauSac> getAllNgungHoatDong();
+
 }

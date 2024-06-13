@@ -33,15 +33,8 @@ public class MauSacServiceImpl implements MauSacService {
 
     @Override
     public void deleteById(Long ma) {
-//        Optional<MauSac> optional = mauSacRepository.findById(ma);
-//        optional.ifPresent(mauSac -> mauSacRepository.delete(mauSac));
-//        return true;
     }
-//        Optional<MauSac> optional = mauSacRepository.findById(ma);
-//        return optional.map(o->{
-//            mauSacRepository.delete(o);
-//            return o;
-//        }).orElse();
+
 
     @Override
     public MauSac add(MauSac mauSac) {
