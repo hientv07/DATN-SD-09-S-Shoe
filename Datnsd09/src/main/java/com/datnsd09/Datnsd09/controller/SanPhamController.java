@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -63,6 +64,41 @@ public class SanPhamController {
 
             hinhAnhSanPhamSerivce.saveImage(multipartFiles,sanPham);
             return "redirect:/admin/san-pham";
+        }
+    }
+
+    @GetMapping("/view-update/{id}")
+    public String viewUpdate(@PathVariable("id") Long id, Model model){
+        SanPham sanPham= sanPhamService.getById(id);
+        model.addAttribute("listThuongHieu",thuongHieuService.getAll());
+        model.addAttribute("listHinhAnh", hinhAnhSanPhamSerivce.listHinhAnh(id));
+        model.addAttribute("sanPham", sanPham);
+        return "/admin/san-pham/sua-san-pham";
+    }
+
+    @PostMapping("/update")
+    public String update(@Valid @ModelAttribute("sanPham") SanPham sanPham,
+                         BindingResult result, Model model,
+                         @RequestParam("fileImage") List<MultipartFile> multipartFiles,
+                         RedirectAttributes redirectAttributes){
+        if (result.hasErrors()){
+            model.addAttribute("checkThongBao","thatBai");
+            model.addAttribute("listThuongHieu",thuongHieuService.getAll());
+            return "/admin/san-pham/sua-san-pham";
+        }else {
+            redirectAttributes.addFlashAttribute("checkThongBao","thanhCong");
+            SanPham sp=sanPhamService.getById(sanPham.getId());
+            sanPham.setNgayTao(sp.getNgayTao());
+            sanPham.setNgaySua(new Date());
+            for (MultipartFile file : multipartFiles){
+                if (file != null && !file.isEmpty()){
+                    hinhAnhSanPhamSerivce.deleteByID(sanPham.getId());
+                }
+            }
+            hinhAnhSanPhamSerivce.saveWhenEditingImage(multipartFiles, sanPham.getId());
+            sanPhamService.update(sanPham);
+            return "redirect:/admin/san-pham";
+
         }
     }
 }
