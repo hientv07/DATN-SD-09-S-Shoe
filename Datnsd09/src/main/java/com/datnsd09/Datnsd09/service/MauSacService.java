@@ -9,15 +9,23 @@ public interface MauSacService {
 
     List<MauSac>getAll();
 
-    Boolean deleteById(Long ma);
-//    void delete(Long id);
+    List<MauSac> getAllDangHoatDong();
+
+    List<MauSac> getAllDungHoatDong();
+
+    void deleteById(Long ma);
+
 
     MauSac add(MauSac mauSac);
 
-    MauSac update(MauSac mauSac, Long ma);
+    MauSac update(MauSac mauSac);
 
-    MauSac getId(Long id);
+    MauSac getById(Long id);
+    boolean checkTenTrung(String ten);
 
+    boolean checkTenTrungSua(Long id, String ten);
+
+//    void delete(Long id);
 //    List<MauSac> getAllDangHoatDong();
 //
 //    List<MauSac> getAllNgungHoatDong();

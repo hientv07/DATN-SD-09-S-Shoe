@@ -1,5 +1,6 @@
 package com.datnsd09.Datnsd09.service.impl;
 
+
 import com.datnsd09.Datnsd09.entity.MauSac;
 import com.datnsd09.Datnsd09.repository.MauSacRepository;
 import com.datnsd09.Datnsd09.service.MauSacService;
@@ -21,10 +22,20 @@ public class MauSacServiceImpl implements MauSacService {
     }
 
     @Override
-    public Boolean deleteById(Long ma) {
-        Optional<MauSac> optional = mauSacRepository.findById(ma);
-        optional.ifPresent(mauSac -> mauSacRepository.delete(mauSac));
-        return true;
+    public List<MauSac> getAllDangHoatDong() {
+        return mauSacRepository.fillAllDangHoatDong();
+    }
+
+    @Override
+    public List<MauSac> getAllDungHoatDong() {
+        return mauSacRepository.fillAllNgungHoatDong();
+    }
+
+    @Override
+    public void deleteById(Long ma) {
+//        Optional<MauSac> optional = mauSacRepository.findById(ma);
+//        optional.ifPresent(mauSac -> mauSacRepository.delete(mauSac));
+//        return true;
     }
 //        Optional<MauSac> optional = mauSacRepository.findById(ma);
 //        return optional.map(o->{
@@ -39,23 +50,40 @@ public class MauSacServiceImpl implements MauSacService {
     }
 
     @Override
-    public MauSac update(MauSac mauSac, Long ma) {
-        Optional<MauSac> optional = mauSacRepository.findById(ma);
-        return optional.map(o-> {
-            o.setMaMau(mauSac.getMaMau());
-            o.setTen(mauSac.getTen());
-            o.setNgayTao(mauSac.getNgayTao());
-            o.setNgaySua(mauSac.getNgaySua());
-            o.setTrangThai(mauSac.getTrangThai());
-            return mauSacRepository.save(o);
-        }).orElse(null);
+    public MauSac update(MauSac mauSac) {
+
+        return mauSacRepository.save(mauSac);
+//
 
     }
-
 
     @Override
-    public MauSac getId(Long id) {
-        return
-                mauSacRepository.findById(id).get();
+    public MauSac getById(Long id) {
+        return mauSacRepository.findById(id).get();
     }
+
+    @Override
+    public boolean checkTenTrung(String ten) {
+         for (MauSac mauSac : mauSacRepository.findAll()) {
+            if (mauSac.getTen().equalsIgnoreCase(ten)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public boolean checkTenTrungSua(Long id, String ten) {
+        for (MauSac mauSac : mauSacRepository.findAll()) {
+            if (mauSac.getTen().equalsIgnoreCase(ten)) {
+                if (!mauSac.getId().equals(id)){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+
+
 }
