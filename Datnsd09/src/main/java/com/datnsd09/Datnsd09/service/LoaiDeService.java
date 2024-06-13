@@ -5,13 +5,22 @@ import com.datnsd09.Datnsd09.entity.LoaiDe;
 import java.util.List;
 
 public interface LoaiDeService {
-    List<LoaiDe> getAll();
+    List<LoaiDe> findAll();
 
-    LoaiDe getById(Long id);
+    List<LoaiDe> getAllDangHoatDong();
 
-    LoaiDe add(LoaiDe loaiDe);
+    List<LoaiDe> getAllNgungHoatDong();
+
+    void deleteById(Long id);
+
+    LoaiDe save(LoaiDe loaiDe);
+
+    boolean checkTenTrung(String ten);
+
+    boolean checkTenTrungSua(Long id, String ten);
 
     LoaiDe update(LoaiDe loaiDe);
 
-//    void deleteById(Long id);
+    LoaiDe getById(Long id);
+
 }
