@@ -4,6 +4,7 @@ import com.datnsd09.Datnsd09.entity.KichCo;
 import com.datnsd09.Datnsd09.repository.KichCoRepository;
 import com.datnsd09.Datnsd09.service.KichCoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public class KichCoServiceImpl implements KichCoService {
 
     @Override
     public List<KichCo> getAll() {
+        Sort sort = Sort.by(Sort.Direction.DESC, "ngaySua");
         return kichCoRepository.findAll();
     }
 

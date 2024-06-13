@@ -4,6 +4,7 @@ import com.datnsd09.Datnsd09.entity.SanPham;
 import com.datnsd09.Datnsd09.repository.SanPhamRepository;
 import com.datnsd09.Datnsd09.service.SanPhamService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public class SanPhamServiceImpl implements SanPhamService {
 
     @Override
     public List<SanPham> getAll() {
+        Sort sort = Sort.by(Sort.Direction.DESC, "ngaySua");
         return sanPhamRepository.findAll();
     }
 
@@ -37,5 +39,26 @@ public class SanPhamServiceImpl implements SanPhamService {
     @Override
     public void delete(Long id) {
         sanPhamRepository.deleteById(id);
+    }
+
+    @Override
+    public Integer genMaTuDong() {
+        String maStr = "";
+        try {
+            if (sanPhamRepository.index() != null) {
+                maStr = sanPhamRepository.index().toString();
+            } else {
+                maStr = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (maStr == null) {
+            maStr = "0";
+            int ma = Integer.parseInt(maStr);
+            return ++ma;
+        }
+        int ma = Integer.parseInt(maStr);
+        return ++ma;
     }
 }

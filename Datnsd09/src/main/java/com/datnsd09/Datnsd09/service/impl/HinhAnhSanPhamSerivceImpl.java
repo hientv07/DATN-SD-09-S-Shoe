@@ -13,11 +13,11 @@ import java.util.List;
 
 @Service
 public class HinhAnhSanPhamSerivceImpl implements HinhAnhSanPhamSerivce {
+
     @Autowired
     private HinhAnhSanPhamRepository hinhAnhSanPhamRepository;
 
     private Date currentDate = new Date();
-
 
     @Override
     public void saveImage(List<MultipartFile> files, SanPham sanPham) {
@@ -25,17 +25,18 @@ public class HinhAnhSanPhamSerivceImpl implements HinhAnhSanPhamSerivce {
             if (!multipartFile.isEmpty()) {
                 try {
                     HinhAnhSanPham hinhAnh = new HinhAnhSanPham();
-                    // lưu file ảnh vào db
+                    // Lưu tệp vào cơ sở dữ liệu
                     hinhAnh.setUrl(multipartFile.getOriginalFilename());
                     hinhAnh.setNgayTao(currentDate);
                     hinhAnh.setNgaySua(currentDate);
-                    hinhAnh.setUuTien(0);
                     hinhAnh.setTrangThai(0);
+                    hinhAnh.setUuTien(0);
                     hinhAnh.setSanPham(sanPham);
-                    //Thực hiện tác vụ khác nếu cần thiết
+                    // Thực hiện các tác vụ khác nếu cần thiết
                     hinhAnhSanPhamRepository.save(hinhAnh);
                 } catch (Exception e) {
-                    e.printStackTrace(); // xử lý lỗi
+                    e.printStackTrace();
+                    // Xử lý lỗi
                 }
             }
         }
@@ -47,19 +48,18 @@ public class HinhAnhSanPhamSerivceImpl implements HinhAnhSanPhamSerivce {
             if (!multipartFile.isEmpty()) {
                 try {
                     HinhAnhSanPham hinhAnh = new HinhAnhSanPham();
-                    // lưu ảnh vào db
+                    // Lưu tệp vào cơ sở dữ liệu
                     hinhAnh.setUrl(multipartFile.getOriginalFilename());
                     hinhAnh.setNgayTao(currentDate);
                     hinhAnh.setNgaySua(currentDate);
-                    hinhAnh.setUuTien(0);
                     hinhAnh.setTrangThai(0);
-                    hinhAnh.setSanPham(SanPham.builder()
-                            .id(id)
-                            .build());
+                    hinhAnh.setUuTien(0);
+                    hinhAnh.setSanPham(SanPham.builder().id(id).build());
                     // Thực hiện các tác vụ khác nếu cần thiết
                     hinhAnhSanPhamRepository.save(hinhAnh);
                 } catch (Exception e) {
                     e.printStackTrace();
+                    // Xử lý lỗi
                 }
             }
         }

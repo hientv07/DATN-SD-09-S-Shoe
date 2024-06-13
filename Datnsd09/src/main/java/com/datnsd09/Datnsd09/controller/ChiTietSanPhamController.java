@@ -25,7 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @Controller
-@RequestMapping("/admin/chi-tiet-san-pham")
+@RequestMapping("/admin/san-pham-chi-tiet")
 public class ChiTietSanPhamController {
 
     @Autowired
@@ -69,7 +69,7 @@ public class ChiTietSanPhamController {
     public String getAll(Model model) {
         model.addAttribute("listCTSP", chiTietSanPhamService.getAllCTSPOneSanPham());
         model.addAttribute("sanPham", new SanPham());
-        return "/admin/chi-tiet-san-pham/chi-tiet-san-pham";
+        return "/admin/san-pham-chi-tiet/san-pham-chi-tiet";
     }
 
     @PostMapping("/update")
@@ -88,7 +88,7 @@ public class ChiTietSanPhamController {
         attributes.addFlashAttribute("checkThongBao", "thanhCong");
         chiTietSanPhamService.updateAllCTSP(listIdChiTietSp, listSanPham, listKichCo, listMauSac,
                 listLoaiDe, listTrangThai, listSoLuong, listDonGia);
-        return "redirect:/admin/chi-tiet-san-pham";
+        return "redirect:/admin/san-pham-chi-tiet";
     }
 
     @PostMapping("/add")

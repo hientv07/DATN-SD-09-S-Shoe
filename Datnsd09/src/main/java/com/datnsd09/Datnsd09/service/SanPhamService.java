@@ -14,4 +14,6 @@ public interface SanPhamService {
     SanPham update(SanPham sanPham);
 
     void delete(Long id);
+
+    Integer genMaTuDong();
 }
