@@ -27,7 +27,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ChiTietSanPham {
+public class SanPhamChiTiet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 

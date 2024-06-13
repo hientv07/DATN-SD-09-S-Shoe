@@ -1,48 +1,48 @@
 package com.datnsd09.Datnsd09.service;
 
-import com.datnsd09.Datnsd09.entity.ChiTietSanPham;
+import com.datnsd09.Datnsd09.entity.SanPhamChiTiet;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
 
-public interface ChiTietSanPhamService {
-    List<ChiTietSanPham> getAll();
+public interface SanPhamChiTietService {
+    List<SanPhamChiTiet> getAll();
 
-    List<ChiTietSanPham> getAllCTSPOneSanPham();
+    List<SanPhamChiTiet> getAllCTSPOneSanPham();
 
-    ChiTietSanPham getById(Long id);
+    SanPhamChiTiet getById(Long id);
 
-    List<ChiTietSanPham> getAllById(Long id);
+    List<SanPhamChiTiet> getAllById(Long id);
 
-    List<ChiTietSanPham> add(List<String> listSanPham, List<String> listKichCo,
+    List<SanPhamChiTiet> add(List<String> listSanPham, List<String> listKichCo,
                              List<String> listMauSac, List<String> listLoaiDe,
                              List<String> listSoLuong, List<String> listDonGia);
 
-    List<ChiTietSanPham> updateAllCTSP(
+    List<SanPhamChiTiet> updateAllCTSP(
             List<String> listIdChiTietSp, List<String> listSanPham,
             List<String> listKichCo, List<String> listMauSac,
             List<String> listLoaiDe, List<String> listTrangThai,
             List<String> listSoLuong, List<String> listDonGia);
 
-    ChiTietSanPham update(ChiTietSanPham chiTietSanPham);
+    SanPhamChiTiet update(SanPhamChiTiet chiTietSanPham);
 
     void delete(Long id);
 
-    List<ChiTietSanPham> getAllDangHoatDong();
+    List<SanPhamChiTiet> getAllDangHoatDong();
 
-    List<ChiTietSanPham> getAllNgungHoatDong();
+    List<SanPhamChiTiet> getAllNgungHoatDong();
 
     void checkSoLuongBang0();
 
-    ChiTietSanPham saveExcel(ChiTietSanPham chiTietSanPham);
+    SanPhamChiTiet saveExcel(SanPhamChiTiet chiTietSanPham);
 
-    List<ChiTietSanPham> getAllbyIdSPAndIdMS(Long idSanPham, Long idMauSac);
+    List<SanPhamChiTiet> getAllbyIdSPAndIdMS(Long idSanPham, Long idMauSac);
 
-    List<ChiTietSanPham> getAllCtspByIdSanPham(Long idSanPham);
+    List<SanPhamChiTiet> getAllCtspByIdSanPham(Long idSanPham);
 
-    List<ChiTietSanPham> fillAllDangHoatDongLonHon0();
+    List<SanPhamChiTiet> fillAllDangHoatDongLonHon0();
 
-    Page<List<ChiTietSanPham>> searchAll(Integer pageNo, Integer size, String tenSanPham, List<Long> idMauSac,
+    Page<List<SanPhamChiTiet>> searchAll(Integer pageNo, Integer size, String tenSanPham, List<Long> idMauSac,
                                          List<Long> idKichCo,
                                          List<Long> idLoaiDe, List<Long> idThuongHieu, Long minGia, Long maxGia);
 
