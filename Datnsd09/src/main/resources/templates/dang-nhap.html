@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="../static/img/favicon.png" rel="icon">
+    <title>S-Shoe</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <div th:replace="~{admin/fragment/header :: header}"></div>
+
+    <!--    thư viện toast-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@latest/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!--    thư viện toast-->
+</head>
+
+<body>
+
+<main>
+    <div class="container">
+
+        <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+                        <div class="d-flex justify-content-center py-4">
+                            <div class="logo d-flex align-items-center w-auto">
+                                <img src="../../static/img/logo.png" alt="">
+                                <span class="d-none d-lg-block">S-Shoe</span>
+                            </div>
+                        </div><!-- End Logo -->
+
+                        <div class="card mb-3">
+
+                            <div class="card-body">
+
+                                <div class="pt-4 pb-2">
+                                    <h5 class="card-title text-center pb-0 fs-4">Đăng nhập</h5>
+                                    <p class="text-center small">Nhập tên người dùng và mật khẩu của bạn để đăng
+                                        nhập</p>
+                                </div>
+
+                                <form th:action="@{/login}" method='post' class="row g-3 needs-validation" novalidate>
+
+                                    <div class="col-12">
+                                        <label for="yourUsername" class="form-label">Tên tài khoản</label>
+                                        <input type="text" class="form-control" id="yourUsername"
+                                               placeholder="Nhập tài khoản"
+                                               name='username' th:value="${tenTaiKhoan}" required>
+                                        <div class="check-loi" id="yourUsernameCheck" style="display: none"></div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="yourPassword" class="form-label">Mật khẩu</label>
+                                        <input type="password" class="form-control" id="yourPassword"
+                                               placeholder="Nhập mật khẩu"
+                                               name='password' required th:value="${matKhauMoi}">
+                                        <div class="check-loi" id="yourPasswordCheck" style="display: none"></div>
+                                    </div>
+                                    <div class="check-loi" id="message" style="text-align: center"
+                                         th:text="${message}"></div>
+                                    <div class="col-12">
+                                        <p class="small mb-0"><a href="/quen-mat-khau">Quên mật khẩu</a></p>
+                                    </div>
+                                    <div class="col-12">
+                                        <button class="btn btn-primary w-100" onclick="return checkDangNhap()"
+                                                type="submit">Đăng nhập
+                                        </button>
+                                    </div>
+                                    <div class="col-12">
+                                        <p class="small mb-0">Bạn chưa có tài khoản? <a href="/register">Tạo một tài
+                                            khoản</a></p>
+                                    </div>
+                                </form>
+                                <script>
+                                    function checkDangNhap() {
+                                        var check = true;
+
+                                        var yourUsername = document.getElementById("yourUsername")
+                                        var yourUsernameCheck = document.getElementById("yourUsernameCheck")
+                                        yourUsernameCheck.style.display = 'none'
+                                        if (yourUsername.value.trim() == '') {
+                                            yourUsernameCheck.style.display = 'block'
+                                            yourUsernameCheck.innerText = 'Bạn chưa nhập tài khoản'
+                                            check = false
+                                        }
+
+                                        var yourPassword = document.getElementById("yourPassword")
+                                        var yourPasswordCheck = document.getElementById("yourPasswordCheck")
+                                        yourPasswordCheck.style.display = 'none'
+                                        if (yourPassword.value.trim() == '') {
+                                            yourPasswordCheck.style.display = 'block'
+                                            yourPasswordCheck.innerText = 'Bạn chưa nhập tài khoản'
+                                            check = false
+                                        }
+
+                                        var message = document.getElementById("message")
+                                        message.style.display = 'none'
+                                        return check;
+                                    }
+                                </script>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+</main><!-- End #main -->
+<!--js bật modal khi check-->
+<script th:if="${checkThongBao=='quenMK'}">
+    window.addEventListener('DOMContentLoaded', (event) => {
+        // Hiển thị modal
+        var toast = new bootstrap.Toast(document.getElementById('thongBaoThemThanhCong'));
+        toast.show();
+    });
+</script>
+<!--js bật modal khi check-->
+<!-- Modal thông báo check chọn sản phẩm-->
+<div class="toast-container position-fixed top-50 start-50 translate-middle">
+    <div id="thongBaoThemThanhCong" class="toast" role="alert" aria-live="assertive" data-bs-delay="2000"
+         aria-atomic="true"
+         style="background-color: #7e7e7e;">
+        <div class="toast-body center-image" style=";display: flex;justify-content: center;align-items: center;">
+            <img src="../../static/img/successful_notification.png" alt="Notification Image"
+                 style="margin-top:7%;width: 12%;height: 12%;">
+        </div>
+        <div class="toast-body" style="color: white;display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            margin-bottom: 7%;
+            text-align: center;">
+            Lấy lại mật khẩu thành công
+        </div>
+    </div>
+</div>
+<!--js bật modal khi check-->
+<script th:if="${checkThongBao=='dangKy'}">
+    window.addEventListener('DOMContentLoaded', (event) => {
+        // Hiển thị modal
+        var toast = new bootstrap.Toast(document.getElementById('thongBaoThemThanhCong1'));
+        toast.show();
+    });
+</script>
+<!--js bật modal khi check-->
+<!-- Modal thông báo check chọn sản phẩm-->
+<div class="toast-container position-fixed top-50 start-50 translate-middle">
+    <div id="thongBaoThemThanhCong1" class="toast" role="alert" aria-live="assertive" data-bs-delay="2000"
+         aria-atomic="true"
+         style="background-color: #7e7e7e;">
+        <div class="toast-body center-image" style=";display: flex;justify-content: center;align-items: center;">
+            <img src="../../static/img/successful_notification.png" alt="Notification Image"
+                 style="margin-top:7%;width: 12%;height: 12%;">
+        </div>
+        <div class="toast-body" style="color: white;display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            margin-bottom: 7%;
+            text-align: center;">
+            Đăng ký thành công
+        </div>
+    </div>
+</div>
+<!-- Modal thông báo check chọn sản phẩm end-->
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer" style="margin: auto">
+
+    <div class="credits">
+        Website bán giày S-Shoe
+    </div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
+
+<!-- Vendor JS Files -->
+<script src="../../static/vendor/apexcharts/apexcharts.min.js"></script>
+<script src="../../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../../static/vendor/chart.js/chart.umd.js"></script>
+<script src="../../static/vendor/echarts/echarts.min.js"></script>
+<script src="../../static/vendor/quill/quill.min.js"></script>
+<script src="../../static/vendor/simple-datatables/simple-datatables.js"></script>
+<script src="../../static/vendor/tinymce/tinymce.min.js"></script>
+<script src="../../static/vendor/php-email-form/validate.js"></script>
+
+<!-- Template Main JS File -->
+<script src="../../static/js/main.js"></script>
+
+</body>
+
+</html>
