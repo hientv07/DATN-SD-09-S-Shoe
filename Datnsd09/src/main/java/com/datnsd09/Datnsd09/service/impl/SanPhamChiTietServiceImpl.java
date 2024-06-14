@@ -21,8 +21,7 @@ public class SanPhamChiTietServiceImpl implements SanPhamChiTietService {
 
     @Override
     public List<SanPhamChiTiet> getAllCTSPOneSanPham() {
-//        return chiTietSanPhamRepository.fillAllCtspOneSanPham();
-        return null;
+        return chiTietSanPhamRepository.fillAllCtspOneSanPham();
     }
 
     @Override
@@ -32,7 +31,7 @@ public class SanPhamChiTietServiceImpl implements SanPhamChiTietService {
 
     @Override
     public List<SanPhamChiTiet> getAllById(Long id) {
-        return null;
+        return chiTietSanPhamRepository.fillAllChiTietSpShop(id);
     }
 
     @Override
@@ -77,12 +76,12 @@ public class SanPhamChiTietServiceImpl implements SanPhamChiTietService {
 
     @Override
     public List<SanPhamChiTiet> getAllbyIdSPAndIdMS(Long idSanPham, Long idMauSac) {
-        return null;
+        return chiTietSanPhamRepository.fillAllChiTietSpMauSac(idSanPham, idMauSac);
     }
 
     @Override
     public List<SanPhamChiTiet> getAllCtspByIdSanPham(Long idSanPham) {
-        return null;
+        return chiTietSanPhamRepository.fillAllChiTietSpBySanPham(idSanPham);
     }
 
     @Override
@@ -97,22 +96,22 @@ public class SanPhamChiTietServiceImpl implements SanPhamChiTietService {
 
     @Override
     public List<Long> getAllIdMauSacCTSP() {
-        return null;
+        return chiTietSanPhamRepository.getAllIdMauSacCTSP();
     }
 
     @Override
     public List<Long> getAllIdKichCoCTSP() {
-        return null;
+        return chiTietSanPhamRepository.getAllIdKichCoCTSP();
     }
 
     @Override
     public List<Long> getAllIdLoaiDeCTSP() {
-        return null;
+        return chiTietSanPhamRepository.getAllIdLoaiDeCTSP();
     }
 
     @Override
     public List<Long> getAllIdThuongHieuCTSP() {
-        return null;
+        return chiTietSanPhamRepository.getAllIdThuongHieuCTSP();
     }
 
     @Override
