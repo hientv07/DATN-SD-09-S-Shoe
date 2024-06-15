@@ -1,5 +1,7 @@
 package com.datnsd09.Datnsd09.controller;
 
+import com.datnsd09.Datnsd09.config.PrincipalCustom;
+import com.datnsd09.Datnsd09.config.UserInfoUserDetails;
 import com.datnsd09.Datnsd09.entity.SanPham;
 import com.datnsd09.Datnsd09.repository.KichCoRepository;
 import com.datnsd09.Datnsd09.repository.LoaiDeRepository;
@@ -60,11 +62,30 @@ public class SanPhamChiTietController {
     @Autowired
     private LoaiDeRepository loaiDeRepository;
 
+    private PrincipalCustom principalCustom = new PrincipalCustom();
 
     @GetMapping()
     public String getAll(Model model){
+
+        UserInfoUserDetails name = principalCustom.getCurrentUserNameAdmin();
+        if (name != null) {
+            model.addAttribute("tenNhanVien", principalCustom.getCurrentUserNameAdmin().getHoVaTen());
+        } else {
+            return "redirect:/login";
+        }
         model.addAttribute("listCTSP", sanPhamChiTietService.getAllCTSPOneSanPham());
-        model.addAttribute("sanPham",new SanPham());
+        getString(model);
+        model.addAttribute("sanPham", new SanPham());
         return "/admin/san-pham-chi-tiet/san-pham-chi-tiet";
+    }
+
+    private Model getString(Model model) {
+        model.addAttribute("listSanPham", sanPhamService.getAll());
+        model.addAttribute("listThuongHieu", thuongHieuService.getAllDangHoatDong());
+        model.addAttribute("listKichCo", kichCoService.getAll());
+        model.addAttribute("listMauSac", mauSacService.getAllDangHoatDong());
+        model.addAttribute("listLoaiDe", loaiDeService.getAllDangHoatDong());
+
+        return model;
     }
 }
