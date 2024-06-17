@@ -57,7 +57,7 @@ public class SanPhamController {
         }else if (!sanPhamService.checkTenTrung(sanPham.getTen())){
             model.addAttribute("checkModal","modal");
             model.addAttribute("checkThongBao","thatBai");
-            model.addAttribute("checkTenTrung","Tên sản phẩm ko tồn tại");
+            model.addAttribute("checkTenTrung","Tên sản phẩm đã tồn tại");
             model.addAttribute("listSanPham",sanPhamService.getAll());
             model.addAttribute("listThuongHieu", sanPhamService.getAll());
             return "/admin/san-pham/san-pham";
@@ -94,7 +94,7 @@ public class SanPhamController {
             return "/admin/san-pham/sua-san-pham";
         }else if (!sanPhamService.checkTenTrungSua(sanPham.getMa(),sanPham.getTen())){
             model.addAttribute("checkThongBao","thatBai");
-            model.addAttribute("checkTenTrung","Tên sản phẩm ko tồn tại");
+            model.addAttribute("checkTenTrung","Tên sản phẩm đã tồn tại");
             model.addAttribute("listThuongHieu", sanPhamService.getAll());
             return "/admin/san-pham/sua-san-pham";
         }else {
