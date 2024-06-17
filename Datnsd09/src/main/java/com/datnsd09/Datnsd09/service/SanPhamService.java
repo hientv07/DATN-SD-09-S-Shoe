@@ -16,4 +16,12 @@ public interface SanPhamService {
     void delete(Long id);
 
     Integer genMaTuDong();
+
+    List<SanPham> getAllDangHoatDong();
+
+    List<SanPham> getAllNgungHoatDong();
+
+    boolean checkTenTrung(String ten);
+
+    boolean checkTenTrungSua(String ma, String ten);
 }

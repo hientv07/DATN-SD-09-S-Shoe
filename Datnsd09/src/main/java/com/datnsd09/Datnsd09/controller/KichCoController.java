@@ -40,6 +40,12 @@ public class KichCoController {
             model.addAttribute("checkThongBao", "thatBai");
             model.addAttribute("listKichCo", kichCoService.getAll());
             return "/admin/kich-co/kich-co";
+        }else if (!kichCoService.checkTenTrung(kichCo.getTen())) {
+            model.addAttribute("checkModal","modal");
+            model.addAttribute("checkThongBao","thatBai");
+            model.addAttribute("checkTenTrung","Kích cỡ đã tồn tại");
+            model.addAttribute("listKichCo", kichCoService.getAll());
+            return "/admin/kich-co/kich-co";
         } else {
             redirectAttributes.addFlashAttribute("checkThongBao", "thanhCong");
             kichCo.setNgayTao(new Date());
@@ -66,7 +72,12 @@ public class KichCoController {
             model.addAttribute("checkThongBao", "thatBai");
             model.addAttribute("listKichCo", kichCoService.getAll());
             return "/admin/kich-co/sua-kich-co";
-        } else {
+        }else if (!kichCoService.checkTenTrungSua(kichCo.getId(), kichCo.getTen())) {
+            model.addAttribute("checkThongBao", "thaiBai");
+            model.addAttribute("checkTenTrung", "Kích cỡ đã tồn tại");
+            model.addAttribute("listKichCo", kichCoService.getAll());
+            return "/admin/kich-co/sua-kich-co";
+        }else {
             redirectAttributes.addFlashAttribute("checkThongBao", "thanhCong");
             KichCo kt = kichCoService.getById(kichCo.getId());
             kichCo.setNgayTao(kt.getNgayTao());
@@ -75,5 +86,19 @@ public class KichCoController {
             kichCoService.update(kichCo);
             return "redirect:/admin/kich-co";
         }
+    }
+
+    @GetMapping("/dang-hoat-dong")
+    public String dangHienDong(Model model){
+        model.addAttribute("listKichCo", kichCoService.getAllDangHoatDong());
+        model.addAttribute("kichCo", new KichCo());
+        return "/admin/kich-co/kich-co";
+    }
+
+    @GetMapping("/ngung-hoat-dong")
+    public String ngungHoatDong(Model model){
+        model.addAttribute("listKichCo", kichCoService.getAllNgungHoatDong());
+        model.addAttribute("kichCo",new KichCo());
+        return "/admin/kich-co/kich-co";
     }
 }

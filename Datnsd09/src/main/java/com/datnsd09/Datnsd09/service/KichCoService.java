@@ -15,4 +15,12 @@ public interface KichCoService {
     KichCo update(KichCo kichCo);
 
     void deleteById(Long id);
+
+    List<KichCo> getAllDangHoatDong();
+
+    List<KichCo> getAllNgungHoatDong();
+
+    boolean checkTenTrung(Integer ten);
+
+    boolean checkTenTrungSua(Long id, Integer ten);
 }

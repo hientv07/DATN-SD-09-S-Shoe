@@ -61,4 +61,35 @@ public class SanPhamServiceImpl implements SanPhamService {
         int ma = Integer.parseInt(maStr);
         return ++ma;
     }
+
+    @Override
+    public List<SanPham> getAllDangHoatDong() {
+        return sanPhamRepository.fillAllDangHoatDong();
+    }
+
+    @Override
+    public List<SanPham> getAllNgungHoatDong() {
+        return sanPhamRepository.fillAllNgungHoatDong();
+    }
+
+    @Override
+    public boolean checkTenTrung(String ten) {
+        for (SanPham sp : sanPhamRepository.findAll()) {
+            if (sp.getTen().equalsIgnoreCase(ten)) ;
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean checkTenTrungSua(String ma, String ten) {
+        for (SanPham sp : sanPhamRepository.findAll()) {
+            if (sp.getTen().equalsIgnoreCase(ten)) {
+                if (!sp.getMa().equalsIgnoreCase(ma)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
 }
