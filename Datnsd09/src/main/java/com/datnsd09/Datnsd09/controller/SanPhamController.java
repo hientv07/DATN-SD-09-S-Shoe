@@ -54,7 +54,14 @@ public class SanPhamController {
             model.addAttribute("listSanPham", sanPhamService.getAll());
             model.addAttribute("listThuongHieu", thuongHieuService.getAll());
             return "/admin/san-pham/san-pham";
-        }else {
+        }else if (!sanPhamService.checkTenTrung(sanPham.getTen())){
+            model.addAttribute("checkModal","modal");
+            model.addAttribute("checkThongBao","thatBai");
+            model.addAttribute("checkTenTrung","Tên sản phẩm ko tồn tại");
+            model.addAttribute("listSanPham",sanPhamService.getAll());
+            model.addAttribute("listThuongHieu", sanPhamService.getAll());
+            return "/admin/san-pham/san-pham";
+        } else {
             redirectAttributes.addFlashAttribute("checkThongBao", "thanhCong");
             sanPham.setMa("SP" + sanPhamService.genMaTuDong());
             sanPham.setNgayTao(new Date());
@@ -85,6 +92,11 @@ public class SanPhamController {
             model.addAttribute("checkThongBao","thatBai");
             model.addAttribute("listThuongHieu",thuongHieuService.getAll());
             return "/admin/san-pham/sua-san-pham";
+        }else if (!sanPhamService.checkTenTrungSua(sanPham.getMa(),sanPham.getTen())){
+            model.addAttribute("checkThongBao","thatBai");
+            model.addAttribute("checkTenTrung","Tên sản phẩm ko tồn tại");
+            model.addAttribute("listThuongHieu", sanPhamService.getAll());
+            return "/admin/san-pham/sua-san-pham";
         }else {
             redirectAttributes.addFlashAttribute("checkThongBao","thanhCong");
             SanPham sp=sanPhamService.getById(sanPham.getId());
@@ -100,5 +112,21 @@ public class SanPhamController {
             return "redirect:/admin/san-pham";
 
         }
+    }
+
+    @GetMapping("/dang-hoat-dong")
+    public String dangHoatDong(Model model){
+        model.addAttribute("listSanPham", sanPhamService.getAllDangHoatDong());
+        model.addAttribute("listThuongHieu",thuongHieuService.getAll());
+        model.addAttribute("sanPham", new SanPham());
+        return "/admin/san-pham/san-pham";
+    }
+
+    @GetMapping("/ngung-hoat-dong")
+    public String ngungHoatDong(Model model){
+        model.addAttribute("listSanPham", sanPhamService.getAllNgungHoatDong());
+        model.addAttribute("listThuongHieu",thuongHieuService.getAll());
+        model.addAttribute("sanPham", new SanPham());
+        return "/admin/san-pham/san-pham";
     }
 }

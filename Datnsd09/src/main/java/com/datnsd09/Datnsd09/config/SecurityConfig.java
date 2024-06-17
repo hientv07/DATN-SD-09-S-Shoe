@@ -29,7 +29,7 @@ import java.util.Collections;
 @EnableMethodSecurity
 public class SecurityConfig {
     @Autowired
-    PasswordEncoderConfig passwordEncoder;
+    private PasswordEncoderConfig passwordEncoder;
 
     @Bean
     public AuthenticationManager authenticationManager() {
