@@ -19,7 +19,7 @@ import java.util.Date;
 public class HoaDon {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_hoa_don")
+    @Column(name = "id_hd")
     private Long id;
 
     @Column(name = "ma_hoa_don", length = 20)
