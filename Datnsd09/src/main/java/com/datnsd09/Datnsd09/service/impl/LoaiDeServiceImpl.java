@@ -47,6 +47,9 @@ public class LoaiDeServiceImpl implements LoaiDeService {
     }
 
 
+
+
+
     @Override
     public boolean checkTenTrung(String ten) {
         for (LoaiDe de : loaiDeRepository.findAll()) {
@@ -68,6 +71,11 @@ public class LoaiDeServiceImpl implements LoaiDeService {
         }
         return true;
     }
+
+
+
+
+
 
     @Override
     public LoaiDe update(LoaiDe loaiDe) {

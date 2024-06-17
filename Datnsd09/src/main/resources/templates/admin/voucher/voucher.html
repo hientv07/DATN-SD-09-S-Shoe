@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+    <title>Glacat</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!--    thư viện của bảng tích hợp tìm kiếm-->
+    <link rel='stylesheet' href='https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css'>
+    <!--    thư viện của bảng tích hợp tìm kiếm end-->
+
+    <!-- Favicons -->
+    <link href="../../../static/img/favicon.png" rel="icon">
+    <link href="../../../static/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link
+            href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"
+            rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="../../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="../../../static/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="../../../static/vendor/quill/quill.snow.css" rel="stylesheet">
+    <link href="../../../static/vendor/quill/quill.bubble.css" rel="stylesheet">
+    <link href="../../../static/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="../../../static/vendor/simple-datatables/style.css" rel="stylesheet">
+
+    <!-- Template Main CSS File -->
+    <link href="../../../static/css/style.css" rel="stylesheet">
+
+
+</head>
+
+<body>
+
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+        <a href="/ban-hang-tai-quay/hoa-don" class="logo d-flex align-items-center">
+            <img src="../../../static/img/logo.png" alt="">
+            <span class="d-none d-lg-block">Glacat</span>
+        </a>
+        <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+
+
+    <nav class="header-nav ms-auto">
+        <ul class="d-flex align-items-center">
+            <li class="nav-item dropdown pe-3">
+
+                <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                    <span class="d-none d-md-block dropdown-toggle ps-2" th:text="${tenNhanVien}"></span>
+                </a><!-- End Profile Iamge Icon -->
+
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+<!--                    <li class="dropdown-header">-->
+<!--                        <h6 th:text="${tenNhanVien}"></h6>-->
+<!--                        <span>Nhân Viên</span>-->
+<!--                    </li>-->
+
+                    <!--                    <li>-->
+                    <!--                        <hr class="dropdown-divider">-->
+                    <!--                    </li>-->
+
+                    <!--                    <li>-->
+                    <!--                        <a class="dropdown-item d-flex align-items-center" href="users-profile.html">-->
+                    <!--                            <i class="bi bi-person"></i>-->
+                    <!--                            <span>Thông tin của tôi</span>-->
+                    <!--                        </a>-->
+                    <!--                    </li>-->
+
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+
+<!--                    <li>-->
+<!--                        <a class="dropdown-item d-flex align-items-center" th:href="@{/logout}">-->
+<!--                            <i class="bi bi-box-arrow-right"></i>-->
+<!--                            <span>Đăng Xuất</span>-->
+<!--                        </a>-->
+<!--                    </li>-->
+
+                </ul><!-- End Profile Dropdown Items -->
+            </li><!-- End Profile Nav -->
+
+        </ul>
+    </nav><!-- End Icons Navigation -->
+
+</header><!-- End Header -->
+
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+
+    <ul class="sidebar-nav" id="sidebar-nav">
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/admin/thong-ke">
+                <i class="bi bi-graph-up-arrow"></i>
+                <span>Thống Kê</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/ban-hang-tai-quay/hoa-don">
+                <i class="bi bi-shop"></i>
+                <span>Bán Hàng</span>
+            </a>
+        </li><!-- End Dashboard Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-menu-button-wide"></i><span>Quản Lý Sản Phẩm</span><i
+                    class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="components-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="/admin/san-pham-chi-tiet">
+                        <i class="bi bi-circle"></i><span>Sản Phẩm Chi Tiết</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/san-pham">
+                        <i class="bi bi-circle"></i><span>Sản Phẩm</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/thuong-hieu">
+                        <i class="bi bi-circle"></i><span>Thương Hiệu</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/loai-de">
+                        <i class="bi bi-circle"></i><span>Loại Đế</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/mau-sac">
+                        <i class="bi bi-circle"></i><span>Màu Sắc</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/kich-co">
+                        <i class="bi bi-circle"></i><span>Kích Cỡ</span>
+                    </a>
+                </li>
+            </ul>
+        </li><!-- End Components Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/ban-hang-tai-quay/hoa-don/quan-ly">
+                <i class="bi bi-receipt-cutoff"></i>
+                <span>Quản Lý Hóa Đơn</span>
+            </a>
+        </li><!-- End Forms Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/ban-hang-tai-quay/doi-tra">
+                <i class="bi bi-truck"></i>
+                <span>Trả hàng</span>
+            </a>
+        </li><!-- End Forms Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-person-vcard"></i><span>Quản Lý Tài Khoản</span><i
+                    class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="tables-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="/admin/nhan-vien">
+                        <i class="bi bi-circle"></i><span>Quản lý nhân viên</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="../admin/khach-hang">
+                        <i class="bi bi-circle"></i><span>Quản lý khách hàng</span>
+                    </a>
+                </li>
+            </ul>
+        </li><!-- End Tables Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link" href="/admin/voucher">
+                <i class="bi bi-ticket-perforated-fill"></i>
+                <span>Quản Lý Voucher</span>
+            </a>
+        </li><!-- End Icons Nav -->
+    </ul>
+
+</aside><!-- End Sidebar-->
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Quản Lý Voucher</h1>
+    </div><!-- End Page Title -->
+
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+
+                <div class="card">
+                    <div class="card-body">
+                        <!--    tìm kiếm theo trạng thái-->
+                        <div class="row g-3" style="margin-top: 2%;margin-bottom: 2%">
+                            <div class="col-md-8">
+                                <label>Trạng thái:</label>
+                                <div class="btn-group" role="group" aria-label="Basic outlined example">
+                                    <a href="/admin/voucher" class="btn btn-outline-primary">
+                                        Tất cả</a>
+                                    <a href="/admin/voucher/dang-dien-ra"
+                                       class="btn btn-outline-primary">
+                                        Đang diễn ra</a>
+                                    <a href="/admin/voucher/da-ket-thuc"
+                                       class="btn btn-outline-primary">
+                                        Đã kết thúc</a>
+                                    <a href="/admin/voucher/sap-dien-ra"
+                                       class="btn btn-outline-primary">
+                                        Sắp diễn ra</a>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <a href="/admin/voucher" style="float: right"
+                                   class="btn btn-primary">
+                                    <i class="bi bi-arrow-clockwise"> Làm mới</i>
+                                </a>
+                            </div>
+                            <div class="col-md-2">
+                                <!-- Button trigger modal -->
+                                <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        style="float: right; " data-bs-target="#them-voucher">
+                                    Thêm mới
+                                </button>
+
+
+                            </div>
+                        </div>
+                        <!--     tìm kiếm theo trạng thái end-->
+
+                        <!-- Modal thêm voucher -->
+                        <div class="modal fade" id="them-voucher" tabindex="-1" aria-labelledby="them-voucherLabel"
+                             aria-hidden="true">
+                            <!--js bật modal khi check-->
+                            <script th:if="${checkModal=='modal'}">
+                                window.addEventListener('DOMContentLoaded', (event) => {
+                                    // Hiển thị modal
+                                    var myModal = new bootstrap.Modal(document.getElementById('them-voucher'));
+                                    myModal.show();
+                                });
+                            </script>
+                            <!--js bật modal khi check-->
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="them-voucherLabel">Thêm Voucher</h1>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <!-- form thêm voucher -->
+                                        <form class="row g-3" style="margin-top: 1%;margin-bottom: 5%;"
+                                              th:action="@{/admin/voucher/add}" method="post"
+                                              enctype="multipart/form-data"
+                                              th:object="${voucher}">
+                                            <div class="col-md-6">
+                                                <label class="form-label">
+                                                    <span class="dau-sao">*</span>Mã voucher:</label>
+                                                <input type="text" class="form-control" placeholder="Nhập mã voucher"
+                                                       th:field="*{maVoucher}">
+                                                <span class="check-loi" th:errors="*{maVoucher}"></span>
+                                                <span class="check-loi" th:text="${checkMaTrung}"></span>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">
+                                                    <span class="dau-sao">*</span>Giá trị giảm tối đa:</label>
+                                                <input type="text" class="form-control" placeholder="Nhập giá trị giảm tối đa"
+                                                       th:field="*{giamToiDa}">
+                                                <span class="check-loi" th:errors="*{giamToiDa}"></span>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">
+                                                    <span class="dau-sao">*</span>Tên voucher:</label>
+                                                <input type="text" class="form-control" placeholder="Nhập tên voucher"
+                                                       th:field="*{tenVoucher}">
+                                                <span class="check-loi" th:errors="*{tenVoucher}"></span>
+                                                <span class="check-loi" th:text="${checkTenTrung}"></span>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">
+                                                    <span class="dau-sao">*</span>Số lượng:</label>
+                                                <input type="number" class="form-control" placeholder="Nhập số lượng"
+                                                       min="0" th:field="*{soLuong}">
+                                                <span class="check-loi" th:errors="*{soLuong}"></span>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">
+                                                    <span class="dau-sao">*</span>Phần trăm
+                                                    giảm:</label>
+                                                <input type="number" class="form-control"
+                                                       placeholder="Nhập phần trăm giảm"
+                                                       th:field="*{phanTramGiam}">
+                                                <span class="check-loi" th:errors="*{phanTramGiam}"></span>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">
+                                                    <span class="dau-sao">*</span>Giá đơn tối
+                                                    thiểu:</label>
+                                                <input type="number" class="form-control"
+                                                       placeholder="Nhập giá đơn tối thiểu" min="1"
+                                                       th:field="*{giaTriDonToiThieu}">
+                                                <span class="check-loi" th:errors="*{giaTriDonToiThieu}"></span>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">
+                                                    <span class="dau-sao">*</span>Ngày bắt đầu:</label>
+                                                <input type="datetime-local" class="form-control" th:field="*{ngayBatDau}" onchange="validateDateStart()" id="ngayBatDau" >
+                                                <span class="check-loi" th:errors="*{ngayBatDau}" ></span>
+                                                <br>
+                                                <span id="error-message-start" style="color: red;font-size: 14px;font-weight: bold;"></span>
+                                                <!--                                                <span id="message-start" style="color: red;font-size: 14px;font-weight: bold;"></span>-->
+
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">
+                                                    <span class="dau-sao">*</span>Ngày kết
+                                                    thúc:</label>
+                                                <input type="datetime-local" class="form-control" th:field="*{ngayKetThuc}" onchange="validateDateEnd()" id="ngayKetThuc">
+                                                <span class="check-loi" th:errors="*{ngayKetThuc}"></span>
+                                                <span class="check-loi" th:if="${checkNgayKetThuc=='ngayKetThuc'}">Ngày kết thúc phải sau ngày tạo</span>
+                                                <br>
+                                                <span id="error-message-end" style="color: red;font-size: 14px;font-weight: bold;"></span>
+
+                                            </div>
+                                            <!--                                            <div class="search-trang-thai" style="margin-top: 4%;">-->
+                                            <!--                                                <label style="margin-left:17%;">Trạng thái:</label>-->
+                                            <!--                                                <input class="form-check-input" type="radio" name="gridRadios"-->
+                                            <!--                                                       value="2"-->
+                                            <!--                                                       style="margin-left:10%;" checked th:field="*{trangThai}">-->
+                                            <!--                                                <label class="form-check-label">-->
+                                            <!--                                                    Sắp diễn ra-->
+                                            <!--                                                </label>-->
+
+                                            <!--                                                <input class="form-check-input" type="radio" name="gridRadios"-->
+                                            <!--                                                       value="0"-->
+                                            <!--                                                       style="margin-left:5%;" th:field="*{trangThai}" checked>-->
+                                            <!--                                                <label class="form-check-label">-->
+                                            <!--                                                    Đang diễn ra-->
+                                            <!--                                                </label>-->
+
+                                            <!--                                                <input class="form-check-input" type="radio" name="gridRadios"-->
+                                            <!--                                                       value="1"-->
+                                            <!--                                                       style="margin-left:5%;" checked th:field="*{trangThai}">-->
+                                            <!--                                                <label class="form-check-label">-->
+                                            <!--                                                    Đã kết thúc-->
+                                            <!--                                                </label>-->
+
+                                            <!--                                            </div>-->
+                                            <!--                                            <span class="check-loi" th:errors="*{trangThai}" style="text-align: center"></span>-->
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                    Đóng
+                                                </button>
+                                                <button type="submit" class="btn btn-primary">Thêm</button>
+                                            </div>
+                                        </form>
+
+                                        <!-- form thêm voucher end-->
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Modal end-->
+
+
+                        <!-- Table with stripped rows -->
+                        <table id="example" style="margin-top: 4%;">
+                            <thead>
+                            <tr>
+                                <th>STT</th>
+                                <th>Mã Voucher</th>
+                                <th>Tên Voucher</th>
+                                <th>Đơn Tối Thiểu</th>
+                                <th>Giảm</th>
+                                <th>Giảm tối đa</th>
+                                <th>Số Lượng</th>
+                                <th>Trạng Thái</th>
+                                <th>Ngày bắt đầu</th>
+                                <th>Ngày kết thúc</th>
+                                <th>Hành Động</th>
+                            </tr>
+                            <thead>
+                            <tbody>
+                            <tr th:each="voucher,iterStat : ${listVoucher}">
+                                <td th:text="${iterStat.index+1}"></td>
+                                <td th:text="${voucher.maVoucher}"></td>
+                                <td th:text="${voucher.tenVoucher}"></td>
+                                <!--                                <td th:text="${voucher.giaTriDonToiThieu}"></td>-->
+                                <td th:text="${voucher.giaTriDonToiThieu+' VND'}"></td>
+                                <td th:text="${voucher.phanTramGiam + '%'}"></td>
+                                <!--                                <td th:text="${voucher.giamToiDa}"></td>-->
+                                <td th:text="${voucher.giamToiDa+' VND'}"></td>
+                                <td th:text="${voucher.soLuong}"></td>
+                                <td class="trangthaidkd" th:if="${voucher.trangThai==0}">Đang diễn ra</td>
+                                <td class="trangthainkd" th:if="${voucher.trangThai==1}">Đã kết thúc</td>
+                                <td class="trangthaisdr" th:if="${voucher.trangThai==2}">Sắp diễn ra</td>
+                                <td th:text="${#temporals.format(voucher.ngayBatDau, 'HH:mm dd/MM/yyyy')}"></td>
+                                <td th:text="${#temporals.format(voucher.ngayKetThuc, 'HH:mm dd/MM/yyyy')}"></td>
+                                <td>
+                                    <!-- button và model -->
+                                    <a th:href="@{/admin/voucher/view-update/{id}(id=${voucher.id})}"
+                                       class="btn btn-warning">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- model-xem-sửa-voucher -->
+                        <div class="modal fade" id="sua-voucher" tabindex="-1" aria-labelledby="sua-voucherLabel"
+                             aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h1 class="modal-title fs-5" id="sua-voucherLabel">Cập Nhật Voucher</h1>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <!-- form thêm voucher -->
+                                        <form class="row g-3" style="margin-top: 1%;margin-bottom: 5%;"
+                                              th:action="@{/admin/voucher/add}" method="post"
+                                              enctype="multipart/form-data"
+                                              th:object="${voucher}">
+                                            <div class="col-md-6">
+                                                <label class="form-label">
+                                                    <span class="dau-sao">*</span>Tên voucher:</label>
+                                                <input type="text" class="form-control" placeholder="Nhập tên voucher"
+                                                       th:field="*{tenVoucher}">
+                                                <span class="check-loi" th:errors="*{tenVoucher}"></span>
+                                                <span class="check-loi" th:text="${checkTenTrung}"></span>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">
+                                                    <span class="dau-sao">*</span>Số lượng:</label>
+                                                <input type="text" class="form-control" placeholder="Nhập số lượng"
+                                                       min="0" th:field="*{soLuong}">
+                                                <span class="check-loi" th:errors="*{soLuong}"></span>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">
+                                                    <span class="dau-sao">*</span>Phần trăm
+                                                    giảm:</label>
+                                                <input type="text" class="form-control"
+                                                       placeholder="Nhập phần trăm giảm" min="1"
+                                                       th:field="*{phanTramGiam}">
+                                                <span class="check-loi" th:errors="*{phanTramGiam}"></span>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">
+                                                    <span class="dau-sao">*</span>Giá đơn tối
+                                                    thiểu:</label>
+                                                <input type="text" class="form-control"
+                                                       placeholder="Nhập giá đơn tối thiểu" min="1"
+                                                       th:field="*{giaTriDonToiThieu}">
+                                                <span class="check-loi" th:errors="*{giaTriDonToiThieu}"></span>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">
+                                                    <span class="dau-sao">*</span>Ngày bắt đầu:</label>
+                                                <input type="date" class="form-control" th:field="*{ngayBatDau}">
+                                                <span class="check-loi" th:errors="*{ngayBatDau}"></span>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">
+                                                    <span class="dau-sao">*</span>Ngày kết
+                                                    thúc:</label>
+                                                <input type="date" class="form-control" th:field="*{ngayKetThuc}">
+                                                <span class="check-loi" th:errors="*{ngayKetThuc}"></span>
+                                                <span class="check-loi" th:if="${checkNgayKetThuc=='ngayKetThuc'}">Ngày kết thúc phải sau ngày tạo</span>
+
+                                            </div>
+                                            <div class="search-trang-thai" style="margin-top: 4%;">
+                                                <label style="margin-left:17%;">Trạng thái:</label>
+                                                <input class="form-check-input" type="radio" name="gridRadios"
+                                                       value="2"
+                                                       style="margin-left:10%;" checked th:field="*{trangThai}">
+                                                <label class="form-check-label">
+                                                    Sắp diễn ra
+                                                </label>
+
+                                                <input class="form-check-input" type="radio" name="gridRadios"
+                                                       value="0"
+                                                       style="margin-left:5%;" th:field="*{trangThai}" checked>
+                                                <label class="form-check-label">
+                                                    Đang diễn ra
+                                                </label>
+
+                                                <input class="form-check-input" type="radio" name="gridRadios"
+                                                       value="1"
+                                                       style="margin-left:5%;" checked th:field="*{trangThai}">
+                                                <label class="form-check-label">
+                                                    Đã kết thúc
+                                                </label>
+                                            </div>
+                                        </form>
+                                        <!-- form thêm voucher end-->
+
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng
+                                        </button>
+                                        <button type="button" class="btn btn-warning">Cập nhật</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Modal end-->
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+<!--Thông báo thành công-->
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    <script th:if="${checkThongBao=='thanhCong'}">
+        // <script>
+        //     function showToast() {
+        //         var liveToast = new bootstrap.Toast(document.getElementById('liveToastSuccess'));
+        //         liveToast.show();
+        //
+        //         var liveToast = new bootstrap.Toast(document.getElementById('liveToastDanger'));
+        //         liveToast.show();
+        //
+        //         var liveToast = new bootstrap.Toast(document.getElementById('liveToastWarning'));
+        //         liveToast.show();
+        //     }
+        //     // Show the toast when the page loads
+        //     document.addEventListener('DOMContentLoaded', showToast);
+        //
+        window.addEventListener('DOMContentLoaded', (event) => {
+            // Hiển thị modal
+            var liveToast = new bootstrap.Toast(document.getElementById('liveToastSuccess'));
+            liveToast.show();
+        });
+    </script>
+    <div id="liveToastSuccess" class="toast" role="alert" aria-live="assertive" aria-atomic="true"
+         style="  background-color: rgba(62, 189, 97,0.2);border:2px solid #3ebd61;  border-radius:1rem;">
+        <div class="toast-body">
+            <div class="row g-3">
+                <div class="col-md-2">
+                    <img src="../../../static/img/successful_notification.png" alt="" style="margin: auto">
+                </div>
+                <div class="col-md-8" style=" margin-top:6.3%">
+                    <span style="
+                    text-align: center;
+                    font-size: 1rem; /* Kích thước phông chữ */
+                    font-weight: bold; /* Độ đậm của chữ */
+                    color: #3ebd61;">
+                        Thành công</span>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
+                            style="font-size: 1.5rem;margin: auto"></button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--Thông báo thành công end-->
+
+
+<!--Thông báo thất bại-->
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    <script th:if="${checkThongBao=='thaiBai'}">
+        // <script>
+        //     function showToast() {
+        //         var liveToast = new bootstrap.Toast(document.getElementById('liveToastWarning'));
+        //         liveToast.show();
+        //     }
+        //     // Show the toast when the page loads
+        //     document.addEventListener('DOMContentLoaded', showToast);
+        //
+        window.addEventListener('DOMContentLoaded', (event) => {
+            // Hiển thị modal
+            var liveToast = new bootstrap.Toast(document.getElementById('liveToastDanger'));
+            liveToast.show();
+        });
+    </script>
+    <div id="liveToastDanger" class="toast" role="alert" aria-live="assertive" aria-atomic="true"
+         style="background-color: rgb(252,134,134);border:2px solid #ff2020;border-radius:1rem;">
+        <div class="toast-body">
+            <div class="row g-3">
+                <div class="col-md-2">
+                    <img src="../../../static/img/successful_danger.png" alt="" style="margin: auto">
+                </div>
+                <div class="col-md-8" style=" margin-top:6.3%">
+                    <span style="
+                    text-align: center;
+                    font-size: 1rem; /* Kích thước phông chữ */
+                    font-weight: bold; /* Độ đậm của chữ */
+                    color: white;">
+                        Lỗi</span>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
+                            style="font-size: 1.5rem;margin: auto"></button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--Thông báo thất bại end-->
+
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+    <div class="copyright">
+        <!-- &copy; Copyright <strong><span>Glacat</span></strong>. All Rights Reserved -->
+    </div>
+    <div class="credits">
+        <!-- All the links in the footer should remain intact. -->
+        <!-- You can delete the links only if you purchased the pro version. -->
+        <!-- Licensing information: https://bootstrapmade.com/license/ -->
+        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+        Website bán giày Glacat
+    </div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
+
+<!-- Vendor JS Files -->
+<script src="../../../static/vendor/apexcharts/apexcharts.min.js"></script>
+<script src="../../../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../../../static/vendor/chart.js/chart.umd.js"></script>
+<script src="../../../static/vendor/echarts/echarts.min.js"></script>
+<script src="../../../static/vendor/quill/quill.min.js"></script>
+<script src="../../../static/vendor/simple-datatables/simple-datatables.js"></script>
+<script src="../../../static/vendor/tinymce/tinymce.min.js"></script>
+<script src="../../../static/vendor/php-email-form/validate.js"></script>
+
+<!-- Template Main JS File -->
+<script src="../../../static/js/main-off.js"></script>
+
+<!--    thư viện của bảng tích hợp tìm kiếm-->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/jquery.dataTables.js'></script>
+<script>
+    $(document).ready(function () {
+        var table = $('#example').DataTable({
+            "language": {
+                "info": "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ kết quả",
+                "emptyTable": "Không có kết quả nào được tìm thấy",
+                "zeroRecords": "Không có kết quả phù hợp",
+                "infoEmpty": "Không có dữ liệu để hiển thị"
+            },
+            "initComplete": function (settings, json) {
+                // CSS changes
+                $('#example_filter input[type="search"]').addClass('form-control');
+                $('#example_filter input[type="search"]').attr('placeholder', 'Tìm kiếm');
+                $('#example_filter label').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).replaceWith(' ');
+
+                $('#example_length label').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).first().replaceWith('Hiển thị');
+                $('#example_length label').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).last().replaceWith('mục');
+
+                $('#example_length select').addClass('form-select');
+            }
+        });
+
+        table.on('draw.dt', function () {
+            var pageInfo = table.page.info();
+
+            var newInfo = 'Hiển thị ' + pageInfo.start + ' đến ' + pageInfo.end + ' trong tổng số ' + pageInfo.recordsDisplay + ' kết quả';
+            $('#example_info').html(newInfo);
+
+        });
+    });
+
+    function validateDateStart() {
+        var inputField = document.getElementById('ngayBatDau');
+        var errorMessage = document.getElementById('error-message-start');
+
+        // Biểu thức chính quy để kiểm tra định dạng yyyy-MM-ddTHH:mm
+        var dateTimeRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
+
+        // Kiểm tra nếu giá trị nhập vào không khớp với biểu thức chính quy
+        if (!dateTimeRegex.test(inputField.value)) {
+            errorMessage.innerHTML = 'Định dạng ngày và giờ không hợp lệ. Vui lòng nhập theo định dạng dd/mm/yyyy --:-- hoặc nhập đúng ngày.';
+            inputField.setCustomValidity('Định dạng ngày và giờ không hợp lệ.');
+        } else {
+            var inputDate = new Date(inputField.value);
+            var currentDate = new Date();
+
+            // Kiểm tra nếu thời gian nằm trong quá khứ
+            if (inputDate < currentDate) {
+                errorMessage.innerHTML = 'Thời gian không được trong quá khứ';
+                inputField.setCustomValidity('Thời gian không được trong quá khứ');
+            } else {
+                errorMessage.innerHTML = '';
+                inputField.setCustomValidity('');
+            }
+        }
+    }
+
+    function validateDateEnd() {
+        var inputField = document.getElementById('ngayKetThuc');
+        var errorMessage = document.getElementById('error-message-end');
+
+        // Biểu thức chính quy để kiểm tra định dạng yyyy-MM-ddTHH:mm
+        var dateTimeRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
+
+        // Kiểm tra nếu giá trị nhập vào không khớp với biểu thức chính quy
+        if (!dateTimeRegex.test(inputField.value)) {
+            errorMessage.innerHTML = 'Định dạng ngày và giờ không hợp lệ. Vui lòng nhập theo định dạng dd/mm/yyyy --:-- hoặc nhập đúng ngày.';
+            inputField.setCustomValidity('Định dạng ngày và giờ không hợp lệ.');
+        } else {
+            var inputDate = new Date(inputField.value);
+            var currentDate = new Date();
+
+            // Kiểm tra nếu thời gian nằm trong quá khứ
+            if (inputDate < currentDate) {
+                errorMessage.innerHTML = 'Thời gian không được trong quá khứ';
+                inputField.setCustomValidity('Thời gian không được trong quá khứ');
+            } else {
+                errorMessage.innerHTML = '';
+                inputField.setCustomValidity('');
+            }
+        }
+    }
+    function validateDateStartUpdate() {
+        var inputField = document.getElementById('ngayBatDau');
+        var errorMessage = document.getElementById('error-message-start-update');
+
+        // Biểu thức chính quy để kiểm tra định dạng yyyy-MM-ddTHH:mm
+        var dateTimeRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
+
+        // Kiểm tra nếu giá trị nhập vào không khớp với biểu thức chính quy
+        if (!dateTimeRegex.test(inputField.value)) {
+            errorMessage.innerHTML = 'Định dạng ngày và giờ không hợp lệ. Vui lòng nhập theo định dạng dd/mm/yyyy --:--';
+            inputField.setCustomValidity('Định dạng ngày và giờ không hợp lệ.');
+        }
+    }
+</script>
+<style>
+    /*input tìm kiếm*/
+    #example_filter input[type="search"] {
+        width: 180%;
+        margin-left: -80%;
+        margin-bottom: 10%;
+    }
+
+    /*select hiển thị mục*/
+    .dataTables_length label {
+        white-space: nowrap; /* Ngăn các phần tử xuống dòng */
+        display: flex; /* Hiển thị label và select trên cùng một dòng */
+        align-items: center; /* Canh chỉnh label và select theo chiều dọc */
+    }
+
+    .dataTables_length select {
+        margin-left: 5px; /* Tạo khoảng cách giữa label và select */
+    }
+
+    .dataTables_length label:after {
+        /* Sử dụng pseudo-element :after để ẩn văn bản cuối cùng */
+        content: ''; /* Xóa nội dung */
+    }
+</style>
+<!--    thư viện của bảng tích hợp tìm kiếm end-->
+
+</body>
+
+</html>
