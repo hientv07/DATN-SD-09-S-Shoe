@@ -74,15 +74,18 @@ public class SanPhamServiceImpl implements SanPhamService {
 
     @Override
     public boolean checkTenTrung(String ten) {
+
         for (SanPham sp : sanPhamRepository.findAll()) {
-            if (sp.getTen().equalsIgnoreCase(ten)) ;
-            return false;
+            if (sp.getTen().equalsIgnoreCase(ten)) {
+                return false;
+            }
         }
         return true;
     }
 
     @Override
     public boolean checkTenTrungSua(String ma, String ten) {
+
         for (SanPham sp : sanPhamRepository.findAll()) {
             if (sp.getTen().equalsIgnoreCase(ten)) {
                 if (!sp.getMa().equalsIgnoreCase(ma)) {

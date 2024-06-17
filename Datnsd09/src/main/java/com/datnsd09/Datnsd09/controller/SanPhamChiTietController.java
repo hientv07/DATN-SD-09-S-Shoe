@@ -119,10 +119,10 @@ public class SanPhamChiTietController {
 
 
     @PostMapping("/add-san-pham")
-    public String addSP(@Valid @ModelAttribute("sanPham") SanPham sanPham,
-                        BindingResult result, Model model,
-                        @RequestParam("fileImage") List<MultipartFile> multipartFiles,
-                        RedirectAttributes redirectAttributes) {
+    public String addSanPham(@Valid @ModelAttribute("sanPham") SanPham sanPham,
+                             BindingResult result, Model model,
+                             @RequestParam("fileImage") List<MultipartFile> multipartFiles,
+                             RedirectAttributes redirectAttributes) {
         UserInfoUserDetails name = principalCustom.getCurrentUserNameAdmin();
         if (name != null) {
             model.addAttribute("tenNhanVien", principalCustom.getCurrentUserNameAdmin().getHoVaTen());
@@ -137,15 +137,17 @@ public class SanPhamChiTietController {
             model.addAttribute("listCTSP", sanPhamChiTietService.getAllCTSPOneSanPham());
             getString(model);
             return "/admin/san-pham-chi-tiet/san-pham-chi-tiet";
-        } else if (!sanPhamService.checkTenTrung(sanPham.getTen())) {
+        }
+        else if (!sanPhamService.checkTenTrung(sanPham.getTen())) {
             model.addAttribute("checkTab", "true");
             model.addAttribute("checkModal", "true");
-            model.addAttribute("checkThongBao", "thatBai");
+            model.addAttribute("checkThongBao", "thaiBai");
             model.addAttribute("checkTenTrung", "Tên sản phẩm đã tồn tại");
             model.addAttribute("listCTSP", sanPhamChiTietService.getAllCTSPOneSanPham());
             getString(model);
             return "/admin/san-pham-chi-tiet/san-pham-chi-tiet";
-        } else {
+        }
+        else {
             redirectAttributes.addFlashAttribute("checkThongBao", "thanhCong");
             redirectAttributes.addFlashAttribute("checkTab", "true");
             sanPham.setMa("SP" + sanPhamService.genMaTuDong());
