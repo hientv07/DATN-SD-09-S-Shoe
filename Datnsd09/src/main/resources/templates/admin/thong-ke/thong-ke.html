@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>S-Shoe</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+    <link href="../../../static/img/favicon.png" rel="icon">
+    <!--    thư viện của bảng tích hợp tìm kiếm-->
+    <link rel='stylesheet' href='https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css'>
+    <!--    thư viện của bảng tích hợp tìm kiếm end-->
+    <!-- Favicons -->
+    <div th:replace="~{admin/fragment/header :: header}"></div>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" th:inline="javascript">
+        // Load the Visualization API and the piechart package.
+        google.load('visualization', '1.0', {'packages': ['corechart']});
+        google.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            // Create the data table.
+            var data = new google.visualization.DataTable();
+            var hoaDon0 = [[${countHoaDon0}]];
+            var hoaDon1 = [[${countHoaDon1}]];
+            var hoaDon2 = [[${countHoaDon2}]];
+            var hoaDon3 = [[${countHoaDon3}]];
+            var hoaDon5 = [[${countHoaDon5}]];
+            var hoaDon6 = [[${countHoaDon6}]];
+            // Create columns for the DataTable
+            data.addColumn('string');
+            data.addColumn('number', 'Devices');
+            // Create Rows with data
+            data.addRows([
+                ['Chờ xác nhận', hoaDon0],
+                ['Chờ giao', hoaDon1],
+                ['Đang giao', hoaDon2],
+                ['Hoàn thành', hoaDon3],
+                ['Đã huỷ', hoaDon5],
+                ['Hoàn trả', hoaDon6],
+            ]);
+            //Create option for chart
+            var options = {
+                title: 'Trạng thái đơn hàng',
+                'width': 800,
+                'height': 600
+            };
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+        }
+        google.setOnLoadCallback(drawChartBetween);
+        function drawChartBetween() {
+            // Create the data table.
+            var data = new google.visualization.DataTable();
+            var hoaDon0 = [[${countHoaDonChoXacNhanBetween}]];
+            var hoaDon1 = [[${countHoaDonChoGiaoBetween}]];
+            var hoaDon2 = [[${countHoaDonDangGiaoBetween}]];
+            var hoaDon3 = [[${countHoaDonHoanThanhBetween}]];
+            var hoaDon5 = [[${countHoaDonDaHuyBetween}]];
+            var hoaDon6 = [[${countHoaDonTraBetween}]];
+            // Create columns for the DataTable
+            data.addColumn('string');
+            data.addColumn('number', 'Devices');
+            // Create Rows with data
+            data.addRows([
+                ['Chờ xác nhận', hoaDon0],
+                ['Chờ giao', hoaDon1],
+                ['Đang giao', hoaDon2],
+                ['Hoàn thành', hoaDon3],
+                ['Đã huỷ', hoaDon5],
+                ['Hoàn trả', hoaDon6],
+            ]);
+            //Create option for chart
+            var options = {
+                title: 'Trạng thái đơn hàng',
+                'width': 800,
+                'height': 600
+            };
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.PieChart(document.getElementById('chart_div_between'));
+            chart.draw(data, options);
+        }
+
+        google.setOnLoadCallback(drawChartNgay);
+        function drawChartNgay() {
+            // Create the data table.
+            var data = new google.visualization.DataTable();
+            var hoaDon0 = [[${countHoaDonChoXacNhanNgay}]];
+            var hoaDon1 = [[${countHoaDonChoGiaoNgay}]];
+            var hoaDon2 = [[${countHoaDonDangGiaoNgay}]];
+            var hoaDon3 = [[${countHoaDonHoanThanhNgay}]];
+            var hoaDon5 = [[${countHoaDonDaHuyNgay}]];
+            var hoaDon6 = [[${countHoaDonTraNgay}]];
+            // Create columns for the DataTable
+            data.addColumn('string');
+            data.addColumn('number', 'Devices');
+            // Create Rows with data
+            data.addRows([
+                ['Chờ xác nhận', hoaDon0],
+                ['Chờ giao', hoaDon1],
+                ['Đang giao', hoaDon2],
+                ['Hoàn thành', hoaDon3],
+                ['Đã huỷ', hoaDon5],
+                ['Hoàn trả', hoaDon6],
+            ]);
+            //Create option for chart
+            var options = {
+                title: 'Trạng thái đơn hàng hôm nay',
+                'width': 800,
+                'height': 600
+            };
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.PieChart(document.getElementById('chart_div_ngay'));
+            chart.draw(data, options);
+        }
+        google.setOnLoadCallback(drawChartThang);
+        function drawChartThang() {
+            // Create the data table.
+            var data = new google.visualization.DataTable();
+            var hoaDon0 = [[${countHoaDonChoXacNhanThang}]];
+            var hoaDon1 = [[${countHoaDonChoGiaoThang}]];
+            var hoaDon2 = [[${countHoaDonDangGiaoThang}]];
+            var hoaDon3 = [[${countHoaDonHoanThanhThang}]];
+            var hoaDon5 = [[${countHoaDonDaHuyThang}]];
+            var hoaDon6 = [[${countHoaDonTraThang}]];
+            // Create columns for the DataTable
+            data.addColumn('string');
+            data.addColumn('number', 'Devices');
+            // Create Rows with data
+            data.addRows([
+                ['Chờ xác nhận', hoaDon0],
+                ['Chờ giao', hoaDon1],
+                ['Đang giao', hoaDon2],
+                ['Hoàn thành', hoaDon3],
+                ['Đã huỷ', hoaDon5],
+                ['Hoàn trả', hoaDon6],
+            ]);
+            //Create option for chart
+            var options = {
+                title: 'Trạng thái đơn hàng tháng này',
+                'width': 800,
+                'height': 600
+            };
+            // Instantiate and draw our chart, passing in some options.
+            var chart = new google.visualization.PieChart(document.getElementById('chart_div_thang'));
+            chart.draw(data, options);
+        }
+
+        google.charts.load('current', {'packages': ['bar']});
+        google.charts.setOnLoadCallback(drawChart2);
+
+        function drawChart2() {
+            /*<![CDATA[*/
+            var thongKeData = /*[[${thongKeSP}]]*/ null;
+            var formattedThongKeData;
+            if (thongKeData) {
+                // Chuyển đổi dữ liệu từ Thymeleaf thành mảng JSON
+                formattedThongKeData = thongKeData.map(function (item) {
+                    return [(item[0]), item[1],item[2]];
+                });
+                formattedThongKeData.unshift(['Ngày', 'Số lượng sản phẩm','Số hóa đơn']);
+                // Sử dụng mảng JSON trong JavaScript
+                console.log(formattedThongKeData);
+            } else {
+                // Nếu không có dữ liệu, sử dụng mảng mẫu hoặc mảng rỗng
+                formattedThongKeData = [['Ngày', 'Số lượng sản phẩm','Số hóa đơn']];
+            }
+            /*]]>*/
+            var data = google.visualization.arrayToDataTable(formattedThongKeData);
+            var options = {
+                chart: {
+                    // title: 'Tình hình kinh doanh',
+                    // subtitle: 'Sales, Expenses, and Profit: 2014-2017',
+                }
+            };
+            var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+            chart.draw(data, google.charts.Bar.convertOptions(options));
+        }
+        google.charts.load('current', {'packages':['corechart', 'bar']});
+        google.charts.setOnLoadCallback(drawStuff);
+
+        function drawStuff() {
+
+            var button = document.getElementById('change-chart');
+            var chartDiv = document.getElementById('chart_div2');
+            /*<![CDATA[*/
+            var thongKeData = /*[[${thongKeSP}]]*/ null;
+            var formattedThongKeData;
+            if (thongKeData) {
+                // Chuyển đổi dữ liệu từ Thymeleaf thành mảng JSON
+                formattedThongKeData = thongKeData.map(function (item) {
+                    return [(item[0]), item[1],item[2],item[3]];
+                });
+                formattedThongKeData.unshift(['Ngày', 'Doanh thu','Số hóa đơn','Số lượng sản phẩm']);
+                // Sử dụng mảng JSON trong JavaScript
+                console.log(formattedThongKeData);
+            } else {
+                // Nếu không có dữ liệu, sử dụng mảng mẫu hoặc mảng rỗng
+                formattedThongKeData = [['Ngày', 'Doanh thu','Số hóa đơn','Số lượng sản phẩm']];
+            }
+            /*]]>*/
+            var data = google.visualization.arrayToDataTable(formattedThongKeData);
+            // var data = google.visualization.arrayToDataTable([
+            //     ['Galaxy', 'Distance', 'Brightness','hello'],
+            //     ['Canis Major Dwarf', 8000, 23.3,7777777],
+            //     ['Sagittarius Dwarf', 24000, 4.5,775565],
+            //     ['Ursa Major II Dwarf', 30000, 14.3,45454],
+            //     ['Lg. Magellanic Cloud', 50000, 0.9,464],
+            //     ['Bootes I', 60000, 13.1,45645]
+            // ]);
+
+            var materialOptions = {
+                width: 1100,
+                // chart: {
+                //     title: 'Nearby galaxies',
+                //     subtitle: 'distance on the left, brightness on the right'
+                // },
+                series: {
+                    0: { axis: 'distance' }, // Bind series 0 to an axis named 'distance'.
+                    1: { axis: 'brightness' } // Bind series 1 to an axis named 'brightness'.
+                },
+                axes: {
+                    y: {
+                        distance: {label: 'VNĐ'}, // Left y-axis.
+                        // brightness: {side: 'right', label: 'apparent magnitude'} // Right y-axis.
+                    }
+                }
+            };
+
+            var classicOptions = {
+                width: 900,
+                series: {
+                    0: {targetAxisIndex: 0},
+                    1: {targetAxisIndex: 1},
+                    2: {targetAxisIndex: 2}
+                },
+                title: 'Nearby galaxies - distance on the left, brightness on the right',
+                vAxes: {
+                    // Adds titles to each axis.
+                    0: {title: 'parsecs'},
+                    1: {title: 'apparent magnitude'}
+                }
+            };
+
+            function drawMaterialChart() {
+                var materialChart = new google.charts.Bar(chartDiv);
+                materialChart.draw(data, google.charts.Bar.convertOptions(materialOptions));
+                button.innerText = 'Change to Classic';
+                button.onclick = drawClassicChart;
+            }
+
+            function drawClassicChart() {
+                var classicChart = new google.visualization.ColumnChart(chartDiv);
+                classicChart.draw(data, classicOptions);
+                button.innerText = 'Change to Material';
+                button.onclick = drawMaterialChart;
+            }
+
+            drawMaterialChart();
+        };
+    </script>
+    <style>
+        /* Áp dụng kiểu cho div chứa thông tin thống kê */
+        .rowThongKe {
+            display: flex;
+            justify-content: space-around; /* Các cột sẽ được căn giữa và cách nhau ở giữa màn hình */
+            margin: 20px 0; /* Khoảng cách ngoài cùng */
+        }
+
+        /* Áp dụng kiểu cho mỗi cột thông tin thống kê */
+        .columnThongKe {
+            flex: 1; /* Cột sẽ chiếm phần bằng nhau của không gian chứa */
+            text-align: center; /* Căn giữa nội dung trong cột */
+            padding: 10px; /* Khoảng cách nội dung từ biên trong cột */
+            border: 1px solid #ddd; /* Đường viền cho cột */
+            border-radius: 8px; /* Góc cong cho cột */
+            background-color: #f8f8f8; /* Màu nền của cột */
+            margin-right: 10px; /* Khoảng cách giữa các cột */
+        }
+
+        /* Áp dụng kiểu cho tiêu đề trong mỗi cột */
+        .columnThongKe h3 {
+            color: #333; /* Màu chữ cho tiêu đề */
+        }
+
+        /* Áp dụng kiểu cho số liệu trong mỗi cột */
+        .columnThongKe span {
+            font-size: 18px; /* Kích thước chữ số liệu */
+            font-weight: bold; /* Chữ số liệu đậm */
+            color: #007bff; /* Màu chữ số liệu */
+        }
+
+        /* Loại bỏ khoảng cách cuối cùng của cột cuối cùng */
+        .columnThongKe:last-child {
+            margin-right: 0;
+        }
+
+        .clickbutton {
+            background-color: #0D6BF8; /* Màu nền khi nút được chọn */
+            color: white;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<!-- ======= Header ======= -->
+<header id="header" class="header fixed-top d-flex align-items-center">
+
+    <div class="d-flex align-items-center justify-content-between">
+        <a href="/ban-hang-tai-quay/hoa-don" class="logo d-flex align-items-center">
+            <img src="../../../static/img/logo.png" alt="">
+            <span class="d-none d-lg-block">S-Shoe</span>
+        </a>
+        <i class="bi bi-list toggle-sidebar-btn"></i>
+    </div><!-- End Logo -->
+    <nav class="header-nav ms-auto">
+        <ul class="d-flex align-items-center">
+            <li class="nav-item dropdown pe-3">
+
+                <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
+                    <span class="d-none d-md-block dropdown-toggle ps-2" th:text="${tenNhanVien}"></span>
+                </a><!-- End Profile Iamge Icon -->
+
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
+                    <li class="dropdown-header">
+                        <h6 th:text="${tenNhanVien}"></h6>
+                        <span>Nhân Viên</span>
+                    </li>
+
+                    <!--                    <li>-->
+                    <!--                        <hr class="dropdown-divider">-->
+                    <!--                    </li>-->
+
+                    <!--                    <li>-->
+                    <!--                        <a class="dropdown-item d-flex align-items-center" href="users-profile.html">-->
+                    <!--                            <i class="bi bi-person"></i>-->
+                    <!--                            <span>Thông tin của tôi</span>-->
+                    <!--                        </a>-->
+                    <!--                    </li>-->
+
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" th:href="@{/logout}">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>Đăng Xuất</span>
+                        </a>
+                    </li>
+
+                </ul><!-- End Profile Dropdown Items -->
+            </li><!-- End Profile Nav -->
+
+        </ul>
+    </nav><!-- End Icons Navigation -->
+
+</header><!-- End Header -->
+<!-- ======= Sidebar ======= -->
+<aside id="sidebar" class="sidebar">
+    <ul class="sidebar-nav" id="sidebar-nav">
+        <li class="nav-item">
+            <a class="nav-link " href="/admin/thong-ke">
+                <i class="bi bi-graph-up-arrow"></i>
+                <span>Thống Kê</span>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/ban-hang-tai-quay/hoa-don">
+                <i class="bi bi-shop"></i>
+                <span>Bán Hàng</span>
+            </a>
+        </li><!-- End Bán Hàng Tại Quầy Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-menu-button-wide"></i><span>Quản Lý Sản Phẩm</span><i
+                    class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="components-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="/admin/san-pham-chi-tiet">
+                        <i class="bi bi-circle"></i><span>Sản Phẩm Chi Tiết</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/san-pham">
+                        <i class="bi bi-circle"></i><span>Sản Phẩm</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/thuong-hieu">
+                        <i class="bi bi-circle"></i><span>Thương Hiệu</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/loai-de">
+                        <i class="bi bi-circle"></i><span>Loại Đế</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/mau-sac">
+                        <i class="bi bi-circle"></i><span>Màu Sắc</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/kich-co">
+                        <i class="bi bi-circle"></i><span>Kích Cỡ</span>
+                    </a>
+                </li>
+            </ul>
+        </li><!-- End Components Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/ban-hang-tai-quay/hoa-don/quan-ly">
+                <i class="bi bi-receipt-cutoff"></i>
+                <span>Quản Lý Hóa Đơn</span>
+            </a>
+
+        </li><!-- End Forms Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/ban-hang-tai-quay/doi-tra">
+                <i class="bi bi-truck"></i>
+                <span>Trả hàng</span>
+            </a>
+        </li><!-- End Forms Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
+                <i class="bi bi-person-vcard"></i><span>Quản Lý Tài Khoản</span><i
+                    class="bi bi-chevron-down ms-auto"></i>
+            </a>
+            <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
+                <li>
+                    <a href="/admin/nhan-vien">
+                        <i class="bi bi-circle"></i><span>Quản lý nhân viên</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/admin/khach-hang">
+                        <i class="bi bi-circle"></i><span>Quản lý khách hàng</span>
+                    </a>
+                </li>
+            </ul>
+        </li><!-- End Tables Nav -->
+
+        <li class="nav-item">
+            <a class="nav-link collapsed" href="/admin/voucher">
+                <i class="bi bi-ticket-perforated-fill"></i>
+                <span>Quản Lý Voucher</span>
+            </a>
+        </li>
+        <!-- End Charts Nav -->
+    </ul>
+
+
+</aside><!-- End Sidebar-->
+
+<main id="main" class="main">
+
+    <div class="pagetitle">
+        <h1>Thống Kê</h1>
+    </div><!-- End Page Title -->
+    binh haha
+    <section class="section">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="tab-pane fade show active" id="list" role="tabpanel"
+                             aria-labelledby="list-tab">
+                            <br>
+                            <hr>
+
+                            <h1 style="margin-top: 5%">Danh sách sản phẩm có số lượng sắp hết hàng</h1>
+                            <form th:action="@{/admin/thong-ke/sapHetHang}" th:method="post" class="row g-3"
+                                  id="myForm">
+                                <div class="col-md-2">
+                                    <label class="form-label"> Nhỏ hơn</label>
+
+                                    <input type="number" class="form-control" th:value="${soLuong != null ? soLuong : 50}"
+                                           name="soLuong" min="1" max="1000000000"
+                                           required>
+                                </div>
+                                <!-- Add a radio button for the user to choose the output format -->
+                                <div class="col-md-2">
+                                    <label style="margin-top: 22%">
+                                        <input type="radio" name="outputFormat" value="table" checked> Hiển thị bảng
+                                    </label>
+                                </div>
+                                <div class="col-md-2">
+                                    <label style="margin-top: 22%">
+                                        <input type="radio" name="outputFormat" value="excel"> Xuất Excel
+                                    </label>
+                                </div>
+                                <div class="col-md-2">
+                                    <button style="margin-top: 17%" type="submit" id="submitButton"
+                                            class="btn btn-primary">Tìm
+                                    </button>
+                                </div>
+                            </form>
+                            <br>
+                            <table border="1" id="below">
+                                <thead>
+                                <tr>
+                                    <th>STT</th>
+                                    <th>Sản phẩm</th>
+                                    <th>Kích cỡ</th>
+                                    <th>Màu sắc</th>
+                                    <th>Loại đế</th>
+                                    <th>Số Lượng</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="row,iterStat : ${danhSachSapHetHang}">
+                                    <td th:text="${iterStat.index+1}"></td>
+                                    <td th:text="${row[0]}"></td>
+                                    <td th:text="${row[1]}"></td>
+                                    <td th:text="${row[2]}"></td>
+                                    <td th:text="${row[3]}"></td>
+                                    <td th:text="${row[4]}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->
+
+<!--Thông báo thành công-->
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    <script th:if="${checkThongBao=='thanhCong'}">
+        // <script>
+        //     function showToast() {
+        //         var liveToast = new bootstrap.Toast(document.getElementById('liveToastSuccess'));
+        //         liveToast.show();
+        //
+        //         var liveToast = new bootstrap.Toast(document.getElementById('liveToastDanger'));
+        //         liveToast.show();
+        //
+        //         var liveToast = new bootstrap.Toast(document.getElementById('liveToastWarning'));
+        //         liveToast.show();
+        //     }
+        //     // Show the toast when the page loads
+        //     document.addEventListener('DOMContentLoaded', showToast);
+        //
+        window.addEventListener('DOMContentLoaded', (event) => {
+            // Hiển thị modal
+            var liveToast = new bootstrap.Toast(document.getElementById('liveToastSuccess'));
+            liveToast.show();
+        });
+    </script>
+    <div id="liveToastSuccess" class="toast" role="alert" aria-live="assertive" aria-atomic="true"
+         style="  background-color: rgba(62, 189, 97,0.2);border:2px solid #3ebd61;  border-radius:1rem;">
+        <div class="toast-body">
+            <div class="row g-3">
+                <div class="col-md-2">
+                    <img src="../../../static/img/successful_notification.png" alt="" style="margin: auto">
+                </div>
+                <div class="col-md-8" style=" margin-top:6.3%">
+                    <span style="
+                    text-align: center;
+                    font-size: 1rem; /* Kích thước phông chữ */
+                    font-weight: bold; /* Độ đậm của chữ */
+                    color: #3ebd61;">
+                        Thành công</span>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
+                            style="font-size: 1.5rem;margin: auto"></button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--Thông báo thành công end-->
+
+<!--Thông báo thất bại-->
+<div class="toast-container position-fixed top-0 end-0 p-3">
+    <script th:if="${checkThongBao=='thaiBai'}">
+        // <script>
+        //     function showToast() {
+        //         var liveToast = new bootstrap.Toast(document.getElementById('liveToastWarning'));
+        //         liveToast.show();
+        //     }
+        //     // Show the toast when the page loads
+        //     document.addEventListener('DOMContentLoaded', showToast);
+        //
+        window.addEventListener('DOMContentLoaded', (event) => {
+            // Hiển thị modal
+            var liveToast = new bootstrap.Toast(document.getElementById('liveToastDanger'));
+            liveToast.show();
+        });
+    </script>
+    <div id="liveToastDanger" class="toast" role="alert" aria-live="assertive" aria-atomic="true"
+         style="background-color: rgb(252,134,134);border:2px solid #ff2020;border-radius:1rem;">
+        <div class="toast-body">
+            <div class="row g-3">
+                <div class="col-md-2">
+                    <img src="../../../static/img/successful_danger.png" alt="" style="margin: auto">
+                </div>
+                <div class="col-md-8" style=" margin-top:6.3%">
+                    <span style="
+                    text-align: center;
+                    font-size: 1rem; /* Kích thước phông chữ */
+                    font-weight: bold; /* Độ đậm của chữ */
+                    color: white;">
+                        Lỗi</span>
+                </div>
+                <div class="col-md-2">
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"
+                            style="font-size: 1.5rem;margin: auto"></button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--Thông báo thất bại end-->
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer">
+    <div class="copyright">
+
+    </div>
+    <div class="credits">
+        <!-- All the links in the footer should remain intact. -->
+        <!-- You can delete the links only if you purchased the pro version. -->
+        <!-- Licensing information: https://bootstrapmade.com/license/ -->
+        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+        Website bán giày S-Shoe
+    </div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
+
+
+<div th:replace="~{admin/fragment/script :: script}"></div>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/jquery.dataTables.js'></script>
+<script th:inline="javascript">
+    //binh
+    // function showHoaDonNgay() {
+    //     document.getElementById('btnBetween').classList.remove('clickbutton');
+    //     document.getElementById('btnNgay').classList.add('clickbutton');
+    //     document.getElementById('btnThang').classList.remove('clickbutton');
+    //     document.getElementById('hoaDonThang').style.display = 'none';
+    //     document.getElementById('hoaDonNgay').style.display = 'block';
+    //     document.getElementById('doanhThuNgay').style.display = 'block';
+    //     document.getElementById('doanhThuThang').style.display = 'none';
+    //     document.getElementById('top5Ngay').style.display = 'block';
+    //     document.getElementById('top5Thang').style.display = 'none';
+    //     document.getElementById('inputSearch').style.display = 'none';
+    //     document.getElementById('hoaDonBetween').style.display = 'none';
+    //     document.getElementById('doanhThuBetween').style.display = 'none';
+    //     document.getElementById('top5Between').style.display = 'none';
+    //     document.getElementById('hoaDon0Between').style.display = 'none';
+    //     document.getElementById('hoaDon1Between').style.display = 'none';
+    //     document.getElementById('hoaDon2Between').style.display = 'none';
+    //     document.getElementById('hoaDon3Between').style.display = 'none';
+    //     document.getElementById('hoaDon5Between').style.display = 'none';
+    //     document.getElementById('hoaDon6Between').style.display = 'none';
+    //     document.getElementById('hoaDon0Ngay').style.display = 'block';
+    //     document.getElementById('hoaDon1Ngay').style.display = 'block';
+    //     document.getElementById('hoaDon2Ngay').style.display = 'block';
+    //     document.getElementById('hoaDon3Ngay').style.display = 'block';
+    //     document.getElementById('hoaDon5Ngay').style.display = 'block';
+    //     document.getElementById('hoaDon6Ngay').style.display = 'block';
+    //     document.getElementById('hoaDon0Thang').style.display = 'none';
+    //     document.getElementById('hoaDon1Thang').style.display = 'none';
+    //     document.getElementById('hoaDon2Thang').style.display = 'none';
+    //     document.getElementById('hoaDon3Thang').style.display = 'none';
+    //     document.getElementById('hoaDon5Thang').style.display = 'none';
+    //     document.getElementById('hoaDon6Thang').style.display = 'none';
+    //     document.getElementById('chart_div_between').style.display = 'none';
+    //     document.getElementById('chart_div_ngay').style.display = 'block';
+    //     document.getElementById('chart_div_thang').style.display = 'none';
+    // }
+    //binh
+    // function showHoaDonThang() {
+    //     document.getElementById('btnBetween').classList.remove('clickbutton');
+    //     document.getElementById('btnNgay').classList.remove('clickbutton');
+    //     document.getElementById('btnThang').classList.add('clickbutton');
+    //     document.getElementById('hoaDonThang').style.display = 'block';
+    //     document.getElementById('hoaDonNgay').style.display = 'none';
+    //     document.getElementById('doanhThuThang').style.display = 'block';
+    //     document.getElementById('doanhThuNgay').style.display = 'none';
+    //     document.getElementById('top5Thang').style.display = 'block';
+    //     document.getElementById('top5Ngay').style.display = 'none';
+    //     document.getElementById('inputSearch').style.display = 'none';
+    //     document.getElementById('hoaDonBetween').style.display = 'none';
+    //     document.getElementById('doanhThuBetween').style.display = 'none';
+    //     document.getElementById('top5Between').style.display = 'none';
+    //     document.getElementById('hoaDon0Between').style.display = 'none';
+    //     document.getElementById('hoaDon1Between').style.display = 'none';
+    //     document.getElementById('hoaDon2Between').style.display = 'none';
+    //     document.getElementById('hoaDon3Between').style.display = 'none';
+    //     document.getElementById('hoaDon5Between').style.display = 'none';
+    //     document.getElementById('hoaDon6Between').style.display = 'none';
+    //     document.getElementById('hoaDon0Ngay').style.display = 'none';
+    //     document.getElementById('hoaDon1Ngay').style.display = 'none';
+    //     document.getElementById('hoaDon2Ngay').style.display = 'none';
+    //     document.getElementById('hoaDon3Ngay').style.display = 'none';
+    //     document.getElementById('hoaDon5Ngay').style.display = 'none';
+    //     document.getElementById('hoaDon6Ngay').style.display = 'none';
+    //     document.getElementById('hoaDon0Thang').style.display = 'block';
+    //     document.getElementById('hoaDon1Thang').style.display = 'block';
+    //     document.getElementById('hoaDon2Thang').style.display = 'block';
+    //     document.getElementById('hoaDon3Thang').style.display = 'block';
+    //     document.getElementById('hoaDon5Thang').style.display = 'block';
+    //     document.getElementById('hoaDon6Thang').style.display = 'block';
+    //     document.getElementById('chart_div_between').style.display = 'none';
+    //     document.getElementById('chart_div_ngay').style.display = 'none';
+    //     document.getElementById('chart_div_thang').style.display = 'block';
+    // }
+    //binh
+    // function showHoaDonBetween() {
+    //     document.getElementById('btnNgay').classList.remove('clickbutton');
+    //     document.getElementById('btnThang').classList.remove('clickbutton');
+    //     document.getElementById('btnBetween').classList.add('clickbutton');
+    //     document.getElementById('hoaDonThang').style.display = 'none';
+    //     document.getElementById('hoaDonNgay').style.display = 'none';
+    //     document.getElementById('doanhThuThang').style.display = 'none';
+    //     document.getElementById('doanhThuNgay').style.display = 'none';
+    //     document.getElementById('top5Thang').style.display = 'none';
+    //     document.getElementById('top5Ngay').style.display = 'none';
+    //     document.getElementById('top5Between').style.display = 'block';
+    //     document.getElementById('inputSearch').style.display = 'block';
+    //     document.getElementById('hoaDonBetween').style.display = 'block';
+    //     document.getElementById('doanhThuBetween').style.display = 'block';
+    //     document.getElementById('hoaDon0Between').style.display = 'block';
+    //     document.getElementById('hoaDon1Between').style.display = 'block';
+    //     document.getElementById('hoaDon2Between').style.display = 'block';
+    //     document.getElementById('hoaDon3Between').style.display = 'block';
+    //     document.getElementById('hoaDon5Between').style.display = 'block';
+    //     document.getElementById('hoaDon6Between').style.display = 'block';
+    //     document.getElementById('hoaDon0Ngay').style.display = 'none';
+    //     document.getElementById('hoaDon1Ngay').style.display = 'none';
+    //     document.getElementById('hoaDon2Ngay').style.display = 'none';
+    //     document.getElementById('hoaDon3Ngay').style.display = 'none';
+    //     document.getElementById('hoaDon5Ngay').style.display = 'none';
+    //     document.getElementById('hoaDon6Ngay').style.display = 'none';
+    //     document.getElementById('hoaDon0Thang').style.display = 'none';
+    //     document.getElementById('hoaDon1Thang').style.display = 'none';
+    //     document.getElementById('hoaDon2Thang').style.display = 'none';
+    //     document.getElementById('hoaDon3Thang').style.display = 'none';
+    //     document.getElementById('hoaDon5Thang').style.display = 'none';
+    //     document.getElementById('hoaDon6Thang').style.display = 'none';
+    //     document.getElementById('chart_div_between').style.display = 'block';
+    //     document.getElementById('chart_div_ngay').style.display = 'none';
+    //     document.getElementById('chart_div_thang').style.display = 'none';
+    // }
+
+    window.onload = function () {
+        showHoaDonBetween();
+    };
+    $(document).ready(function () {
+        var table = $('#example').DataTable({
+            "language": {
+                "info": "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ kết quả",
+                "emptyTable": "Không có kết quả nào được tìm thấy",
+                "zeroRecords": "Không có kết quả phù hợp",
+                "infoEmpty": "Không có dữ liệu để hiển thị"
+            },
+            "initComplete": function (settings, json) {
+                // CSS changes
+                $('#example_filter input[type="search"]').addClass('form-control');
+                $('#example_filter input[type="search"]').attr('placeholder', 'Tìm kiếm');
+                $('#example_filter label').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).replaceWith(' ');
+
+                $('#example_length label').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).first().replaceWith('Hiển thị');
+                $('#example_length label').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).last().replaceWith('mục');
+
+                $('#example_length select').addClass('form-select');
+            }
+        });
+
+        table.on('draw.dt', function () {
+            var pageInfo = table.page.info();
+
+            var newInfo = 'Hiển thị ' + pageInfo.start + ' đến ' + pageInfo.end + ' trong tổng số ' + pageInfo.recordsDisplay + ' kết quả';
+            $('#example_info').html(newInfo);
+
+        });
+    });
+    $(document).ready(function () {
+        var table = $('#ex').DataTable({
+            "language": {
+                "info": "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ kết quả",
+                "emptyTable": "Không có kết quả nào được tìm thấy",
+                "zeroRecords": "Không có kết quả phù hợp",
+                "infoEmpty": "Không có dữ liệu để hiển thị"
+            },
+            "initComplete": function (settings, json) {
+                // CSS changes
+                $('#ex_filter input[type="search"]').addClass('form-control');
+                $('#ex_filter input[type="search"]').attr('placeholder', 'Tìm kiếm');
+                $('#ex_filter label').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).replaceWith(' ');
+                $('#ex_length label').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).first().replaceWith('Hiển thị');
+                $('#ex_length label').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).last().replaceWith('mục');
+
+                $('#ex_length select').addClass('form-select');
+            }
+        });
+
+        table.on('draw.dt', function () {
+            var pageInfo = table.page.info();
+
+            var newInfo = 'Hiển thị ' + pageInfo.start + ' đến ' + pageInfo.end + ' trong tổng số ' + pageInfo.recordsDisplay + ' kết quả';
+            $('#ex_info').html(newInfo);
+
+        });
+    });
+    $(document).ready(function () {
+        var table = $('#below').DataTable({
+            "language": {
+                "info": "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ kết quả",
+                "emptyTable": "Không có kết quả nào được tìm thấy",
+                "zeroRecords": "Không có kết quả phù hợp",
+                "infoEmpty": "Không có dữ liệu để hiển thị"
+            },
+            "initComplete": function (settings, json) {
+                // CSS changes
+                $('#below_filter input[type="search"]').addClass('form-control');
+                $('#below_filter input[type="search"]').attr('placeholder', 'Tìm kiếm');
+                $('#below_filter label').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).replaceWith(' ');
+                $('#below_length label').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).first().replaceWith('Hiển thị');
+                $('#below_length label').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).last().replaceWith('mục');
+
+                $('#below_length select').addClass('form-select');
+            }
+        });
+
+        table.on('draw.dt', function () {
+            var pageInfo = table.page.info();
+
+            var newInfo = 'Hiển thị ' + pageInfo.start + ' đến ' + pageInfo.end + ' trong tổng số ' + pageInfo.recordsDisplay + ' kết quả';
+            $('#below_info').html(newInfo);
+
+        });
+    });
+    $(document).ready(function () {
+        var table = $('#topSanPhamNgay').DataTable({
+            "language": {
+                "info": "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ kết quả",
+                "emptyTable": "Không có kết quả nào được tìm thấy",
+                "zeroRecords": "Không có kết quả phù hợp",
+                "infoEmpty": "Không có dữ liệu để hiển thị"
+            },
+            "initComplete": function (settings, json) {
+                // CSS changes
+                $('#topSanPhamNgay_filter input[type="search"]').addClass('form-control');
+                $('#topSanPhamNgay_filter input[type="search"]').attr('placeholder', 'Tìm kiếm');
+                $('#topSanPhamNgay_filter label').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).replaceWith(' ');
+                $('#topSanPhamNgay_length label').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).first().replaceWith('Hiển thị');
+                $('#topSanPhamNgay_length label').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).last().replaceWith('mục');
+
+                $('#topSanPhamNgay_length select').addClass('form-select');
+            }
+        });
+
+        table.on('draw.dt', function () {
+            var pageInfo = table.page.info();
+
+            var newInfo = 'Hiển thị ' + pageInfo.start + ' đến ' + pageInfo.end + ' trong tổng số ' + pageInfo.recordsDisplay + ' kết quả';
+            $('#topSanPhamNgay_info').html(newInfo);
+
+        });
+    });
+    $(document).ready(function () {
+        var table = $('#topSanPhamThang').DataTable({
+            "language": {
+                "info": "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ kết quả",
+                "emptyTable": "Không có kết quả nào được tìm thấy",
+                "zeroRecords": "Không có kết quả phù hợp",
+                "infoEmpty": "Không có dữ liệu để hiển thị"
+            },
+            "initComplete": function (settings, json) {
+                // CSS changes
+                $('#topSanPhamThang_filter input[type="search"]').addClass('form-control');
+                $('#topSanPhamThang_filter input[type="search"]').attr('placeholder', 'Tìm kiếm');
+                $('#topSanPhamThang_filter label').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).replaceWith(' ');
+                $('#topSanPhamThang_length label').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).first().replaceWith('Hiển thị');
+                $('#topSanPhamThang_length label').contents().filter(function () {
+                    return this.nodeType === 3;
+                }).last().replaceWith('mục');
+
+                $('#topSanPhamThang_length select').addClass('form-select');
+            }
+        });
+
+        table.on('draw.dt', function () {
+            var pageInfo = table.page.info();
+
+            var newInfo = 'Hiển thị ' + pageInfo.start + ' đến ' + pageInfo.end + ' trong tổng số ' + pageInfo.recordsDisplay + ' kết quả';
+            $('#topSanPhamThang_info').html(newInfo);
+
+        });
+    });
+
+    function validateDateRange() {
+        var startDate = new Date(document.getElementById("tuNgay").value);
+        var endDate = new Date(document.getElementById("denNgay").value);
+        var errorMessage = document.getElementById('error-message-start');
+        var currentDate = new Date();
+        // Tính toán số ngày giữa hai ngày
+        var timeDifference = Math.abs(endDate.getTime() - startDate.getTime());
+        var dayDifference = Math.ceil(timeDifference / (1000 * 3600 * 24));
+
+        // Kiểm tra nếu khoảng cách lớn hơn 30 ngày
+        if (dayDifference > 30) {
+            // alert("Khoảng cách giữa ngày bắt đầu và ngày kết thúc không được vượt quá 30 ngày.");
+            errorMessage.innerHTML = 'Thời gian không được quá 30 ngày';
+            return false; // Ngăn chặn việc gửi biểu mẫu nếu điều kiện không đáp ứng
+        } else if (endDate < startDate) {
+            errorMessage.innerHTML = 'Ngày kết thúc không được nhỏ hơn ngày bắt đầu';
+            return false;
+        } else if (endDate > currentDate || startDate > currentDate) {
+            errorMessage.innerHTML = 'Ngày bắt đầu hoặc ngày kết thúc không được lớn hơn ngày hiện tại';
+            return false;
+        }
+        return true; // Cho phép gửi biểu mẫu nếu điều kiện đáp ứng
+    }
+
+    function validateDate() {
+        var startDate = new Date(document.getElementById("startDate").value);
+        var endDate = new Date(document.getElementById("endDate").value);
+        var errorMessage = document.getElementById('error-message');
+        var currentDate = new Date();
+
+        // Kiểm tra nếu khoảng cách lớn hơn 30 ngày
+        if (endDate < startDate) {
+            errorMessage.innerHTML = 'Ngày kết thúc không được nhỏ hơn ngày bắt đầu';
+            return false;
+        } else if (endDate > currentDate || startDate > currentDate) {
+            errorMessage.innerHTML = 'Ngày bắt đầu hoặc ngày kết thúc không được lớn hơn ngày hiện tại';
+            return false;
+        }
+        return true; // Cho phép gửi biểu mẫu nếu điều kiện đáp ứng
+    }
+</script>
+<style>
+    /*input tìm kiếm*/
+    #example_filter input[type="search"] {
+        width: 180%;
+        margin-left: -80%;
+        margin-bottom: 10%;
+    }
+
+    #ex_filter input[type="search"] {
+        width: 180%;
+        margin-left: -80%;
+        margin-bottom: 10%;
+    }
+
+    #below_filter input[type="search"] {
+        width: 180%;
+        margin-left: -80%;
+        margin-bottom: 10%;
+    }
+
+    #topSanPhamNgay_filter input[type="search"] {
+        width: 180%;
+        margin-left: -80%;
+        margin-bottom: 10%;
+    }
+
+    #topSanPhamThang_filter input[type="search"] {
+        width: 180%;
+        margin-left: -80%;
+        margin-bottom: 10%;
+    }
+
+    /*select hiển thị mục*/
+    .dataTables_length label {
+        white-space: nowrap; /* Ngăn các phần tử xuống dòng */
+        display: flex; /* Hiển thị label và select trên cùng một dòng */
+        align-items: center; /* Canh chỉnh label và select theo chiều dọc */
+    }
+
+    .dataTables_length select {
+        margin-left: 5px; /* Tạo khoảng cách giữa label và select */
+    }
+
+    .dataTables_length label:after {
+        /* Sử dụng pseudo-element :after để ẩn văn bản cuối cùng */
+        content: ''; /* Xóa nội dung */
+    }
+</style>
+</body>
+</html>
