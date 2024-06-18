@@ -1,5 +1,7 @@
 package com.datnsd09.Datnsd09.controller;
 
+import com.datnsd09.Datnsd09.config.PrincipalCustom;
+import com.datnsd09.Datnsd09.config.UserInfoUserDetails;
 import com.datnsd09.Datnsd09.entity.Voucher;
 import com.datnsd09.Datnsd09.service.VoucherService;
 import jakarta.validation.Valid;
@@ -17,16 +19,16 @@ import java.util.Date;
 public class VoucherController {
     @Autowired
     VoucherService voucherService;
-
+    private PrincipalCustom principalCustom = new PrincipalCustom();
     @GetMapping()
     public String hienThi(
             Model model) {
-//        UserInfoUserDetails name = principalCustom.getCurrentUserNameAdmin();
-//        if (name != null) {
-//            model.addAttribute("tenNhanVien", principalCustom.getCurrentUserNameAdmin().getHoVaTen());
-//        } else {
-//            return "redirect:/login";
-//        }
+        UserInfoUserDetails name = principalCustom.getCurrentUserNameAdmin();
+        if (name != null) {
+            model.addAttribute("tenNhanVien", principalCustom.getCurrentUserNameAdmin().getHoVaTen());
+        } else {
+            return "redirect:/login";
+        }
         model.addAttribute("listVoucher", voucherService.fillAll());
         model.addAttribute("voucher", new Voucher());
         return "/admin/voucher/voucher";
@@ -34,12 +36,12 @@ public class VoucherController {
     @GetMapping("/dang-dien-ra")
     public String hienThiDangHoatDong(
             Model model) {
-//        UserInfoUserDetails name = principalCustom.getCurrentUserNameAdmin();
-//        if (name != null) {
-//            model.addAttribute("tenNhanVien", principalCustom.getCurrentUserNameAdmin().getHoVaTen());
-//        } else {
-//            return "redirect:/login";
-//        }
+        UserInfoUserDetails name = principalCustom.getCurrentUserNameAdmin();
+        if (name != null) {
+            model.addAttribute("tenNhanVien", principalCustom.getCurrentUserNameAdmin().getHoVaTen());
+        } else {
+            return "redirect:/login";
+        }
         model.addAttribute("listVoucher", voucherService.fillAllDangDienRa());
         model.addAttribute("voucher", new Voucher());
         return "/admin/voucher/voucher";
@@ -48,12 +50,12 @@ public class VoucherController {
     @GetMapping("/da-ket-thuc")
     public String hienThiNgungHoatDong(
             Model model) {
-//        UserInfoUserDetails name = principalCustom.getCurrentUserNameAdmin();
-//        if (name != null) {
-//            model.addAttribute("tenNhanVien", principalCustom.getCurrentUserNameAdmin().getHoVaTen());
-//        } else {
-//            return "redirect:/login";
-//        }
+        UserInfoUserDetails name = principalCustom.getCurrentUserNameAdmin();
+        if (name != null) {
+            model.addAttribute("tenNhanVien", principalCustom.getCurrentUserNameAdmin().getHoVaTen());
+        } else {
+            return "redirect:/login";
+        }
         model.addAttribute("listVoucher", voucherService.fillAllDaKetThuc());
         model.addAttribute("voucher", new Voucher());
         return "/admin/voucher/voucher";
@@ -62,12 +64,12 @@ public class VoucherController {
     @GetMapping("/sap-dien-ra")
     public String hienThiSapDienRa(
             Model model) {
-//        UserInfoUserDetails name = principalCustom.getCurrentUserNameAdmin();
-//        if (name != null) {
-//            model.addAttribute("tenNhanVien", principalCustom.getCurrentUserNameAdmin().getHoVaTen());
-//        } else {
-//            return "redirect:/login";
-//        }
+        UserInfoUserDetails name = principalCustom.getCurrentUserNameAdmin();
+        if (name != null) {
+            model.addAttribute("tenNhanVien", principalCustom.getCurrentUserNameAdmin().getHoVaTen());
+        } else {
+            return "redirect:/login";
+        }
         model.addAttribute("listVoucher", voucherService.fillAllSapDienRa());
         model.addAttribute("voucher", new Voucher());
         return "/admin/voucher/voucher";
@@ -113,15 +115,15 @@ public class VoucherController {
     public String viewUpdate(
             Model model,
             @PathVariable("id") Long id) {
-//        UserInfoUserDetails name = principalCustom.getCurrentUserNameAdmin();
-//        if (name != null) {
-//            model.addAttribute("tenNhanVien", principalCustom.getCurrentUserNameAdmin().getHoVaTen());
-//        } else {
-//            return "redirect:/login";
-//        }
+        UserInfoUserDetails name = principalCustom.getCurrentUserNameAdmin();
+        if (name != null) {
+            model.addAttribute("tenNhanVien", principalCustom.getCurrentUserNameAdmin().getHoVaTen());
+        } else {
+            return "redirect:/login";
+        }
         Voucher voucher = voucherService.getById(id);
         model.addAttribute("voucher", voucher);
-        return "/admin-template/voucher/sua-voucher";
+        return "/admin/voucher/sua-voucher";
     }
 
     @PostMapping("/update")
@@ -131,12 +133,12 @@ public class VoucherController {
                          RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             model.addAttribute("checkThongBao", "thaiBai");
-            return "/admin-template/voucher/sua-voucher";
+            return "/admin/voucher/sua-voucher";
         } else if (voucher.getNgayBatDau().isAfter(voucher.getNgayKetThuc())) {
             model.addAttribute("checkThongBao", "thaiBai");
             model.addAttribute("checkNgayKetThuc", "ngayKetThuc");
             model.addAttribute("listVoucher", voucherService.findAll());
-            return "/admin-template/voucher/sua-voucher";
+            return "/admin/voucher/sua-voucher";
         }
 //        else if (!voucherService.checkTenTrungSua(voucher.getMaVoucher(), voucher.getTenVoucher())) {
 //            model.addAttribute("checkThongBao", "thaiBai");
@@ -146,11 +148,11 @@ public class VoucherController {
         else if (!voucherService.checkName(voucher.getId(), voucher.getTenVoucher())) {
             model.addAttribute("checkThongBao", "thaiBai");
             model.addAttribute("checkTenTrung", "Tên Voucher đã tồn tại");
-            return "/admin-template/voucher/sua-voucher";
+            return "/admin/voucher/sua-voucher";
         } else if (!voucherService.checkCode(voucher.getId(), voucher.getMaVoucher())) {
             model.addAttribute("checkThongBao", "thaiBai");
             model.addAttribute("checkMaTrung", "Mã Voucher đã tồn tại");
-            return "/admin-template/voucher/sua-voucher";
+            return "/admin/voucher/sua-voucher";
         }
 
 //        else if (!voucherService.checkMaTrungSua(voucher.getTenVoucher(), voucher.getMaVoucher())) {
