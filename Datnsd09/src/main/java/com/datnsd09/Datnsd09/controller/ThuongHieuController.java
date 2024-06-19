@@ -57,9 +57,9 @@ public class ThuongHieuController {
     public String hienThiDangHoatDong(
             Model model
     ) {
-        model.addAttribute("listThuongHieu", thuongHieuService.getAllDangHoatDong());
-        model.addAttribute("thươngHieu", new ThuongHieu());
-        return "/admin/thuong-hieu/thuong-hieu";
+       model.addAttribute("listThuongHieu", thuongHieuService.getAllDangHoatDong());
+       model.addAttribute("thuongHieu", new ThuongHieu());
+       return "/admin/thuong-hieu/thuong-hieu";
     }
 
     @GetMapping("/ngung-hoat-dong")

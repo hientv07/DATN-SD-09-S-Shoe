@@ -197,6 +197,7 @@ public class SanPhamChiTietServiceImpl implements SanPhamChiTietService {
         return null;
     }
 
+    //thống kê
     @Override
     public List<Object[]> danhSachHangSapHet(Integer soLuong) {
         return null;

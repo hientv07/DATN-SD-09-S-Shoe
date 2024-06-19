@@ -98,6 +98,7 @@ public interface SanPhamChiTietRepository extends JpaRepository<SanPhamChiTiet, 
     List<Long> getAllIdThuongHieuCTSP();
 
 
+    //Thống kê
     @Query("select sp.ten, kc.ten, ms.ten, ld.ten, ctsp.soLuong " +
             "from SanPhamChiTiet ctsp " +
             "join ctsp.sanPham sp " +

@@ -333,16 +333,6 @@
                         <span>Nhân Viên</span>
                     </li>
 
-                    <!--                    <li>-->
-                    <!--                        <hr class="dropdown-divider">-->
-                    <!--                    </li>-->
-
-                    <!--                    <li>-->
-                    <!--                        <a class="dropdown-item d-flex align-items-center" href="users-profile.html">-->
-                    <!--                            <i class="bi bi-person"></i>-->
-                    <!--                            <span>Thông tin của tôi</span>-->
-                    <!--                        </a>-->
-                    <!--                    </li>-->
 
                     <li>
                         <hr class="dropdown-divider">
@@ -478,14 +468,35 @@
                              aria-labelledby="list-tab">
                             <br>
                             <hr>
+                            <h1 style="margin-top: 5%">Top sản phẩm bán chạy nhất</h1>
 
+                            <div id="top5Between">
+                                <h1>Top sản phẩm bán chạy</h1>
+                                <table border="1" id="ex" style="margin-bottom: 5%">
+                                    <thead>
+                                    <tr>
+                                        <th>STT</th>
+                                        <th>Sản phẩm</th>
+                                        <th>Số Lượng bán</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="row,iterStat : ${thongKeBetween}">
+                                        <td th:text="${iterStat.index+1}"></td>
+                                        <td th:text="${row[0]}"></td>
+                                        <td th:text="${row[1]}"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <hr>
                             <h1 style="margin-top: 5%">Danh sách sản phẩm có số lượng sắp hết hàng</h1>
                             <form th:action="@{/admin/thong-ke/sapHetHang}" th:method="post" class="row g-3"
                                   id="myForm">
                                 <div class="col-md-2">
                                     <label class="form-label"> Nhỏ hơn</label>
 
-                                    <input type="number" class="form-control" th:value="${soLuong != null ? soLuong : 50}"
+                                    <input type="number" class="form-control" th:value="${soLuong != null ? soLuong : 10}"
                                            name="soLuong" min="1" max="1000000000"
                                            required>
                                 </div>
