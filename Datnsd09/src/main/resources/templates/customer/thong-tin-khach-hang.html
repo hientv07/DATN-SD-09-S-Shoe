@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+    <title>S-Shoe</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <link href="../../static/img/favicon.png" rel="icon">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,400,700"/>
+    <link rel="stylesheet" href="../../static/fonts/icomoon/style.css"/>
+    <link href="../../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/css/magnific-popup.css"/>
+    <link rel="stylesheet" href="../../static/css/jquery-ui.css"/>
+    <link rel="stylesheet" href="../../static/css/owl.carousel.min.css"/>
+    <link rel="stylesheet" href="../../static/css/owl.theme.default.min.css"/>
+
+    <link rel="stylesheet" href="../../static/css/aos.css"/>
+
+    <link rel="stylesheet" href="../../static/css/style-customer-template.css"/>
+
+    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+
+</head>
+
+<body>
+<div class="site-wrap">
+    <header class="site-navbar" role="banner">
+        <div class="site-navbar-top">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-6 col-md-4 order-2 order-md-1 site-search-icon text-left">
+                        <form action="" class="site-block-top-search">
+                            <span class="icon icon-search2"></span>
+                            <input type="text" class="form-control border-0" id="timKiemAll" placeholder="Tìm kiếm theo tên sản phẩm"/>
+                            <script>
+                                var inputElementTimKiemAll = document.getElementById('timKiemAll');
+
+                                inputElementTimKiemAll.addEventListener('blur', function () {
+                                    var inputValueTimKiemAll = inputElementTimKiemAll.value;
+                                    console.log('Giá trị của input:', inputValueTimKiemAll);
+
+                                    var fullUrl = window.location.origin + "/shop"
+
+                                    if (inputValueTimKiemAll !== '') {
+                                        fullUrl = updateQueryStringParameterAll('keyword', inputValueTimKiemAll, fullUrl);
+                                    } else {
+                                        fullUrl = removeQueryStringParameterAll('keyword', fullUrl);
+                                    }
+
+                                    window.location.href = fullUrl
+
+
+                                });
+                                // Hàm cập nhật giá trị của query parameter trong URL
+                                function updateQueryStringParameterAll(key, value, url) {
+                                    var regex = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+                                    var separator = url.indexOf('?') !== -1 ? "&" : "?";
+                                    if (url.match(regex)) {
+                                        return url.replace(regex, '$1' + key + "=" + value + '$2');
+                                    } else {
+                                        return url + separator + key + "=" + value;
+                                    }
+                                }
+
+                                // Hàm xóa query parameter khỏi URL
+                                function removeQueryStringParameterAll(key, url) {
+                                    var urlParts = url.split('?');
+                                    if (urlParts.length >= 2) {
+                                        var prefix = encodeURIComponent(key) + '=';
+                                        var queryString = urlParts[1].split('&');
+
+                                        for (var i = queryString.length - 1; i >= 0; i--) {
+                                            if (queryString[i].lastIndexOf(prefix, 0) !== -1) {
+                                                queryString.splice(i, 1);
+                                            }
+                                        }
+
+                                        url = urlParts[0] + (queryString.length > 0 ? '?' + queryString.join('&') : '');
+                                    }
+
+                                    return url;
+                                }
+                            </script>
+                        </form>
+                    </div>
+
+                    <div class="col-12 mb-3 mb-md-0 col-md-4 order-1 order-md-2 text-center">
+                        <div class="site-logo">
+                            <a href="/home" class="js-logo-clone">S-Shoe</a>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4 order-3 order-md-3 text-right">
+                        <div class="site-top-icons">
+                            <ul class="nav nav-pills" style="margin-left: 54%">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
+                                       role="button" aria-expanded="false"><span class="icon icon-person"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="/user/thong-tin-khach-hang">Tài Khoản Của Tôi</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="/user/don-mua">Đơn Mua</a></li>
+                                        <li><a class="dropdown-item" th:href="@{/logout}">Đăng Xuất</a></li>
+                                    </ul>
+                                </li>
+
+                                <!--                                <li class="nav-item" style="margin-left: -15%">-->
+                                <!--                                    <a class="nav-link" href="#"><span class="icon icon-heart-o"></span></a>-->
+                                <!--                                </li>-->
+                                <li class="nav-item" style="margin-top: 5%;margin-left: -5%">
+                                    <a class="site-cart" href="/user/cart">
+                                        <span class="icon icon-shopping_cart"></span>
+                                        <span class="count" th:text="${soLuongSPGioHangCT}"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav class="site-navigation text-right text-md-center" role="navigation">
+            <div class="container">
+                <ul class="site-menu js-clone-nav d-none d-md-block">
+                    <li>
+                        <a href="/home">Trang chủ</a>
+                    </li>
+                    <li><a href="/shop">Sản phẩm</a></li>
+                    <li><a href="/about">Về chúng tôi</a></li>
+                    <li><a href="/lien-he">Liên hệ</a></li>
+                    <li><a href="/chinh-sach">Chính Sách</a></li>
+                    <li><a href="/tra-cuu-don-hang">Tra Cứu Đơn Hàng</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container" style="max-width: 90%">
+        <div class="row">
+            <div class="col-md-2">
+                <aside id="sidebar" class="sidebar">
+
+                    <ul class="sidebar-nav" id="sidebar-nav">
+
+                        <li class="nav-item">
+                            <a class="nav-link " data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                                <i class="bi bi-person-fill"></i><span>Tài khoản của tôi</span><i
+                                    class="bi bi-chevron-down ms-auto"></i>
+                            </a>
+                            <ul id="components-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
+                                <li>
+                                    <a href="/user/thong-tin-khach-hang" class="active">
+                                        <i class="bi bi-circle"></i><span>Hồ Sơ</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/user/dia-chi">
+                                        <i class="bi bi-circle"></i><span>Địa Chỉ</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="/user/mat-khau">
+                                        <i class="bi bi-circle"></i><span>Đổi Mật Khẩu</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li><!-- End Components Nav -->
+
+                        <li class="nav-item">
+                            <a class="nav-link collapsed" href="/user/don-mua">
+                                <i class="bi bi-truck"></i>
+                                <span>Đơn Mua</span>
+                            </a>
+                        </li><!-- End Forms Nav -->
+
+
+                    </ul>
+                </aside><!-- End Sidebar-->
+            </div>
+
+            <div class="col-md-10" style="background-color: white">
+                <h4 style="margin-top: 2%">Hồ Sơ Của Tôi</h4>
+                <p>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
+                <form class="row g-3" style="width: 80%;margin: auto;margin-top: 5%"
+                      th:action="@{/user/thong-tin-khach-hang/update}" th:object="${khachHang}" method="post">
+                    <div class="row mb-3">
+                        <input type="hidden" th:field="*{id}">
+                        <input type="hidden" th:field="*{trangThai}">
+                        <input type="hidden" th:field="*{ngayTao}">
+                        <input type="hidden" th:field="*{matKhau}">
+                        <label for="inputEmail3" class="col-sm-3 col-form-label">Tên đăng nhập</label>
+                        <div class="col-sm-9">
+                            <input type="text" th:field="*{tenTaiKhoan}" class="form-control" id="inputEmail3" readonly>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="inputPassword3" class="col-sm-3 col-form-label">Tên</label>
+                        <div class="col-sm-9">
+                            <input type="text" th:field="*{hoVaTen}" class="form-control" id="inputPassword3">
+                            <span class="check-loi" th:errors="*{hoVaTen}"></span>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="inputEmail5" class="col-sm-3 col-form-label">Email</label>
+                        <div class="col-sm-9">
+                            <input type="email" th:field="*{email}" class="form-control" id="inputEmail5">
+                            <span class="check-loi" th:errors="*{email}"></span>
+                            <span class="check-loi" th:text="${checkEmailTrung}"></span>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="inputPassword6" class="col-sm-3 col-form-label">Số điện thoại</label>
+                        <div class="col-sm-9">
+                            <input type="text" th:field="*{soDienThoai}"  class="form-control" id="inputPassword6">
+                            <span class="check-loi" th:errors="*{soDienThoai}"></span>
+                        </div>
+                        <script>
+                            document.addEventListener("DOMContentLoaded", function() {
+                                var sdt = document.getElementById("inputPassword6")
+                                var ngaySinh = document.getElementById("inputPassword4")
+                                if(sdt.value=='0300000000'){
+                                    sdt.value = ''
+                                }
+                                if(ngaySinh.value=='1900-01-01'){
+                                    ngaySinh.value = ''
+                                }
+                            });
+                        </script>
+                    </div>
+                    <fieldset class="row mb-3">
+                        <label class="col-sm-3 col-form-label">Giới tính</label>
+                        <div class="col-sm-9">
+                            <div style="margin-left: 4%;margin-top: 1%">
+                                <input class="form-check-input" type="radio" th:field="*{gioiTinh}" name="gioiTinh"
+                                       id="gridRadios1"
+                                       value="0" checked>
+                                <label class="form-check-label" for="gridRadios1">
+                                    Nam
+                                </label>
+                                <input class="form-check-input" type="radio" th:field="*{gioiTinh}" name="gioiTinh"
+                                       id="gridRadios2"
+                                       style="margin-left: 5%"
+                                       value="1">
+                                <label class="form-check-label" for="gridRadios2" style="margin-left: 9%">
+                                    Nữ
+                                </label>
+                                <span class="check-loi" th:errors="*{gioiTinh}"></span>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="row mb-3">
+                        <label for="inputPassword4" class="col-sm-3 col-form-label">Ngày sinh</label>
+                        <div class="col-sm-9">
+                            <input type="date" class="form-control" th:field="*{ngaySinh}" id="inputPassword4">
+                            <span class="check-loi" th:errors="*{ngaySinh}"></span>
+                            <span class="check-loi" th:text="${checkNgaySinh}"></span>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col" style="margin-left: 50%;margin-top: 5%;margin-bottom: 10%">
+                            <button type="submit" class="btn btn-primary">Lưu</button>
+                        </div>
+                    </div>
+                </form>
+                <!--js bật modal khi check-->
+                <script th:if="${checkModal=='modal'}">
+                    window.addEventListener('DOMContentLoaded', (event) => {
+                        // Hiển thị modal
+                        var toast = new bootstrap.Toast(document.getElementById('thongBaoThemThanhCong'));
+                        toast.show();
+                    });
+                </script>
+                <!--js bật modal khi check-->
+                <!-- Modal thông báo check chọn sản phẩm-->
+                <div class="toast-container position-fixed top-50 start-50 translate-middle">
+                    <div id="thongBaoThemThanhCong" class="toast" role="alert" aria-live="assertive" data-bs-delay="1000"
+                         aria-atomic="true"
+                         style="background-color: #7e7e7e;">
+                        <div class="toast-body center-image" style=";display: flex;justify-content: center;align-items: center;">
+                            <img src="../../static/img/successful_notification.png" alt="Notification Image"
+                                 style="margin-top:7%;width: 12%;height: 12%;">
+                        </div>
+                        <div class="toast-body" style="color: white;display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            margin-bottom: 7%;
+            text-align: center;">
+                            Cập nhật hồ sơ
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal thông báo check chọn sản phẩm end-->
+            </div>
+        </div>
+    </div>
+
+
+    <footer class="site-footer border-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="footer-heading mb-4">Điều hướng</h3>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Vận chuyển</a></li>
+                                <li><a href="#">Khu vực</a></li>
+                                <li><a href="#">Kênh bán hàng</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <ul class="list-unstyled">
+                                <li><a href="/about">Đội ngũ</a></li>
+                                <li><a href="/chinh-sach">Trả hàng</a></li>
+                                <li><a href="#">Bảo mật</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <ul class="list-unstyled">
+                                <li><a href="/lien-he">Liên hệ</a></li>
+                                <li><a href="/lien-he">Chăm sóc khách hàng</a></li>
+                                <li><a href="/lien-he">Phản hồi</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-4 mb-lg-0">
+                    <h3 class="footer-heading mb-4">Mẫu mã</h3>
+                    <a href="/shop" class="block-6">
+                        <img src="../../static/img/hero_1.jpg" alt="Image placeholder"
+                             class="img-fluid rounded mb-4"/>
+                        <h3 class="font-weight-light mb-0">
+                            Tìm đôi giày hoàn hảo của bạn
+                        </h3>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="block-5 mb-5">
+                        <h3 class="footer-heading mb-4">Thông tin liên lạc</h3>
+                        <ul class="list-unstyled">
+                            <li class="address">
+                                13 P. Trịnh Văn Bô, Xuân Phương, Nam Từ Liêm, Hà Nội, Việt Nam
+                            </li>
+                            <li class="phone">
+                                <a href="tel://23923929210">+84 377 463 664</a>
+                            </li>
+                            <li class="email">sshoeshopshoes@gmail.com</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+<script src="../../static/js/jquery-3.3.1.min.js"></script>
+<script src="../../static/js/jquery-ui.js"></script>
+<script src="../../static/js/popper.min.js"></script>
+
+<script src="../../static/js/owl.carousel.min.js"></script>
+<script src="../../static/js/jquery.magnific-popup.min.js"></script>
+<script src="../../static/js/aos.js"></script>
+
+<script src="../../static/js/main.js"></script>
+</body>
+
+</html>
+
+</html>

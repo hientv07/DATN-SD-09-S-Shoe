@@ -1,6 +1,8 @@
 package com.datnsd09.Datnsd09.config;
 
+import com.datnsd09.Datnsd09.entity.KhachHang;
 import com.datnsd09.Datnsd09.entity.NhanVien;
+import com.datnsd09.Datnsd09.repository.KhachHangRepository;
 import com.datnsd09.Datnsd09.repository.NhanVienRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -39,15 +41,7 @@ public class SecurityConfig {
     @Bean
     //authentication
     public UserDetailsService userDetailsService() {
-//        UserDetails admin = User.withUsername("Basant")
-//                .password(encoder.encode("Pwd1"))
-//                .roles("ADMIN")
-//                .build();
-//        UserDetails user = User.withUsername("John")
-//                .password(encoder.encode("Pwd2"))
-//                .roles("USER","ADMIN","HR")
-//                .build();
-//        return new InMemoryUserDetailsManager(admin, user);
+
         return new UserInfoUserDetailsService();
     }
 
@@ -57,19 +51,25 @@ public class SecurityConfig {
             @Autowired
             private NhanVienRepository taiKhoanRepository; // Đây là repository hoặc service để truy vấn đối tượng TaiKhoan
 
+            @Autowired
+            private KhachHangRepository khachHangRepository;
+
             @Override
             protected String determineTargetUrl(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
                 UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-                NhanVien user = taiKhoanRepository.findByTenTaiKhoan(userDetails.getUsername()).orElse(null);
+                NhanVien admin = taiKhoanRepository.findByTenTaiKhoan(userDetails.getUsername()).orElse(null);
 
-                if (user != null && user.getTrangThai() != null && user.getTrangThai() == 1) {
+                KhachHang user = khachHangRepository.findByTenTaiKhoan(userDetails.getUsername()).orElse(null);
+
+                if ((user != null && user.getTrangThai() != null && user.getTrangThai() == 1) ||
+                        admin != null && admin.getTrangThai() != null && admin.getTrangThai() == 1) {
                     return "/login-error"; // Redirect to a login error page if the user's trangThai is 1
                 } else {
                     if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
                         System.out.println(userDetails.getPassword());
                         return "/admin/nhan-vien";
                     } else if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_USER"))) {
-                        return "/home";
+                        return "/user/thong-tin-khach-hang";
                     } else {
                         return "/login-error";
                     }
@@ -91,7 +91,7 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
-                .requestMatchers("/user/**").hasAuthority("ROLE_NHANVIEN")
+                .requestMatchers("/user/**").hasAuthority("ROLE_USER")
                 .requestMatchers("/products/**").authenticated()
                 .and()
                 .formLogin()

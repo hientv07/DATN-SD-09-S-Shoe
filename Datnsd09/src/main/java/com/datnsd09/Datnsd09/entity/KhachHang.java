@@ -80,4 +80,9 @@ public class KhachHang {
 
     @Column(name = "trang_thai")
     private Integer trangThai;
+
+    @Column(name = "ten_vai_tro")
+    private String vaiTro = "ROLE_USER";
+
+
 }

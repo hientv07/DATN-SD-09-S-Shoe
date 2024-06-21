@@ -1,5 +1,6 @@
 package com.datnsd09.Datnsd09.config;
 
+import com.datnsd09.Datnsd09.entity.KhachHang;
 import com.datnsd09.Datnsd09.entity.NhanVien;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,13 +20,24 @@ public class UserInfoUserDetails implements UserDetails {
     private String email;
     private List<GrantedAuthority> authorities;
 
-    public UserInfoUserDetails(NhanVien userInfo) {
-        id = userInfo.getId();
-        ten_tai_khoan = userInfo.getTenTaiKhoan();
-        matKhau = userInfo.getMatKhau();
-        hoVaTen = userInfo.getHoVaTen();
-        email = userInfo.getEmail();
-        authorities = Arrays.stream(userInfo.getVaiTro().getTenVaiTro().split(","))
+    public UserInfoUserDetails(NhanVien nhanVien) {
+        id = nhanVien.getId();
+        ten_tai_khoan = nhanVien.getTenTaiKhoan();
+        matKhau = nhanVien.getMatKhau();
+        hoVaTen = nhanVien.getHoVaTen();
+        email = nhanVien.getEmail();
+        authorities = Arrays.stream(nhanVien.getVaiTro().getTenVaiTro().split(","))
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
+    }
+
+    public UserInfoUserDetails(KhachHang khachHang) {
+        id = khachHang.getId();
+        ten_tai_khoan = khachHang.getTenTaiKhoan();
+        matKhau = khachHang.getMatKhau();
+        hoVaTen = khachHang.getHoVaTen();
+        email = khachHang.getEmail();
+        authorities = Arrays.stream(khachHang.getVaiTro().split(","))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }

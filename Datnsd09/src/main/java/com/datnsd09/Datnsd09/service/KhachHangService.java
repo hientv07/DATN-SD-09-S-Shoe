@@ -33,4 +33,6 @@ public interface KhachHangService {
     boolean checkEmail(String email);
 
     void sendEmail(KhachHang taiKhoan, String path,String random);
+
+    KhachHang getTaiKhoanByName(String name);
 }

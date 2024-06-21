@@ -15,7 +15,7 @@ public interface KhachHangRepository extends JpaRepository<KhachHang,Long> {
 
     KhachHang findByMatKhau(String code);
 
-    KhachHang findByEmail(String email);
+    Optional<KhachHang> findByEmail(String email);
 
     @Query(value = "SELECT * FROM khach_hang  ",nativeQuery = true)
     List<KhachHang> fillAllKhachHang();

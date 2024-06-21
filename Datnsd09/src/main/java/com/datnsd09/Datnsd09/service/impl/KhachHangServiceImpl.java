@@ -179,4 +179,11 @@ public class KhachHangServiceImpl implements KhachHangService {
             e.printStackTrace();
         }
     }
+
+    @Override
+    public KhachHang getTaiKhoanByName(String name) {
+
+        return repository.findByTenTaiKhoan(name).orElse(null);
+
+    }
 }
