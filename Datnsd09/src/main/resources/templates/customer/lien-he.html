@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>S-Shoe</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <link href="../../static/img/favicon.png" rel="icon">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,400,700"/>
+    <link rel="stylesheet" href="../../static/../../static/fonts/icomoon/style.css"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/css/magnific-popup.css"/>
+    <link rel="stylesheet" href="../../static/css/jquery-ui.css"/>
+    <link rel="stylesheet" href="../../static/css/owl.carousel.min.css"/>
+    <link rel="stylesheet" href="../../static/css/owl.theme.default.min.css"/>
+
+    <!--    thư viện toast-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@latest/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="../../static/css/aos.css"/>
+    <link rel="stylesheet" href="../../static/css/style-customer-template.css"/>
+</head>
+
+<body>
+<div class="site-wrap">
+    <header class="site-navbar" role="banner">
+        <div class="site-navbar-top">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-6 col-md-4 order-2 order-md-1 site-search-icon text-left">
+                        <form action="" class="site-block-top-search">
+                            <span class="icon icon-search2"></span>
+                            <input type="text" class="form-control border-0" id="timKiemAll"
+                                   placeholder="Tìm kiếm theo tên sản phẩm"/>
+                            <script>
+                                var inputElementTimKiemAll = document.getElementById('timKiemAll');
+
+                                inputElementTimKiemAll.addEventListener('blur', function () {
+                                    var inputValueTimKiemAll = inputElementTimKiemAll.value;
+                                    console.log('Giá trị của input:', inputValueTimKiemAll);
+
+                                    var fullUrl = window.location.origin + "/shop"
+
+                                    if (inputValueTimKiemAll !== '') {
+                                        fullUrl = updateQueryStringParameterAll('keyword', inputValueTimKiemAll, fullUrl);
+                                    } else {
+                                        fullUrl = removeQueryStringParameterAll('keyword', fullUrl);
+                                    }
+
+                                    window.location.href = fullUrl
+
+
+                                });
+
+                                // Hàm cập nhật giá trị của query parameter trong URL
+                                function updateQueryStringParameterAll(key, value, url) {
+                                    var regex = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+                                    var separator = url.indexOf('?') !== -1 ? "&" : "?";
+                                    if (url.match(regex)) {
+                                        return url.replace(regex, '$1' + key + "=" + value + '$2');
+                                    } else {
+                                        return url + separator + key + "=" + value;
+                                    }
+                                }
+
+                                // Hàm xóa query parameter khỏi URL
+                                function removeQueryStringParameterAll(key, url) {
+                                    var urlParts = url.split('?');
+                                    if (urlParts.length >= 2) {
+                                        var prefix = encodeURIComponent(key) + '=';
+                                        var queryString = urlParts[1].split('&');
+
+                                        for (var i = queryString.length - 1; i >= 0; i--) {
+                                            if (queryString[i].lastIndexOf(prefix, 0) !== -1) {
+                                                queryString.splice(i, 1);
+                                            }
+                                        }
+
+                                        url = urlParts[0] + (queryString.length > 0 ? '?' + queryString.join('&') : '');
+                                    }
+
+                                    return url;
+                                }
+                            </script>
+                        </form>
+                    </div>
+
+                    <div class="col-12 mb-3 mb-md-0 col-md-4 order-1 order-md-2 text-center">
+                        <div class="site-logo">
+                            <a href="/home" class="js-logo-clone">S-Shoe</a>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4 order-3 order-md-3 text-right">
+                        <div class="site-top-icons">
+                            <ul class="nav nav-pills" style="margin-left: 54%">
+                                <li class="nav-item dropdown" th:if="${checkDangNhap=='true'}">
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
+                                       role="button" aria-expanded="false"><span class="icon icon-person"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="/user/thong-tin-khach-hang">Tài Khoản Của
+                                            Tôi</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="/user/don-mua">Đơn Mua</a></li>
+                                        <li><a class="dropdown-item" th:href="@{/logout}">Đăng Xuất</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown" th:if="${checkDangNhap=='false'}">
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
+                                       role="button" aria-expanded="false"><span class="icon icon-person"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="/login">Đăng Nhập</a></li>
+
+                                    </ul>
+                                </li>
+
+                                <li class="nav-item" style="margin-top: 5%;margin-left: -5%">
+                                    <a class="site-cart" href="/user/cart">
+                                        <span class="icon icon-shopping_cart"></span>
+                                        <span class="count" th:if="${checkDangNhap=='true'}"
+                                              th:text="${soLuongSPGioHangCT}"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav class="site-navigation text-right text-md-center" role="navigation">
+            <div class="container">
+                <ul class="site-menu js-clone-nav d-none d-md-block">
+                    <li>
+                        <a href="/home">Trang chủ</a>
+                    </li>
+
+                    <li><a href="/shop">Sản phẩm</a></li>
+                    <li><a href="/about">Về chúng tôi</a></li>
+                    <li><a href="/lien-he">Liên hệ</a></li>
+                    <li><a href="/chinh-sach">Chính Sách</a></li>
+                    <li><a href="/tra-cuu-don-hang">Tra Cứu Đơn Hàng</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="site-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-7" style="margin: auto">
+                    <h2 class="h3 mb-3 text-black">Liên Hệ</h2>
+                </div>
+                <div class="col-md-7" style="margin: auto">
+                    <form th:action="@{/lien-he/add}" method="get">
+                        <div class="p-3 p-lg-5 border">
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <label for="c_lname" class="text-black">Họ và tên <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="c_lname" name="hoTen"/>
+                                    <div class="check-loi" style="display: none;color: red" id="iDc_lname"></div>
+
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <label for="c_email" class="text-black">Email <span
+                                            class="text-danger">*</span></label>
+                                    <input type="email" class="form-control" id="c_email" name="email"
+                                           placeholder=""/>
+                                    <div class="check-loi" style="display: none;color: red" id="iDc_email"></div>
+
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <label for="c_subject" class="text-black">Chủ đề <span
+                                            class="text-danger">*</span></label></label>
+                                    <input type="text" class="form-control" id="c_subject" name="chuDe"/>
+                                    <div class="check-loi" style="display: none;color: red" id="iDc_subject"></div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <label for="c_message" class="text-black">Tin nhắn <span
+                                            class="text-danger">*</span></label></label>
+                                    <textarea name="tinNhan" id="c_message" cols="30" rows="7"
+                                              class="form-control"></textarea>
+                                    <div class="check-loi" style="display: none;color: red" id="iDc_message"></div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-lg-12">
+                                    <input type="submit" onclick="return checkGuiLienHe()"
+                                           class="btn btn-primary btn-lg btn-block"
+                                           value="Gửi"/>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <script>
+                    function checkGuiLienHe() {
+                        var check = true;
+                        var c_lname = document.getElementById("c_lname")
+                        var c_email = document.getElementById("c_email")
+                        var c_subject = document.getElementById("c_subject")
+                        var c_message = document.getElementById("c_message")
+
+                        var iDc_lname = document.getElementById("iDc_lname")
+                        var iDc_email = document.getElementById("iDc_email")
+                        var iDc_subject = document.getElementById("iDc_subject")
+                        var iDc_message = document.getElementById("iDc_message")
+                        iDc_lname.style.display = 'none'
+                        iDc_email.style.display = 'none'
+                        iDc_subject.style.display = 'none'
+                        iDc_message.style.display = 'none'
+
+                        if (c_lname.value.trim() == '') {
+                            iDc_lname.style.display = 'block'
+                            iDc_lname.innerText = 'Không được để trống họ tên'
+                            check = false
+                        }
+                        if (c_email.value.trim() == '') {
+                            iDc_email.style.display = 'block'
+                            iDc_email.innerText = 'Không được để trống email'
+                            check = false
+                        }
+                        if (c_subject.value.trim() == '') {
+                            iDc_subject.style.display = 'block'
+                            iDc_subject.innerText = 'Không được để trống chủ đề'
+                            check = false
+                        }
+                        if (c_message.value.trim() == '') {
+                            iDc_message.style.display = 'block'
+                            iDc_message.innerText = 'Không được để trống nội dung'
+                            check = false
+                        }
+                        return check
+
+                    }
+                </script>
+            </div>
+        </div>
+    </div>
+
+    <!--js bật modal khi check-->
+    <script th:if="${checkTBLienHe=='true'}">
+        window.addEventListener('DOMContentLoaded', (event) => {
+            // Hiển thị modal
+            var toast = new bootstrap.Toast(document.getElementById('thongBaoThemThanhCong'));
+            toast.show();
+        });
+    </script>
+    <!--js bật modal khi check-->
+    <!-- Modal thông báo check chọn sản phẩm-->
+    <div class="toast-container position-fixed top-50 start-50 translate-middle">
+        <div id="thongBaoThemThanhCong" class="toast" role="alert" aria-live="assertive" data-bs-delay="2000"
+             aria-atomic="true"
+             style="background-color: #7e7e7e;">
+            <div class="toast-body center-image" style=";display: flex;justify-content: center;align-items: center;">
+                <img src="../../static/img/successful_notification.png" alt="Notification Image"
+                     style="margin-top:7%;width: 12%;height: 12%;">
+            </div>
+            <div class="toast-body" style="color: white;display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            margin-bottom: 7%;
+            text-align: center;">
+                Gửi liên hệ thành công
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer border-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="footer-heading mb-4">Điều hướng</h3>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Vận chuyển</a></li>
+                                <li><a href="#">Khu vực</a></li>
+                                <li><a href="#">Kênh bán hàng</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <ul class="list-unstyled">
+                                <li><a href="/about">Đội ngũ</a></li>
+                                <li><a href="/chinh-sach">Trả hàng</a></li>
+                                <li><a href="#">Bảo mật</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <ul class="list-unstyled">
+                                <li><a href="/lien-he">Liên hệ</a></li>
+                                <li><a href="/lien-he">Chăm sóc khách hàng</a></li>
+                                <li><a href="/lien-he">Phản hồi</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-4 mb-lg-0">
+                    <h3 class="footer-heading mb-4">Mẫu mã</h3>
+                    <a href="/shop" class="block-6">
+                        <img src="../../static/img/hero_1.jpg" alt="Image placeholder"
+                             class="img-fluid rounded mb-4"/>
+                        <h3 class="font-weight-light mb-0">
+                            Tìm đôi giày hoàn hảo của bạn
+                        </h3>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="block-5 mb-5">
+                        <h3 class="footer-heading mb-4">Thông tin liên lạc</h3>
+                        <ul class="list-unstyled">
+                            <li class="address">
+                                13 P. Trịnh Văn Bô, Xuân Phương, Nam Từ Liêm, Hà Nội, Việt Nam
+                            </li>
+                            <li class="phone">
+                                <a href="tel://23923929210">+84 377 463 664</a>
+                            </li>
+                            <li class="email">sshoeshopshoes@gmail.com</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+<script src="../../static/js/jquery-3.3.1.min.js"></script>
+<script src="../../static/js/jquery-ui.js"></script>
+<script src="../../static/js/popper.min.js"></script>
+
+<script src="../../static/js/owl.carousel.min.js"></script>
+<script src="../../static/js/jquery.magnific-popup.min.js"></script>
+<script src="../../static/js/aos.js"></script>
+
+<script src="../../static/js/main.js"></script>
+</body>
+
+</html>

@@ -39,7 +39,7 @@
                             <div class="card-body">
 
                                 <div class="pt-4 pb-2">
-                                    <h5 class="card-title text-center pb-0 fs-4">Đăng nhập</h5>
+                                    <h5 class="card-title text-center pb-0 fs-4">Đăng Nhập</h5>
                                     <p class="text-center small">Nhập tên người dùng và mật khẩu của bạn để đăng
                                         nhập</p>
                                 </div>
@@ -47,7 +47,7 @@
                                 <form th:action="@{/login}" method='post' class="row g-3 needs-validation" novalidate>
 
                                     <div class="col-12">
-                                        <label for="yourUsername" class="form-label">Tên tài khoản</label>
+                                        <label for="yourUsername" class="form-label">Tên tài khoản:</label>
                                         <input type="text" class="form-control" id="yourUsername"
                                                placeholder="Nhập tài khoản"
                                                name='username' th:value="${tenTaiKhoan}" required>
@@ -55,7 +55,7 @@
                                     </div>
 
                                     <div class="col-12">
-                                        <label for="yourPassword" class="form-label">Mật khẩu</label>
+                                        <label for="yourPassword" class="form-label">Mật khẩu:</label>
                                         <input type="password" class="form-control" id="yourPassword"
                                                placeholder="Nhập mật khẩu"
                                                name='password' required th:value="${matKhauMoi}">
@@ -72,8 +72,7 @@
                                         </button>
                                     </div>
                                     <div class="col-12">
-                                        <p class="small mb-0">Bạn chưa có tài khoản? <a href="/register">Tạo một tài
-                                            khoản</a></p>
+                                        <p class="small mb-0">Bạn chưa có tài khoản? <a href="/register">Đăng ký</a></p>
                                     </div>
                                 </form>
                                 <script>

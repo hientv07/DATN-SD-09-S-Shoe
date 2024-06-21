@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>S-Shoe</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <link href="../../static/img/favicon.png" rel="icon">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,400,700"/>
+    <link rel="stylesheet" href="../../static/fonts/icomoon/style.css"/>
+
+    <!--    <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css'>-->
+
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+    <link href="../../../static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/css/magnific-popup.css"/>
+    <link rel="stylesheet" href="../../static/css/jquery-ui.css"/>
+    <link rel="stylesheet" href="../../static/css/owl.carousel.min.css"/>
+    <link rel="stylesheet" href="../../static/css/owl.theme.default.min.css"/>
+
+    <link rel="stylesheet" href="../../static/css/aos.css"/>
+
+    <link rel="stylesheet" href="../../static/css/style-customer-template.css"/>
+</head>
+
+<body>
+<div class="site-wrap">
+    <header class="site-navbar" role="banner">
+        <div class="site-navbar-top">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-6 col-md-4 order-2 order-md-1 site-search-icon text-left">
+                        <form action="" class="site-block-top-search">
+                            <span class="icon icon-search2"></span>
+                            <input type="text" class="form-control border-0" id="timKiemAll" placeholder="Tìm kiếm theo tên sản phẩm"/>
+                            <script>
+                                var inputElementTimKiemAll = document.getElementById('timKiemAll');
+
+                                inputElementTimKiemAll.addEventListener('blur', function () {
+                                    var inputValueTimKiemAll = inputElementTimKiemAll.value;
+                                    console.log('Giá trị của input:', inputValueTimKiemAll);
+
+                                    var fullUrl = window.location.origin + "/shop"
+
+                                    if (inputValueTimKiemAll !== '') {
+                                        fullUrl = updateQueryStringParameterAll('keyword', inputValueTimKiemAll, fullUrl);
+                                    } else {
+                                        fullUrl = removeQueryStringParameterAll('keyword', fullUrl);
+                                    }
+
+                                    window.location.href = fullUrl
+
+                                });
+                                // Hàm cập nhật giá trị của query parameter trong URL
+                                function updateQueryStringParameterAll(key, value, url) {
+                                    var regex = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+                                    var separator = url.indexOf('?') !== -1 ? "&" : "?";
+                                    if (url.match(regex)) {
+                                        return url.replace(regex, '$1' + key + "=" + value + '$2');
+                                    } else {
+                                        return url + separator + key + "=" + value;
+                                    }
+                                }
+
+                                // Hàm xóa query parameter khỏi URL
+                                function removeQueryStringParameterAll(key, url) {
+                                    var urlParts = url.split('?');
+                                    if (urlParts.length >= 2) {
+                                        var prefix = encodeURIComponent(key) + '=';
+                                        var queryString = urlParts[1].split('&');
+
+                                        for (var i = queryString.length - 1; i >= 0; i--) {
+                                            if (queryString[i].lastIndexOf(prefix, 0) !== -1) {
+                                                queryString.splice(i, 1);
+                                            }
+                                        }
+
+                                        url = urlParts[0] + (queryString.length > 0 ? '?' + queryString.join('&') : '');
+                                    }
+
+                                    return url;
+                                }
+                            </script>
+
+                        </form>
+                    </div>
+
+                    <div class="col-12 mb-3 mb-md-0 col-md-4 order-1 order-md-2 text-center">
+                        <div class="site-logo">
+                            <a href="/home" class="js-logo-clone">S-Shoe</a>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4 order-3 order-md-3 text-right">
+                        <div class="site-top-icons">
+                            <ul class="nav nav-pills" style="margin-left: 54%">
+                                <li class="nav-item dropdown" th:if="${checkDangNhap=='true'}">
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
+                                       role="button" aria-expanded="false"><span class="icon icon-person"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="/user/thong-tin-khach-hang">Tài Khoản Của Tôi</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="/user/don-mua">Đơn Mua</a></li>
+                                        <li><a class="dropdown-item" th:href="@{/logout}">Đăng Xuất</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown" th:if="${checkDangNhap=='false'}">
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
+                                       role="button" aria-expanded="false"><span class="icon icon-person"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="/login">Đăng Nhập</a></li>
+
+                                    </ul>
+                                </li>
+
+                                <li class="nav-item" style="margin-top: 5%;margin-left: -5%">
+                                    <a class="site-cart" href="/user/cart">
+                                        <span class="icon icon-shopping_cart"></span>
+                                        <span class="count" th:if="${checkDangNhap=='true'}" th:text="${soLuongSPGioHangCT}"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav class="site-navigation text-right text-md-center" role="navigation">
+            <div class="container">
+                <ul class="site-menu js-clone-nav d-none d-md-block">
+                    <li>
+                        <a href="/home">Trang chủ</a>
+                    </li>
+
+                    <li><a href="/shop">Sản phẩm</a></li>
+                    <li><a href="/about">Về chúng tôi</a></li>
+                    <li><a href="/lien-he">Liên hệ</a></li>
+                    <li><a href="/chinh-sach">Chính Sách</a></li>
+                    <li><a href="/tra-cuu-don-hang">Tra Cứu Đơn Hàng</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+
+    <div class="productfinder">
+        <div class="pf-filter-item">
+            <form class="pf-controls" id="pf-Filters">
+                <fieldset class="filter-group pf-search">
+                    <h4>Tìm kiếm</h4>
+                    <input type="text" style="width: 100%" class="live-search-box" id="pf-search-id"
+                           placeholder="Tìm kiếm theo tên sản phẩm"/>
+                </fieldset>
+                <div style="border-top: 1px solid #bfbfbf;width: 95%;margin-top: 5%;margin-bottom: 5%"></div>
+                <fieldset class="filter-group pf-checkboxes">
+                    <h4>Màu Sắc</h4>
+                    <div class="pf-checkbox" th:each="mauSac : ${listMauSac}">
+                        <input type="checkbox" th:value="${mauSac.id}"
+                               class="mauSacCheckbox" onclick="handleCheckboxClick(this)"/>
+                        <label th:text="${mauSac.ten}"></label>
+                    </div>
+                </fieldset>
+                <div style="border-top: 1px solid #bfbfbf;width: 95%;margin-top: 5%;margin-bottom: 5%"></div>
+                <fieldset class="filter-group pf-checkboxes">
+                    <h4>Kích Cỡ</h4>
+                    <div class="pf-checkbox" th:each="kichCo : ${listKichCo}">
+                        <input type="checkbox" th:value="${kichCo.id}"
+                               class="kichCoCheckbox" onclick="handleCheckboxClick(this)"/>
+                        <label th:text="${kichCo.ten}"></label>
+                    </div>
+                </fieldset>
+                <div style="border-top: 1px solid #bfbfbf;width: 95%;margin-top: 5%;margin-bottom: 5%"></div>
+                <fieldset class="filter-group pf-checkboxes">
+                    <h4>Loại Đế</h4>
+                    <div class="pf-checkbox" th:each="loaiDe : ${listLoaiDe}">
+                        <input type="checkbox" th:value="${loaiDe.id}"
+                               class="loaiDeCheckbox" onclick="handleCheckboxClick(this)"/>
+                        <label th:text="${loaiDe.ten}"></label>
+                    </div>
+                </fieldset>
+                <div style="border-top: 1px solid #bfbfbf;width: 95%;margin-top: 5%;margin-bottom: 5%"></div>
+                <fieldset class="filter-group pf-checkboxes">
+                    <h4>Thương Hiệu</h4>
+                    <div class="pf-checkbox" th:each="thuongHieu : ${listThuongHieu}">
+                        <input type="checkbox" th:value="${thuongHieu.id}"
+                               class="thuongHieuCheckbox" onclick="handleCheckboxClick(this)"/>
+                        <label th:text="${thuongHieu.ten}"></label>
+                    </div>
+                </fieldset>
+                <div style="border-top: 1px solid #bfbfbf;width: 95%;margin-top: 5%;margin-bottom: 5%"></div>
+                <fieldset class="filter-group pf-checkboxes">
+                    <h4>Khoảng giá</h4>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input type="text" style="width: 47%" id="minPrice" placeholder="Từ"
+                                   min="1" maxlength="13" step="1" oninput="limitInput(this)">
+                            -
+                            <input type="text" style="width: 47%" id="maxPrice" placeholder="Đến"
+                                   min="1" maxlength="13" step="1" oninput="limitInput(this)">
+                        </div>
+                        <div class="col-md-12">
+                            <div class="check-loi" id="checkLoiKhoangGia"
+                                 style="text-align: center;margin-top: 5%;display: none"></div>
+                            <button type="button"
+                                    onclick="checkApDung()"
+                                    style="width: 100%;background-color: #ff7f1f;color: white;margin-top: 5%"
+                                    class="btn btn-primary">Áp dụng
+                            </button>
+                        </div>
+                    </div>
+                </fieldset>
+                <div style="border-top: 1px solid #bfbfbf;width: 95%;margin-top: 5%;margin-bottom: 5%"></div>
+
+                <button id="pf-Reset" style="width: 95%;background-color: #ff7f1f;color: white">Xóa bộ lọc</button>
+                <script>
+
+                    function limitInput(inputElement) {
+                        var minValue = parseInt(inputElement.min, 10);
+                        var maxValue = parseInt(inputElement.max, 10);
+                        var stepValue = parseInt(inputElement.step, 10);
+
+                        // Chuyển giá trị nhập vào thành số nguyên
+                        var enteredValue = parseInt(inputElement.value, 10);
+
+                        // Kiểm tra giá trị nhập vào
+                        if (isNaN(enteredValue)) {
+                            // Nếu giá trị không phải là số, đặt giá trị mặc định là giá trị nhỏ nhất
+                            inputElement.value = minValue;
+                        } else if (enteredValue < minValue) {
+                            // Nếu giá trị nhỏ hơn giá trị nhỏ nhất, đặt giá trị nhỏ nhất
+                            inputElement.value = minValue;
+                        } else if (enteredValue > maxValue) {
+                            // Nếu giá trị lớn hơn giá trị lớn nhất, đặt giá trị lớn nhất
+                            inputElement.value = maxValue;
+                        } else if (enteredValue % stepValue !== 0) {
+                            // Nếu giá trị không chia hết cho bước, làm tròn đến giá trị gần nhất chia hết cho bước
+                            inputElement.value = Math.round(enteredValue / stepValue) * stepValue;
+                        }
+                    }
+
+                    // Biến để lưu trữ vị trí trang
+                    var scrollPosition = 0;
+
+                    // Lấy vị trí trang khi trang được load
+                    window.onload = function () {
+                        scrollPosition = window.pageYOffset;
+                    };
+
+                    function checkApDung() {
+
+                        var check = true;
+
+                        var minPrice = document.getElementById("minPrice")
+                        var maxPrice = document.getElementById("maxPrice")
+                        var checkLoiKhoangGia = document.getElementById("checkLoiKhoangGia")
+                        checkLoiKhoangGia.style.display = 'none'
+                        if (minPrice.value.trim() == '' && maxPrice.value.trim() == '') {
+                            checkLoiKhoangGia.style.display = 'block'
+                            checkLoiKhoangGia.innerText = "Vui lòng điền khoảng giá phù hợp"
+                            check = false
+                        }
+                        var minValue = parseFloat(minPrice.value);
+                        var maxValue = parseFloat(maxPrice.value);
+                        if (minValue > maxValue) {
+                            checkLoiKhoangGia.style.display = 'block'
+                            console.log("min: " + minPrice.value)
+                            console.log("max: " + maxPrice.value)
+                            checkLoiKhoangGia.innerText = "Vui lòng điền khoảng giá phù hợp"
+                            check = false
+                        }
+
+                        if (check) {
+                            var fullUrl = window.location.href;
+
+                            if (minPrice.value !== '') {
+                                fullUrl = updateQueryStringParameter('minPrice', minPrice.value, fullUrl);
+                            } else {
+                                fullUrl = removeQueryStringParameter('minPrice', fullUrl);
+                            }
+
+                            if (maxPrice.value !== '') {
+                                fullUrl = updateQueryStringParameter('maxPrice', maxPrice.value, fullUrl);
+                            } else {
+                                fullUrl = removeQueryStringParameter('maxPrice', fullUrl);
+                            }
+
+                            window.location.href = fullUrl
+
+                        }
+
+                    }
+
+                    var selectedMauSacValues = [];
+                    var selectedKichCoValues = [];
+                    var selectedLoaiDeValues = [];
+                    var selectedThuongHieuValues = [];
+
+
+                    window.onload = function () {
+                        // Khi trang được tải, kiểm tra xem có tham số MauSac và KichCo trong URL không
+                        var urlParams = new URLSearchParams(window.location.search);
+                        var MauSacParam = urlParams.get('MauSac');
+                        var KichCoParam = urlParams.get('KichCo');
+                        var LoaiDeParam = urlParams.get('LoaiDe');
+                        var ThuongHieuParam = urlParams.get('ThuongHieu');
+                        var keywordParam = urlParams.get('keyword');
+                        var minPrice = urlParams.get('minPrice');
+                        var maxPrice = urlParams.get('maxPrice');
+                        var page = urlParams.get('page');
+
+                        if (MauSacParam) {
+                            // Nếu có, thêm các giá trị vào mảng selectedMauSacValues
+                            selectedMauSacValues = MauSacParam.split(',');
+
+                            // Cập nhật trạng thái checkbox dựa trên selectedMauSacValues
+                            selectedMauSacValues.forEach(function (value) {
+                                var checkbox = document.querySelector('.mauSacCheckbox[value="' + value + '"]');
+                                if (checkbox) {
+                                    checkbox.checked = true;
+                                }
+                            });
+                        }
+
+                        if (KichCoParam) {
+                            // Nếu có, thêm các giá trị vào mảng selectedKichCoValues
+                            selectedKichCoValues = KichCoParam.split(',');
+
+                            // Cập nhật trạng thái checkbox dựa trên selectedKichCoValues
+                            selectedKichCoValues.forEach(function (value) {
+                                var checkbox = document.querySelector('.kichCoCheckbox[value="' + value + '"]');
+                                if (checkbox) {
+                                    checkbox.checked = true;
+                                }
+                            });
+                        }
+
+                        if (LoaiDeParam) {
+                            // Nếu có, thêm các giá trị vào mảng selectedKichCoValues
+                            selectedLoaiDeValues = LoaiDeParam.split(',');
+
+                            // Cập nhật trạng thái checkbox dựa trên selectedKichCoValues
+                            selectedLoaiDeValues.forEach(function (value) {
+                                var checkbox = document.querySelector('.loaiDeCheckbox[value="' + value + '"]');
+                                if (checkbox) {
+                                    checkbox.checked = true;
+                                }
+                            });
+                        }
+                        if (ThuongHieuParam) {
+                            // Nếu có, thêm các giá trị vào mảng selectedKichCoValues
+                            selectedThuongHieuValues = ThuongHieuParam.split(',');
+
+                            // Cập nhật trạng thái checkbox dựa trên selectedKichCoValues
+                            selectedThuongHieuValues.forEach(function (value) {
+                                var checkbox = document.querySelector('.thuongHieuCheckbox[value="' + value + '"]');
+                                if (checkbox) {
+                                    checkbox.checked = true;
+                                }
+                            });
+                        }
+                        if (keywordParam) {
+
+                            var inputElementSearch = document.getElementById('pf-search-id');
+                            inputElementSearch.value = keywordParam
+
+                        }
+                        if (minPrice) {
+
+                            var inputElementMinPrice = document.getElementById('minPrice');
+                            inputElementMinPrice.value = minPrice
+
+                        }
+                        if (maxPrice) {
+
+                            var inputElementMaxPrice = document.getElementById('maxPrice');
+                            inputElementMaxPrice.value = maxPrice
+
+                        }
+                        if (page) {
+
+                            var inputElementPageNo = document.getElementById('pageNo');
+                            var minPageCount = document.getElementById('minPageCount');
+                            var maxPageCount = document.getElementById('maxPageCount');
+                            var intPage = parseInt(page) + 1
+                            minPageCount.innerHTML = ''
+                            minPageCount.innerText = intPage
+                            inputElementPageNo.value = intPage
+                            var minPageCount1 = document.getElementById('minPageCount');
+                            var maxPageCount1 = document.getElementById('maxPageCount');
+                            var min = parseInt(minPageCount1.innerText)
+                            var max = parseInt(maxPageCount1.innerText)
+                            if (max == 1) {
+                                if (min > 1) {
+                                    var checkLoi = document.getElementById('checkLoi');
+                                    checkLoi.innerText = ''
+                                    checkLoi.innerText = 'Số trang không hợp lệ'
+                                }
+                            }
+                        }
+                    };
+
+                    var inputElementSearch = document.getElementById('pf-search-id');
+
+                    inputElementSearch.addEventListener('blur', function () {
+                        var inputValue = inputElementSearch.value;
+                        console.log('Giá trị của input:', inputValue);
+
+                        var fullUrl = window.location.href;
+
+                        if (inputValue !== '') {
+                            fullUrl = updateQueryStringParameter('keyword', inputValue, fullUrl);
+                        } else {
+                            fullUrl = removeQueryStringParameter('keyword', fullUrl);
+                        }
+
+                        window.location.href = fullUrl
+
+
+                    });
+
+                    function handleCheckboxClick(checkbox) {
+                        const checkedValue = checkbox.value;
+                        const checkboxClass = checkbox.classList.contains('mauSacCheckbox') ? 'mauSac' :
+                            checkbox.classList.contains('kichCoCheckbox') ? 'kichCo' :
+                                checkbox.classList.contains('loaiDeCheckbox') ? 'loaiDe' : 'thuongHieu';
+
+
+                        if (checkbox.checked) {
+                            if (checkboxClass === 'mauSac') {
+                                selectedMauSacValues.push(checkedValue);
+                            } else if (checkboxClass === 'kichCo') {
+                                selectedKichCoValues.push(checkedValue);
+                            } else if (checkboxClass === 'loaiDe') {
+                                selectedLoaiDeValues.push(checkedValue);
+                            } else {
+                                selectedThuongHieuValues.push(checkedValue);
+                            }
+                        } else {
+                            if (checkboxClass === 'mauSac') {
+                                const index = selectedMauSacValues.indexOf(checkedValue);
+                                if (index !== -1) {
+                                    selectedMauSacValues.splice(index, 1);
+                                }
+                            } else if (checkboxClass === 'kichCo') {
+                                const index = selectedKichCoValues.indexOf(checkedValue);
+                                if (index !== -1) {
+                                    selectedKichCoValues.splice(index, 1);
+                                }
+                            } else if (checkboxClass === 'loaiDe') {
+                                const index = selectedLoaiDeValues.indexOf(checkedValue);
+                                if (index !== -1) {
+                                    selectedLoaiDeValues.splice(index, 1);
+                                }
+                            } else {
+                                const index = selectedThuongHieuValues.indexOf(checkedValue);
+                                if (index !== -1) {
+                                    selectedThuongHieuValues.splice(index, 1);
+                                }
+                            }
+                        }
+
+                        console.log('Selected MauSac Values:', selectedMauSacValues);
+                        console.log('Selected KichCo Values:', selectedKichCoValues);
+                        console.log('Selected LoaiDe Values:', selectedLoaiDeValues);
+                        console.log('Selected ThuongHieu Values:', selectedThuongHieuValues);
+
+                        // Chuyển mảng thành chuỗi query string
+                        var mauSacQueryString = selectedMauSacValues.join(',');
+                        var kichCoQueryString = selectedKichCoValues.join(',');
+                        var loaiDeQueryString = selectedLoaiDeValues.join(',');
+                        var thuonghieuQueryString = selectedThuongHieuValues.join(',');
+
+                        // Lấy toàn bộ URL hiện tại
+                        var fullUrl = window.location.href;
+
+                        // Thêm/chỉnh sửa tham số MauSac
+                        if (mauSacQueryString !== '') {
+                            fullUrl = updateQueryStringParameter('MauSac', mauSacQueryString, fullUrl);
+                        } else {
+                            fullUrl = removeQueryStringParameter('MauSac', fullUrl);
+                        }
+
+                        // Thêm/chỉnh sửa tham số KichCo
+                        if (kichCoQueryString !== '') {
+                            fullUrl = updateQueryStringParameter('KichCo', kichCoQueryString, fullUrl);
+                        } else {
+                            fullUrl = removeQueryStringParameter('KichCo', fullUrl);
+                        }
+
+                        // Thêm/chỉnh sửa tham số LoaiDe
+                        if (loaiDeQueryString !== '') {
+                            fullUrl = updateQueryStringParameter('LoaiDe', loaiDeQueryString, fullUrl);
+                        } else {
+                            fullUrl = removeQueryStringParameter('LoaiDe', fullUrl);
+                        }
+
+                        // Thêm/chỉnh sửa tham số ThuongHieu
+                        if (thuonghieuQueryString !== '') {
+                            fullUrl = updateQueryStringParameter('ThuongHieu', thuonghieuQueryString, fullUrl);
+                        } else {
+                            fullUrl = removeQueryStringParameter('ThuongHieu', fullUrl);
+                        }
+
+
+                        console.log('New URL:', fullUrl);
+
+                        window.history.replaceState(null, null, fullUrl);
+                        window.location.href = fullUrl
+
+                        scrollPosition = window.pageYOffset;
+                        location.reload();
+                    }
+
+
+                    // Hàm cập nhật giá trị của query parameter trong URL
+                    function updateQueryStringParameter(key, value, url) {
+                        var regex = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+                        var separator = url.indexOf('?') !== -1 ? "&" : "?";
+                        if (url.match(regex)) {
+                            return url.replace(regex, '$1' + key + "=" + value + '$2');
+                        } else {
+                            return url + separator + key + "=" + value;
+                        }
+                    }
+
+                    // Hàm xóa query parameter khỏi URL
+                    function removeQueryStringParameter(key, url) {
+                        var urlParts = url.split('?');
+                        if (urlParts.length >= 2) {
+                            var prefix = encodeURIComponent(key) + '=';
+                            var queryString = urlParts[1].split('&');
+
+                            for (var i = queryString.length - 1; i >= 0; i--) {
+                                if (queryString[i].lastIndexOf(prefix, 0) !== -1) {
+                                    queryString.splice(i, 1);
+                                }
+                            }
+
+                            url = urlParts[0] + (queryString.length > 0 ? '?' + queryString.join('&') : '');
+                        }
+
+                        return url;
+                    }
+                </script>
+            </form>
+        </div>
+        <div style="float: right;margin-top: 2%;margin-right: 10%" class="dieu-huong">
+            <div class="dieu-huong1" style="display: inline;font-size: 1.8rem">
+                <span style="color: red" id="minPageCount">1</span>/<span th:text="${pageCount}"
+                                                                          id="maxPageCount"></span>
+            </div>
+            <div class="dieu-huong2" style="display: inline">
+                <button style="background-color: white;border: 1px solid black" id="preTop">
+                    <i class="bi bi-chevron-left"></i>
+                </button>
+                <button style="background-color: white;border: 1px solid black" id="nextTop">
+                    <i class="bi bi-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="pf-wrapper">
+
+            <!-- Start Product Section -->
+            <div class="product-section">
+                <div class="container">
+                    <h1 th:if="${checkListChiTietSP=='true'}"
+                        style="margin-bottom: 25%;margin-right: 10%;text-align: center" id='checkLoi'>Không tìm thấy sản
+                        phẩm phù hợp
+                        với bộ lọc đã chọn. Hãy thử lại với các bộ lọc khác.</h1>
+                    <div class="row" style="margin-top: -13%">
+                        <div id="pf-Container" class="pf-container live-search-list">
+                            <div class="fail-message" style="text-align: center;margin-top: 20%;display: none"></div>
+                            <div class="pf-card" th:each="chiTiepSp,stage : ${listCTSP}"
+                                 style="margin-top: 5%">
+                                <a class="product-item" th:href="@{/user/shop-single/{id}(id=${chiTiepSp.sanPham.id})}">
+                                    <input type="hidden" th:value="${chiTiepSp.sanPham.ten}">
+                                    <input type="hidden" th:value="${chiTiepSp.sanPham.id}">
+                                    <div class="product-thumbnail-container">
+                                        <img th:each="anh : ${chiTiepSp.sanPham.listHinhAnhSanPham[0]}"
+                                             th:src="@{'../../../static/img/ImgShoe/' + ${anh.url}}"
+                                             class="img-fluid product-thumbnail">
+                                    </div>
+                                    <div class="product-info-container">
+                                        <h3 class="product-title"
+                                            th:text="${chiTiepSp.sanPham.ten+' ['+chiTiepSp.mauSac.ten+ ' - ' +chiTiepSp.kichCo.ten}+']'"></h3>
+                                        <strong class="product-price"
+                                                th:text="${chiTiepSp.giaHienHanh + ' VNĐ'}"></strong>
+                                        <span class="icon-cross">
+							                 <img src="../../static/img/plus-black.png" class="img-fluid">
+						                </span>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <nav aria-label="Page navigation example" style="margin-left: 35%">
+                        <ul class="pagination" style="font-size: 1.4rem">
+                            <li class="page-item">
+                                <a class="page-link" id="first" aria-label="Previous">
+                                    <i class="bi bi-chevron-double-left"></i>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" id="pre" aria-label="Previous">
+                                    <i class="bi bi-chevron-left"></i>
+                                </a>
+                            </li>
+
+                            <li class="page-item" style="width: 7%">
+                                <input type="text" min="1" th:max="${pageCount}" value="1"
+                                       oninput="limitInput1(this)"
+                                       step="1"
+                                       id="pageNo"
+                                       style="width: 98%;height: 45px;padding-left: 40%">
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" id="next" aria-label="Next">
+                                    <i class="bi bi-chevron-right"></i>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" id="last" aria-label="Next">
+                                    <i class="bi bi-chevron-double-right"></i>
+                                </a>
+                            </li>
+                        </ul>
+                        <script>
+                            // --------------------nút điều hướng trên----------------
+                            var preTop = document.getElementById("preTop");
+
+                            preTop.addEventListener("click", function (event) {
+                                var pageItem = document.getElementById("pre")
+
+                                // Kiểm tra xem phần tử có tồn tại không
+                                if (pageItem) {
+                                    // Kích hoạt sự kiện click trên phần tử "page-item"
+                                    pageItem.click();
+                                }
+
+                            });
+
+                            var nextTop = document.getElementById("nextTop");
+
+                            // Đính kèm một bộ lắng nghe sự kiện click
+                            nextTop.addEventListener("click", function (event) {
+                                var pageItem = document.getElementById("next")
+
+                                // Kiểm tra xem phần tử có tồn tại không
+                                if (pageItem) {
+                                    // Kích hoạt sự kiện click trên phần tử "page-item"
+                                    pageItem.click();
+                                }
+                            });
+
+                            // --------------------nút điều hướng trên----------------
+
+                            var preLink = document.getElementById("pre");
+
+                            preLink.addEventListener("click", function (event) {
+                                capNhatSoLuong(this, -1);
+                            });
+
+                            var nextLink = document.getElementById("next");
+
+                            nextLink.addEventListener("click", function (event) {
+                                capNhatSoLuong(this, 1);
+                            });
+
+                            var inputElement = document.getElementById('pageNo');
+                            inputElement.addEventListener('blur', function () {
+                                var inputValue = inputElement.value - 1;
+                                console.log('Giá trị của input:', inputValue);
+
+                                var fullUrl = window.location.href;
+
+                                if (inputValue !== '') {
+                                    fullUrl = updateQueryStringParameter('page', inputValue, fullUrl);
+                                } else {
+                                    fullUrl = removeQueryStringParameter('page', fullUrl);
+                                }
+
+                                window.location.href = fullUrl
+
+
+                            });
+
+                            function capNhatSoLuong(button, soLuongThem) {
+                                var input = $(button).closest('ul.pagination').find('input[id^="pageNo"]');
+                                var min = parseInt(input.attr('min'));
+                                var max = parseInt(input.attr('max'));
+                                var step = parseInt(input.attr('step'));
+                                var soLuongHienTai = parseInt(input.val());
+                                var soLuongMoi = soLuongHienTai + soLuongThem;
+
+                                // Kiểm tra giá trị mới nằm trong khoảng từ min đến max và là bội số của step
+                                if (min && soLuongMoi < min) {
+                                    soLuongMoi = min;
+                                }
+                                if (max && soLuongMoi > max) {
+                                    soLuongMoi = max;
+                                }
+                                if (step && soLuongMoi % step !== 0) {
+                                    soLuongMoi = Math.ceil(soLuongMoi / step) * step; // Làm cho nó là bội số của step
+                                }
+
+                                // Cập nhật giá trị mới cho input
+                                input.val(soLuongMoi);
+                                console.log(soLuongMoi);
+
+                                var fullUrl = window.location.href;
+
+                                if (soLuongMoi - 1 !== '') {
+                                    fullUrl = updateQueryStringParameter('page', soLuongMoi - 1, fullUrl);
+                                } else {
+                                    fullUrl = removeQueryStringParameter('page', fullUrl);
+                                }
+
+                                window.location.href = fullUrl
+
+                            }
+
+
+                            // --------------------------------
+                            var firstLink = document.getElementById("first");
+
+                            firstLink.addEventListener("click", function (event) {
+                                capNhatSoLuongFirstLast(this, "first");
+                            });
+
+                            var lastLink = document.getElementById("last");
+
+                            lastLink.addEventListener("click", function (event) {
+                                capNhatSoLuongFirstLast(this, "last");
+                            });
+
+                            function capNhatSoLuongFirstLast(button, string) {
+                                var input = $(button).closest('ul.pagination').find('input[id^="pageNo"]');
+                                var min = parseInt(input.attr('min'));
+                                var max = parseInt(input.attr('max'));
+                                var step = parseInt(input.attr('step'));
+
+
+                                if (string == 'first') {
+                                    console.log("min" + min);
+                                    input.val(min);
+                                    var fullUrl = window.location.href;
+
+                                    if (min - 1 !== '') {
+                                        fullUrl = updateQueryStringParameter('page', min - 1, fullUrl);
+                                    } else {
+                                        fullUrl = removeQueryStringParameter('page', fullUrl);
+                                    }
+
+                                    window.location.href = fullUrl
+                                }
+                                if (string == 'last') {
+                                    console.log("max" + max);
+                                    input.val(max);
+                                    var fullUrl = window.location.href;
+
+                                    if (max - 1 !== '') {
+                                        fullUrl = updateQueryStringParameter('page', max - 1, fullUrl);
+                                    } else {
+                                        fullUrl = removeQueryStringParameter('page', fullUrl);
+                                    }
+
+                                    window.location.href = fullUrl
+                                }
+
+
+                            }
+
+
+                            function limitInput1(inputElement) {
+                                var minValue = parseInt(inputElement.min, 10);
+                                var maxValue = parseInt(inputElement.max, 10);
+                                var stepValue = parseInt(inputElement.step, 10);
+
+                                // Chuyển giá trị nhập vào thành số nguyên
+                                var enteredValue = parseInt(inputElement.value, 10);
+
+                                // Kiểm tra giá trị nhập vào
+                                if (isNaN(enteredValue)) {
+                                    // Nếu giá trị không phải là số, đặt giá trị mặc định là giá trị nhỏ nhất
+                                    inputElement.value = minValue;
+                                } else if (enteredValue < minValue) {
+                                    // Nếu giá trị nhỏ hơn giá trị nhỏ nhất, đặt giá trị nhỏ nhất
+                                    inputElement.value = minValue;
+                                } else if (enteredValue > maxValue) {
+                                    // Nếu giá trị lớn hơn giá trị lớn nhất, đặt giá trị lớn nhất
+                                    inputElement.value = maxValue;
+                                } else if (enteredValue % stepValue !== 0) {
+                                    // Nếu giá trị không chia hết cho bước, làm tròn đến giá trị gần nhất chia hết cho bước
+                                    inputElement.value = Math.round(enteredValue / stepValue) * stepValue;
+                                }
+                            }
+                        </script>
+                    </nav>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer border-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="footer-heading mb-4">Điều hướng</h3>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Vận chuyển</a></li>
+                                <li><a href="#">Khu vực</a></li>
+                                <li><a href="#">Kênh bán hàng</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <ul class="list-unstyled">
+                                <li><a href="/about">Đội ngũ</a></li>
+                                <li><a href="/chinh-sach">Trả hàng</a></li>
+                                <li><a href="#">Bảo mật</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <ul class="list-unstyled">
+                                <li><a href="/lien-he">Liên hệ</a></li>
+                                <li><a href="/lien-he">Chăm sóc khách hàng</a></li>
+                                <li><a href="/lien-he">Phản hồi</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-4 mb-lg-0">
+                    <h3 class="footer-heading mb-4">Mẫu mã</h3>
+                    <a href="/shop" class="block-6">
+                        <img src="../../static/img/ImgShoe/adidas22_ULTRABOOST%2022%20(3).jpg" alt="Image placeholder"
+                             class="img-fluid rounded mb-4"/>
+                        <h3 class="font-weight-light mb-0">
+                            Tìm đôi giày hoàn hảo của bạn
+                        </h3>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="block-5 mb-5">
+                        <h3 class="footer-heading mb-4">Thông tin liên lạc</h3>
+                        <ul class="list-unstyled">
+                            <li class="address">
+                                13 P. Trịnh Văn Bô, Xuân Phương, Nam Từ Liêm, Hà Nội, Việt Nam
+                            </li>
+                            <li class="phone">
+                                <a href="tel://23923929210">+84 377 463 664</a>
+                            </li>
+                            <li class="email">sshoeshopshoes@gmail.com</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+</div>
+<style>
+    .productfinder {
+        width: 100%;
+        height: 100%;
+        padding: 0 30px;
+        margin-left: 3%;
+        display: table;
+    }
+
+    .productfinder > div {
+        display: table-cell;
+        float: left;
+    }
+
+    .productfinder h4 {
+        font-weight: 700;
+        margin-bottom: .5em;
+    }
+
+    .productfinder label {
+        font-weight: 300;
+    }
+
+    .productfinder input[type="text"] {
+        font-family: 'helvetica';
+        font-size: 14px;
+        border: 1px solid #68b8c4;
+        padding: .5em;
+        border-radius: 2px;
+    }
+
+    .productfinder input[type="text"]:focus {
+        outline: 0 none;
+        border-color: #68b8c4;
+    }
+
+    .productfinder button {
+        display: inline-block;
+        vertical-align: top;
+        padding: .4em .8em;
+        margin: 0;
+        background: #68b8c4;
+        border: 0;
+        color: #333;
+        font-size: 16px;
+        font-weight: 700;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .productfinder button:focus {
+        outline: 0 none;
+    }
+
+    .productfinder .pf-controls {
+        padding: 2%;
+    }
+
+    .productfinder .filter-group {
+        display: block;
+        margin: 0 1em 0 0;
+        border: 0;
+        padding: .5em;
+    }
+
+    .productfinder .pf-checkbox {
+        display: block;
+        position: relative;
+        cursor: pointer;
+        margin-bottom: 8px;
+    }
+
+    .productfinder .pf-checkbox input[type="checkbox"] {
+        position: absolute;
+        display: block;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        cursor: pointer;
+        margin: 0;
+        opacity: 0;
+        z-index: 1;
+    }
+
+    .productfinder .pf-checkbox label {
+        display: inline-block;
+        vertical-align: top;
+        text-align: left;
+        padding-left: 1.5em;
+    }
+
+    .productfinder .pf-checkbox label:before,
+    .productfinder .pf-checkbox label:after {
+        content: '';
+        display: block;
+        position: absolute;
+    }
+
+    .productfinder .pf-checkbox label:before {
+        left: 0;
+        top: 0;
+        width: 18px;
+        height: 18px;
+        margin-right: 10px;
+        background: #ddd;
+        border-radius: 3px;
+    }
+
+    .productfinder .pf-checkbox label:after {
+        content: '';
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
+        background: black;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .productfinder .pf-checkbox input:checked ~ label:after {
+        opacity: 1;
+    }
+
+    .productfinder .pf-checkbox input:focus ~ label:before {
+        background: #eee;
+    }
+
+    .productfinder .pf-container .fail-message {
+        text-align: center;
+        pointer-events: none;
+        vertical-align: middle;
+        font-weight: bold;
+        font-size: large;
+        position: absolute;
+        top: 30%;
+        left: 50%;
+    }
+
+    .productfinder .pf-filter-item {
+        width: 300px;
+    }
+
+    .productfinder .pf-wrapper {
+        width: calc(100% - 300px);
+    }
+
+    .productfinder .pf-container > div:not(.fail-message) {
+        width: calc(25% - 50px);
+        float: left;
+    }
+
+    .productfinder .pf-container {
+        display: -ms-flexbox !important;
+        display: flex !important;
+        -ms-flex-wrap: wrap !important;
+        flex-wrap: wrap !important;
+        -ms-flex-line-pack: start !important;
+        align-content: flex-start !important;
+    }
+
+    .productfinder .pf-container .pf-card {
+        text-align: center;
+        border: 1px solid transparent;
+        /*box-shadow: 0 0 15px rgba(1, 65, 137, 0.23);*/
+        padding: 10px;
+        margin: 10px;
+        position: relative;
+        padding-bottom: 35px;
+    }
+
+    .productfinder .pf-container .pf-card .pf-card-header {
+    }
+
+    .productfinder .pf-container .pf-card img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+
+    }
+</style>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
+
+
+<script src="../../static/js/jquery-3.3.1.min.js"></script>
+<script src="../../static/js/jquery-ui.js"></script>
+<script src="../../static/js/popper.min.js"></script>
+
+<script src="../../static/js/owl.carousel.min.js"></script>
+<script src="../../static/js/jquery.magnific-popup.min.js"></script>
+<script src="../../static/js/aos.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+<script src="../../static/js/main.js"></script>
+</body>
+
+</html>

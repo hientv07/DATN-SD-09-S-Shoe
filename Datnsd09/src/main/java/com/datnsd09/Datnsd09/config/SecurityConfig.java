@@ -69,7 +69,7 @@ public class SecurityConfig {
                         System.out.println(userDetails.getPassword());
                         return "/admin/nhan-vien";
                     } else if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_USER"))) {
-                        return "/user/thong-tin-khach-hang";
+                        return "/home";
                     } else {
                         return "/login-error";
                     }

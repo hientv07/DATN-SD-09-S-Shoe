@@ -52,7 +52,7 @@ public class LoginController {
         if (principalCustom.getCurrentUserNameAdmin() != null) {
             return "redirect:/admin/nhan-vien";
         } else if (principalCustom.getCurrentUserNameCustomer() != null) {
-            return "redirect:/user/thong-tin-khach-hang";
+            return "redirect:/home";
         } else {
             return "dang-nhap";
         }

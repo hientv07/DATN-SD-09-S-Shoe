@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>S-Shoe</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <link href="../../static/img/favicon.png" rel="icon">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,400,700"/>
+
+    <link rel="stylesheet" href="../../static/fonts/icomoon/style.css"/>
+
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/css/magnific-popup.css"/>
+    <link rel="stylesheet" href="../../static/css/jquery-ui.css"/>
+    <link rel="stylesheet" href="../../static/css/owl.carousel.min.css"/>
+    <link rel="stylesheet" href="../../static/css/owl.theme.default.min.css"/>
+
+    <link rel="stylesheet" href="../../static/css/aos.css"/>
+
+    <link rel="stylesheet" href="../../static/css/style-customer-template.css"/>
+
+</head>
+
+<body>
+<div class="site-wrap">
+    <header class="site-navbar" role="banner">
+        <div class="site-navbar-top">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-6 col-md-4 order-2 order-md-1 site-search-icon text-left">
+                        <form action="" class="site-block-top-search">
+                            <span class="icon icon-search2"></span>
+                            <input type="text" class="form-control border-0" id="timKiemAll" placeholder="Tìm kiếm theo tên sản phẩm"/>
+                            <script>
+                                var inputElementTimKiemAll = document.getElementById('timKiemAll');
+
+                                inputElementTimKiemAll.addEventListener('blur', function () {
+                                    var inputValueTimKiemAll = inputElementTimKiemAll.value;
+                                    console.log('Giá trị của input:', inputValueTimKiemAll);
+
+                                    var fullUrl = window.location.origin + "/shop"
+
+                                    if (inputValueTimKiemAll !== '') {
+                                        fullUrl = updateQueryStringParameterAll('keyword', inputValueTimKiemAll, fullUrl);
+                                    } else {
+                                        fullUrl = removeQueryStringParameterAll('keyword', fullUrl);
+                                    }
+
+                                    window.location.href = fullUrl
+
+
+                                });
+                                // Hàm cập nhật giá trị của query parameter trong URL
+                                function updateQueryStringParameterAll(key, value, url) {
+                                    var regex = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+                                    var separator = url.indexOf('?') !== -1 ? "&" : "?";
+                                    if (url.match(regex)) {
+                                        return url.replace(regex, '$1' + key + "=" + value + '$2');
+                                    } else {
+                                        return url + separator + key + "=" + value;
+                                    }
+                                }
+
+                                // Hàm xóa query parameter khỏi URL
+                                function removeQueryStringParameterAll(key, url) {
+                                    var urlParts = url.split('?');
+                                    if (urlParts.length >= 2) {
+                                        var prefix = encodeURIComponent(key) + '=';
+                                        var queryString = urlParts[1].split('&');
+
+                                        for (var i = queryString.length - 1; i >= 0; i--) {
+                                            if (queryString[i].lastIndexOf(prefix, 0) !== -1) {
+                                                queryString.splice(i, 1);
+                                            }
+                                        }
+
+                                        url = urlParts[0] + (queryString.length > 0 ? '?' + queryString.join('&') : '');
+                                    }
+
+                                    return url;
+                                }
+                            </script>
+                        </form>
+                    </div>
+
+                    <div class="col-12 mb-3 mb-md-0 col-md-4 order-1 order-md-2 text-center">
+                        <div class="site-logo">
+                            <a href="/home" class="js-logo-clone">S-Shoe</a>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4 order-3 order-md-3 text-right">
+                        <div class="site-top-icons">
+                            <ul class="nav nav-pills" style="margin-left: 54%">
+                                <li class="nav-item dropdown" th:if="${checkDangNhap=='true'}">
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
+                                       role="button" aria-expanded="false"><span class="icon icon-person"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="/user/thong-tin-khach-hang">Tài Khoản Của Tôi</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="/user/don-mua">Đơn Mua</a></li>
+                                        <li><a class="dropdown-item" th:href="@{/logout}">Đăng Xuất</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown" th:if="${checkDangNhap=='false'}">
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
+                                       role="button" aria-expanded="false"><span class="icon icon-person"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="/login">Đăng Nhập</a></li>
+
+                                    </ul>
+                                </li>
+
+                                <!--                                <li class="nav-item" style="margin-left: -15%">-->
+                                <!--                                    <a class="nav-link" href="#"><span class="icon icon-heart-o"></span></a>-->
+                                <!--                                </li>-->
+                                <li class="nav-item" style="margin-top: 5%;margin-left: -5%">
+                                    <a class="site-cart" href="/user/cart">
+                                        <span class="icon icon-shopping_cart"></span>
+                                        <span class="count" th:if="${checkDangNhap=='true'}" th:text="${soLuongSPGioHangCT}"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav class="site-navigation text-right text-md-center" role="navigation">
+            <div class="container">
+                <ul class="site-menu js-clone-nav d-none d-md-block">
+                    <li>
+                        <a href="/home">Trang chủ</a>
+                    </li>
+
+                    <li><a href="/shop">Sản phẩm</a></li>
+                    <li><a href="/about">Về chúng tôi</a></li>
+                    <li><a href="/lien-he">Liên hệ</a></li>
+                    <li><a href="/chinh-sach">Chính Sách</a></li>
+                    <li><a href="/tra-cuu-don-hang">Tra Cứu Đơn Hàng</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+
+    <!--    banner-->
+    <a href="/shop">
+        <div class="site-blocks-cover" style="background-image: url(../../static/img/banner.jpg)" data-aos="fade">
+            <div class="container">
+                <div class="row align-items-start align-items-md-center justify-content-end">
+                    <div class="col-md-5 text-center text-md-left pt-5 pt-md-0">
+                        <div class="intro-text text-center text-md-left">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </a>
+    <div class="site-section site-section-sm site-blocks-1">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-lg-4 d-lg-flex mb-4 mb-lg-0 pl-4" data-aos="fade-up" data-aos-delay="">
+                    <div class="icon mr-4 align-self-start">
+                        <span class="icon-truck"></span>
+                    </div>
+                    <div class="text">
+                        <h2 class="text-uppercase">Giao hàng nhanh</h2>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 d-lg-flex mb-4 mb-lg-0 pl-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="icon mr-4 align-self-start">
+                        <span class="icon-refresh2"></span>
+                    </div>
+                    <div class="text">
+                        <h2 class="text-uppercase">Trả hàng miễn phí</h2>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 d-lg-flex mb-4 mb-lg-0 pl-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="icon mr-4 align-self-start">
+                        <span class="icon-help"></span>
+                    </div>
+                    <div class="text">
+                        <h2 class="text-uppercase">Hỗ trợ 24/7</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div style="margin: auto;text-align: center;display: block;">
+            <a href="/shop" style="text-align: center;color: white;
+        width: 15%;border-radius: 20px 20px 20px 20px" class="btn btn-dark">Cửa Hàng</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="site-section block-3 site-blocks-2 ">
+            <div class="container ">
+                <div class="row justify-content-center">
+                    <div class="col-md-7 site-section-heading text-center pt-4">
+                        <h2>Sản phẩm nổi bật</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="nonloop-block-3 owl-carousel">
+                            <div class="item" th:each="hoaDonCT : ${listTop5HDCT}" style=";height: 420px;">
+                                <div>
+                                    <div class="product-section" >
+                                        <div class="container" style="width: 90%" >
+                                            <div class="pf-card" style="margin-top: -30%">
+                                                <a class="product-item"
+                                                   th:href="@{/user/shop-single/{id}(id=${hoaDonCT.chiTietSanPham.sanPham.id})}">
+                                                    <!--                                            <input type="hidden" th:value="${chiTiepSp.sanPham.ten}">-->
+                                                    <!--                                            <input type="hidden" th:value="${chiTiepSp.sanPham.id}">-->
+                                                    <div class="product-thumbnail-container">
+                                                        <img th:each="anh : ${hoaDonCT.chiTietSanPham.sanPham.listHinhAnhSanPham[0]}"
+                                                             th:src="@{'../../../static/img/ImgShoe/' + ${anh.url}}"
+                                                             th:data-segment="${hoaDonCT.chiTietSanPham.mauSac.ten}"
+                                                             th:data-seating="${hoaDonCT.chiTietSanPham.kichCo.ten}"
+                                                             th:data-power="${hoaDonCT.chiTietSanPham.loaiDe.ten}"
+                                                             class="img-fluid product-thumbnail">
+                                                    </div>
+                                                    <div class="product-info-container">
+                                                        <h3 class="product-title"
+                                                            th:text="${hoaDonCT.chiTietSanPham.sanPham.ten+' ['+hoaDonCT.chiTietSanPham.mauSac.ten+ ' - ' +hoaDonCT.chiTietSanPham.kichCo.ten}+']'"></h3>
+                                                        <strong class="product-price"
+                                                                th:text="${hoaDonCT.chiTietSanPham.giaHienHanh + ' VNĐ'}"></strong>
+                                                        <span class="icon-cross">
+							                                 <img src="../../static/img/plus-black.png" class="img-fluid">
+                                                        </span>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <a href="/shop">
+        <div class="container-fluid">
+            <div class="site-blocks-cover" style="background-image: url(../../static/img/banner2.jpg)" data-aos="fade">
+                <div class="row align-items-start align-items-md-center justify-content-end">
+                    <div class="col-md-5 text-center text-md-left pt-5 pt-md-0">
+                        <div class="intro-text text-center text-md-left"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </a>
+    <div class="site-section site-blocks-2">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 col-md-6 col-lg-4 mb-4 mb-lg-0" data-aos="fade" data-aos-delay="">
+                    <a class="block-2-item" href="/shop">
+                        <figure class="image">
+                            <img src="../../static/img/ImgShoe/nik1_nike%20af1%20dây%20thừng%20.jpg" alt=""
+                                 class="img-fluid"/>
+                        </figure>
+                        <div class="text">
+                            <span class="text-uppercase">Bộ sưu tập</span>
+                            <h3>Nike</h3>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-sm-6 col-md-6 col-lg-4 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="100">
+                    <a class="block-2-item" href="/shop">
+                        <figure class="image">
+                            <img src="../../static/img/ImgShoe/adidas10_NMD_R1%20(3).jpg" alt=""
+                                 class="img-fluid"/>
+                        </figure>
+                        <div class="text">
+                            <span class="text-uppercase">Bộ sưu tập</span>
+                            <h3>Adidas</h3>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-sm-6 col-md-6 col-lg-4 mb-5 mb-lg-0" data-aos="fade" data-aos-delay="200">
+                    <a class="block-2-item" href="/shop">
+                        <figure class="image">
+                            <img src="../../static/img/ImgShoe/newbalance6_New%20Balance%20-%20WL574ZSG%20(4).jpg" alt=""
+                                 class="img-fluid"/>
+                        </figure>
+                        <div class="text">
+                            <span class="text-uppercase">Bộ sưu tập</span>
+                            <h3>New Balance</h3>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <footer class="site-footer border-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="footer-heading mb-4">Điều hướng</h3>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Vận chuyển</a></li>
+                                <li><a href="#">Khu vực</a></li>
+                                <li><a href="#">Kênh bán hàng</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <ul class="list-unstyled">
+                                <li><a href="/about">Đội ngũ</a></li>
+                                <li><a href="/chinh-sach">Trả hàng</a></li>
+                                <li><a href="#">Bảo mật</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <ul class="list-unstyled">
+                                <li><a href="/lien-he">Liên hệ</a></li>
+                                <li><a href="/lien-he">Chăm sóc khách hàng</a></li>
+                                <li><a href="/lien-he">Phản hồi</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-4 mb-lg-0">
+                    <h3 class="footer-heading mb-4">Mẫu mã</h3>
+                    <a href="/shop" class="block-6">
+                        <img src="../../static/img/ImgShoe/adidas22_ULTRABOOST%2022%20(3).jpg" alt="Image placeholder"
+                             class="img-fluid rounded mb-0"/>
+                        <h3 class="font-weight-light mb-0">
+                            Tìm đôi giày hoàn hảo của bạn
+                        </h3>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="block-5 mb-5">
+                        <h3 class="footer-heading mb-4">Thông tin liên lạc</h3>
+                        <ul class="list-unstyled">
+                            <li class="address">
+                                13 P. Trịnh Văn Bô, Xuân Phương, Nam Từ Liêm, Hà Nội, Việt Nam
+                            </li>
+                            <li class="phone">
+                                <a href="tel://23923929210">+84 377 463 664</a>
+                            </li>
+                            <li class="email">sshoeshopshoes@gmail.com</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+</div>
+<style>
+    .productfinder > div {
+        display: table-cell;
+        float: left;
+    }
+
+    .productfinder h4 {
+        font-weight: 700;
+        margin-bottom: .5em;
+    }
+
+    .productfinder label {
+        font-weight: 300;
+    }
+
+    .productfinder input[type="text"] {
+        font-family: 'helvetica';
+        font-size: 14px;
+        border: 1px solid #68b8c4;
+        padding: .5em;
+        border-radius: 2px;
+    }
+
+    .productfinder input[type="text"]:focus {
+        outline: 0 none;
+        border-color: #68b8c4;
+    }
+
+    .productfinder button {
+        display: inline-block;
+        vertical-align: top;
+        padding: .4em .8em;
+        margin: 0;
+        background: #68b8c4;
+        border: 0;
+        color: #333;
+        font-size: 16px;
+        font-weight: 700;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .productfinder button:focus {
+        outline: 0 none;
+    }
+
+    .productfinder .pf-controls {
+        padding: 2%;
+    }
+
+    .productfinder .filter-group {
+        display: block;
+        margin: 0 1em 0 0;
+        border: 0;
+        padding: .5em;
+    }
+
+    .productfinder .pf-checkbox {
+        display: block;
+        position: relative;
+        cursor: pointer;
+        margin-bottom: 8px;
+    }
+
+    .productfinder .pf-checkbox input[type="checkbox"] {
+        position: absolute;
+        display: block;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        cursor: pointer;
+        margin: 0;
+        opacity: 0;
+        z-index: 1;
+    }
+
+    .productfinder .pf-checkbox label {
+        display: inline-block;
+        vertical-align: top;
+        text-align: left;
+        padding-left: 1.5em;
+    }
+
+    .productfinder .pf-checkbox label:before,
+    .productfinder .pf-checkbox label:after {
+        content: '';
+        display: block;
+        position: absolute;
+    }
+
+    .productfinder .pf-checkbox label:before {
+        left: 0;
+        top: 0;
+        width: 18px;
+        height: 18px;
+        margin-right: 10px;
+        background: #ddd;
+        border-radius: 3px;
+    }
+
+    .productfinder .pf-checkbox label:after {
+        content: '';
+        position: absolute;
+        top: 4px;
+        left: 4px;
+        width: 10px;
+        height: 10px;
+        border-radius: 2px;
+        background: black;
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .productfinder .pf-checkbox input:checked ~ label:after {
+        opacity: 1;
+    }
+
+    .productfinder .pf-checkbox input:focus ~ label:before {
+        background: #eee;
+    }
+
+    .productfinder .pf-container .fail-message {
+        text-align: center;
+        pointer-events: none;
+        vertical-align: middle;
+        font-weight: bold;
+        font-size: large;
+        position: absolute;
+        top: 30%;
+        left: 50%;
+    }
+
+    .productfinder .pf-filter-item {
+        width: 300px;
+    }
+
+    .productfinder .pf-wrapper {
+        width: calc(100% - 300px);
+    }
+
+    .productfinder .pf-container > div:not(.fail-message) {
+        width: calc(25% - 50px);
+        float: left;
+    }
+
+    .productfinder .pf-container {
+        display: -ms-flexbox !important;
+        display: flex !important;
+        -ms-flex-wrap: wrap !important;
+        flex-wrap: wrap !important;
+        -ms-flex-line-pack: start !important;
+        align-content: flex-start !important;
+    }
+
+    .productfinder .pf-container .pf-card {
+        text-align: center;
+        border: 1px solid transparent;
+        /*box-shadow: 0 0 15px rgba(1, 65, 137, 0.23);*/
+        padding: 10px;
+        margin: 10px;
+        position: relative;
+        padding-bottom: 35px;
+    }
+
+    .productfinder .pf-container .pf-card .pf-card-header {
+    }
+
+    .productfinder .pf-container .pf-card img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 10px;
+
+    }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+<script src="../../static/js/jquery-3.3.1.min.js"></script>
+<script src="../../static/js/jquery-ui.js"></script>
+<script src="../../static/js/popper.min.js"></script>
+
+<script src="../../static/js/owl.carousel.min.js"></script>
+<script src="../../static/js/jquery.magnific-popup.min.js"></script>
+<script src="../../static/js/aos.js"></script>
+<script src="../../static/js/script.js"></script>
+<script src="../../static/js/main.js"></script>
+</body>
+
+</html>

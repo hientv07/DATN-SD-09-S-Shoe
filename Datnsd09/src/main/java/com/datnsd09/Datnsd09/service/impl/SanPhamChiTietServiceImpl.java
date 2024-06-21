@@ -9,6 +9,8 @@ import com.datnsd09.Datnsd09.repository.SanPhamChiTietRepository;
 import com.datnsd09.Datnsd09.service.SanPhamChiTietService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -134,7 +136,7 @@ public class SanPhamChiTietServiceImpl implements SanPhamChiTietService {
 
     @Override
     public void checkSoLuongBang0() {
-
+        chiTietSanPhamRepository.checkSoLuongBang0();
     }
 
     @Override
@@ -154,12 +156,13 @@ public class SanPhamChiTietServiceImpl implements SanPhamChiTietService {
 
     @Override
     public List<SanPhamChiTiet> fillAllDangHoatDongLonHon0() {
-        return null;
+        return chiTietSanPhamRepository.fillAllDangHoatDongLonHon0();
     }
 
     @Override
     public Page<List<SanPhamChiTiet>> searchAll(Integer pageNo, Integer size, String tenSanPham, List<Long> idMauSac, List<Long> idKichCo, List<Long> idLoaiDe, List<Long> idThuongHieu, Long minGia, Long maxGia) {
-        return null;
+        Pageable pageable = PageRequest.of(pageNo, size);
+        return chiTietSanPhamRepository.searchAll(pageable, tenSanPham, idMauSac, idKichCo, idLoaiDe, idThuongHieu, minGia, maxGia);
     }
 
     @Override
@@ -184,17 +187,24 @@ public class SanPhamChiTietServiceImpl implements SanPhamChiTietService {
 
     @Override
     public Long getAllMinGiaCTSP() {
-        return null;
+        return chiTietSanPhamRepository.getAllMinGiaCTSP();
     }
 
     @Override
     public Long getAllMaxGiaCTSP() {
-        return null;
+        return chiTietSanPhamRepository.getAllMaxGiaCTSP();
     }
 
     @Override
     public Integer checkPage(Integer page) {
-        return null;
+        Integer sizeList = chiTietSanPhamRepository.findAll().size();
+        Integer pageCount = (int) Math.ceil((double) sizeList / 5);
+        if (page >= pageCount) {
+            page = 0;
+        } else if (page < 0) {
+            page = pageCount - 1;
+        }
+        return page;
     }
 
     //thống kê

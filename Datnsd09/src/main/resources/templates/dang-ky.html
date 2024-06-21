@@ -47,14 +47,14 @@
                             <div class="card-body">
 
                                 <div class="pt-4 pb-2">
-                                    <h5 class="card-title text-center pb-0 fs-4">Tạo một tài khoản</h5>
+                                    <h5 class="card-title text-center pb-0 fs-4">Đăng Ký</h5>
                                     <p class="text-center small">Nhập thông tin cá nhân của bạn để tạo tài khoản</p>
                                 </div>
 
                                 <form class="row g-3 needs-validation" novalidate th:action="@{/them-tai-khoan}"
                                       method='post'>
                                     <div class="col-12">
-                                        <label for="yourEmail" class="form-label">Email của bạn</label>
+                                        <label for="yourEmail" class="form-label">Email của bạn:</label>
                                         <input type="email" name="email" class="form-control" placeholder="Nhập email" id="yourEmail">
                                         <div class="check-loi" id="checkEmailAdd" style="display: none"></div>
                                         <div class="check-loi" th:text="${checkTrungEmail}" ></div>
@@ -62,7 +62,7 @@
                                     </div>
 
                                     <div class="col-12">
-                                        <label for="yourUsername" class="form-label">Tên tài khoản</label>
+                                        <label for="yourUsername" class="form-label">Tên tài khoản:</label>
                                         <input type="text" name="username" class="form-control" placeholder="Nhập tên tài khoản" id="yourUsername"
                                                required>
                                         <div class="check-loi" id="checkTenTaiKhoanAdd" style="display: none"></div>
@@ -71,7 +71,7 @@
                                     </div>
 
                                     <div class="col-12">
-                                        <label for="yourPassword" class="form-label">Mật khẩu</label>
+                                        <label for="yourPassword" class="form-label">Mật khẩu:</label>
                                         <input type="password" name="password" placeholder="Nhập mật khẩu" class="form-control" id="yourPassword"
                                                required>
                                         <div class="check-loi" id="checkMatKhauAdd" style="display: none"></div>

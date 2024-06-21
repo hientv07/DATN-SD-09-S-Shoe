@@ -1,7 +1,11 @@
 package com.datnsd09.Datnsd09.repository;
 
 import com.datnsd09.Datnsd09.entity.SanPhamChiTiet;
+import jakarta.transaction.Transactional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -83,6 +87,8 @@ public interface SanPhamChiTietRepository extends JpaRepository<SanPhamChiTiet, 
             "ORDER BY mau_sac_id, kich_co_id", nativeQuery = true)
     List<SanPhamChiTiet> fillAllChiTietSpBySanPham(@Param("idSanPham") Long idSanPham);
 
+    @Query(value = "select * from chi_tiet_san_pham where trang_thai = 0 and so_luong>0", nativeQuery = true)
+    List<SanPhamChiTiet> fillAllDangHoatDongLonHon0();
 
     @Query(value = "select DISTINCT chi_tiet_san_pham.mau_sac_id from chi_tiet_san_pham where trang_thai = 0", nativeQuery = true)
     List<Long> getAllIdMauSacCTSP();
@@ -97,6 +103,11 @@ public interface SanPhamChiTietRepository extends JpaRepository<SanPhamChiTiet, 
             "JOIN san_pham s ON c.san_pham_id = s.id_sp JOIN thuong_hieu th ON s.thuong_hieu_id = th.id_thuong_hieu", nativeQuery = true)
     List<Long> getAllIdThuongHieuCTSP();
 
+    @Query(value = "select min(gia) from chi_tiet_san_pham where trang_thai = 0", nativeQuery = true)
+    Long getAllMinGiaCTSP();
+
+    @Query(value = "select max(gia) from chi_tiet_san_pham where trang_thai = 0", nativeQuery = true)
+    Long getAllMaxGiaCTSP();
 
     //Thống kê
     @Query("select sp.ten, kc.ten, ms.ten, ld.ten, ctsp.soLuong " +
@@ -109,6 +120,29 @@ public interface SanPhamChiTietRepository extends JpaRepository<SanPhamChiTiet, 
             "and ctsp.trangThai = 0")
     List<Object[]> danhSachSapHetHang(@Param("soLuong") int soLuong);
 
+
+    @Query(value = "SELECT p FROM SanPhamChiTiet p WHERE p.trangThai = 0 AND p.sanPham.ten LIKE CONCAT('%',:tenSanPham,'%') \n"
+            +
+            "AND p.mauSac.id in (:tenMauSac) \n" +
+            "AND p.kichCo.id in (:idKichCo) \n" +
+            "AND p.loaiDe.id in (:idLoaiDe) \n" +
+            "AND p.sanPham.thuongHieu.id in (:idThuongHieu) \n" +
+            "AND p.giaHienHanh BETWEEN :minGia AND :maxGia")
+    Page<List<SanPhamChiTiet>> searchAll(Pageable pageable,
+                                         @Param("tenSanPham") String tenSanPham,
+                                         @Param("tenMauSac") List<Long> idMauSac,
+                                         @Param("idKichCo") List<Long> idKichCo,
+                                         @Param("idLoaiDe") List<Long> idLoaiDe,
+                                         @Param("idThuongHieu") List<Long> idThuongHieu,
+                                         @Param("minGia") Long minGia,
+                                         @Param("maxGia") Long maxGia);
+
+    @Transactional
+    @Modifying
+    @Query(value = "update chi_tiet_san_pham \r\n" + //
+            "set trang_thai=1\r\n" + //
+            "where so_luong =0", nativeQuery = true)
+    void checkSoLuongBang0();
 
 //    @Query(value = "select * from chi_tiet_san_pham where san_pham_id = :idSanPham and mau_sac_id = :idMauSac and loai_de_id = :idLoaiDe and kich_co_id = :idKichCo", nativeQuery = true)
 //    SanPhamChiTiet findChiTietSanPham(@Param("idSanPham") Long idSanPham, @Param("idMauSac") Long idMauSac,
