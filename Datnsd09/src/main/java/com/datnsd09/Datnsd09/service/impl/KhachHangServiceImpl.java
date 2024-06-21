@@ -12,6 +12,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -184,6 +185,82 @@ public class KhachHangServiceImpl implements KhachHangService {
     public KhachHang getTaiKhoanByName(String name) {
 
         return repository.findByTenTaiKhoan(name).orElse(null);
+
+    }
+
+    @Override
+    public String addUser(KhachHang userInfo) {
+        userInfo.setTrangThai(0);
+        userInfo.setMatKhau(passwordEncoder.encode(userInfo.getMatKhau()));
+        repository.save(userInfo);
+//        GioHang gioHang = new GioHang();
+//        Date currentDate = new Date();
+//        gioHang.setMaGioHang("GH" + gioHangService.genMaTuDong());
+//        gioHang.setGhiChu("");
+//        gioHang.setNgayTao(currentDate);
+//        gioHang.setNgaySua(currentDate);
+//        gioHang.setTaiKhoan(TaiKhoan.builder().id(userInfo.getId()).build());
+//        gioHang.setTrangThai(0);
+//        gioHangService.save(gioHang);
+        return "user added to system";
+    }
+
+
+    @Override
+    public String updateUser(KhachHang userInfo) {
+        userInfo.setTrangThai(0);
+        userInfo.setMatKhau(passwordEncoder.encode(userInfo.getMatKhau()));
+        repository.save(userInfo);
+        return "user added to system";
+    }
+
+
+    @Override
+    public void sendEmailKhoiPhuc(KhachHang taiKhoan, String url) {
+        String from = "sshoeshopshoes@gmail.com";
+        String to = taiKhoan.getEmail();
+        String subject = "Khôi Phục Mật Khẩu Tài Khoản S-Shoe của Bạn";
+        String content = "<p class=\"email-content\" style=\"font-family: 'Arial', sans-serif;font-size: 16px;color: #333;line-height: 1.5;\">\n" +
+                "Chào [[name]], <br>\n" +
+                "Chúc mừng! Bạn đã yêu cầu hướng dẫn khôi phục mật khẩu cho tài khoản của mình trên S-Shoe. Để tiếp tục quá trình này, vui lòng nhấn vào liên kết dưới đây:\n" +
+                "</p>\n" +
+
+                "<p class=\"email-content\">\n" +
+                "<h3><a href=\"[[URL]]\" target=\"_self\">VERIFY</a></h3>" +
+                "</p>\n" +
+
+                "<p class=\"email-content\">\n" +
+                "<p>Tên tài khoản của bạn: " + taiKhoan.getTenTaiKhoan() + "</p>" +
+                "<p>Email của bạn: " + taiKhoan.getEmail() + "</p>" +
+                "Nếu bạn không yêu cầu hướng dẫn khôi phục mật khẩu hoặc không nhớ việc này, hãy bỏ qua email này. Liên kết xác nhận sẽ hết hạn sau 24 giờ.\n" +
+                "<br>\n" +
+                "Chân thành cảm ơn,\n" +
+                "<br>\n" +
+                "Đội ngũ S-shoe\n" +
+                "</p>";
+        try {
+
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message);
+
+            helper.setFrom(from, "S-Shoe");
+            helper.setTo(to);
+            helper.setSubject(subject);
+
+            content = content.replace("[[name]]", taiKhoan.getTenTaiKhoan());
+            String siteUrl = url + "/verify?code=" + taiKhoan.getMatKhau();
+
+            System.out.println(siteUrl);
+
+            content = content.replace("[[URL]]", siteUrl);
+
+            helper.setText(content, true);
+
+            javaMailSender.send(message);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 }

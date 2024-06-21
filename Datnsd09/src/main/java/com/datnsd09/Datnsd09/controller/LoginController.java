@@ -21,6 +21,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Optional;
 import java.util.Random;
 
 @Controller
@@ -44,6 +45,8 @@ public class LoginController {
     KhachHang userInfoStorage = new KhachHang();
 
     String ranDomMa;
+
+    String emailKiemTra;
 
     private PrincipalCustom principalCustom = new PrincipalCustom();
 
@@ -69,6 +72,35 @@ public class LoginController {
     @GetMapping("/register")
     public String register(Model model){
         return "dang-ky";
+    }
+
+    @GetMapping("/xac-minh")
+    public String checkRanDOm() {
+        return "xac-minh";
+    }
+
+
+    @PostMapping("/xac-minh/check")
+    public String checkRanDOm1(
+            @RequestParam("ranDom") String ranDom1,
+            Model model,
+            RedirectAttributes redirectAttributes
+    ) {
+
+        if (ranDom1.isEmpty()) {
+            model.addAttribute("checkMaXacMinh", "Bạn chưa nhập mã xác minh!");
+            return "xac-minh";
+        } else if (ranDom1.equalsIgnoreCase(ranDomMa)) {
+            khachHangService.addUser(userInfoStorage);
+            redirectAttributes.addFlashAttribute("checkThongBao","dangKy");
+            System.out.println("thêm tài khoản thành công form check");
+            return "redirect:/login";
+        } else {
+            System.out.println("mã không đúng");
+            model.addAttribute("checkMaXacMinh", "Mã xác nhận không đúng!");
+            return "xac-minh";
+        }
+
     }
 
     @PostMapping("/them-tai-khoan")
@@ -123,6 +155,74 @@ public class LoginController {
             ranDomMa = random2;
             return "redirect:/xac-minh";
         }
+    }
+
+    @GetMapping("/verify")
+    public String verifyAccount() {
+
+        return "xac-nhan-quen-mat-khau";
+
+    }
+
+
+    @PostMapping("/reset-mat-khau")
+    public String resetMatKhau(
+            @RequestParam("matKhauCu") String matKhauCu,
+            @RequestParam("matKhauMoi") String matKhauMoi,
+            Model model,
+            RedirectAttributes redirectAttributes
+    ) {
+        Optional<KhachHang> taiKhoanOpt = khachHangRepository.findByEmail(emailKiemTra);
+        System.out.println(emailKiemTra);
+        if (taiKhoanOpt.isPresent()) {
+            KhachHang taiKhoan = taiKhoanOpt.get();
+            if (matKhauCu.equals(matKhauMoi)) {
+                taiKhoan.setMatKhau(matKhauMoi);
+                khachHangService.updateUser(taiKhoan);
+                System.out.println("Thay đổi mk thành công ");
+                redirectAttributes.addFlashAttribute("checkThongBao","quenMK");
+                redirectAttributes.addFlashAttribute("tenTaiKhoan", taiKhoan.getTenTaiKhoan());
+                redirectAttributes.addFlashAttribute("matKhauMoi", matKhauMoi);
+                return "redirect:/login";
+            } else {
+                System.out.println("Mật khẩu không trung khớp");
+                model.addAttribute("thongBao", "Mật khẩu không trùng khớp");
+                return "xac-nhan-quen-mat-khau";
+            }
+        }
+        return "redirect:/login";
+
+    }
+
+    @GetMapping("/quen-mat-khau")
+    public String quenMatKhau() {
+        return "quen-mat-khau";
+    }
+
+    @PostMapping("/quen-mat-khau")
+    public String quenMatKau(
+            @RequestParam("email") String email, Model model,
+            RedirectAttributes redirectAttributes,
+            HttpServletRequest request) {
+        emailKiemTra = email;
+        String url = request.getRequestURL().toString();
+        Optional<KhachHang> taiKhoanOpt = khachHangRepository.findByEmail(emailKiemTra);
+        url = url.replace(request.getServletPath(), "");
+        if (taiKhoanOpt.isPresent()) {
+            khachHangService.sendEmailKhoiPhuc(taiKhoanOpt.get(), url);
+            System.out.println("thanh cong");
+            model.addAttribute("email", email);
+            return "xac-minh-email";
+        } else if (email.isEmpty()) {
+            model.addAttribute("message", "Bạn chưa nhập email");
+            System.out.println("Email null");
+            return "quen-mat-khau";
+        } else {
+            model.addAttribute("message", "Email nay sai hoặc  chưa được đăng ký");
+            System.out.println("Email nay không tồn tại");
+            return "quen-mat-khau";
+        }
+
     }
 
 

@@ -34,5 +34,11 @@ public interface KhachHangService {
 
     void sendEmail(KhachHang taiKhoan, String path,String random);
 
+    void sendEmailKhoiPhuc(KhachHang taiKhoan, String url);
+
     KhachHang getTaiKhoanByName(String name);
+
+    String addUser(KhachHang userInfo);
+
+    String updateUser(KhachHang userInfo);
 }

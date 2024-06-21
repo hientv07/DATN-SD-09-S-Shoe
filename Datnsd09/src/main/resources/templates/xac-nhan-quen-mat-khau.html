@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="../static/img/favicon.png" rel="icon">
+    <title>S-Shoe</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <div th:replace="~{admin/fragment/header :: header}"></div>
+
+    <!--    thư viện toast-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@latest/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!--    thư viện toast-->
+</head>
+
+<body>
+
+<main>
+    <div class="container">
+
+        <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+                        <div class="d-flex justify-content-center py-4">
+                            <div class="d-flex justify-content-center py-4">
+                                <div class="logo d-flex align-items-center w-auto">
+                                    <img src="../../static/img/logo.png" alt="">
+                                    <span class="d-none d-lg-block">S-Shoe</span>
+                                </div>
+                            </div><!-- End Logo -->
+                        </div><!-- End Logo -->
+
+                        <div class="card mb-3">
+
+                            <div class="card-body">
+
+                                <div class="pt-4 pb-2">
+                                    <a class="btn btn-link" style="float: left;margin-top: -3%;margin-left: -3%"
+                                       href="/quen-mat-khau">
+                                        <i class=" bi bi-arrow-left-circle-fill"></i>
+                                    </a>
+                                    <h5 class="card-title text-center pb-0 fs-4">Đặt lại Mật khẩu</h5>
+                                    <!--                                    <p class="text-center small">Nhập mật khẩu cũ và đặt lại mật khẩu mới</p>-->
+                                </div>
+
+                                <form th:action="@{/reset-mat-khau}" method='post' class="row g-3 needs-validation"
+                                      novalidate>
+
+                                    <div class="col-12">
+                                        <label for="yourUsername" class="form-label">Mât khẩu mới</label>
+
+                                        <input type="password" class="form-control" id="yourUsername"
+                                               name='matKhauCu' placeholder="Nhập mật khẩu mới" required>
+                                        <div class="check-loi" id="yourUsernameCheck" style="display: none"></div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <label for="yourPassword" class="form-label">Nhập lại mật khẩu mới</label>
+                                        <input type="password" class="form-control" id="yourPassword"
+                                               name='matKhauMoi' placeholder="Nhập lại mật khẩu mới" required>
+                                        <div class="check-loi" id="yourPasswordCheck" style="display: none"></div>
+
+                                    </div>
+                                    <div th:text="${thongBao}" class="check-loi" id="thongBao" style="text-align: center"></div>
+
+                                    <div class="col-12">
+                                        <button class="btn btn-primary w-100" onclick="return checkMatKhauMoi()"
+                                                type="submit">Xác nhận
+                                        </button>
+                                    </div>
+                                    <script>
+                                        function checkMatKhauMoi() {
+                                            var check = true;
+                                            var matKhauMoi = document.getElementById("yourUsername")
+                                            var yourUsernameCheck = document.getElementById("yourUsernameCheck")
+                                            yourUsernameCheck.style.display = 'none'
+                                            if (matKhauMoi.value.trim() == '') {
+                                                yourUsernameCheck.style.display = 'block'
+                                                yourUsernameCheck.innerText = 'Bạn chưa nhập mật khẩu'
+                                                check = false;
+                                            }
+                                            var matKhauMoiMoi = document.getElementById("yourPassword")
+                                            var yourPasswordCheck = document.getElementById("yourPasswordCheck")
+                                            yourPasswordCheck.style.display = 'none'
+                                            if (matKhauMoiMoi.value.trim() == '') {
+                                                yourPasswordCheck.style.display = 'block'
+                                                yourPasswordCheck.innerText = 'Bạn chưa nhập mật khẩu'
+                                                check = false;
+                                            }
+                                            var thongBao = document.getElementById("thongBao")
+                                            thongBao.style.display = 'none'
+                                            return check;
+                                        }
+                                    </script>
+                                </form>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </div>
+</main><!-- End #main -->
+
+<!-- ======= Footer ======= -->
+<footer id="footer" class="footer" style="margin: auto">
+
+    <div class="credits">
+        Website bán giày S-Shoe
+    </div>
+</footer><!-- End Footer -->
+
+<a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
+        class="bi bi-arrow-up-short"></i></a>
+
+<!-- Vendor JS Files -->
+<script src="../../static/vendor/apexcharts/apexcharts.min.js"></script>
+<script src="../../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../../static/vendor/chart.js/chart.umd.js"></script>
+<script src="../../static/vendor/echarts/echarts.min.js"></script>
+<script src="../../static/vendor/quill/quill.min.js"></script>
+<script src="../../static/vendor/simple-datatables/simple-datatables.js"></script>
+<script src="../../static/vendor/tinymce/tinymce.min.js"></script>
+<script src="../../static/vendor/php-email-form/validate.js"></script>
+
+<!-- Template Main JS File -->
+<script src="../../static/js/main.js"></script>
+
+</body>
+
+</html>
