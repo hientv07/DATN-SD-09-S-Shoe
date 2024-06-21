@@ -4,6 +4,7 @@ package com.datnsd09.Datnsd09.controller;
 import com.datnsd09.Datnsd09.config.PrincipalCustom;
 import com.datnsd09.Datnsd09.config.UserInfoUserDetails;
 import com.datnsd09.Datnsd09.repository.SanPhamChiTietRepository;
+import com.datnsd09.Datnsd09.service.HoaDonChiTietService;
 import com.datnsd09.Datnsd09.service.SanPhamChiTietService;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
@@ -34,6 +35,9 @@ public class ThongKeController {
     @Autowired
     private SanPhamChiTietService sanPhamChiTietService;
 
+    @Autowired
+    private HoaDonChiTietService hoaDonChiTietService;
+
     private PrincipalCustom principalCustom = new PrincipalCustom();
 
     @GetMapping()
@@ -46,9 +50,11 @@ public class ThongKeController {
 //        } else {
 //            return "redirect:/login";
 //        }
-        Integer soLuong = 50;
+        Integer soLuong = 10;
         List<Object[]>danhSachSapHetHang10 = sanPhamChiTietService.danhSachSapHetHang(soLuong);
         model.addAttribute("listSapHetHang",danhSachSapHetHang10);
+//        List<Object[]> thongKeSanPhamBetween = hoaDonChiTietService.findByTongSoLuongBetween(startDate, endDate);
+//        //redirectAttributes.addFlashAttribute("thongKeBetween", thongKeSanPhamBetween);
         return "/admin/thong-ke/thong-ke";
     }
 

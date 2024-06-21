@@ -103,6 +103,12 @@ public class SanPhamChiTietController {
 
     @GetMapping("/dang-hoat-dong")
     public String dangHoatDong(Model model) {
+        UserInfoUserDetails name = principalCustom.getCurrentUserNameAdmin();
+        if (name != null) {
+            model.addAttribute("tenNhanVien", principalCustom.getCurrentUserNameAdmin().getHoVaTen());
+        } else {
+            return "redirect:/login";
+        }
         model.addAttribute("listCTSP", sanPhamChiTietService.getAllDangHoatDong());
         model.addAttribute("sanPham", new SanPham());
         getString(model);
@@ -111,6 +117,12 @@ public class SanPhamChiTietController {
 
     @GetMapping("/ngung-hoat-dong")
     public String ngungHoatDong(Model model) {
+        UserInfoUserDetails name = principalCustom.getCurrentUserNameAdmin();
+        if (name != null) {
+            model.addAttribute("tenNhanVien", principalCustom.getCurrentUserNameAdmin().getHoVaTen());
+        } else {
+            return "redirect:/login";
+        }
         model.addAttribute("listCTSP", sanPhamChiTietService.getAllNgungHoatDong());
         model.addAttribute("sanPham", new SanPham());
         getString(model);

@@ -40,6 +40,13 @@ public class SanPhamController {
 
     @GetMapping()
     public String getAll(Model model) {
+        UserInfoUserDetails name = principalCustom.getCurrentUserNameAdmin();
+        if (name != null) {
+            model.addAttribute("tenNhanVien", principalCustom.getCurrentUserNameAdmin().getHoVaTen());
+        } else {
+            return "redirect:/login";
+        }
+
         model.addAttribute("listSanPham", sanPhamService.getAll());
         model.addAttribute("listThuongHieu", thuongHieuService.getAll());
         model.addAttribute("sanPham", new SanPham());

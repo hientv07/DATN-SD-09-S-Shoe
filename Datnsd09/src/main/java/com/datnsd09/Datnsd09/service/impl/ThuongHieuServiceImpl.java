@@ -22,11 +22,13 @@ public class ThuongHieuServiceImpl implements ThuongHieuService {
 
     @Override
     public List<ThuongHieu> getAllDangHoatDong() {
+
         return thuongHieuRepository.fillAllDangHoatDong();
     }
 
     @Override
     public List<ThuongHieu> getAllDungHoatDong() {
+
         return thuongHieuRepository.fillAllNgungHoatDong();
     }
 
