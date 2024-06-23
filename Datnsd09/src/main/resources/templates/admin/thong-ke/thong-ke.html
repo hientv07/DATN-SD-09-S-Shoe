@@ -467,9 +467,210 @@
                         <div class="tab-pane fade show active" id="list" role="tabpanel"
                              aria-labelledby="list-tab">
                             <br>
+                            <h2>Biểu đồ làm sau</h2>
+<!--                            <button id="btnBetween" class="btn btn-outline-primary" onclick="showHoaDonBetween()">Trong-->
+<!--                                khoảng thời gian-->
+<!--                            </button>-->
+<!--                            <button id="btnNgay" class="btn btn-outline-primary" onclick="showHoaDonNgay()">Hôm nay-->
+<!--                            </button>-->
+<!--                            <button id="btnThang" class="btn btn-outline-primary" onclick="showHoaDonThang()">Tháng-->
+<!--                                này-->
+<!--                            </button>-->
+                            <br>
                             <hr>
-                            <h1 style="margin-top: 5%">Top sản phẩm bán chạy nhất</h1>
 
+                            <div id="inputSearch">
+                                <form th:action="@{/admin/thong-ke/count-between}" th:method="post" id="form1"
+                                      class="row g-3" onsubmit="return validateDate()">
+                                    <div class="col-md-3">
+                                        <label class="form-label">Từ ngày:</label>
+                                        <input type="date" name="startDate" class="form-control"
+                                               id="startDate"
+                                               th:value="${#dates.format(startDate, 'yyyy-MM-dd')}"
+                                               required>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Đến ngày:</label>
+                                        <input type="date" name="endDate" class="form-control"
+                                               id="endDate"
+                                               th:value="${#dates.format(endDate, 'yyyy-MM-dd')}"
+                                               required>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <button type="submit" style="margin-top: 11.5%" class="btn btn-primary">Tìm
+                                            kiếm
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <span id="error-message" style="color: #ff0000;font-size: 14px;font-weight: bold;"></span>
+                            <div class="rowThongKe">
+                                <div class="row">
+                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDonBetween">
+                                        <div  class="columnThongKe">
+                                            <h3>Hàng bán được </h3>
+                                            <span th:text="${sumSanPham != null ? sumSanPham + ' sản phẩm' : '0 sản phẩm'}"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" style="margin-top: 2%" id="doanhThuBetween">
+                                        <div class="columnThongKe" >
+                                            <h3>Doanh số </h3>
+                                            <span th:text="${countHoaDon != null ? countHoaDon + ' đơn hàng /' : '0 đơn hàng /'}"></span>
+                                            <span th:text="${sumHoaDon != null ? #numbers.formatDecimal(sumHoaDon, 0, 'COMMA', 0, 'POINT') + ' VNĐ' : '0 VNĐ'}"></span>
+                                        </div>
+                                    </div>
+<!--                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDonNgay">-->
+<!--                                        <div  class="columnThongKe">-->
+<!--                                            <h3>Hàng bán được hôm nay</h3>-->
+<!--                                            <span th:text="${sumSanPhamHoaDonDay != null ? sumSanPhamHoaDonDay + ' sản phẩm' : '0 sản phẩm'}"></span>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="col-md-6" style="margin-top: 2%" id="doanhThuNgay">-->
+<!--                                        <div class="columnThongKe" >-->
+<!--                                            <h3>Doanh số hôm nay</h3>-->
+<!--                                            <span th:text="${countHoaDonDay != null ? countHoaDonDay + ' đơn hàng /' : '0 đơn hàng /'}"></span>-->
+<!--                                            <span th:text="${sumHoaDonDay != null ? #numbers.formatDecimal(sumHoaDonDay, 0, 'COMMA', 0, 'POINT') + ' VNĐ' : '0 VNĐ'}"></span>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDonThang">-->
+<!--                                        <div  class="columnThongKe">-->
+<!--                                            <h3>Hàng bán được tháng này</h3>-->
+<!--                                            <span th:text="${sumSanPhamHoaDonMonth != null ? sumSanPhamHoaDonMonth + ' sản phẩm' : '0 sản phẩm'}"></span>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="col-md-6" style="margin-top: 2%" id="doanhThuThang">-->
+<!--                                        <div class="columnThongKe" >-->
+<!--                                            <h3>Doanh số tháng này</h3>-->
+<!--                                            <span th:text="${countHoaDonMonth != null ? countHoaDonMonth + ' đơn hàng /' : '0 đơn hàng /'}"></span>-->
+<!--                                            <span th:text="${sumHoaDonMonth != null ? #numbers.formatDecimal(sumHoaDonMonth, 0, 'COMMA', 0, 'POINT') + ' VNĐ' : '0 VNĐ'}"></span>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+                                        <div class="col-md-6" style="margin-top: 2%" id="hoaDon0Between">
+                                            <div class="columnThongKe">
+                                                <h3>Hóa đơn chờ xác nhận </h3>
+                                                <span th:text="${countHoaDonChoXacNhanBetween != null ? countHoaDonChoXacNhanBetween + ' hóa đơn' : '0 hóa đơn'}"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6" style="margin-top: 2%" id="hoaDon1Between">
+                                            <div class="columnThongKe">
+                                                <h3>Hóa đơn chờ giao </h3>
+                                                <span th:text="${countHoaDonChoGiaoBetween != null ? countHoaDonChoGiaoBetween + ' hóa đơn' : '0 hóa đơn'}"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6" style="margin-top: 2%" id="hoaDon2Between">
+                                            <div class="columnThongKe">
+                                                <h3>Hóa đơn đang giao </h3>
+                                                <span th:text="${countHoaDonDangGiaoBetween != null ? countHoaDonDangGiaoBetween + ' hóa đơn' : '0 hóa đơn'}"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6" style="margin-top: 2%" id="hoaDon3Between">
+                                            <div class="columnThongKe">
+                                                <h3>Hóa đơn hoàn thành </h3>
+                                                <span th:text="${countHoaDonHoanThanhBetween != null ? countHoaDonHoanThanhBetween + ' hóa đơn' : '0 hóa đơn'}"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6" style="margin-top: 2%" id="hoaDon5Between">
+                                            <div class="columnThongKe">
+                                                <h3>Hóa đơn hủy </h3>
+                                                <span th:text="${countHoaDonDaHuyBetween != null ? countHoaDonDaHuyBetween + ' hóa đơn' : '0 hóa đơn'}"></span>
+                                            </div>
+                                        </div>
+    <!--                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDon6Between">-->
+    <!--                                        <div class="columnThongKe">-->
+    <!--                                            <h3>Hóa đơn hoàn trả </h3>-->
+    <!--                                            <span th:text="${countHoaDonTraBetween != null ? countHoaDonTraBetween + ' hóa đơn' : '0 hóa đơn'}"></span>-->
+    <!--                                        </div>-->
+    <!--                                    </div>-->
+    <!--                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDon0Ngay">-->
+    <!--                                        <div class="columnThongKe">-->
+    <!--                                            <h3>Hóa đơn chờ xác nhận </h3>-->
+    <!--                                            <span th:text="${countHoaDonChoXacNhanNgay != null ? countHoaDonChoXacNhanNgay + ' hóa đơn' : '0 hóa đơn'}"></span>-->
+    <!--                                        </div>-->
+    <!--                                    </div>-->
+    <!--                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDon1Ngay">-->
+    <!--                                        <div class="columnThongKe">-->
+    <!--                                            <h3>Hóa đơn chờ giao </h3>-->
+    <!--                                            <span th:text="${countHoaDonChoGiaoNgay!= null ? countHoaDonChoGiaoNgay + ' hóa đơn' : '0 hóa đơn'}"></span>-->
+    <!--                                        </div>-->
+    <!--                                    </div>-->
+    <!--                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDon2Ngay">-->
+    <!--                                        <div class="columnThongKe">-->
+    <!--                                            <h3>Hóa đơn đang giao </h3>-->
+    <!--                                            <span th:text="${countHoaDonDangGiaoNgay != null ? countHoaDonDangGiaoNgay + ' hóa đơn' : '0 hóa đơn'}"></span>-->
+    <!--                                        </div>-->
+    <!--                                    </div>-->
+    <!--                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDon3Ngay">-->
+    <!--                                        <div class="columnThongKe">-->
+    <!--                                            <h3>Hóa đơn hoàn thành </h3>-->
+    <!--                                            <span th:text="${countHoaDonHoanThanhNgay != null ? countHoaDonHoanThanhNgay + ' hóa đơn' : '0 hóa đơn'}"></span>-->
+    <!--                                        </div>-->
+    <!--                                    </div>-->
+    <!--                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDon5Ngay">-->
+    <!--                                        <div class="columnThongKe">-->
+    <!--                                            <h3>Hóa đơn hủy </h3>-->
+    <!--                                            <span th:text="${countHoaDonDaHuyNgay != null ? countHoaDonDaHuyNgay + ' hóa đơn' : '0 hóa đơn'}"></span>-->
+    <!--                                        </div>-->
+    <!--                                    </div>-->
+    <!--                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDon6Ngay">-->
+    <!--                                        <div class="columnThongKe">-->
+    <!--                                            <h3>Hóa đơn hoàn trả </h3>-->
+    <!--                                            <span th:text="${countHoaDonTraNgay != null ? countHoaDonTraNgay + ' hóa đơn' : '0 hóa đơn'}"></span>-->
+    <!--                                        </div>-->
+    <!--                                    </div>-->
+    <!--                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDon0Thang">-->
+    <!--                                        <div class="columnThongKe">-->
+    <!--                                            <h3>Hóa đơn chờ xác nhận </h3>-->
+    <!--                                            <span th:text="${countHoaDonChoXacNhanThang != null ? countHoaDonChoXacNhanThang + ' hóa đơn' : '0 hóa đơn'}"></span>-->
+    <!--                                        </div>-->
+    <!--                                    </div>-->
+    <!--                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDon1Thang">-->
+    <!--                                        <div class="columnThongKe">-->
+    <!--                                            <h3>Hóa đơn chờ giao </h3>-->
+    <!--                                            <span th:text="${countHoaDonChoGiaoThang != null ? countHoaDonChoGiaoThang + ' hóa đơn' : '0 hóa đơn'}"></span>-->
+    <!--                                        </div>-->
+    <!--                                    </div>-->
+    <!--                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDon2Thang">-->
+    <!--                                        <div class="columnThongKe">-->
+    <!--                                            <h3>Hóa đơn đang giao </h3>-->
+    <!--                                            <span th:text="${countHoaDonDangGiaoThang != null ? countHoaDonDangGiaoThang + ' hóa đơn' : '0 hóa đơn'}"></span>-->
+    <!--                                        </div>-->
+    <!--                                    </div>-->
+    <!--                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDon3Thang">-->
+    <!--                                        <div class="columnThongKe">-->
+    <!--                                            <h3>Hóa đơn hoàn thành </h3>-->
+    <!--                                            <span th:text="${countHoaDonHoanThanhThang != null ? countHoaDonHoanThanhThang + ' hóa đơn' : '0 hóa đơn'}"></span>-->
+    <!--                                        </div>-->
+    <!--                                    </div>-->
+    <!--                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDon5Thang">-->
+    <!--                                        <div class="columnThongKe">-->
+    <!--                                            <h3>Hóa đơn hủy </h3>-->
+    <!--                                            <span th:text="${countHoaDonDaHuyThang != null ? countHoaDonDaHuyThang + ' hóa đơn' : '0 hóa đơn'}"></span>-->
+    <!--                                        </div>-->
+    <!--                                    </div>-->
+    <!--                                    <div class="col-md-6" style="margin-top: 2%" id="hoaDon6Thang">-->
+    <!--                                        <div class="columnThongKe">-->
+    <!--                                            <h3>Hóa đơn hoàn trả </h3>-->
+    <!--                                            <span th:text="${countHoaDonTraThang != null ? countHoaDonTraThang + ' hóa đơn' : '0 hóa đơn'}"></span>-->
+    <!--                                        </div>-->
+    <!--                                    </div>-->
+                                    <!--                                    <div class="col-md-6">-->
+                                    <!--                                        <div class="columnThongKe" id="doanhThuNgay">-->
+                                    <!--                                            <h3>Doanh số hôm nay</h3>-->
+                                    <!--                                            <span th:text="${countHoaDonDay != null ? countHoaDonDay + ' đơn hàng /' : '0 đơn hàng /'}"></span>-->
+                                    <!--                                            <span th:text="${sumHoaDonDay != null ? #numbers.formatDecimal(sumHoaDonDay, 0, 'COMMA', 0, 'POINT') + ' VNĐ' : '0 VNĐ'}"></span>-->
+                                    <!--                                        </div>-->
+                                    <!--                                    </div>-->
+                                    <!--                                    <div class="col-md-6">-->
+                                    <!--                                        <div class="columnThongKe" id="doanhThuThang">-->
+                                    <!--                                            <h3>Doanh số tháng này</h3>-->
+                                    <!--                                            <span th:text="${countHoaDonMonth != null ? countHoaDonMonth + ' đơn hàng /' : '0 đơn hàng /'}"></span>-->
+                                    <!--                                            <span th:text="${sumHoaDonMonth != null ? #numbers.formatDecimal(sumHoaDonMonth, 0, 'COMMA', 0, 'POINT') + ' VNĐ' : '0 VNĐ'}"></span>-->
+                                    <!--                                        </div>-->
+                                    <!--                                    </div>-->
+                                </div>
+<br>
+                            </div>
+                            <br>
                             <div id="top5Between">
                                 <h1>Top sản phẩm bán chạy</h1>
                                 <table border="1" id="ex" style="margin-bottom: 5%">
@@ -496,7 +697,7 @@
                                 <div class="col-md-2">
                                     <label class="form-label"> Nhỏ hơn</label>
 
-                                    <input type="number" class="form-control" th:value="${soLuong != null ? soLuong : 10}"
+                                    <input type="number" class="form-control" th:value="${soLuong != null ? soLuong : 50}"
                                            name="soLuong" min="1" max="1000000000"
                                            required>
                                 </div>

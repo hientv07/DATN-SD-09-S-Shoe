@@ -13,12 +13,25 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
 
     @Autowired
     private HoaDonChiTietRepository hoaDonChiTietRepository;
-    //Thống kê bình
-//    @Override
-//    public List<Object[]> findByTongSoLuongBetween(Date startDate, Date endDate) {
-////        return hoaDonChiTietRepository.findByTongSoLuongBetween(startDate, endDate);
-//        return ;
-//    }
 
-    //kết thúc binh
+    @Override
+    public List<Object[]> findByTongSoLuongBetween(Date startDate, Date endDate) {
+        return hoaDonChiTietRepository.findByTongSoLuongBetween(startDate,endDate);
+    }
+
+    @Override
+    public Integer sumSanPhamBanDuocBetween(Date startDate, Date endDate) {
+        return hoaDonChiTietRepository.sumSanPhamBanDuocBetween(startDate, endDate);
+    }
+
+    @Override
+    public List<Object[]> findByTongSoLuongBetweenGetAll() {
+        return hoaDonChiTietRepository.findByTongSoLuongBetweenGetAll();
+    }
+
+    @Override
+    public Integer sumSanPhamHoaDonAll() {
+        return hoaDonChiTietRepository.sumSanPhamHoaDonAll();
+    }
+
 }
