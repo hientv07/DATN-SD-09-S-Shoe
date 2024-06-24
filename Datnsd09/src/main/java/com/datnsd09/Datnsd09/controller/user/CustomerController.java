@@ -2,34 +2,26 @@ package com.datnsd09.Datnsd09.controller.user;
 
 
 import com.datnsd09.Datnsd09.config.PrincipalCustom;
+import com.datnsd09.Datnsd09.entity.DiaChi;
 import com.datnsd09.Datnsd09.entity.KhachHang;
 import com.datnsd09.Datnsd09.entity.SanPhamChiTiet;
-import com.datnsd09.Datnsd09.service.HoaDonChiTietService;
-import com.datnsd09.Datnsd09.service.KhachHangService;
-import com.datnsd09.Datnsd09.service.KichCoService;
-import com.datnsd09.Datnsd09.service.LoaiDeService;
-import com.datnsd09.Datnsd09.service.MauSacService;
-import com.datnsd09.Datnsd09.service.SanPhamChiTietService;
-import com.datnsd09.Datnsd09.service.ThuongHieuService;
-import com.datnsd09.Datnsd09.service.VoucherService;
+import com.datnsd09.Datnsd09.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
 public class CustomerController {
 
     private Long idKhachHang;
-
+    @Autowired
+    DiaChiService diaChiService;
     @Autowired
     private KhachHangService khachHangService;
 
@@ -205,7 +197,81 @@ public class CustomerController {
         }
         return "/customer/lien-he";
     }
+    @PostMapping("/user/dia-chi/add")
+    public String adđDiaChi(
+            @RequestParam("phuongXaID") String phuongXa,
+            @RequestParam("quanHuyenID") String quanHuyen,
+            @RequestParam("thanhPhoID") String thanhPho,
+            @RequestParam("diaChiCuThe") String diaChiCuThe) {
+        Date date = new Date();
+        DiaChi diaChi = new DiaChi();
+        diaChi.setPhuongXa(phuongXa);
+        diaChi.setQuanHuyen(quanHuyen);
+        diaChi.setThanhPho(thanhPho);
+        diaChi.setDiaChiCuThe(diaChiCuThe);
+        diaChi.setTrangThai(1);
+        diaChi.setNgayTao(date);
+        diaChi.setNgaySua(date);
+        diaChi.setKhachHang(KhachHang.builder().id(idKhachHang).build());
+        diaChiService.save(diaChi);
+        return "redirect:/user/cart";
+    }
+    @PostMapping("/user/dia-chi/update")
+    public String updateDiaChi(
+            @RequestParam("idDiaChi") Long idDiaChi,
+            @RequestParam("phuongXa") String phuongXa,
+            @RequestParam("quanHuyen") String quanHuyen,
+            @RequestParam("thanhPho") String thanhPho,
+            @RequestParam("diaChiCuThe") String diaChiCuThe,
+            @RequestParam("trangThai") Integer trangThai) {
+        if (trangThai == 0) {
+            List<DiaChi> listDiaChi = diaChiService.getAllTrangThai(0);
+            DiaChi diaChiNew = new DiaChi();
+            for (DiaChi diaChiUpdate : listDiaChi) {
+                diaChiNew.setId(diaChiUpdate.getId());
+                diaChiNew.setPhuongXa(diaChiUpdate.getPhuongXa());
+                diaChiNew.setQuanHuyen(diaChiUpdate.getQuanHuyen());
+                diaChiNew.setThanhPho(diaChiUpdate.getThanhPho());
+                diaChiNew.setDiaChiCuThe(diaChiUpdate.getDiaChiCuThe());
+                diaChiNew.setTrangThai(1);
+                diaChiNew.setNgayTao(diaChiUpdate.getNgayTao());
+                diaChiNew.setNgaySua(diaChiUpdate.getNgaySua());
+                diaChiNew.setKhachHang(diaChiUpdate.getKhachHang());
+                diaChiService.update(diaChiNew);
+            }
+        }
+        Date date = new Date();
+        DiaChi diaChi = new DiaChi();
+        diaChi.setId(idDiaChi);
+        diaChi.setPhuongXa(phuongXa);
+        diaChi.setQuanHuyen(quanHuyen);
+        diaChi.setThanhPho(thanhPho);
+        diaChi.setDiaChiCuThe(diaChiCuThe);
+        diaChi.setTrangThai(trangThai);
+        diaChi.setNgayTao(date);
+        diaChi.setNgaySua(date);
+        diaChi.setKhachHang(KhachHang.builder().id(idKhachHang).build());
+        diaChiService.update(diaChi);
 
 
 
+        return "redirect:/user/cart";
+    }
+    @GetMapping("/user/dia-chi")
+    public String diaChiKhachHang(
+            Model model) {
+        KhachHang khachHang = khachHangService.getById(idKhachHang);
+//        model.addAttribute("soLuongSPGioHangCT",
+//                gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
+        List<DiaChi> diaChi = diaChiService.getAllByTaiKhoan(idKhachHang);
+        model.addAttribute("listDiaChi", diaChi);
+        if (diaChi.size() == 5) {
+            model.addAttribute("checkButtonAdd", "true");
+            model.addAttribute("soDiaChi", diaChi.size());
+        } else {
+            model.addAttribute("checkButtonAdd", "false");
+            model.addAttribute("soDiaChi", diaChi.size());
+        }
+        return "/customer/dia-chi";
+    }
 }
