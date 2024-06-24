@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
+import java.util.List;
 
 @Repository
 public interface HoaDonRepository extends JpaRepository<HoaDon,Long> {
@@ -36,4 +37,9 @@ public interface HoaDonRepository extends JpaRepository<HoaDon,Long> {
     @Query("select COUNT(hd) from HoaDon hd where hd.trangThai = :trangThai")
     Integer countHoaDon(@Param("trangThai") Integer trangThai);
     //kết thúc thống kê
+
+
+    // Ngọc Hiếu
+    @Query(value = "select hoa_don.id_hd from hoa_don where trang_thai = 3", nativeQuery = true)
+    List<Long> fillAllIdHoaDonTrangThaiHoanThanh();
 }

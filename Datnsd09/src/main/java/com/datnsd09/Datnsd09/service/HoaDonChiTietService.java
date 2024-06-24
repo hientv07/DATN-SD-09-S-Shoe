@@ -1,5 +1,7 @@
 package com.datnsd09.Datnsd09.service;
 
+import com.datnsd09.Datnsd09.entity.HoaDonChiTiet;
+
 import java.util.Date;
 import java.util.List;
 
@@ -18,4 +20,7 @@ public interface HoaDonChiTietService {
     Integer sumSanPhamHoaDonAll();
 
     //kết thúc bình
+
+    // Ngọc Hiếu : Sản Phẩm ở client
+    List<HoaDonChiTiet> finTop5HDCT();
 }

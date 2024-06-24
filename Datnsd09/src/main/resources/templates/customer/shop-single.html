@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>S-Shoe</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="../../static/img/favicon.png" rel="icon">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,400,700"/>
+    <link rel="stylesheet" href="../../static/fonts/icomoon/style.css"/>
+
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/css/magnific-popup.css"/>
+    <link rel="stylesheet" href="../../static/css/jquery-ui.css"/>
+    <link rel="stylesheet" href="../../static/css/owl.carousel.min.css"/>
+    <link rel="stylesheet" href="../../static/css/owl.theme.default.min.css"/>
+
+    <link rel="stylesheet" href="../../static/css/aos.css"/>
+    <link rel="stylesheet" href="../../static/css/style-customer-template.css"/>
+
+
+    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
+
+</head>
+<body>
+<div class="site-wrap">
+    <header class="site-navbar" role="banner">
+        <div class="site-navbar-top">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-6 col-md-4 order-2 order-md-1 site-search-icon text-left">
+                        <form action="" class="site-block-top-search">
+                            <span class="icon icon-search2"></span>
+                            <input type="text" class="form-control border-0" id="timKiemAll"
+                                   placeholder="Tìm kiếm theo tên sản phẩm"/>
+                            <script>
+                                var inputElementTimKiemAll = document.getElementById('timKiemAll');
+
+                                inputElementTimKiemAll.addEventListener('blur', function () {
+                                    var inputValueTimKiemAll = inputElementTimKiemAll.value;
+                                    console.log('Giá trị của input:', inputValueTimKiemAll);
+
+                                    var fullUrl = window.location.origin + "/shop"
+
+                                    if (inputValueTimKiemAll !== '') {
+                                        fullUrl = updateQueryStringParameterAll('keyword', inputValueTimKiemAll, fullUrl);
+                                    } else {
+                                        fullUrl = removeQueryStringParameterAll('keyword', fullUrl);
+                                    }
+
+                                    window.location.href = fullUrl
+
+
+                                });
+
+                                // Hàm cập nhật giá trị của query parameter trong URL
+                                function updateQueryStringParameterAll(key, value, url) {
+                                    var regex = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+                                    var separator = url.indexOf('?') !== -1 ? "&" : "?";
+                                    if (url.match(regex)) {
+                                        return url.replace(regex, '$1' + key + "=" + value + '$2');
+                                    } else {
+                                        return url + separator + key + "=" + value;
+                                    }
+                                }
+
+                                // Hàm xóa query parameter khỏi URL
+                                function removeQueryStringParameterAll(key, url) {
+                                    var urlParts = url.split('?');
+                                    if (urlParts.length >= 2) {
+                                        var prefix = encodeURIComponent(key) + '=';
+                                        var queryString = urlParts[1].split('&');
+
+                                        for (var i = queryString.length - 1; i >= 0; i--) {
+                                            if (queryString[i].lastIndexOf(prefix, 0) !== -1) {
+                                                queryString.splice(i, 1);
+                                            }
+                                        }
+
+                                        url = urlParts[0] + (queryString.length > 0 ? '?' + queryString.join('&') : '');
+                                    }
+
+                                    return url;
+                                }
+                            </script>
+                        </form>
+                    </div>
+
+                    <div class="col-12 mb-3 mb-md-0 col-md-4 order-1 order-md-2 text-center">
+                        <div class="site-logo">
+                            <a href="/home" class="js-logo-clone">S-Shoe</a>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4 order-3 order-md-3 text-right">
+                        <div class="site-top-icons">
+                            <ul class="nav nav-pills" style="margin-left: 54%">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
+                                       role="button" aria-expanded="false"><span class="icon icon-person"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="/user/thong-tin-khach-hang">Tài Khoản Của
+                                            Tôi</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="/user/don-mua">Đơn Mua</a></li>
+                                        <li><a class="dropdown-item" th:href="@{/logout}">Đăng Xuất</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown" th:if="${checkDangNhap=='false'}">
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
+                                       role="button" aria-expanded="false"><span class="icon icon-person"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="/login">Đăng Nhập</a></li>
+
+                                    </ul>
+                                </li>
+
+                                <li class="nav-item" style="margin-top: 5%;margin-left: -5%">
+                                    <a class="site-cart" href="/user/cart">
+                                        <span class="icon icon-shopping_cart"></span>
+                                        <span class="count" th:if="${checkDangNhap=='true'}" th:text="${soLuongSPGioHangCT}"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav class="site-navigation text-right text-md-center" role="navigation">
+            <div class="container">
+                <ul class="site-menu js-clone-nav d-none d-md-block">
+                    <li>
+                        <a href="/home">Trang chủ</a>
+                    </li>
+
+                    <li><a href="/shop">Sản phẩm</a></li>
+                    <li><a href="/about">Về chúng tôi</a></li>
+                    <li><a href="/lien-he">Liên hệ</a></li>
+                    <li><a href="/chinh-sach">Chính Sách</a></li>
+                    <li><a href="/tra-cuu-don-hang">Tra Cứu Đơn Hàng</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="single-product">
+            <div class="row">
+                <div class="col-6">
+                    <div class="product-image">
+                        <div class="product-image-main" style="background-color: white">
+                            <img th:if="${not #lists.isEmpty(chiTietSp.sanPham.listHinhAnhSanPham)}"
+                                 th:src="@{'../../../static/img/ImgShoe/' + ${chiTietSp.sanPham.listHinhAnhSanPham[0].url}}"
+                                 alt="" id="product-main-image"/>
+                        </div>
+                        <div class="product-image-slider">
+                            <img th:each="anh : ${chiTietSp.sanPham.listHinhAnhSanPham}"
+                                 th:src="@{'../../../static/img/ImgShoe/' + ${anh.url}}" alt="" class="image-list"/>
+                        </div>
+                    </div>
+                    <script>
+                        const sliderMainImage = document.getElementById("product-main-image");
+                        const sliderImageList = document.getElementsByClassName("image-list");
+                        console.log(sliderImageList);
+
+                        sliderImageList[0].onclick = function () {
+                            sliderMainImage.src = sliderImageList[0].src;
+                            console.log(sliderMainImage.src);
+                        };
+
+                        sliderImageList[1].onclick = function () {
+                            sliderMainImage.src = sliderImageList[1].src;
+                            console.log(sliderMainImage.src);
+                        };
+
+                        sliderImageList[2].onclick = function () {
+                            sliderMainImage.src = sliderImageList[2].src;
+                            console.log(sliderMainImage.src);
+                        };
+
+                        sliderImageList[3].onclick = function () {
+                            sliderMainImage.src = sliderImageList[3].src;
+                            console.log(sliderMainImage.src);
+                        };
+                        sliderImageList[4].onclick = function () {
+                            sliderMainImage.src = sliderImageList[4].src;
+                            console.log(sliderMainImage.src);
+                        };
+                    </script>
+                </div>
+                <div class="col-6">
+                    <div class="product">
+                        <div class="product-title">
+                            <h2 th:text="${chiTietSp.sanPham.ten}"></h2>
+                            <input hidden id="idSanPhamAn" th:value="${chiTietSp.sanPham.id}">
+                        </div>
+                        <div class="product-price">
+                                <span class="offer-price" id="giaHienThi"
+                                      th:text="${chiTietSp.giaHienHanh}+' VND'"></span>
+                        </div>
+
+                        <div class="product-details">
+                            <h3>Mô tả</h3>
+                            <p th:text="${chiTietSp.sanPham.moTa}"></p>
+                        </div>
+                        <div th:each="chiTietSPs,iterStat : ${listCTSP}">
+
+                        </div>
+                        <div class="product-size">
+                            <h4>Màu Sắc</h4>
+                            <div class="size-layout" th:each="chiTietSPs,iterStat : ${listCTSP}">
+                                <input type="radio" name="mauSac" th:value="${chiTietSPs.mauSac.id}"
+                                       th:id="${iterStat.index}+6" class="size-input">
+                                <label th:for="${iterStat.index}+6" class="size"
+                                       th:text="${chiTietSPs.mauSac.ten}"></label>
+                            </div>
+                            <h4 id="labelKichThuoc" style="display: none">Kích Thước</h4>
+                        </div>
+
+                        <!-- Thêm thẻ script trước khi sử dụng Axios -->
+                        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+                        <script>
+                            document.querySelectorAll('input[name="mauSac"]').forEach(function (input) {
+                                input.addEventListener('change', function () {
+                                    var idMauSac = this.value; // Lấy giá trị idMauSac khi màu sắc được chọn
+                                    var idSanPhamAn = document.getElementById("idSanPhamAn");
+                                    idSanPham = idSanPhamAn.value;
+                                    console.log(idSanPham + 'id sản phẩm');
+                                    console.log(idMauSac + 'id màu sắc');
+                                    document.getElementById('so-luong-ton').style.display = 'none';
+                                    getAllbyIdSPAndIdMS(idSanPham, idMauSac); // Gọi hàm để lấy danh sách kích cỡ
+
+                                    var soLuong = document.getElementById('soLuong');
+                                    soLuong.value = '';
+                                    var rqIdChiTietSp = document.getElementById('idChiTietSp');
+                                    rqIdChiTietSp.value = '';
+
+                                });
+                            });
+
+                            // Định nghĩa hàm để lấy danh sách kích cỡ bằng idMauSac
+                            function getAllbyIdSPAndIdMS(idSanPham, idMauSac) {
+                                var xhr = new XMLHttpRequest();
+                                xhr.open('GET', '/user/san-pham-chi-tiet/' + idSanPham + '/' + idMauSac, true);
+                                xhr.setRequestHeader('Content-Type', 'application/json');
+
+                                xhr.onreadystatechange = function () {
+                                    if (xhr.readyState === 4) {
+                                        if (xhr.status === 200) {
+                                            var listChiTietSpByMauSac = JSON.parse(xhr.responseText); // Chuyển từ JSON thành danh sách
+                                            console.log(listChiTietSpByMauSac);
+                                            displaylistChiTietSpByMauSac(listChiTietSpByMauSac);
+                                        } else {
+                                            console.error('Lỗi trong quá trình lấy danh sách kích cỡ.');
+                                        }
+                                    }
+                                };
+
+                                xhr.send();
+                            }
+
+
+                            function displaylistChiTietSpByMauSac(listChiTietSpByMauSac) {
+                                // Hiển thị danh sách kích cỡ trên trang web
+                                var kichCoContainer = document.getElementById('kichCoContainer');
+                                var labelKichThuoc = document.getElementById('labelKichThuoc');
+                                labelKichThuoc.style.display = 'block';
+                                kichCoContainer.className = 'product-size';
+                                kichCoContainer.innerHTML = ''; // Xóa nội dung cũ
+
+                                listChiTietSpByMauSac.forEach(function (chiTietSp, index) {
+
+                                    var kichCoElement = document.createElement('div');
+                                    console.log(chiTietSp)
+                                    // Tạo phần tử input
+                                    var input = document.createElement('input');
+                                    input.type = 'radio';
+                                    input.name = 'size';
+                                    input.className = 'size-input';
+                                    input.value = chiTietSp.kichCo.ten; // Đặt giá trị tên kích cỡ vào value
+                                    input.id = index; // Đặt giá trị id từ mauSac.id
+
+                                    // Tạo phần tử label
+                                    var label = document.createElement('label');
+                                    label.htmlFor = index; // Sử dụng mauSac.id làm htmlFor
+                                    label.className = 'size';
+                                    label.innerText = chiTietSp.kichCo.ten; // Hiển thị tên kích cỡ
+
+                                    // Thêm input và label vào phần tử div
+                                    kichCoElement.className = 'size-layout'
+                                    kichCoElement.appendChild(input);
+                                    kichCoElement.appendChild(label);
+                                    kichCoContainer.appendChild(kichCoElement);
+
+                                    // Sự kiện change cho input
+                                    input.addEventListener('change', function () {
+                                        // Điều này xảy ra khi người dùng chọn một kích cỡ
+                                        // Lấy số lượng từ listChiTietSpByMauSac
+
+                                        var soLuongHienThi = chiTietSp.soLuong;
+                                        var giaHienThi = chiTietSp.giaHienHanh;
+                                        var idCTSP = chiTietSp.id;
+
+                                        var divSoLuongCon = document.getElementById('so-luong-ton');
+                                        var rqIdChiTietSp = document.getElementById('idChiTietSp');
+                                        var inputSoLuong = document.getElementById('soLuong');
+                                        var spanGia = document.getElementById('giaHienThi');
+
+                                        // Hiển thị thông tin (ở đây là cần thay thế số lượng trên trang web)
+                                        spanGia.innerText = giaHienThi + ' VND';
+
+                                        rqIdChiTietSp.value = idCTSP;
+
+                                        inputSoLuong.value = 1;
+                                        inputSoLuong.max = soLuongHienThi
+
+                                        divSoLuongCon.style.display = 'block';
+                                        divSoLuongCon.innerText = soLuongHienThi + ' sản phẩm có sẵn';
+                                        divSoLuongCon.style = 'color: red';
+                                    });
+
+                                });
+
+                            }
+
+                            function limitInput(inputElement) {
+                                var minValue = parseInt(inputElement.min, 10);
+                                var maxValue = parseInt(inputElement.max, 10);
+                                var stepValue = parseInt(inputElement.step, 10);
+
+                                // Chuyển giá trị nhập vào thành số nguyên
+                                var enteredValue = parseInt(inputElement.value, 10);
+
+                                // Kiểm tra giá trị nhập vào
+                                if (isNaN(enteredValue)) {
+                                    // Nếu giá trị không phải là số, đặt giá trị mặc định là giá trị nhỏ nhất
+                                    inputElement.value = minValue;
+                                } else if (enteredValue < minValue) {
+                                    // Nếu giá trị nhỏ hơn giá trị nhỏ nhất, đặt giá trị nhỏ nhất
+                                    inputElement.value = minValue;
+                                } else if (enteredValue > maxValue) {
+                                    // Nếu giá trị lớn hơn giá trị lớn nhất, đặt giá trị lớn nhất
+                                    inputElement.value = maxValue;
+                                } else if (enteredValue % stepValue !== 0) {
+                                    // Nếu giá trị không chia hết cho bước, làm tròn đến giá trị gần nhất chia hết cho bước
+                                    inputElement.value = Math.round(enteredValue / stepValue) * stepValue;
+                                }
+                            }
+
+
+                            function themVaoGioHang() {
+
+                                var fillErro = document.getElementById('so-luong-ton');
+
+                                var mauSacInputs = document.getElementsByName('mauSac');
+
+                                var isMauSacSelected = false;
+
+                                for (var i = 0; i < mauSacInputs.length; i++) {
+                                    if (mauSacInputs[i].checked) {
+                                        isMauSacSelected = true;
+                                        break; // Ngừng lặp nếu đã có kích thước được chọn
+                                    }
+                                }
+
+                                if (!isMauSacSelected) {
+                                    console.log("Vui lòng chọn một màu sắc.");
+                                    fillErro.innerHTML = '';
+                                    fillErro.innerText = 'Vui lòng chọn Phân loại hàng';
+                                    fillErro.style = 'color: red'
+                                    return false;
+                                }
+
+                                var sizeInputs = document.getElementsByName('size');
+
+                                var isSizeSelected = false;
+
+                                for (var i = 0; i < sizeInputs.length; i++) {
+                                    if (sizeInputs[i].checked) {
+                                        isSizeSelected = true;
+                                        break; // Ngừng lặp nếu đã có kích thước được chọn
+                                    }
+                                }
+
+                                if (!isSizeSelected) {
+                                    console.log("Vui lòng chọn một màu sắc.");
+                                    fillErro.innerHTML = '';
+                                    fillErro.innerText = 'Vui lòng chọn Phân loại hàng';
+                                    fillErro.style = 'color: red';
+                                    return false;
+                                }
+
+                                var soLuong = document.getElementById('soLuong');
+                                var soLuongAdd = soLuong.value;
+
+                                var rqIdChiTietSp = document.getElementById('idChiTietSp');
+
+                                var rqIdChiTietSp = rqIdChiTietSp.value;
+                                var soLuongTruoc = 0;
+                                var soLuongCheck = 0;
+
+                                //check số lượng trong giỏ hàng chi tiết
+                                fetch('/user/shop-single/check-so-luong/' + rqIdChiTietSp)
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        soLuongTruoc = data;
+                                        var soLuongTonInt = parseInt(fillErro.innerText);
+                                        soLuongCheck = parseInt(soLuong.value) + soLuongTruoc
+
+                                        if (soLuongCheck > soLuongTonInt) {
+
+                                            console.log("Không thể thêm số lượng đã chọn vào giỏ hàng vì sẽ vượt quá giới hạn mua hàng của bạn.")
+                                            //thông báo lỗi
+                                            $('#checkSoLuongGHCT').modal('show')
+                                            return false;
+                                        } else {
+                                            // Lấy URL cần gửi phương thức POST
+                                            var url = '/user/gio-hang-chi-tiet/add/' + rqIdChiTietSp + '/' + soLuongAdd; // Thay thế bằng URL thực tế
+                                            // Thực hiện phương thức POST
+                                            fetch(url, {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Content-Type': 'application/json'
+                                                }
+                                            })
+                                                .then(response => {
+                                                    if (response.ok) {
+                                                        //thông báo
+                                                        var toast = new bootstrap.Toast(document.getElementById('thongBaoThemThanhCong'));
+                                                        toast.show();
+                                                        console.log('Đã thêm vào giỏ hàng');
+
+                                                        //update số lượng
+                                                        fetch('/user/shop-single/get-so-luong')
+                                                            .then(response => response.json())
+                                                            .then(data => {
+                                                                soLuongTruoc = data;
+                                                                var soLuongGHCT = document.getElementById("soLuongGHCT")
+                                                                soLuongGHCT.innerHTML = ''
+                                                                soLuongGHCT.innerText = soLuongTruoc
+                                                                console.log("Sô lượng GHCT trong giỏ: " + soLuongTruoc)
+                                                            })
+                                                            .catch(error => {
+                                                                console.error('Lỗi trong quá trình lấy số lượng từ cơ sở dữ liệu:', error)
+                                                            });
+
+                                                    } else {
+                                                        throw new Error('Lỗi trong quá trình thêm vào giỏ hàng.');
+                                                    }
+                                                })
+                                                .catch(error => {
+                                                    console.error(error);
+                                                });
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Lỗi trong quá trình lấy số lượng từ cơ sở dữ liệu:', error)
+                                    });
+
+
+                            }
+
+                            function themVaoGioHangNhanh() {
+
+                                var fillErro = document.getElementById('so-luong-ton');
+
+                                var mauSacInputs = document.getElementsByName('mauSac');
+
+                                var isMauSacSelected = false;
+
+                                for (var i = 0; i < mauSacInputs.length; i++) {
+                                    if (mauSacInputs[i].checked) {
+                                        isMauSacSelected = true;
+                                        break; // Ngừng lặp nếu đã có kích thước được chọn
+                                    }
+                                }
+
+                                if (!isMauSacSelected) {
+                                    console.log("Vui lòng chọn một màu sắc.");
+                                    fillErro.innerHTML = '';
+                                    fillErro.innerText = 'Vui lòng chọn Phân loại hàng';
+                                    fillErro.style = 'color: red'
+                                    return false;
+                                }
+
+                                var sizeInputs = document.getElementsByName('size');
+
+                                var isSizeSelected = false;
+
+                                for (var i = 0; i < sizeInputs.length; i++) {
+                                    if (sizeInputs[i].checked) {
+                                        isSizeSelected = true;
+                                        break; // Ngừng lặp nếu đã có kích thước được chọn
+                                    }
+                                }
+
+                                if (!isSizeSelected) {
+                                    console.log("Vui lòng chọn một màu sắc.");
+                                    fillErro.innerHTML = '';
+                                    fillErro.innerText = 'Vui lòng chọn Phân loại hàng';
+                                    fillErro.style = 'color: red';
+                                    return false;
+                                }
+
+                                var soLuong = document.getElementById('soLuong');
+                                var soLuongAdd = soLuong.value;
+
+                                var rqIdChiTietSp = document.getElementById('idChiTietSp');
+                                var rqIdChiTietSp = rqIdChiTietSp.value;
+                                var soLuongTruoc = 0;
+                                var soLuongCheck = 0;
+
+                                //check số lượng trong giỏ hàng chi tiết
+                                fetch('/user/shop-single/check-so-luong/' + rqIdChiTietSp)
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        soLuongTruoc = data;
+                                        var soLuongTonInt = parseInt(fillErro.innerText);
+                                        soLuongCheck = parseInt(soLuong.value) + soLuongTruoc
+                                        if (soLuongCheck > soLuongTonInt) {
+
+                                            console.log("Không thể thêm số lượng đã chọn vào giỏ hàng vì sẽ vượt quá giới hạn mua hàng của bạn.")
+                                            //thông báo lỗi
+                                            $('#checkSoLuongGHCT').modal('show')
+                                            return false;
+                                        } else {
+                                            // Lấy URL cần gửi phương thức POST
+                                            var url = '/user/gio-hang-chi-tiet/add-fast/' + rqIdChiTietSp + '/' + soLuongAdd; // Thay thế bằng URL thực tế
+
+                                            // Thực hiện phương thức POST
+                                            fetch(url, {
+                                                method: 'POST',
+                                                headers: {
+                                                    'Content-Type': 'application/json'
+                                                }
+                                            })
+                                                .then(response => {
+                                                    if (response.ok) {
+                                                        // Xử lý kết quả nếu cần
+                                                        console.log('Đã thêm vào giỏ hàng');
+                                                        window.location.href = '/user/cart?checkGHCT=true1';
+                                                    } else {
+                                                        throw new Error('Lỗi trong quá trình thêm vào giỏ hàng.');
+                                                    }
+                                                })
+                                                .catch(error => {
+                                                    console.error(error);
+                                                });
+                                        }
+                                    })
+                                    .catch(error => {
+                                        console.error('Lỗi trong quá trình lấy số lượng từ cơ sở dữ liệu:', error)
+                                    });
+
+                            }
+
+
+                        </script>
+                        <!-- Thêm một phần tử để hiển thị danh sách kích cỡ -->
+                        <div id="kichCoContainer">
+                        </div>
+                        <div class="product-size">
+                            <h4>Số lượng</h4>
+                            <input type="number" name="soLuong" id="soLuong" class="form-control" min="1" step="1"
+                                   oninput="limitInput(this)">
+                            <input type="hidden" name="idChiTietSp" id="idChiTietSp">
+                            <span id="so-luong-ton"></span>
+                        </div>
+
+                        <span class="divider"></span>
+
+                        <div class="product-btn-group">
+                            <button onclick="themVaoGioHangNhanh()" class="button buy-now"><i class='bx bxs-zap'></i>Mua
+                                Ngay
+                            </button>
+                            <button onclick="return themVaoGioHang()" id="buttonAddCart" class="button add-cart">
+                                <i class='bx bxs-cart'></i> Thêm vào giỏ
+                            </button>
+
+                            <style>
+                                .button.heart {
+                                    background-color: transparent;
+                                    border: none;
+                                    cursor: pointer;
+                                }
+
+                                .button.heart:focus {
+                                    outline: none;
+                                }
+
+                                .bxs-heart {
+                                    color: #f3a7a7; /* Màu trái tim không được chọn */
+                                }
+
+                                .bxs-heart.favorited {
+                                    color: #ff0000; /* Màu trái tim khi được chọn */
+                                }
+
+                                #heartIcon2 {
+                                    color: red;
+                                }
+
+                            </style>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="toast-container position-fixed top-50 start-50 translate-middle">
+        <div id="thongBaoThemThanhCong" class="toast" role="alert" aria-live="assertive" data-bs-delay="500"
+             aria-atomic="true"
+             style="background-color: #7e7e7e;">
+            <div class="toast-body center-image" style=";display: flex;justify-content: center;align-items: center;">
+                <img src="../../static/img/successful_notification.png" alt="Notification Image"
+                     style="margin-top:7%;width: 12%;height: 12%;">
+            </div>
+            <div class="toast-body" style="color: white;display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            margin-bottom: 7%;
+            text-align: center;">
+                Sản phẩm đã được thêm vào Giỏ hàng.
+            </div>
+        </div>
+    </div>
+    <!-- Modal thông báo xác nhận đặt hàng-->
+    <div class="modal fade" id="checkSoLuongGHCT" tabindex="-1"
+         aria-labelledby="checkSoLuongGHCTLabel" data-bs-backdrop="static"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header"
+                     style="border: none;display: flex;justify-content: center;align-items: center;">
+                    <img src="../../static/img/successful_danger.png" alt="Notification Image"
+                         style="margin-top:2%;width: 12%;height: 12%;margin-bottom: -3%">
+                </div>
+                <div class="modal-body" style="border: none">.
+                    <p style="text-align: center;">Số lượng sản phẩm này trong giỏ hàng đã đạt tối đa.
+                    </p>
+                </div>
+                <div class="modal-footer" style="border: none;">
+                    <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">OK
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal thông báo xác nhận đặt hàng end-->
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+        /** Poppins Font **/
+
+
+        * gobal layout * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary-color: #5344db;
+            --accent-color: #5344db;
+            --grey: #484848;
+            --bg-grey: #efefef;
+            --shadow: #949494;
+        }
+
+        .single-product {
+            width: 1080px;
+            position: relative;
+        }
+
+        /** Breadcrumb **/
+
+        .single-product .breadcrumb {
+            background: #48484810;
+            padding: 8px 4px;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        .breadcrumb span {
+            display: inline-flex;
+            flex-direction: row;
+            gap: 8px;
+            margin-left: 8px;
+        }
+
+        .breadcrumb span:not(:last-child)::after {
+            content: '/';
+        }
+
+        .breadcrumb span a {
+            text-decoration: none;
+            color: var(--primary-color);
+        }
+
+        /** product image **/
+
+        .single-product .product-image {
+            width: 100%;
+        }
+
+        .product-image .product-image-main {
+            position: relative;
+            display: block;
+            height: 480px;
+            background: var(--bg-grey);
+            padding: 10px;
+        }
+
+        .product-image-main img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .product-image-slider {
+            display: flex;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .product-image-slider img {
+            width: 90px;
+            height: 90px;
+            background: var(--bg-grey);
+            padding: 6px;
+            cursor: pointer;
+        }
+
+        /** product title **/
+
+        .product-title {
+            margin-top: 20px;
+
+        }
+
+        .product-title h2 {
+            font-size: 32px;
+            line-height: 2.4rem;
+            font-weight: 700;
+            letter-spacing: -0.02rem;
+        }
+
+        /** product rating **/
+        .product-rating {
+            display: flex;
+            margin-top: 4px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .product-rating span:not(:last-child) {
+            color: #ffc600;
+        }
+
+        .product-rating .review {
+            color: var(--grey);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /** Product price **/
+        .product-price {
+            display: flex;
+            position: relative;
+            margin: 10px 0;
+            align-items: center;
+        }
+
+        .product-price .offer-price {
+            font-size: 48px;
+            font-weight: 700;
+        }
+
+        .product-price .sale-price {
+            font-size: 22px;
+            font-weight: 500;
+            text-decoration: line-through;
+            color: var(--grey);
+            margin-left: 12px;
+        }
+
+        /** Product Details **/
+        .product-details {
+            margin: 10px 0;
+        }
+
+        .product-details h3 {
+            font-size: 18px;
+            font-weight: 500;
+        }
+
+        .product-details p {
+            margin: 5px 0;
+            font-size: 14px;
+            line-height: 1.2rem;
+        }
+
+        /** Product size **/
+        .product-size {
+            margin: 10px 0;
+        }
+
+        .product-size h4 {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .product-size .size-layout {
+            margin: 5px 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .product-size .size-layout .size-input {
+            display: none;
+        }
+
+        .product-size .size-layout .size {
+            background: var(--bg-grey);
+            padding: 10px 18px;
+            border: 1px solid var(--bg-grey);
+            border-radius: 4px;
+            margin-left: 0px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .product-size .size-layout .size:hover {
+            border: 1px solid var(--grey);
+        }
+
+        .product-size .size-layout input[type="radio"]:checked + .size {
+            background-color: rgb(0, 0, 0);
+            border: 1px solid var(--grey);
+            color: var(--bg-grey);
+            box-shadow: 0 3px 6px var(--shadow);
+
+        }
+
+
+        /** Product Color **/
+        .product-color {
+            margin: 10px 0;
+            justify-content: center;
+        }
+
+        .product-color h4 {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .product-color .color-layout {
+            margin: 5px 0;
+            display: flex;
+            gap: 10px;
+        }
+
+        .product-color .color-layout label {
+            border-radius: 4px;
+            cursor: pointer;
+            content: '';
+            width: 40px;
+            height: 40px;
+            display: inline-block;
+        }
+
+        .product-color .color-layout .black {
+
+            background-color: black;
+        }
+
+        .product-color .color-layout .red {
+            background-color: red;
+        }
+
+        .product-color .color-layout .blue {
+            background-color: blue;
+        }
+
+        .product-color .color-layout input[type="radio"]:checked + label {
+            box-shadow: 0 3px 6px var(--shadow);
+        }
+
+        .product-color .color-layout .color-input {
+            display: none;
+        }
+
+
+        /** divider **/
+        .divider {
+            display: block;
+            height: 1px;
+            width: 100%;
+            background: #48484830;
+            margin: 20px 0;
+        }
+
+        /** product Button Group **/
+
+        .product-btn-group {
+            display: flex;
+            gap: 15px;
+        }
+
+        .product-btn-group .button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            padding: 10px 24px;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .product-btn-group .buy-now {
+            background-color: var(--accent-color);
+            color: #fff;
+            border: 1px solid var(--accent-color);
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .product-btn-group .buy-now i {
+            font-size: 20px;
+        }
+
+        .product-btn-group .buy-now:hover {
+            box-shadow: 0 3px 6px var(--shadow);
+        }
+
+        .product-btn-group .add-cart {
+
+            background-color: var(--bg-grey);
+            color: var(--grey);
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .product-btn-group .add-cart i {
+            font-size: 20px;
+        }
+
+        .product-btn-group .add-cart:hover {
+            box-shadow: 0 3px 6px var(--shadow);
+            background: var(--grey);
+            color: #fff;
+        }
+
+        .product-btn-group .heart {
+            color: var(--grey);
+            cursor: pointer;
+        }
+
+        .product-btn-group .heart i {
+            font-size: 20px;
+        }
+
+        .product-btn-group .heart:hover {
+            color: var(--accent-color);
+        }
+
+
+        /** Responsive Mobile **/
+        @media screen and (max-width: 520px) {
+            .container {
+                padding: 20px;
+                height: auto;
+            }
+
+            .row {
+                display: block;
+            }
+
+            .col-6 {
+                width: 100%;
+                display: block;
+            }
+
+            .single-product {
+                width: 100%;
+                position: relative;
+            }
+
+            .product-image .product-image-main {
+                width: 100%;
+                height: 280px;
+            }
+
+            .product-image-slider {
+                gap: 5px;
+            }
+
+            .product-title h2 {
+                font-size: 24px;
+                line-height: 1.6rem;
+            }
+
+            .product-size {
+                display: block;
+            }
+
+            .product-size .size-layout {
+                display: block;
+                margin: 10px 0;
+
+            }
+
+            .product-size .size-layout .size {
+                padding: 6px 10px;
+            }
+
+            .product-btn-group {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        /** Responsive Tablet **/
+        @media (min-width: 520px) and (max-width: 1080px) {
+            .container {
+                display: block;
+                height: auto;
+                padding: 20px;
+            }
+
+        }
+    </style>
+
+    <div class="container">
+        <div class="site-section block-3 site-blocks-2 ">
+            <div class="container ">
+                <div class="row justify-content-center">
+                    <div class="col-md-7 site-section-heading text-center pt-4">
+                        <h2>Sản phẩm nổi bật</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="nonloop-block-3 owl-carousel">
+                            <div class="item" th:each="hoaDonCT : ${listTop5HDCT}" style=";height: 420px;">
+                                <div>
+                                    <div class="product-section">
+                                        <div class="container" style="width: 90%">
+                                            <div class="pf-card" style="margin-top: -30%">
+                                                <a class="product-item"
+                                                   th:href="@{/user/shop-single/{id}(id=${hoaDonCT.chiTietSanPham.sanPham.id})}">
+                                                    <div class="product-thumbnail-container">
+                                                        <img th:each="anh : ${hoaDonCT.chiTietSanPham.sanPham.listHinhAnhSanPham[0]}"
+                                                             th:src="@{'../../../static/img/ImgShoe/' + ${anh.url}}"
+                                                             th:data-segment="${hoaDonCT.chiTietSanPham.mauSac.ten}"
+                                                             th:data-seating="${hoaDonCT.chiTietSanPham.kichCo.ten}"
+                                                             th:data-power="${hoaDonCT.chiTietSanPham.loaiDe.ten}"
+                                                             class="img-fluid product-thumbnail">
+                                                    </div>
+                                                    <div class="product-info-container">
+                                                        <h3 class="product-title"
+                                                            th:text="${hoaDonCT.chiTietSanPham.sanPham.ten+' ['+hoaDonCT.chiTietSanPham.mauSac.ten+ ' - ' +hoaDonCT.chiTietSanPham.kichCo.ten}+']'"></h3>
+                                                        <strong class="product-price"
+                                                                style="display: block;margin: 0 auto;"
+                                                                th:text="${hoaDonCT.chiTietSanPham.giaHienHanh + ' VNĐ'}"></strong>
+                                                        <span class="icon-cross">
+							                                 <img src="../../static/img/plus-black.png"
+                                                                  class="img-fluid">
+                                                        </span>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer border-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="footer-heading mb-4">Điều hướng</h3>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Vận chuyển</a></li>
+                                <li><a href="#">Khu vực</a></li>
+                                <li><a href="#">Kênh bán hàng</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <ul class="list-unstyled">
+                                <li><a href="/about">Đội ngũ</a></li>
+                                <li><a href="/chinh-sach">Trả hàng</a></li>
+                                <li><a href="#">Bảo mật</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <ul class="list-unstyled">
+                                <li><a href="/lien-he">Liên hệ</a></li>
+                                <li><a href="/lien-he">Chăm sóc khách hàng</a></li>
+                                <li><a href="/lien-he">Phản hồi</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-4 mb-lg-0">
+                    <h3 class="footer-heading mb-4">Mẫu mã</h3>
+                    <a href="/shop" class="block-6">
+                        <img src="../../static/img/ImgShoe/adidas22_ULTRABOOST%2022%20(3).jpg" alt="Image placeholder"
+                             class="img-fluid rounded mb-4"/>
+                        <h3 class="font-weight-light mb-0">
+                            Tìm đôi giày hoàn hảo của bạn
+                        </h3>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="block-5 mb-5">
+                        <h3 class="footer-heading mb-4">Thông tin liên lạc</h3>
+                        <ul class="list-unstyled">
+                            <li class="address">
+                                13 P. Trịnh Văn Bô, Xuân Phương, Nam Từ Liêm, Hà Nội, Việt Nam
+                            </li>
+                            <li class="phone">
+                                <a href="tel://23923929210">+84 377 463 664</a>
+                            </li>
+                            <li class="email">sshoeshopshoes@gmail.com</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row pt-5 mt-5 text-center">
+                <div class="col-md-12">
+                    <p>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                        Copyright &copy;<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" class="text-primary">S-Shoe</a>
+                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<script src="../../static/js/jquery-3.3.1.min.js"></script>
+<script src="../../static/js/jquery-ui.js"></script>
+<script src="../../static/js/popper.min.js"></script>
+<!--   //lõi-->
+<script src="../../static/js/owl.carousel.min.js"></script>
+<script src="../../static/js/jquery.magnific-popup.min.js"></script>
+<script src="../../static/js/aos.js"></script>
+<script src="../../static/js/main.js"></script>
+<script src="../../static/js/script.js"></script>
+</body>
+
+</html>

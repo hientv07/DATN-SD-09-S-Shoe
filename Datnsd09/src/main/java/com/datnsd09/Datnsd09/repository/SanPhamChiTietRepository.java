@@ -77,7 +77,8 @@ public interface SanPhamChiTietRepository extends JpaRepository<SanPhamChiTiet, 
             "WHERE cts.RowAsc = 1  AND cts.trang_thai = 0;", nativeQuery = true)
     List<SanPhamChiTiet> fillAllChiTietSpShop(@Param("id") Long id);
 
-    @Query(value = "select * from chi_tiet_san_pham where san_pham_id = :idSanPham and mau_sac_id = :idMauSac and trang_thai = 0 ORDER BY kich_co_id ASC, id ASC;\n", nativeQuery = true)
+    // Hiện thị size giày ở trang detail sp phía Client
+    @Query(value = "select * from chi_tiet_san_pham where san_pham_id = :idSanPham and mau_sac_id = :idMauSac and trang_thai = 0 ORDER BY kich_co_id ASC, id_ctsp ASC;\n", nativeQuery = true)
     List<SanPhamChiTiet> fillAllChiTietSpMauSac(@Param("idSanPham") Long idSanPham,
                                                 @Param("idMauSac") Long idMauSac);
 
@@ -121,6 +122,7 @@ public interface SanPhamChiTietRepository extends JpaRepository<SanPhamChiTiet, 
     List<Object[]> danhSachSapHetHang(@Param("soLuong") int soLuong);
 
 
+    // Hiển thị tất cả sản phẩm bên client:
     @Query(value = "SELECT p FROM SanPhamChiTiet p WHERE p.trangThai = 0 AND p.sanPham.ten LIKE CONCAT('%',:tenSanPham,'%') \n"
             +
             "AND p.mauSac.id in (:tenMauSac) \n" +

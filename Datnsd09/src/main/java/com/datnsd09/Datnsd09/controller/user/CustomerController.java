@@ -171,6 +171,26 @@ public class CustomerController {
         return listChiTietSanPham1;
     }
 
+    @GetMapping("/user/shop-single/{id}")
+    public String shopSingle(Model model,@PathVariable("id") String id){
+        SanPhamChiTiet sanPhamChiTiet = sanPhamChiTietService.getAllById(Long.valueOf(id)).get(0);
+        List<SanPhamChiTiet> listCTSP =sanPhamChiTietService.getAllById(Long.valueOf(id));
+        KhachHang khachHang =khachHangService.getById(idKhachHang);
+//        model.addAttribute("soLuongSPGioHangCT",
+//                gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
+        model.addAttribute("chiTietSp", sanPhamChiTiet);
+        model.addAttribute("listCTSP", listCTSP);
+        model.addAttribute("listTop5HDCT", hoaDonChiTietService.finTop5HDCT());
+        return "/customer/shop-single";
+    }
+
+    @GetMapping("/user/shop-single/get-so-luong")
+    @ResponseBody
+    public Integer getSoLuongGHCT(){
+        KhachHang khachHang =khachHangService.getById(idKhachHang);
+        return null;
+    }
+
 
     @GetMapping("/lien-he")
     public String lienHe(
@@ -185,5 +205,7 @@ public class CustomerController {
         }
         return "/customer/lien-he";
     }
+
+
 
 }
