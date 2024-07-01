@@ -315,6 +315,9 @@
                                 <th>Ảnh</th>
                                 <th>Mã Sản Phẩm</th>
                                 <th>Tên Sản Phẩm</th>
+                                <th>Thương Hiệu</th>
+                                <th>Mô Tả</th>
+<!--                                <th>Số Lượng</th>-->
                                 <th>Trạng Thái</th>
                                 <th>Hành Động</th>
                             </tr>
@@ -332,10 +335,24 @@
                                 </td>
                                 <td th:text="${sanPham.ma}"></td>
                                 <td th:text="${sanPham.ten}"></td>
-                                <td class="trangthaidkd" th:if="${sanPham.trangThai==0}">Đang kinh doanh
-                                </td>
-                                <td class="trangthainkd" th:if="${sanPham.trangThai==1}">Ngừng kinh doanh
-                                </td>
+                                <td th:text="${sanPham.thuongHieu.ten}"></td>
+                                <td th:text="${sanPham.moTa}"></td>
+
+<!--                                <td>-->
+<!--                                    <div style=" margin: auto; width: 144px;height: 144px;object-fit: cover">-->
+<!--                                        <img th:each="soLuong : ${sanPham.listSPCT}"-->
+<!--                                             class="img-fluid product-thumbnail">-->
+<!--                                    </div>-->
+<!--                                </td>-->
+
+<!--                                <td>-->
+<!--                                    <div-->
+<!--                                         th:each="soLuong : ${sanPham.listSPCT}">-->
+<!--                                    </div>-->
+<!--                                </td>-->
+
+                                <td class="trangthaidkd" th:if="${sanPham.trangThai==0}">Đang kinh doanh</td>
+                                <td class="trangthainkd" th:if="${sanPham.trangThai==1}">Ngừng kinh doanh</td>
                                 <td>
                                     <a th:href="@{/admin/san-pham/view-update/{id}(id=${sanPham.id})}"
                                        class="btn btn-warning">

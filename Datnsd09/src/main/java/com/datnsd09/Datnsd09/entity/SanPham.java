@@ -66,4 +66,11 @@ public class SanPham {
 
     @OneToMany(mappedBy = "sanPham",cascade = CascadeType.ALL)
     private List<HinhAnhSanPham> listHinhAnhSanPham = new ArrayList<>();
+
+//    @OneToMany(mappedBy = "sanPham")
+//    private List<SanPhamChiTiet> sanPhamChiTiet;
+
+    @OneToMany(mappedBy = "sanPham",cascade = CascadeType.ALL)
+    private List<SanPhamChiTiet> listSPCT = new ArrayList<>();
+
 }

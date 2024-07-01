@@ -20,8 +20,10 @@ import java.util.List;
 public class CustomerController {
 
     private Long idKhachHang;
+
     @Autowired
     DiaChiService diaChiService;
+
     @Autowired
     private KhachHangService khachHangService;
 
@@ -252,8 +254,6 @@ public class CustomerController {
         diaChi.setNgaySua(date);
         diaChi.setKhachHang(KhachHang.builder().id(idKhachHang).build());
         diaChiService.update(diaChi);
-
-
 
         return "redirect:/user/cart";
     }

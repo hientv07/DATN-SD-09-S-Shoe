@@ -1061,21 +1061,21 @@
                                         <div class="container" style="width: 90%">
                                             <div class="pf-card" style="margin-top: -30%">
                                                 <a class="product-item"
-                                                   th:href="@{/user/shop-single/{id}(id=${hoaDonCT.chiTietSanPham.sanPham.id})}">
+                                                   th:href="@{/user/shop-single/{id}(id=${hoaDonCT.sanPhamChiTiet.sanPham.id})}">
                                                     <div class="product-thumbnail-container">
-                                                        <img th:each="anh : ${hoaDonCT.chiTietSanPham.sanPham.listHinhAnhSanPham[0]}"
+                                                        <img th:each="anh : ${hoaDonCT.sanPhamChiTiet.sanPham.listHinhAnhSanPham[0]}"
                                                              th:src="@{'../../../static/img/ImgShoe/' + ${anh.url}}"
-                                                             th:data-segment="${hoaDonCT.chiTietSanPham.mauSac.ten}"
-                                                             th:data-seating="${hoaDonCT.chiTietSanPham.kichCo.ten}"
-                                                             th:data-power="${hoaDonCT.chiTietSanPham.loaiDe.ten}"
+                                                             th:data-segment="${hoaDonCT.sanPhamChiTiet.mauSac.ten}"
+                                                             th:data-seating="${hoaDonCT.sanPhamChiTiet.kichCo.ten}"
+                                                             th:data-power="${hoaDonCT.sanPhamChiTiet.loaiDe.ten}"
                                                              class="img-fluid product-thumbnail">
                                                     </div>
                                                     <div class="product-info-container">
                                                         <h3 class="product-title"
-                                                            th:text="${hoaDonCT.chiTietSanPham.sanPham.ten+' ['+hoaDonCT.chiTietSanPham.mauSac.ten+ ' - ' +hoaDonCT.chiTietSanPham.kichCo.ten}+']'"></h3>
+                                                            th:text="${hoaDonCT.sanPhamChiTiet.sanPham.ten+' ['+hoaDonCT.sanPhamChiTiet.mauSac.ten+ ' - ' +hoaDonCT.sanPhamChiTiet.kichCo.ten}+']'"></h3>
                                                         <strong class="product-price"
                                                                 style="display: block;margin: 0 auto;"
-                                                                th:text="${hoaDonCT.chiTietSanPham.giaHienHanh + ' VNĐ'}"></strong>
+                                                                th:text="${hoaDonCT.sanPhamChiTiet.giaHienHanh + ' VNĐ'}"></strong>
                                                         <span class="icon-cross">
 							                                 <img src="../../static/img/plus-black.png"
                                                                   class="img-fluid">
@@ -1143,7 +1143,7 @@
                                 13 P. Trịnh Văn Bô, Xuân Phương, Nam Từ Liêm, Hà Nội, Việt Nam
                             </li>
                             <li class="phone">
-                                <a href="tel://23923929210">+84 377 463 664</a>
+                                <a href="tel://23923929210">+84 986 553 564</a>
                             </li>
                             <li class="email">sshoeshopshoes@gmail.com</li>
                         </ul>

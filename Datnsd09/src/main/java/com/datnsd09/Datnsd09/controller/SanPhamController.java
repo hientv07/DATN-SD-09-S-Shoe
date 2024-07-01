@@ -4,6 +4,7 @@ import com.datnsd09.Datnsd09.config.PrincipalCustom;
 import com.datnsd09.Datnsd09.config.UserInfoUserDetails;
 import com.datnsd09.Datnsd09.entity.SanPham;
 
+import com.datnsd09.Datnsd09.entity.SanPhamChiTiet;
 import com.datnsd09.Datnsd09.service.HinhAnhSanPhamSerivce;
 import com.datnsd09.Datnsd09.service.SanPhamService;
 import com.datnsd09.Datnsd09.service.ThuongHieuService;
