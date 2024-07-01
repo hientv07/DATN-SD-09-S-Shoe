@@ -445,6 +445,7 @@
                                                 <th scope="col">Loại Đế</th>
                                                 <th scope="col">Số lượng</th>
                                                 <th scope="col">Đơn Giá</th>
+                                                <th scope="col">Thao tác</th>
                                             </tr>
                                             </thead>
                                             <tbody style="display: none" id="tableBody">
@@ -612,9 +613,8 @@
                                                                                 select.appendChild(option);
                                                                             }
                                                                         }
-
-
                                                                         cell.appendChild(select);
+
                                                                     } else {
                                                                         const input = document.createElement("input");
                                                                         input.type = "number";
@@ -640,6 +640,20 @@
                                                                         cell.appendChild(errorDiv);
                                                                     }
                                                                 });
+                                                                // Thêm nút xóa vào ô cuối cùng của hàng
+                                                                const deleteCell = row.insertCell();
+                                                                const deleteButton = document.createElement("button");
+                                                                deleteButton.type = "button";
+                                                                deleteButton.className = "btn btn-danger";
+                                                                deleteButton.innerHTML = '<i class="bi bi-trash"></i>';
+                                                                deleteButton.addEventListener("click", function () {
+                                                                    row.remove();
+                                                                    if (tableBody.rows.length === 0) {
+                                                                        tableBody.style.display = "none";
+                                                                        nhapFullDuLieu.style.display = "none";
+                                                                    }
+                                                                });
+                                                                deleteCell.appendChild(deleteButton);
                                                             });
                                                         });
 
