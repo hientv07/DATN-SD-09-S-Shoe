@@ -317,13 +317,14 @@
                                 <th>Tên Sản Phẩm</th>
                                 <th>Thương Hiệu</th>
                                 <th>Mô Tả</th>
-<!--                                <th>Số Lượng</th>-->
+                                <th>Số Lượng</th>
                                 <th>Trạng Thái</th>
                                 <th>Hành Động</th>
                             </tr>
                             <thead>
                             <tbody>
                             <tr th:each="sanPham,iterStat : ${listSanPham}">
+
                                 <td th:text="${iterStat.index+1}"></td>
                                 <td>
                                     <div style=" margin: auto; width: 144px;height: 144px;object-fit: cover">
@@ -338,28 +339,32 @@
                                 <td th:text="${sanPham.thuongHieu.ten}"></td>
                                 <td th:text="${sanPham.moTa}"></td>
 
-<!--                                <td>-->
-<!--                                    <div style=" margin: auto; width: 144px;height: 144px;object-fit: cover">-->
-<!--                                        <img th:each="soLuong : ${sanPham.listSPCT}"-->
-<!--                                             class="img-fluid product-thumbnail">-->
-<!--                                    </div>-->
-<!--                                </td>-->
+                                    <!-- chạy db theo chiều dọc-->
+                                <td>
+                                    <ul style="list-style-type: none; padding: 0; margin: 0; text-align: center;">
+                                        <li th:each="ctsp : ${sanPham.listCTSP}" style="margin-bottom: 5px;">
+                                            <span th:text="${ctsp.soLuong}"></span>
+                                        </li>
+                                    </ul>
+                                </td>
 
-<!--                                <td>-->
-<!--                                    <div-->
-<!--                                         th:each="soLuong : ${sanPham.listSPCT}">-->
-<!--                                    </div>-->
+                                <!--chạy db theo chiều ngang-->
+<!--                                <td th:each="ctsp : ${sanPham.listCTSP}">-->
+<!--                                    <span th:text="${ctsp.soLuong}"></span>-->
 <!--                                </td>-->
 
                                 <td class="trangthaidkd" th:if="${sanPham.trangThai==0}">Đang kinh doanh</td>
-                                <td class="trangthainkd" th:if="${sanPham.trangThai==1}">Ngừng kinh doanh</td>
-                                <td>
-                                    <a th:href="@{/admin/san-pham/view-update/{id}(id=${sanPham.id})}"
-                                       class="btn btn-warning">
-                                        <i class="bi bi-pencil-fill"></i>
-                                    </a>
-                                </td>
+                            <td class="trangthainkd" th:if="${sanPham.trangThai==1}">Ngừng kinh doanh</td>
+                            <td>
+                                <a th:href="@{/admin/san-pham/view-update/{id}(id=${sanPham.id})}"
+                                   class="btn btn-warning">
+                                    <i class="bi bi-pencil-fill"></i>
+                                </a>
+                            </td>
                             </tr>
+
+
+
                             </tbody>
                             <tfoot hidden="hidden">
                             <tr>

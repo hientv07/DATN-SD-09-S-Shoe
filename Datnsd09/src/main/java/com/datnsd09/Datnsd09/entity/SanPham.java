@@ -71,6 +71,6 @@ public class SanPham {
 //    private List<SanPhamChiTiet> sanPhamChiTiet;
 
     @OneToMany(mappedBy = "sanPham",cascade = CascadeType.ALL)
-    private List<SanPhamChiTiet> listSPCT = new ArrayList<>();
+    private List<SanPhamChiTiet> listCTSP = new ArrayList<>();
 
 }
