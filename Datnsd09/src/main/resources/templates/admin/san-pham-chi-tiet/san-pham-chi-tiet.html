@@ -435,10 +435,269 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!--                                    <div class="col-12">-->
+                                    <!--                                        <table class="table" style="table-layout: fixed;">-->
+                                    <!--                                            <thead id="tableThead">-->
+                                    <!--                                            <tr>-->
+                                    <!--                                                <th scope="col">Sản Phẩm</th>-->
+                                    <!--                                                <th scope="col">Kích Cỡ</th>-->
+                                    <!--                                                <th scope="col">Màu Sắc</th>-->
+                                    <!--                                                <th scope="col">Loại Đế</th>-->
+                                    <!--                                                <th scope="col">Số lượng</th>-->
+                                    <!--                                                <th scope="col">Đơn Giá</th>-->
+                                    <!--                                                <th scope="col">Hành Động</th>-->
+                                    <!--                                            </tr>-->
+                                    <!--                                            </thead>-->
+                                    <!--                                            <tbody style="display: none" id="tableBody">-->
+                                    <!--                                            </tbody>-->
+                                    <!--                                        </table>-->
+
+                                    <!--                                        <button type="submit" class="btn btn-success"-->
+                                    <!--                                                style="float: right;margin-top: 3%;margin-bottom: 2%;">Thêm sản phẩm-->
+                                    <!--                                        </button>-->
+
+                                    <!--                                        &lt;!&ndash; js build lấy id sản phẩm &ndash;&gt;-->
+                                    <!--                                        <script>-->
+                                    <!--                                            function checkSelections() {-->
+                                    <!--                                                var kichCoSelect = document.getElementById("kichCoSelect");-->
+                                    <!--                                                var mauSacSelect = document.getElementById("mauSacSelect");-->
+                                    <!--                                                const errorDivKichCo = document.getElementById("checkNullSelectKichCo");-->
+                                    <!--                                                const errorDivMauSac = document.getElementById("checkNullSelectMauSac");-->
+
+
+                                    <!--                                                var selectedKichCo = kichCoSelect.selectedOptions.length > 0;-->
+                                    <!--                                                var selectedMauSac = mauSacSelect.selectedOptions.length > 0;-->
+
+                                    <!--                                                errorDivMauSac.style.display = "block";-->
+                                    <!--                                                errorDivKichCo.style.display = "block";-->
+
+                                    <!--                                                if (!selectedKichCo && !selectedMauSac) {-->
+                                    <!--                                                    // Không có select nào được chọn-->
+                                    <!--                                                    errorDivKichCo.textContent = "Vui lòng chọn giá trị cho 'Kích cỡ'.";-->
+                                    <!--                                                    errorDivMauSac.textContent = "Vui lòng chọn giá trị cho 'Màu sắc'.";-->
+                                    <!--                                                    return false-->
+                                    <!--                                                } else if (!selectedKichCo) {-->
+                                    <!--                                                    // Chỉ có kichCoSelect không được chọn-->
+                                    <!--                                                    errorDivKichCo.textContent = "Vui lòng chọn giá trị cho 'Kích cỡ'.";-->
+                                    <!--                                                    errorDivMauSac.style.display = "none";-->
+                                    <!--                                                    return false-->
+                                    <!--                                                } else if (!selectedMauSac) {-->
+                                    <!--                                                    // Chỉ có mauSacSelect không được chọn-->
+                                    <!--                                                    errorDivMauSac.textContent = "Vui lòng chọn giá trị cho 'Màu sắc'.";-->
+                                    <!--                                                    errorDivKichCo.style.display = "none";-->
+                                    <!--                                                    return false-->
+                                    <!--                                                } else {-->
+                                    <!--                                                    errorDivKichCo.style.display = "none";-->
+                                    <!--                                                    errorDivMauSac.style.display = "none";-->
+
+
+                                    <!--                                                    const soLuongInputs = document.getElementsByName("listSoLuong");-->
+                                    <!--                                                    const donGiaInputs = document.getElementsByName("listDonGia");-->
+
+                                    <!--                                                    let hasError = false; // Biến flag để kiểm tra lỗi-->
+
+                                    <!--                                                    for (let i = 0; i < donGiaInputs.length; i++) {-->
+                                    <!--                                                        const checkDonGia = donGiaInputs[i].value;-->
+                                    <!--                                                        const errorDiv = document.getElementById("checkDonGia" + (i * 2 + 2));-->
+
+                                    <!--                                                        if (checkDonGia < 1 || checkDonGia > 1000000000) {-->
+                                    <!--                                                            hasError = true; // Có lỗi-->
+                                    <!--                                                            errorDiv.style.display = "block"; // Hiển thị div thông báo lỗi-->
+                                    <!--                                                            errorDiv.textContent = (checkDonGia < 1) ? "Giá phải >= 1" : "Giá phải <= 1000000000"; // Hiển thị thông báo lỗi-->
+                                    <!--                                                        } else {-->
+                                    <!--                                                            errorDiv.style.display = "none"; // Ẩn div thông báo lỗi nếu giá trị hợp lệ-->
+                                    <!--                                                        }-->
+                                    <!--                                                    }-->
+
+                                    <!--                                                    for (let i = 0; i < soLuongInputs.length; i++) {-->
+                                    <!--                                                        const checkSoLuong = soLuongInputs[i].value;-->
+                                    <!--                                                        const errorDiv = document.getElementById("checkSoLuong" + (i * 2 + 1));-->
+
+                                    <!--                                                        if (checkSoLuong == "") {-->
+                                    <!--                                                            hasError = true; // Có lỗi-->
+                                    <!--                                                            errorDiv.style.display = "block"; // Hiển thị div thông báo lỗi-->
+                                    <!--                                                            errorDiv.textContent = "Không được để null"; // Hiển thị thông báo lỗi-->
+                                    <!--                                                        } else if (checkSoLuong < 0 || checkSoLuong > 100000) {-->
+                                    <!--                                                            hasError = true; // Có lỗi-->
+                                    <!--                                                            errorDiv.style.display = "block"; // Hiển thị div thông báo lỗi-->
+                                    <!--                                                            errorDiv.textContent = (checkSoLuong < 0) ? "Số lượng phải >= 0" : "Số lượng phải <= 100000"; // Hiển thị thông báo lỗi-->
+                                    <!--                                                        } else {-->
+                                    <!--                                                            errorDiv.style.display = "none"; // Ẩn div thông báo lỗi nếu giá trị hợp lệ-->
+                                    <!--                                                        }-->
+                                    <!--                                                    }-->
+
+                                    <!--                                                    if (!hasError) {-->
+                                    <!--                                                        return true; // Trả về true nếu không có lỗi-->
+                                    <!--                                                    } else {-->
+                                    <!--                                                        return false; // Trả về false nếu có lỗi-->
+                                    <!--                                                    }-->
+
+
+                                    <!--                                                }-->
+                                    <!--                                            }-->
+
+                                    <!--                                            document.addEventListener("DOMContentLoaded", function () {-->
+                                    <!--                                                const kichCoSelect = document.getElementById("kichCoSelect");-->
+                                    <!--                                                const sanPhamSelect = document.getElementById("sanPhamSelect");-->
+                                    <!--                                                const loaiDeSelect = document.getElementById("loaiDeSelect");-->
+                                    <!--                                                const mauSacSelect = document.getElementById("mauSacSelect");-->
+                                    <!--                                                const tableBody = document.getElementById("tableBody");-->
+                                    <!--                                                const nhapFullDuLieu = document.getElementById("nhapFullDuLieu");-->
+                                    <!--                                                tableBody.style.display = "none";-->
+
+                                    <!--                                                kichCoSelect.addEventListener("change", updateTable);-->
+                                    <!--                                                mauSacSelect.addEventListener("change", updateTable);-->
+                                    <!--                                                loaiDeSelect.addEventListener("change", updateTable);-->
+                                    <!--                                                sanPhamSelect.addEventListener("change", updateTable);-->
+
+                                    <!--                                                function updateTable() {-->
+                                    <!--                                                    const kichCoValues = getSelectedValues("kichCoSelect");-->
+                                    <!--                                                    const mauSacValues = getSelectedValues("mauSacSelect");-->
+                                    <!--                                                    const kichCoLabels = getSelectedValuesAndLabels("kichCoSelect");-->
+                                    <!--                                                    const mauSacLabels = getSelectedValuesAndLabels("mauSacSelect");-->
+                                    <!--                                                    const loaiDeLabels = getSelectedValuesAndLabels("loaiDeSelect");-->
+                                    <!--                                                    const sanPhamLabels = getSelectedValuesAndLabels("sanPhamSelect");-->
+
+                                    <!--                                                    const fieldNames = [-->
+                                    <!--                                                        "listSanPham",-->
+                                    <!--                                                        "listKichCo",-->
+                                    <!--                                                        "listMauSac",-->
+                                    <!--                                                        "listLoaiDe",-->
+                                    <!--                                                        "listSoLuong",-->
+                                    <!--                                                        "listDonGia"-->
+                                    <!--                                                    ];-->
+                                    <!--                                                    const fieldId = [-->
+                                    <!--                                                        "checkSanPham",-->
+                                    <!--                                                        "checkKichCo",-->
+                                    <!--                                                        "checkMauSac",-->
+                                    <!--                                                        "checkLoaiDe",-->
+                                    <!--                                                        "checkSoLuong",-->
+                                    <!--                                                        "checkDonGia"-->
+                                    <!--                                                    ];-->
+                                    <!--                                                    const fieldIdInput = [-->
+                                    <!--                                                        "checkSanPhamInput",-->
+                                    <!--                                                        "checkKichCoInput",-->
+                                    <!--                                                        "checkMauSacInput",-->
+                                    <!--                                                        "checkLoaiDeInput",-->
+                                    <!--                                                        "checkSoLuongInput",-->
+                                    <!--                                                        "checkDonGiaInput"-->
+                                    <!--                                                    ];-->
+                                    <!--                                                    const fieldTypes = ["select", "select", "select", "select", "text", "text"]; // Loại của từng ô-->
+                                    <!--                                                    let rowCount = 1;-->
+                                    <!--                                                    if (kichCoValues.length > 0 && mauSacValues.length > 0) {-->
+                                    <!--                                                        nhapFullDuLieu.style.display = "block";-->
+                                    <!--                                                        tableBody.innerHTML = ""; // Xóa dữ liệu cũ trước khi điền mới-->
+                                    <!--                                                        mauSacLabels.forEach(mauSacLabel => {-->
+                                    <!--                                                            kichCoLabels.forEach(kichCoLabel => {-->
+                                    <!--                                                                const row = tableBody.insertRow();-->
+                                    <!--                                                                const cells = [-->
+                                    <!--                                                                    sanPhamLabels[0], kichCoLabel, mauSacLabel, loaiDeLabels[0], '', ''-->
+                                    <!--                                                                ];-->
+                                    <!--                                                                cells.forEach((cellData, index) => {-->
+                                    <!--                                                                    const cell = row.insertCell();-->
+
+                                    <!--                                                                    if (fieldTypes[index] === "select") {-->
+                                    <!--                                                                        const select = document.createElement("select");-->
+                                    <!--                                                                        select.className = "form-control";-->
+                                    <!--                                                                        select.style.cssText = "color: black; pointer-events: none; user-select: none; opacity: 0.6;";-->
+
+                                    <!--                                                                        select.name = fieldNames[index]; // Đặt tên cho select dựa trên vị trí index-->
+
+                                    <!--                                                                        // Code để thêm options vào select (tùy theo yêu cầu của bạn)-->
+                                    <!--                                                                        // Ví dụ:-->
+                                    <!--                                                                        if (index === 0 || index === 1 || index === 2 || index === 3) {-->
+                                    <!--                                                                            for (let i = 0; i < sanPhamLabels.length; i++) {-->
+                                    <!--                                                                                const option = document.createElement("option");-->
+                                    <!--                                                                                option.value = cellData.value; // Giá trị (value) từ label object-->
+                                    <!--                                                                                option.text = cellData.label; // Nhãn (label) từ label object-->
+                                    <!--                                                                                select.appendChild(option);-->
+                                    <!--                                                                            }-->
+                                    <!--                                                                        }-->
+
+
+                                    <!--                                                                        cell.appendChild(select);-->
+                                    <!--                                                                    } else {-->
+                                    <!--                                                                        const input = document.createElement("input");-->
+                                    <!--                                                                        input.type = "number";-->
+                                    <!--                                                                        input.className = "form-control";-->
+                                    <!--                                                                        input.name = fieldNames[index]; // Đặt tên cho input dựa trên vị trí index-->
+                                    <!--                                                                        input.readOnly = false; // Chỉ hiển thị dữ liệu, không cho phép chỉnh sửa-->
+                                    <!--                                                                        input.value = cellData;-->
+
+                                    <!--                                                                        input.id = fieldIdInput[index] + rowCount;-->
+
+                                    <!--                                                                        cell.appendChild(input);-->
+                                    <!--                                                                        // Thêm một thẻ div để hiển thị thông báo lỗi-->
+                                    <!--                                                                        const errorDiv = document.createElement("div");-->
+                                    <!--                                                                        errorDiv.className = "error-message"; // Thêm class để dễ dàng tùy chỉnh CSS-->
+                                    <!--                                                                        errorDiv.style.display = "none"; // Ban đầu ẩn đi-->
+                                    <!--                                                                        errorDiv.style.cssText = "color: #ff0000;font-size: 14px;font-weight: bold;";-->
+                                    <!--                                                                        errorDiv.id = fieldId[index] + rowCount;-->
+                                    <!--                                                                        rowCount++;-->
+                                    <!--                                                                        // Thêm nội dung thông báo lỗi mặc định-->
+                                    <!--                                                                        // errorDiv.innerHTML = "Vui lòng nhập thông tin hợp lệ.";-->
+
+                                    <!--                                                                        // Thêm thẻ div vào cell-->
+                                    <!--                                                                        cell.appendChild(errorDiv);-->
+                                    <!--                                                                    }-->
+                                    <!--                                                                });-->
+                                    <!--                                                                // Thêm nút xóa vào ô cuối cùng của hàng-->
+                                    <!--                                                                const deleteCell = row.insertCell();-->
+                                    <!--                                                                const deleteButton = document.createElement("button");-->
+                                    <!--                                                                deleteButton.type = "button";-->
+                                    <!--                                                                deleteButton.className = "btn btn-danger";-->
+                                    <!--                                                                deleteButton.innerHTML = '<i class="bi bi-trash"></i>';-->
+                                    <!--                                                                deleteButton.addEventListener("click", function () {-->
+                                    <!--                                                                    row.remove();-->
+                                    <!--                                                                    if (tableBody.rows.length === 0) {-->
+                                    <!--                                                                        tableBody.style.display = "none";-->
+                                    <!--                                                                        nhapFullDuLieu.style.display = "none";-->
+                                    <!--                                                                    }-->
+                                    <!--                                                                });-->
+                                    <!--                                                                deleteCell.appendChild(deleteButton);-->
+                                    <!--                                                            });-->
+                                    <!--                                                        });-->
+
+                                    <!--                                                        tableBody.style.display = "table-row-group"; // Hiển thị tbody-->
+                                    <!--                                                    } else {-->
+                                    <!--                                                        tableBody.style.display = "none"; // Ẩn tbody nếu không có dữ liệu-->
+                                    <!--                                                        nhapFullDuLieu.style.display = "none";-->
+                                    <!--                                                    }-->
+                                    <!--                                                }-->
+
+                                    <!--                                                function getSelectedValues(selectId) {-->
+                                    <!--                                                    const selectElement = document.getElementById(selectId);-->
+                                    <!--                                                    return [...selectElement.selectedOptions].map(option => option.value);-->
+                                    <!--                                                }-->
+
+                                    <!--                                                function getSelectedValuesAndLabels(selectId) {-->
+                                    <!--                                                    const selectElement = document.getElementById(selectId);-->
+                                    <!--                                                    const selectedOptions = selectElement.selectedOptions;-->
+
+                                    <!--                                                    const selectedValues = [...selectedOptions].map(option => option.value);-->
+                                    <!--                                                    const selectedLabels = [...selectedOptions].map(option => option.label);-->
+
+                                    <!--                                                    const selectedData = [];-->
+                                    <!--                                                    for (let i = 0; i < selectedOptions.length; i++) {-->
+                                    <!--                                                        selectedData.push({-->
+                                    <!--                                                            value: selectedValues[i],-->
+                                    <!--                                                            label: selectedLabels[i]-->
+                                    <!--                                                        });-->
+                                    <!--                                                    }-->
+
+                                    <!--                                                    return selectedData;-->
+                                    <!--                                                }-->
+                                    <!--                                            });-->
+
+                                    <!--                                        </script>-->
+                                    <!--                                        &lt;!&ndash; js build lấy id sản phẩm End &ndash;&gt;-->
+                                    <!--                                    </div>-->
+
                                     <div class="col-12">
                                         <table class="table" style="table-layout: fixed;">
                                             <thead id="tableThead">
                                             <tr>
+                                                <th scope="col">STT</th>
                                                 <th scope="col">Sản Phẩm</th>
                                                 <th scope="col">Kích Cỡ</th>
                                                 <th scope="col">Màu Sắc</th>
@@ -453,10 +712,9 @@
                                         </table>
 
                                         <button type="submit" class="btn btn-success"
-                                                style="float: right;margin-top: 3%;margin-bottom: 2%;">Thêm sản phẩm
+                                                style="float: right; margin-top: 3%; margin-bottom: 2%;">Thêm sản phẩm
                                         </button>
 
-                                        <!-- js build lấy id sản phẩm -->
                                         <script>
                                             function checkSelections() {
                                                 var kichCoSelect = document.getElementById("kichCoSelect");
@@ -558,109 +816,75 @@
                                                     const loaiDeLabels = getSelectedValuesAndLabels("loaiDeSelect");
                                                     const sanPhamLabels = getSelectedValuesAndLabels("sanPhamSelect");
 
-                                                    const fieldNames = [
-                                                        "listSanPham",
-                                                        "listKichCo",
-                                                        "listMauSac",
-                                                        "listLoaiDe",
-                                                        "listSoLuong",
-                                                        "listDonGia"
-                                                    ];
-                                                    const fieldId = [
-                                                        "checkSanPham",
-                                                        "checkKichCo",
-                                                        "checkMauSac",
-                                                        "checkLoaiDe",
-                                                        "checkSoLuong",
-                                                        "checkDonGia"
-                                                    ];
-                                                    const fieldIdInput = [
-                                                        "checkSanPhamInput",
-                                                        "checkKichCoInput",
-                                                        "checkMauSacInput",
-                                                        "checkLoaiDeInput",
-                                                        "checkSoLuongInput",
-                                                        "checkDonGiaInput"
-                                                    ];
-                                                    const fieldTypes = ["select", "select", "select", "select", "text", "text"]; // Loại của từng ô
                                                     let rowCount = 1;
                                                     if (kichCoValues.length > 0 && mauSacValues.length > 0) {
                                                         nhapFullDuLieu.style.display = "block";
                                                         tableBody.innerHTML = ""; // Xóa dữ liệu cũ trước khi điền mới
                                                         mauSacLabels.forEach(mauSacLabel => {
                                                             kichCoLabels.forEach(kichCoLabel => {
-                                                                const row = tableBody.insertRow();
-                                                                const cells = [
-                                                                    sanPhamLabels[0], kichCoLabel, mauSacLabel, loaiDeLabels[0], '', ''
-                                                                ];
-                                                                cells.forEach((cellData, index) => {
-                                                                    const cell = row.insertCell();
-
-                                                                    if (fieldTypes[index] === "select") {
-                                                                        const select = document.createElement("select");
-                                                                        select.className = "form-control";
-                                                                        select.style.cssText = "color: black; pointer-events: none; user-select: none; opacity: 0.6;";
-
-                                                                        select.name = fieldNames[index]; // Đặt tên cho select dựa trên vị trí index
-
-                                                                        // Code để thêm options vào select (tùy theo yêu cầu của bạn)
-                                                                        // Ví dụ:
-                                                                        if (index === 0 || index === 1 || index === 2 || index === 3) {
-                                                                            for (let i = 0; i < sanPhamLabels.length; i++) {
-                                                                                const option = document.createElement("option");
-                                                                                option.value = cellData.value; // Giá trị (value) từ label object
-                                                                                option.text = cellData.label; // Nhãn (label) từ label object
-                                                                                select.appendChild(option);
-                                                                            }
+                                                                loaiDeLabels.forEach(loaiDeLabel => {
+                                                                    const row = tableBody.insertRow();
+                                                                    const cells = [
+                                                                        rowCount++, sanPhamLabels[0], kichCoLabel, mauSacLabel, loaiDeLabel, '', ''
+                                                                    ];
+                                                                    cells.forEach((cellData, index) => {
+                                                                        const cell = row.insertCell();
+                                                                        if (index === 0) {
+                                                                            cell.textContent = cellData;
+                                                                        } else if (index === 5) { // input cho số lượng
+                                                                            const input = document.createElement("input");
+                                                                            input.type = "number";
+                                                                            input.className = "form-control";
+                                                                            input.name = "listSoLuong";
+                                                                            input.readOnly = false;
+                                                                            input.id = "checkSoLuongInput" + rowCount;
+                                                                            cell.appendChild(input);
+                                                                            const errorDiv = document.createElement("div");
+                                                                            errorDiv.className = "error-message";
+                                                                            errorDiv.style.display = "none";
+                                                                            errorDiv.style.cssText = "color: #ff0000; font-size: 14px; font-weight: bold;";
+                                                                            errorDiv.id = "checkSoLuong" + rowCount;
+                                                                            cell.appendChild(errorDiv);
+                                                                        } else if (index === 6) { // input cho đơn giá
+                                                                            const input = document.createElement("input");
+                                                                            input.type = "number";
+                                                                            input.className = "form-control";
+                                                                            input.name = "listDonGia";
+                                                                            input.readOnly = false;
+                                                                            input.id = "checkDonGiaInput" + rowCount;
+                                                                            cell.appendChild(input);
+                                                                            const errorDiv = document.createElement("div");
+                                                                            errorDiv.className = "error-message";
+                                                                            errorDiv.style.display = "none";
+                                                                            errorDiv.style.cssText = "color: #ff0000; font-size: 14px; font-weight: bold;";
+                                                                            errorDiv.id = "checkDonGia" + rowCount;
+                                                                            cell.appendChild(errorDiv);
+                                                                        } else {
+                                                                            const textNode = document.createTextNode(cellData.label || cellData);
+                                                                            cell.appendChild(textNode);
                                                                         }
-
-
-                                                                        cell.appendChild(select);
-                                                                    } else {
-                                                                        const input = document.createElement("input");
-                                                                        input.type = "number";
-                                                                        input.className = "form-control";
-                                                                        input.name = fieldNames[index]; // Đặt tên cho input dựa trên vị trí index
-                                                                        input.readOnly = false; // Chỉ hiển thị dữ liệu, không cho phép chỉnh sửa
-                                                                        input.value = cellData;
-
-                                                                        input.id = fieldIdInput[index] + rowCount;
-
-                                                                        cell.appendChild(input);
-                                                                        // Thêm một thẻ div để hiển thị thông báo lỗi
-                                                                        const errorDiv = document.createElement("div");
-                                                                        errorDiv.className = "error-message"; // Thêm class để dễ dàng tùy chỉnh CSS
-                                                                        errorDiv.style.display = "none"; // Ban đầu ẩn đi
-                                                                        errorDiv.style.cssText = "color: #ff0000;font-size: 14px;font-weight: bold;";
-                                                                        errorDiv.id = fieldId[index] + rowCount;
-                                                                        rowCount++;
-                                                                        // Thêm nội dung thông báo lỗi mặc định
-                                                                        // errorDiv.innerHTML = "Vui lòng nhập thông tin hợp lệ.";
-
-                                                                        // Thêm thẻ div vào cell
-                                                                        cell.appendChild(errorDiv);
-                                                                    }
+                                                                    });
+                                                                    // Thêm nút xóa vào ô cuối cùng của hàng
+                                                                    const deleteCell = row.insertCell();
+                                                                    const deleteButton = document.createElement("button");
+                                                                    deleteButton.type = "button";
+                                                                    deleteButton.className = "btn btn-danger";
+                                                                    deleteButton.innerHTML = '<i class="bi bi-trash"></i>';
+                                                                    deleteButton.addEventListener("click", function () {
+                                                                        row.remove();
+                                                                        if (tableBody.rows.length === 0) {
+                                                                            tableBody.style.display = "none";
+                                                                            nhapFullDuLieu.style.display = "none";
+                                                                        }
+                                                                    });
+                                                                    deleteCell.appendChild(deleteButton);
                                                                 });
-                                                                // Thêm nút xóa vào ô cuối cùng của hàng
-                                                                const deleteCell = row.insertCell();
-                                                                const deleteButton = document.createElement("button");
-                                                                deleteButton.type = "button";
-                                                                deleteButton.className = "btn btn-danger";
-                                                                deleteButton.innerHTML = '<i class="bi bi-trash"></i>';
-                                                                deleteButton.addEventListener("click", function () {
-                                                                    row.remove();
-                                                                    if (tableBody.rows.length === 0) {
-                                                                        tableBody.style.display = "none";
-                                                                        nhapFullDuLieu.style.display = "none";
-                                                                    }
-                                                                });
-                                                                deleteCell.appendChild(deleteButton);
                                                             });
                                                         });
 
-                                                        tableBody.style.display = "table-row-group"; // Hiển thị tbody
+                                                        tableBody.style.display = "table-row-group";
                                                     } else {
-                                                        tableBody.style.display = "none"; // Ẩn tbody nếu không có dữ liệu
+                                                        tableBody.style.display = "none";
                                                         nhapFullDuLieu.style.display = "none";
                                                     }
                                                 }
@@ -688,10 +912,9 @@
                                                     return selectedData;
                                                 }
                                             });
-
                                         </script>
-                                        <!-- js build lấy id sản phẩm End -->
                                     </div>
+
                                 </form>
 
 
