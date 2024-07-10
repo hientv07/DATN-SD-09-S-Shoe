@@ -280,30 +280,30 @@ CREATE TABLE gio_hang(
 	khach_hang_id BIGINT 
 		REFERENCES khach_hang(id_kh),
 
-	chi_tiet_san_pham_id BIGINT 
-		REFERENCES chi_tiet_san_pham(id_ctsp)
+	--chi_tiet_san_pham_id BIGINT 
+		--REFERENCES chi_tiet_san_pham(id_ctsp)
 
 )
 GO
 
 --Giỏ hàng chi tiet
---CREATE TABLE gio_hang_chi_tiet(
---	id_ghct			BIGINT IDENTITY(1,1) PRIMARY KEY,
---	so_luong	INT NULL,
---	ghi_chu 	NVARCHAR(255) NULL,
---	ngay_tao	DATETIME NULL,
---	ngay_sua	DATETIME NULL,
---	trang_thai	INT,
+CREATE TABLE gio_hang_chi_tiet(
+	id_ghct			BIGINT IDENTITY(1,1) PRIMARY KEY,
+	so_luong	INT NULL,
+	ghi_chu 	NVARCHAR(255) NULL,
+	ngay_tao	DATETIME NULL,
+	ngay_sua	DATETIME NULL,
+	trang_thai	INT,
 
---	gio_hang_id BIGINT 
---		REFERENCES gio_hang(id_gio_hang),
+	gio_hang_id BIGINT 
+		REFERENCES gio_hang(id_gio_hang),
 
---	chi_tiet_san_pham_id BIGINT 
---		REFERENCES chi_tiet_san_pham(id_ctsp)
+	chi_tiet_san_pham_id BIGINT 
+		REFERENCES chi_tiet_san_pham(id_ctsp)
 
---)
+)
 
---GO
+GO
 
 -- Lịch sử hóa đơn
 --CREATE TABLE lich_su_hoa_don(
@@ -859,11 +859,11 @@ go
 
 SET IDENTITY_INSERT [dbo].[gio_hang] ON 
 
-INSERT [dbo].[gio_hang] ([id_gio_hang],[ma_gio_hang], [so_luong], [ghi_chu], [ngay_tao], [ngay_sua], [trang_thai], [khach_hang_id], [chi_tiet_san_pham_id]) VALUES (1, 1, 1, NULL, CAST(N'2024-01-17T23:55:06.707' AS DateTime), CAST(N'2024-01-17T23:55:06.707' AS DateTime), 0, 1, 53)
-INSERT [dbo].[gio_hang] ([id_gio_hang],[ma_gio_hang], [so_luong], [ghi_chu], [ngay_tao], [ngay_sua], [trang_thai], [khach_hang_id], [chi_tiet_san_pham_id]) VALUES (2, 2, 4, NULL, CAST(N'2024-01-17T23:57:26.430' AS DateTime), CAST(N'2024-01-17T23:57:29.087' AS DateTime), 0, 1, 52)
-INSERT [dbo].[gio_hang] ([id_gio_hang],[ma_gio_hang], [so_luong], [ghi_chu], [ngay_tao], [ngay_sua], [trang_thai], [khach_hang_id], [chi_tiet_san_pham_id]) VALUES (3, 3, 1, NULL, CAST(N'2024-01-17T23:41:59.073' AS DateTime), CAST(N'2024-01-17T23:41:59.073' AS DateTime), 0, 1, 6)
-INSERT [dbo].[gio_hang] ([id_gio_hang],[ma_gio_hang], [so_luong], [ghi_chu], [ngay_tao], [ngay_sua], [trang_thai], [khach_hang_id], [chi_tiet_san_pham_id]) VALUES (4, 4, 1, NULL, CAST(N'2024-01-17T23:58:43.227' AS DateTime), CAST(N'2024-01-17T23:58:43.227' AS DateTime), 0, 1, 8)
-INSERT [dbo].[gio_hang] ([id_gio_hang],[ma_gio_hang], [so_luong], [ghi_chu], [ngay_tao], [ngay_sua], [trang_thai], [khach_hang_id], [chi_tiet_san_pham_id]) VALUES (5, 5, 2, NULL, CAST(N'2024-01-17T23:59:21.800' AS DateTime), CAST(N'2024-01-17T23:59:21.800' AS DateTime), 0, 1, 99)
+INSERT [dbo].[gio_hang] ([id_gio_hang],[ma_gio_hang], [ghi_chu], [ngay_tao], [ngay_sua], [trang_thai], [khach_hang_id]) VALUES (1, 1, NULL, CAST(N'2024-01-17T23:55:06.707' AS DateTime), CAST(N'2024-01-17T23:55:06.707' AS DateTime), 0, 1)
+INSERT [dbo].[gio_hang] ([id_gio_hang],[ma_gio_hang], [ghi_chu], [ngay_tao], [ngay_sua], [trang_thai], [khach_hang_id]) VALUES (2, 2, NULL, CAST(N'2024-01-17T23:57:26.430' AS DateTime), CAST(N'2024-01-17T23:57:29.087' AS DateTime), 0, 1)
+INSERT [dbo].[gio_hang] ([id_gio_hang],[ma_gio_hang], [ghi_chu], [ngay_tao], [ngay_sua], [trang_thai], [khach_hang_id]) VALUES (3, 3, NULL, CAST(N'2024-01-17T23:41:59.073' AS DateTime), CAST(N'2024-01-17T23:41:59.073' AS DateTime), 0, 1)
+INSERT [dbo].[gio_hang] ([id_gio_hang],[ma_gio_hang],  [ghi_chu], [ngay_tao], [ngay_sua], [trang_thai], [khach_hang_id]) VALUES (4, 4, NULL, CAST(N'2024-01-17T23:58:43.227' AS DateTime), CAST(N'2024-01-17T23:58:43.227' AS DateTime), 0, 1)
+INSERT [dbo].[gio_hang] ([id_gio_hang],[ma_gio_hang],  [ghi_chu], [ngay_tao], [ngay_sua], [trang_thai], [khach_hang_id]) VALUES (5, 5, NULL, CAST(N'2024-01-17T23:59:21.800' AS DateTime), CAST(N'2024-01-17T23:59:21.800' AS DateTime), 0, 1)
 SET IDENTITY_INSERT [dbo].[gio_hang] OFF
 GO
 
