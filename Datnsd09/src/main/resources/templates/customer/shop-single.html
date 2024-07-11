@@ -197,9 +197,12 @@
                             <h2 th:text="${chiTietSp.sanPham.ten}"></h2>
                             <input hidden id="idSanPhamAn" th:value="${chiTietSp.sanPham.id}">
                         </div>
+<!--                        <div class="product-price">-->
+<!--                                <span class="offer-price" id="giaHienThi"-->
+<!--                                      th:text="${chiTietSp.giaHienHanh}+' VND'"></span>-->
+<!--                        </div>-->
                         <div class="product-price">
-                                <span class="offer-price" id="giaHienThi"
-                                      th:text="${chiTietSp.giaHienHanh}+' VND'"></span>
+                            <span class="offer-price" id="giaHienThi" th:text="${formattedPrice}"></span>
                         </div>
 
                         <div class="product-details">

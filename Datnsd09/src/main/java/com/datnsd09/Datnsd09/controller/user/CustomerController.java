@@ -14,8 +14,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.text.NumberFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 public class CustomerController {
@@ -176,9 +178,14 @@ public class CustomerController {
         model.addAttribute("chiTietSp", sanPhamChiTiet);
         model.addAttribute("listCTSP", listCTSP);
         model.addAttribute("listTop5HDCT", hoaDonChiTietService.finTop5HDCT());
+        model.addAttribute("formattedPrice", formatCurrency(sanPhamChiTiet.getGiaHienHanh()));
         return "/customer/shop-single";
     }
 
+    public String formatCurrency(long giaHienHanh) {
+        NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
+        return formatter.format(giaHienHanh) + " VND";
+    }
     @GetMapping("/user/shop-single/get-so-luong")
     @ResponseBody
     public Integer getSoLuongGHCT() {

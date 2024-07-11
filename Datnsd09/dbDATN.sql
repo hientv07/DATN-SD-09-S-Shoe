@@ -3,7 +3,7 @@
 create database DATN_SD09
 go
 
-use DATN_SD09 
+use DATN_SD09
 go
 
 CREATE TABLE mau_sac (
@@ -104,28 +104,6 @@ CREATE TABLE vai_tro (
 	ten_vai_tro			NVARCHAR(100) DEFAULT NULL
 )
 GO
---drop table vai_tro
-
----- Tạo bảng Tài khoản
---CREATE TABLE tai_khoan(
---	id_tk					BIGINT IDENTITY(1,1) PRIMARY KEY,
---	ho_va_ten			NVARCHAR(100) DEFAULT NULL,
---	ngay_sinh			DATE NULL,
---	gioi_tinh			int,
---	so_dien_thoai		VARCHAR(15) NULL,
---	email				VARCHAR(255) NULL,
---	ten_tai_khoan		NVARCHAR(100) NULL,
---	mat_khau			VARCHAR(300),
---	ngay_tao			DATETIME NULL,
---	ngay_sua			DATETIME NULL,
---	trang_thai			INT DEFAULT 0,
-
-
---	vai_tro_id	BIGINT	
---		REFERENCES vai_tro(id_vai_tro)
-
---)
---GO
 
 -- Tạo bảng Nhân viên
 CREATE TABLE nhan_vien(
@@ -156,6 +134,7 @@ CREATE TABLE khach_hang(
 	mat_khau			VARCHAR(300),
 	ngay_tao			DATETIME NULL,
 	ngay_sua			DATETIME NULL,
+	ten_vai_tro			NVARCHAR(100) DEFAULT NULL,
 	trang_thai			INT DEFAULT 0,
 	)
 
@@ -268,23 +247,25 @@ GO
 CREATE TABLE gio_hang(
 	id_gio_hang			BIGINT IDENTITY(1,1) PRIMARY KEY,
 	ma_gio_hang	VARCHAR(20) NULL,
-	so_luong	INT NULL,
+	--so_luong	INT NULL,
 	ghi_chu		NVARCHAR(255) NULL,
 	ngay_tao	DATETIME NULL,
 	ngay_sua	DATETIME NULL,
 	trang_thai	INT,
 
-	--nhan_vien_id BIGINT 
-	--	REFERENCES nhan_vien(id_nv),
+
 
 	khach_hang_id BIGINT 
 		REFERENCES khach_hang(id_kh),
 
 	--chi_tiet_san_pham_id BIGINT 
-		--REFERENCES chi_tiet_san_pham(id_ctsp)
+	--	REFERENCES chi_tiet_san_pham(id_ctsp)
 
 )
 GO
+--select * from gio_hang where id_gio_hang = :idGioHang
+--           and trang_thai = 0 order by ngay_sua desc
+--select * from gio_hang
 
 --Giỏ hàng chi tiet
 CREATE TABLE gio_hang_chi_tiet(
@@ -831,9 +812,9 @@ SET IDENTITY_INSERT [dbo].[nhan_vien] OFF
 GO
 
 SET IDENTITY_INSERT [dbo].[khach_hang] ON 
-INSERT [dbo].[khach_hang] ([id_kh],[ho_va_ten] ,[ngay_sinh] ,[gioi_tinh],[so_dien_thoai],[email],[ten_tai_khoan],[mat_khau],[ngay_tao],[ngay_sua],[trang_thai]) VALUES (1, N'Trịnh Văn Hiển', CAST(N'2003-10-07' AS Date), 0, N'09615151329', N'hientvph27694@fpt.edu.vn', N'hientv', N'123', CAST(N'2024-06-01T00:00:00.000' AS DateTime), CAST(N'2024-07-16T18:01:48.380' AS DateTime), 0)
-INSERT [dbo].[khach_hang] ([id_kh],[ho_va_ten] ,[ngay_sinh] ,[gioi_tinh],[so_dien_thoai],[email],[ten_tai_khoan],[mat_khau],[ngay_tao],[ngay_sua],[trang_thai]) VALUES (2, N'Trịnh Văn Hiển', CAST(N'2003-10-07' AS Date), 0, N'09615151329', N'hien06781@gmail.com', N'trinhhien', N'123', CAST(N'2024-06-01T00:00:00.000' AS DateTime), CAST(N'2024-07-16T18:01:48.380' AS DateTime), 0)
-INSERT [dbo].[khach_hang] ([id_kh], [ho_va_ten], [ngay_sinh], [gioi_tinh], [so_dien_thoai], [email], [ten_tai_khoan], [mat_khau], [ngay_tao], [ngay_sua], [trang_thai]) VALUES (3, N'Khách lẻ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, -1)
+INSERT [dbo].[khach_hang] ([id_kh],[ho_va_ten] ,[ngay_sinh] ,[gioi_tinh],[so_dien_thoai],[email],[ten_tai_khoan],[mat_khau],[ngay_tao],[ngay_sua],[ten_vai_tro],[trang_thai]) VALUES (1, N'Trịnh Văn Hiển', CAST(N'2003-10-07' AS Date), 0, N'09615151329', N'hientvph27694@fpt.edu.vn', N'hientv', N'123', CAST(N'2024-06-01T00:00:00.000' AS DateTime), CAST(N'2024-07-16T18:01:48.380' AS DateTime),N'ROLE_USER', 0)
+INSERT [dbo].[khach_hang] ([id_kh],[ho_va_ten] ,[ngay_sinh] ,[gioi_tinh],[so_dien_thoai],[email],[ten_tai_khoan],[mat_khau],[ngay_tao],[ngay_sua],[ten_vai_tro],[trang_thai]) VALUES (2, N'Trịnh Văn Hiển', CAST(N'2003-10-07' AS Date), 0, N'09615151329', N'hien06781@gmail.com', N'trinhhien', N'123', CAST(N'2024-06-01T00:00:00.000' AS DateTime), CAST(N'2024-07-16T18:01:48.380' AS DateTime),N'ROLE_USER', 0)
+INSERT [dbo].[khach_hang] ([id_kh], [ho_va_ten], [ngay_sinh], [gioi_tinh], [so_dien_thoai], [email], [ten_tai_khoan], [mat_khau], [ngay_tao], [ngay_sua],[ten_vai_tro], [trang_thai]) VALUES (3, N'Khách lẻ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL,NULL, -1)
 
 SET IDENTITY_INSERT [dbo].[khach_hang] OFF
 GO
@@ -844,6 +825,18 @@ INSERT [dbo].[hoa_don] ([id_hd], [ma_hoa_don], [ngay_thanh_toan], [loai_hoa_don]
 INSERT [dbo].[hoa_don] ([id_hd], [ma_hoa_don], [ngay_thanh_toan], [loai_hoa_don], [phi_ship], [tong_tien], [tong_tien_khi_giam], [ghi_chu], [nguoi_nhan], [sdt_nguoi_nhan], [thanh_pho], [quan_huyen], [phuong_xa], [dia_chi_nguoi_nhan], [email_nguoi_nhan], [ngay_nhan], [ngay_mong_muon], [ngay_tao], [ngay_sua], [trang_thai], [voucher_id], nhan_vien_id,[khach_hang_id], [phuong_thuc_thanh_toan_id], [tien_giam]) VALUES (2, N'HD2', CAST(N'2024-06-01T19:46:13.817' AS DateTime), 2, 0.0000, 1750000.0000, 1750000.0000, NULL, N'Khách lẻ', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, CAST(N'2024-06-01T19:46:02.677' AS DateTime), CAST(N'2024-06-01T19:46:13.817' AS DateTime), 3, NULL, 1,3, NULL, 0.0000)
 INSERT [dbo].[hoa_don] ([id_hd], [ma_hoa_don], [ngay_thanh_toan], [loai_hoa_don], [phi_ship], [tong_tien], [tong_tien_khi_giam], [ghi_chu], [nguoi_nhan], [sdt_nguoi_nhan], [thanh_pho], [quan_huyen], [phuong_xa], [dia_chi_nguoi_nhan], [email_nguoi_nhan], [ngay_nhan], [ngay_mong_muon], [ngay_tao], [ngay_sua], [trang_thai], [voucher_id], nhan_vien_id,[khach_hang_id], [phuong_thuc_thanh_toan_id], [tien_giam]) VALUES (3, N'HD3', CAST(N'2024-06-01T19:46:39.013' AS DateTime), 2, 0.0000, 4500000.0000, 4415000.0000, NULL, N'Dương Quang Hào', N'0987654321', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CAST(N'2024-06-01T19:46:16.273' AS DateTime), CAST(N'2024-06-01T19:46:39.013' AS DateTime), 3, 9, 2,2, NULL, 85000.0000)
 INSERT [dbo].[hoa_don] ([id_hd], [ma_hoa_don], [ngay_thanh_toan], [loai_hoa_don], [phi_ship], [tong_tien], [tong_tien_khi_giam], [ghi_chu], [nguoi_nhan], [sdt_nguoi_nhan], [thanh_pho], [quan_huyen], [phuong_xa], [dia_chi_nguoi_nhan], [email_nguoi_nhan], [ngay_nhan], [ngay_mong_muon], [ngay_tao], [ngay_sua], [trang_thai], [voucher_id], nhan_vien_id,[khach_hang_id],  [phuong_thuc_thanh_toan_id], [tien_giam]) VALUES (4, N'HD4', NULL, 2, 54003.0000, 1200000.0000, 1115000.0000, N'', N'Nguyễn Thị Lan', N'0912345678', N'249', N'1767', N'190607', N'Số 12', NULL, NULL, NULL, CAST(N'2024-06-01T19:47:33.540' AS DateTime), CAST(N'2024-06-01T19:48:16.723' AS DateTime), 5, 9, 1,1, NULL, 85000.0000)
+INSERT [dbo].[hoa_don] ([id_hd], [ma_hoa_don], [ngay_thanh_toan], [loai_hoa_don], [phi_ship], [tong_tien], [tong_tien_khi_giam], [ghi_chu], [nguoi_nhan], [sdt_nguoi_nhan], [thanh_pho], [quan_huyen], [phuong_xa], [dia_chi_nguoi_nhan], [email_nguoi_nhan], [ngay_nhan], [ngay_mong_muon], [ngay_tao], [ngay_sua], [trang_thai], [voucher_id], nhan_vien_id, [khach_hang_id], [phuong_thuc_thanh_toan_id], [tien_giam]) VALUES (5, N'HD5', CAST(N'2024-06-01T19:46:13.817' AS DateTime), 2, 41502.0000, 5050000.0000, 5975000.0000, N'', N'Lê Trần Bình', N'0377463664', N'201', N'1808', N'1B1909', N'Số 47/5', NULL, NULL, NULL, CAST(N'2024-06-01T19:42:17.997' AS DateTime), CAST(N'2024-06-01T19:45:56.900' AS DateTime), 1, 2, 2,3, NULL, 75000.0000)
+INSERT [dbo].[hoa_don] ([id_hd], [ma_hoa_don], [ngay_thanh_toan], [loai_hoa_don], [phi_ship], [tong_tien], [tong_tien_khi_giam], [ghi_chu], [nguoi_nhan], [sdt_nguoi_nhan], [thanh_pho], [quan_huyen], [phuong_xa], [dia_chi_nguoi_nhan], [email_nguoi_nhan], [ngay_nhan], [ngay_mong_muon], [ngay_tao], [ngay_sua], [trang_thai], [voucher_id], nhan_vien_id,[khach_hang_id], [phuong_thuc_thanh_toan_id], [tien_giam]) VALUES (6, N'HD6', CAST(N'2024-06-02T19:46:13.817' AS DateTime), 2, 0.0000, 1750000.0000, 2750000.0000, NULL, N'Trần Cong Hiếu', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, CAST(N'2024-06-08T19:46:02.677' AS DateTime), CAST(N'2024-06-01T19:46:13.817' AS DateTime), 2, NULL, 1,3, NULL, 0.0000)
+INSERT [dbo].[hoa_don] ([id_hd], [ma_hoa_don], [ngay_thanh_toan], [loai_hoa_don], [phi_ship], [tong_tien], [tong_tien_khi_giam], [ghi_chu], [nguoi_nhan], [sdt_nguoi_nhan], [thanh_pho], [quan_huyen], [phuong_xa], [dia_chi_nguoi_nhan], [email_nguoi_nhan], [ngay_nhan], [ngay_mong_muon], [ngay_tao], [ngay_sua], [trang_thai], [voucher_id], nhan_vien_id,[khach_hang_id], [phuong_thuc_thanh_toan_id], [tien_giam]) VALUES (7, N'HD7', CAST(N'2024-06-03T19:46:39.013' AS DateTime), 2, 0.0000, 4500000.0000, 5415000.0000, NULL, N'Nguyễn Ngọc Hiếu', N'0987654321', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CAST(N'2024-06-09T19:46:16.273' AS DateTime), CAST(N'2024-06-01T19:46:39.013' AS DateTime), 4, 9, 2,2, NULL, 85000.0000)
+INSERT [dbo].[hoa_don] ([id_hd], [ma_hoa_don], [ngay_thanh_toan], [loai_hoa_don], [phi_ship], [tong_tien], [tong_tien_khi_giam], [ghi_chu], [nguoi_nhan], [sdt_nguoi_nhan], [thanh_pho], [quan_huyen], [phuong_xa], [dia_chi_nguoi_nhan], [email_nguoi_nhan], [ngay_nhan], [ngay_mong_muon], [ngay_tao], [ngay_sua], [trang_thai], [voucher_id], nhan_vien_id,[khach_hang_id],  [phuong_thuc_thanh_toan_id], [tien_giam]) VALUES (8, N'HD8', CAST(N'2024-06-04T19:46:13.817' AS DateTime), 2, 54003.0000, 1200000.0000, 2115000.0000, N'', N'Trịnh Hiển', N'0912345678', N'249', N'1767', N'190607', N'Số 12', NULL, NULL, NULL, CAST(N'2024-06-10T19:47:33.540' AS DateTime), CAST(N'2024-06-01T19:48:16.723' AS DateTime), 5, 9, 1,1, NULL, 85000.0000)
+INSERT [dbo].[hoa_don] ([id_hd], [ma_hoa_don], [ngay_thanh_toan], [loai_hoa_don], [phi_ship], [tong_tien], [tong_tien_khi_giam], [ghi_chu], [nguoi_nhan], [sdt_nguoi_nhan], [thanh_pho], [quan_huyen], [phuong_xa], [dia_chi_nguoi_nhan], [email_nguoi_nhan], [ngay_nhan], [ngay_mong_muon], [ngay_tao], [ngay_sua], [trang_thai], [voucher_id], nhan_vien_id, [khach_hang_id], [phuong_thuc_thanh_toan_id], [tien_giam]) VALUES (9, N'HD9', CAST(N'2024-06-01T19:46:13.817' AS DateTime), 2, 41502.0000, 5050000.0000, 5975000.0000, N'', N'Lê Trần a', N'0377463664', N'201', N'1808', N'1B1909', N'Số 47/5', NULL, NULL, NULL, CAST(N'2024-06-01T19:42:17.997' AS DateTime), CAST(N'2024-06-01T19:45:56.900' AS DateTime), 1, 2, 2,3, NULL, 75000.0000)
+INSERT [dbo].[hoa_don] ([id_hd], [ma_hoa_don], [ngay_thanh_toan], [loai_hoa_don], [phi_ship], [tong_tien], [tong_tien_khi_giam], [ghi_chu], [nguoi_nhan], [sdt_nguoi_nhan], [thanh_pho], [quan_huyen], [phuong_xa], [dia_chi_nguoi_nhan], [email_nguoi_nhan], [ngay_nhan], [ngay_mong_muon], [ngay_tao], [ngay_sua], [trang_thai], [voucher_id], nhan_vien_id,[khach_hang_id], [phuong_thuc_thanh_toan_id], [tien_giam]) VALUES (10, N'HD10', CAST(N'2024-06-02T19:46:13.817' AS DateTime), 2, 0.0000, 1750000.0000, 2750000.0000, NULL, N'Trần Cong b', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, CAST(N'2024-06-08T19:46:02.677' AS DateTime), CAST(N'2024-06-01T19:46:13.817' AS DateTime), 2, NULL, 1,3, NULL, 0.0000)
+INSERT [dbo].[hoa_don] ([id_hd], [ma_hoa_don], [ngay_thanh_toan], [loai_hoa_don], [phi_ship], [tong_tien], [tong_tien_khi_giam], [ghi_chu], [nguoi_nhan], [sdt_nguoi_nhan], [thanh_pho], [quan_huyen], [phuong_xa], [dia_chi_nguoi_nhan], [email_nguoi_nhan], [ngay_nhan], [ngay_mong_muon], [ngay_tao], [ngay_sua], [trang_thai], [voucher_id], nhan_vien_id,[khach_hang_id], [phuong_thuc_thanh_toan_id], [tien_giam]) VALUES (11, N'HD11', CAST(N'2024-06-03T19:46:39.013' AS DateTime), 2, 0.0000, 4500000.0000, 5415000.0000, NULL, N'Nguyễn Ngọc c', N'0987654321', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CAST(N'2024-06-09T19:46:16.273' AS DateTime), CAST(N'2024-06-01T19:46:39.013' AS DateTime), 4, 9, 2,2, NULL, 85000.0000)
+INSERT [dbo].[hoa_don] ([id_hd], [ma_hoa_don], [ngay_thanh_toan], [loai_hoa_don], [phi_ship], [tong_tien], [tong_tien_khi_giam], [ghi_chu], [nguoi_nhan], [sdt_nguoi_nhan], [thanh_pho], [quan_huyen], [phuong_xa], [dia_chi_nguoi_nhan], [email_nguoi_nhan], [ngay_nhan], [ngay_mong_muon], [ngay_tao], [ngay_sua], [trang_thai], [voucher_id], nhan_vien_id,[khach_hang_id],  [phuong_thuc_thanh_toan_id], [tien_giam]) VALUES (12, N'HD12', CAST(N'2024-06-04T19:46:13.817' AS DateTime), 2, 54003.0000, 1200000.0000, 2115000.0000, N'', N'Trịnh d', N'0912345678', N'249', N'1767', N'190607', N'Số 12', NULL, NULL, NULL, CAST(N'2024-06-10T19:47:33.540' AS DateTime), CAST(N'2024-06-01T19:48:16.723' AS DateTime), 6, 9, 1,1, NULL, 85000.0000)
+INSERT [dbo].[hoa_don] ([id_hd], [ma_hoa_don], [ngay_thanh_toan], [loai_hoa_don], [phi_ship], [tong_tien], [tong_tien_khi_giam], [ghi_chu], [nguoi_nhan], [sdt_nguoi_nhan], [thanh_pho], [quan_huyen], [phuong_xa], [dia_chi_nguoi_nhan], [email_nguoi_nhan], [ngay_nhan], [ngay_mong_muon], [ngay_tao], [ngay_sua], [trang_thai], [voucher_id], nhan_vien_id, [khach_hang_id], [phuong_thuc_thanh_toan_id], [tien_giam]) VALUES (13, N'HD13', CAST(N'2024-06-01T19:46:13.817' AS DateTime), 2, 41502.0000, 5050000.0000, 5975000.0000, N'', N'hehe', N'0377463664', N'201', N'1808', N'1B1909', N'Số 47/5', NULL, NULL, NULL, CAST(N'2024-06-01T19:42:17.997' AS DateTime), CAST(N'2024-06-01T19:45:56.900' AS DateTime), 6, 2, 2,3, NULL, 75000.0000)
+INSERT [dbo].[hoa_don] ([id_hd], [ma_hoa_don], [ngay_thanh_toan], [loai_hoa_don], [phi_ship], [tong_tien], [tong_tien_khi_giam], [ghi_chu], [nguoi_nhan], [sdt_nguoi_nhan], [thanh_pho], [quan_huyen], [phuong_xa], [dia_chi_nguoi_nhan], [email_nguoi_nhan], [ngay_nhan], [ngay_mong_muon], [ngay_tao], [ngay_sua], [trang_thai], [voucher_id], nhan_vien_id,[khach_hang_id], [phuong_thuc_thanh_toan_id], [tien_giam]) VALUES (14, N'HD14', CAST(N'2024-06-02T19:46:13.817' AS DateTime), 2, 0.0000, 1750000.0000, 2750000.0000, NULL, N'huhu', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, CAST(N'2024-06-08T19:46:02.677' AS DateTime), CAST(N'2024-06-01T19:46:13.817' AS DateTime), 2, NULL, 1,3, NULL, 0.0000)
+INSERT [dbo].[hoa_don] ([id_hd], [ma_hoa_don], [ngay_thanh_toan], [loai_hoa_don], [phi_ship], [tong_tien], [tong_tien_khi_giam], [ghi_chu], [nguoi_nhan], [sdt_nguoi_nhan], [thanh_pho], [quan_huyen], [phuong_xa], [dia_chi_nguoi_nhan], [email_nguoi_nhan], [ngay_nhan], [ngay_mong_muon], [ngay_tao], [ngay_sua], [trang_thai], [voucher_id], nhan_vien_id,[khach_hang_id], [phuong_thuc_thanh_toan_id], [tien_giam]) VALUES (15, N'HD15', CAST(N'2024-06-03T19:46:39.013' AS DateTime), 2, 0.0000, 4500000.0000, 5415000.0000, NULL, N'hihi', N'0987654321', NULL, NULL, NULL, NULL, NULL, NULL, NULL, CAST(N'2024-06-09T19:46:16.273' AS DateTime), CAST(N'2024-06-01T19:46:39.013' AS DateTime), 4, 9, 2,2, NULL, 85000.0000)
+INSERT [dbo].[hoa_don] ([id_hd], [ma_hoa_don], [ngay_thanh_toan], [loai_hoa_don], [phi_ship], [tong_tien], [tong_tien_khi_giam], [ghi_chu], [nguoi_nhan], [sdt_nguoi_nhan], [thanh_pho], [quan_huyen], [phuong_xa], [dia_chi_nguoi_nhan], [email_nguoi_nhan], [ngay_nhan], [ngay_mong_muon], [ngay_tao], [ngay_sua], [trang_thai], [voucher_id], nhan_vien_id,[khach_hang_id],  [phuong_thuc_thanh_toan_id], [tien_giam]) VALUES (16, N'HD16', CAST(N'2024-06-04T19:46:13.817' AS DateTime), 2, 54003.0000, 1200000.0000, 2115000.0000, N'', N'haha', N'0912345678', N'249', N'1767', N'190607', N'Số 12', NULL, NULL, NULL, CAST(N'2024-06-10T19:47:33.540' AS DateTime), CAST(N'2024-06-01T19:48:16.723' AS DateTime), 5, 9, 1,1, NULL, 85000.0000)
 SET IDENTITY_INSERT [dbo].[hoa_don] OFF
 GO
 
@@ -854,18 +847,33 @@ INSERT [dbo].[hoa_don_chi_tiet] ([id_hdct], [so_luong], [don_gia], [ghi_chu], [n
 INSERT [dbo].[hoa_don_chi_tiet] ([id_hdct], [so_luong], [don_gia], [ghi_chu], [ngay_tao], [ngay_sua], [nguoi_tao], [nguoi_sua], [trang_thai], [hoa_don_id], [chi_tiet_san_pham_id]) VALUES (3, 1, 1200000.0000, NULL, NULL, NULL, NULL, NULL, 0, 3, 3)
 INSERT [dbo].[hoa_don_chi_tiet] ([id_hdct], [so_luong], [don_gia], [ghi_chu], [ngay_tao], [ngay_sua], [nguoi_tao], [nguoi_sua], [trang_thai], [hoa_don_id], [chi_tiet_san_pham_id]) VALUES (4, 1, 550000.0000, NULL, NULL, NULL, NULL, NULL, 0, 4, 4)
 INSERT [dbo].[hoa_don_chi_tiet] ([id_hdct], [so_luong], [don_gia], [ghi_chu], [ngay_tao], [ngay_sua], [nguoi_tao], [nguoi_sua], [trang_thai], [hoa_don_id], [chi_tiet_san_pham_id]) VALUES (5, 1, 4500000.0000, NULL, NULL, NULL, NULL, NULL, 0, 1, 5)
+INSERT [dbo].[hoa_don_chi_tiet] ([id_hdct], [so_luong], [don_gia], [ghi_chu], [ngay_tao], [ngay_sua], [nguoi_tao], [nguoi_sua], [trang_thai], [hoa_don_id], [chi_tiet_san_pham_id]) VALUES (6, 1, 650000.0000, NULL, CAST(N'2024-06-01T19:46:13.817' AS DateTime), NULL, NULL, NULL, 2, 1, 6)
+INSERT [dbo].[hoa_don_chi_tiet] ([id_hdct], [so_luong], [don_gia], [ghi_chu], [ngay_tao], [ngay_sua], [nguoi_tao], [nguoi_sua], [trang_thai], [hoa_don_id], [chi_tiet_san_pham_id]) VALUES (7, 1, 5500000.0000, NULL, CAST(N'2024-06-02T19:46:13.817' AS DateTime), NULL, NULL, NULL, 2, 2, 7)
+INSERT [dbo].[hoa_don_chi_tiet] ([id_hdct], [so_luong], [don_gia], [ghi_chu], [ngay_tao], [ngay_sua], [nguoi_tao], [nguoi_sua], [trang_thai], [hoa_don_id], [chi_tiet_san_pham_id]) VALUES (8, 1, 2200000.0000, NULL, CAST(N'2024-06-03T19:46:13.817' AS DateTime), NULL, NULL, NULL, 3, 3, 8)
+INSERT [dbo].[hoa_don_chi_tiet] ([id_hdct], [so_luong], [don_gia], [ghi_chu], [ngay_tao], [ngay_sua], [nguoi_tao], [nguoi_sua], [trang_thai], [hoa_don_id], [chi_tiet_san_pham_id]) VALUES (9, 1, 650000.0000, NULL, CAST(N'2024-06-04T19:46:13.817' AS DateTime), NULL, NULL, NULL, 3, 4, 2)
+INSERT [dbo].[hoa_don_chi_tiet] ([id_hdct], [so_luong], [don_gia], [ghi_chu], [ngay_tao], [ngay_sua], [nguoi_tao], [nguoi_sua], [trang_thai], [hoa_don_id], [chi_tiet_san_pham_id]) VALUES (10, 1, 5500000.0000, NULL, CAST(N'2024-06-05T19:46:13.817' AS DateTime), NULL, NULL, NULL, 4, 5, 1)
+INSERT [dbo].[hoa_don_chi_tiet] ([id_hdct], [so_luong], [don_gia], [ghi_chu], [ngay_tao], [ngay_sua], [nguoi_tao], [nguoi_sua], [trang_thai], [hoa_don_id], [chi_tiet_san_pham_id]) VALUES (11, 1, 650000.0000, NULL, CAST(N'2024-06-06T19:46:13.817' AS DateTime), NULL, NULL, NULL, 4, 6, 5)
+INSERT [dbo].[hoa_don_chi_tiet] ([id_hdct], [so_luong], [don_gia], [ghi_chu], [ngay_tao], [ngay_sua], [nguoi_tao], [nguoi_sua], [trang_thai], [hoa_don_id], [chi_tiet_san_pham_id]) VALUES (12, 1, 5500000.0000, NULL, CAST(N'2024-06-07T19:46:13.817' AS DateTime), NULL, NULL, NULL, 5, 7, 2)
+INSERT [dbo].[hoa_don_chi_tiet] ([id_hdct], [so_luong], [don_gia], [ghi_chu], [ngay_tao], [ngay_sua], [nguoi_tao], [nguoi_sua], [trang_thai], [hoa_don_id], [chi_tiet_san_pham_id]) VALUES (13, 1, 2200000.0000, NULL, CAST(N'2024-06-08T19:46:13.817' AS DateTime), NULL, NULL, NULL, 5, 8, 3)
+INSERT [dbo].[hoa_don_chi_tiet] ([id_hdct], [so_luong], [don_gia], [ghi_chu], [ngay_tao], [ngay_sua], [nguoi_tao], [nguoi_sua], [trang_thai], [hoa_don_id], [chi_tiet_san_pham_id]) VALUES (14, 1, 650000.0000, NULL, CAST(N'2024-06-09T19:46:13.817' AS DateTime), NULL, NULL, NULL, 6, 4, 6)
+INSERT [dbo].[hoa_don_chi_tiet] ([id_hdct], [so_luong], [don_gia], [ghi_chu], [ngay_tao], [ngay_sua], [nguoi_tao], [nguoi_sua], [trang_thai], [hoa_don_id], [chi_tiet_san_pham_id]) VALUES (15, 1, 5500000.0000, NULL, CAST(N'2024-06-10T19:46:13.817' AS DateTime), NULL, NULL, NULL, 6, 2, 7)
+INSERT [dbo].[hoa_don_chi_tiet] ([id_hdct], [so_luong], [don_gia], [ghi_chu], [ngay_tao], [ngay_sua], [nguoi_tao], [nguoi_sua], [trang_thai], [hoa_don_id], [chi_tiet_san_pham_id]) VALUES (16, 1, 650000.0000, NULL, CAST(N'2024-06-11T19:46:13.817' AS DateTime), NULL, NULL, NULL, 3, 4, 2)
+INSERT [dbo].[hoa_don_chi_tiet] ([id_hdct], [so_luong], [don_gia], [ghi_chu], [ngay_tao], [ngay_sua], [nguoi_tao], [nguoi_sua], [trang_thai], [hoa_don_id], [chi_tiet_san_pham_id]) VALUES (17, 1, 5500000.0000, NULL, CAST(N'2024-06-11T19:46:13.817' AS DateTime), NULL, NULL, NULL, 1, 5, 2)
+INSERT [dbo].[hoa_don_chi_tiet] ([id_hdct], [so_luong], [don_gia], [ghi_chu], [ngay_tao], [ngay_sua], [nguoi_tao], [nguoi_sua], [trang_thai], [hoa_don_id], [chi_tiet_san_pham_id]) VALUES (18, 1, 2200000.0000, NULL, CAST(N'2024-06-10T19:46:13.817' AS DateTime), NULL, NULL, NULL, 6, 6, 3)
+INSERT [dbo].[hoa_don_chi_tiet] ([id_hdct], [so_luong], [don_gia], [ghi_chu], [ngay_tao], [ngay_sua], [nguoi_tao], [nguoi_sua], [trang_thai], [hoa_don_id], [chi_tiet_san_pham_id]) VALUES (19, 1, 650000.0000, NULL, CAST(N'2024-06-05T19:46:13.817' AS DateTime), NULL, NULL, NULL, 2, 7, 4)
+INSERT [dbo].[hoa_don_chi_tiet] ([id_hdct], [so_luong], [don_gia], [ghi_chu], [ngay_tao], [ngay_sua], [nguoi_tao], [nguoi_sua], [trang_thai], [hoa_don_id], [chi_tiet_san_pham_id]) VALUES (20, 1, 7500000.0000, NULL, CAST(N'2024-06-12T19:46:13.817' AS DateTime), NULL, NULL, NULL, 4, 1, 5)
 SET IDENTITY_INSERT [dbo].[hoa_don_chi_tiet] OFF
 go
 
-SET IDENTITY_INSERT [dbo].[gio_hang] ON 
+--SET IDENTITY_INSERT [dbo].[gio_hang] ON 
 
-INSERT [dbo].[gio_hang] ([id_gio_hang],[ma_gio_hang], [ghi_chu], [ngay_tao], [ngay_sua], [trang_thai], [khach_hang_id]) VALUES (1, 1, NULL, CAST(N'2024-01-17T23:55:06.707' AS DateTime), CAST(N'2024-01-17T23:55:06.707' AS DateTime), 0, 1)
-INSERT [dbo].[gio_hang] ([id_gio_hang],[ma_gio_hang], [ghi_chu], [ngay_tao], [ngay_sua], [trang_thai], [khach_hang_id]) VALUES (2, 2, NULL, CAST(N'2024-01-17T23:57:26.430' AS DateTime), CAST(N'2024-01-17T23:57:29.087' AS DateTime), 0, 1)
-INSERT [dbo].[gio_hang] ([id_gio_hang],[ma_gio_hang], [ghi_chu], [ngay_tao], [ngay_sua], [trang_thai], [khach_hang_id]) VALUES (3, 3, NULL, CAST(N'2024-01-17T23:41:59.073' AS DateTime), CAST(N'2024-01-17T23:41:59.073' AS DateTime), 0, 1)
-INSERT [dbo].[gio_hang] ([id_gio_hang],[ma_gio_hang],  [ghi_chu], [ngay_tao], [ngay_sua], [trang_thai], [khach_hang_id]) VALUES (4, 4, NULL, CAST(N'2024-01-17T23:58:43.227' AS DateTime), CAST(N'2024-01-17T23:58:43.227' AS DateTime), 0, 1)
-INSERT [dbo].[gio_hang] ([id_gio_hang],[ma_gio_hang],  [ghi_chu], [ngay_tao], [ngay_sua], [trang_thai], [khach_hang_id]) VALUES (5, 5, NULL, CAST(N'2024-01-17T23:59:21.800' AS DateTime), CAST(N'2024-01-17T23:59:21.800' AS DateTime), 0, 1)
-SET IDENTITY_INSERT [dbo].[gio_hang] OFF
-GO
+--INSERT [dbo].[gio_hang] ([id_gio_hang],[ma_gio_hang], [so_luong], [ghi_chu], [ngay_tao], [ngay_sua], [trang_thai], [khach_hang_id], [chi_tiet_san_pham_id]) VALUES (1, 1, 1, NULL, CAST(N'2024-01-17T23:55:06.707' AS DateTime), CAST(N'2024-01-17T23:55:06.707' AS DateTime), 0, 1, 53)
+--INSERT [dbo].[gio_hang] ([id_gio_hang],[ma_gio_hang], [so_luong], [ghi_chu], [ngay_tao], [ngay_sua], [trang_thai], [khach_hang_id], [chi_tiet_san_pham_id]) VALUES (2, 2, 4, NULL, CAST(N'2024-01-17T23:57:26.430' AS DateTime), CAST(N'2024-01-17T23:57:29.087' AS DateTime), 0, 1, 52)
+--INSERT [dbo].[gio_hang] ([id_gio_hang],[ma_gio_hang], [so_luong], [ghi_chu], [ngay_tao], [ngay_sua], [trang_thai], [khach_hang_id], [chi_tiet_san_pham_id]) VALUES (3, 3, 1, NULL, CAST(N'2024-01-17T23:41:59.073' AS DateTime), CAST(N'2024-01-17T23:41:59.073' AS DateTime), 0, 1, 6)
+--INSERT [dbo].[gio_hang] ([id_gio_hang],[ma_gio_hang], [so_luong], [ghi_chu], [ngay_tao], [ngay_sua], [trang_thai], [khach_hang_id], [chi_tiet_san_pham_id]) VALUES (4, 4, 1, NULL, CAST(N'2024-01-17T23:58:43.227' AS DateTime), CAST(N'2024-01-17T23:58:43.227' AS DateTime), 0, 1, 8)
+--INSERT [dbo].[gio_hang] ([id_gio_hang],[ma_gio_hang], [so_luong], [ghi_chu], [ngay_tao], [ngay_sua], [trang_thai], [khach_hang_id], [chi_tiet_san_pham_id]) VALUES (5, 5, 2, NULL, CAST(N'2024-01-17T23:59:21.800' AS DateTime), CAST(N'2024-01-17T23:59:21.800' AS DateTime), 0, 1, 99)
+--SET IDENTITY_INSERT [dbo].[gio_hang] OFF
+--GO
 
 SET IDENTITY_INSERT [dbo].[dia_chi] ON 
 
@@ -874,3 +882,95 @@ INSERT [dbo].[dia_chi] ([id_dia_chi], [thanh_pho], [quan_huyen], [phuong_xa], [d
 INSERT [dbo].[dia_chi] ([id_dia_chi], [thanh_pho], [quan_huyen], [phuong_xa], [dia_chi_cu_the], [ngay_tao], [ngay_sua], [trang_thai], [khach_hang_id]) VALUES (3, N'260', N'3278', N'390906', N'Số 12', CAST(N'2024-06-01T23:12:34.323' AS DateTime), CAST(N'2024-06-01T23:12:34.323' AS DateTime), 0, 3)
 SET IDENTITY_INSERT [dbo].[dia_chi] OFF
 GO
+
+SET IDENTITY_INSERT [dbo].[nhan_vien] ON 
+INSERT [dbo].[nhan_vien] ([id_nv], [ho_va_ten], [ngay_sinh], [gioi_tinh], [so_dien_thoai], [email], [ten_tai_khoan], [mat_khau], [ngay_tao], [ngay_sua], [trang_thai], [vai_tro_id]) VALUES (3, N'Trinh Van Hien', CAST(N'2003-10-07' AS Date), 0, N'0961515329', N'zpm05009@omeie.com', N'hien', N'$2a$10$kNeKIfNsxvCNA/Un0G0sc.R9d6r6pBKMvyfhb8cOR4Zq5j/.VSX5i', CAST(N'2024-06-13T22:34:53.153' AS DateTime), CAST(N'2024-06-13T22:34:53.153' AS DateTime), 0, 1)
+SET IDENTITY_INSERT [dbo].[nhan_vien] OFF
+GO
+
+
+SET IDENTITY_INSERT [dbo].[khach_hang] ON 
+INSERT [dbo].[khach_hang] ([id_kh],[ho_va_ten] ,[ngay_sinh] ,[gioi_tinh],[so_dien_thoai],[email],[ten_tai_khoan],[mat_khau],[ngay_tao],[ngay_sua],[ten_vai_tro],[trang_thai]) VALUES (7, N'Trịnh Văn Hiển', CAST(N'2003-10-07' AS Date), 0, N'09615151329', N'hien06781@gmail.com', N'hieu', N'$2a$10$kNeKIfNsxvCNA/Un0G0sc.R9d6r6pBKMvyfhb8cOR4Zq5j/.VSX5i', CAST(N'2024-06-01T00:00:00.000' AS DateTime), CAST(N'2024-07-16T18:01:48.380' AS DateTime),N'ROLE_USER', 0)
+SET IDENTITY_INSERT [dbo].[khach_hang] OFF
+GO
+
+-------Bình testtttt
+use DATN_SD09 
+go
+
+select * from thuong_hieu where trang_thai = 0
+select DISTINCT chi_tiet_san_pham.mau_sac_id from chi_tiet_san_pham where trang_thai = 0
+select * from mau_sac
+select DISTINCT chi_tiet_san_pham.kich_co_id from chi_tiet_san_pham where trang_thai = 0
+select * from kich_co
+select DISTINCT chi_tiet_san_pham.loai_de_id from chi_tiet_san_pham where trang_thai = 0
+select * from loai_de
+select DISTINCT th.id_thuong_hieu,th.ten_thuong_hieu from chi_tiet_san_pham
+            JOIN san_pham s ON san_pham_id = s.id_sp JOIN thuong_hieu th ON s.thuong_hieu_id = th.id_thuong_hieu
+
+			select * from chi_tiet_san_pham where trang_thai = 0
+
+select sp.ten_sp,kc.ten_kich_co, ms.ten_mau, ld.ten_ld, ctsp.so_luong
+from chi_tiet_san_pham ctsp
+Join san_pham sp on ctsp.san_pham_id = sp.id_sp
+join kich_co kc on ctsp.kich_co_id = kc.id_kich_co
+join mau_sac ms on ctsp.mau_sac_id = ms.id_ms
+join loai_de ld on ctsp.loai_de_id = ld.id_ld
+where ctsp.so_luong <= 100 
+and ctsp.trang_thai = 0
+select * from hoa_don_chi_tiet
+select * from hoa_don
+--//Top san pham ban chay
+SELECT ctsp.sp_ten, SUM(hdct.soLuong), SUM(hdct.donGia)
+FROM HoaDonChiTiet hdct
+JOIN hdct.sanPhamChiTiet ctsp
+JOIN hdct.hoaDon hd
+WHERE hdct.trangThai = 0
+AND (hd.trangThai = 3 OR hd.trangThai = 6)
+AND CAST(hd.ngayTao AS DATE) BETWEEN :startDate AND :endDate
+GROUP BY ctsp.sp_ten
+ORDER BY SUM(hdct.soLuong) DESC;
+---
+SELECT ctsp.sp_ten, SUM(hdct.soLuong), SUM(hdct.donGia)
+FROM hoa_don_chi_tiet hdct
+JOIN hdct.sanPhamChiTiet ctsp
+JOIN hdct.hoaDon hd
+WHERE hdct.trangThai = 0
+AND (hd.trangThai = 3 OR hd.trangThai = 6)
+AND CAST(hd.ngayTao AS DATE) BETWEEN '2024-01-01' AND '2024-12-29'
+GROUP BY ctsp.sp_ten
+ORDER BY SUM(hdct.soLuong) DESC;
+--
+SELECT sp.ten_sp, SUM(hdct.so_luong), SUM(hdct.don_gia)
+FROM hoa_don_chi_tiet hdct
+JOIN chi_tiet_san_pham ctsp ON hdct.chi_tiet_san_pham_id = ctsp.id_ctsp
+JOIN san_pham sp ON ctsp.san_pham_id = sp.id_sp
+JOIN hoa_don hd ON hdct.hoa_don_id = hd.id_hd
+WHERE hdct.trang_thai = 0 
+  AND (hd.trang_thai = 3 OR hd.trang_thai = 6)
+  AND CAST(hd.ngay_tao AS DATE) BETWEEN '2024-01-01' AND '2024-12-29'
+GROUP BY sp.ten_sp
+ORDER BY SUM(hdct.so_luong) DESC
+
+SELECT sp.ten_sp, SUM(hdct.so_luong) AS totalSoLuong, SUM(hdct.don_gia) AS totalDonGia
+FROM hoa_don_chi_tiet hdct
+JOIN chi_tiet_san_pham ctsp ON hdct.chi_tiet_san_pham_id = ctsp.id_ctsp
+JOIN san_pham sp ON ctsp.san_pham_id = sp.id_sp
+JOIN hoa_don hd ON hdct.hoa_don_id = hd.id_hd
+WHERE hdct.trang_thai = 0
+  AND (hd.trang_thai = 3 OR hd.trang_thai = 6)
+  AND CAST(hd.ngay_tao AS DATE) BETWEEN '2024-01-01' AND '2024-12-29'
+GROUP BY sp.ten_sp
+ORDER BY SUM(hdct.so_luong) DESC;
+select * from hoa_don_chi_tiet
+select *  from san_pham
+--tinh tông sp bán đuọc
+select * from hoa_don_chi_tiet
+select * from hoa_don
+SELECT COALESCE(SUM(hdct.so_luong), 0)
+FROM hoa_don_chi_tiet hdct
+JOIN hoa_don hd ON hdct.hoa_don_id = hd.id_hd
+WHERE hdct.trang_thai = 0
+  AND (hd.trang_thai = 3 OR hd.trang_thai = 6)
+  AND CAST(hd.ngay_tao AS DATE) BETWEEN '2024-01-01' AND '2024-12-29'
+--ket thuc binh

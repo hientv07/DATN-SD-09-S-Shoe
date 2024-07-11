@@ -19,7 +19,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.text.NumberFormat;
 import java.util.Date;
+import java.util.Locale;
 
 @Entity
 @Table(name = "chi_tiet_san_pham")
@@ -74,4 +76,9 @@ public class SanPhamChiTiet {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "loai_de_id", referencedColumnName = "id_ld")
     private LoaiDe loaiDe;
+
+    public static String formatCurrency(long giaHienHanh) {
+        NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
+        return formatter.format(giaHienHanh) + " VND";
+    }
 }
