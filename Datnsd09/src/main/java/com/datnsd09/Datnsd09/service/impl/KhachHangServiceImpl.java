@@ -19,13 +19,14 @@ import java.util.List;
 public class KhachHangServiceImpl implements KhachHangService {
 
     @Autowired
-    private KhachHangRepository  repository;
+    private KhachHangRepository repository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Autowired
     private JavaMailSender javaMailSender;
+
     @Override
     public List<KhachHang> getAll() {
         return repository.fillAllKhachHang();
@@ -212,6 +213,28 @@ public class KhachHangServiceImpl implements KhachHangService {
         userInfo.setMatKhau(passwordEncoder.encode(userInfo.getMatKhau()));
         repository.save(userInfo);
         return "user added to system";
+    }
+
+    // Ngọc Hiếu
+    @Override
+    public void guiLieuHe(String hoTen, String email, String chuDe, String tinNhan) {
+        String from = email;
+        String to = "sshoeshopshoes@gmail.com";
+        String subject = chuDe;
+        String content = tinNhan;
+        try {
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message);
+            helper.setFrom(from, hoTen);
+            helper.setTo(to);
+            helper.setSubject(subject);
+
+            helper.setText(content,true);
+
+            javaMailSender.send(message);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
 

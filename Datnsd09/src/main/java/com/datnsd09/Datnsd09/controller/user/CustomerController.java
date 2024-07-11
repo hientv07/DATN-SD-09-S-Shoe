@@ -12,6 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Date;
 import java.util.List;
@@ -55,7 +56,7 @@ public class CustomerController {
 
 
     @GetMapping("/logout/true")
-    public String logout(){
+    public String logout() {
         idKhachHang = null;
         return "dang-nhap";
     }
@@ -166,10 +167,10 @@ public class CustomerController {
     }
 
     @GetMapping("/user/shop-single/{id}")
-    public String shopSingle(Model model,@PathVariable("id") String id){
+    public String shopSingle(Model model, @PathVariable("id") String id) {
         SanPhamChiTiet sanPhamChiTiet = sanPhamChiTietService.getAllById(Long.valueOf(id)).get(0);
-        List<SanPhamChiTiet> listCTSP =sanPhamChiTietService.getAllById(Long.valueOf(id));
-        KhachHang khachHang =khachHangService.getById(idKhachHang);
+        List<SanPhamChiTiet> listCTSP = sanPhamChiTietService.getAllById(Long.valueOf(id));
+        KhachHang khachHang = khachHangService.getById(idKhachHang);
 //        model.addAttribute("soLuongSPGioHangCT",
 //                gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
         model.addAttribute("chiTietSp", sanPhamChiTiet);
@@ -180,15 +181,15 @@ public class CustomerController {
 
     @GetMapping("/user/shop-single/get-so-luong")
     @ResponseBody
-    public Integer getSoLuongGHCT(){
-        KhachHang khachHang =khachHangService.getById(idKhachHang);
+    public Integer getSoLuongGHCT() {
+        KhachHang khachHang = khachHangService.getById(idKhachHang);
+//        Integer soLuong = gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId());
         return null;
     }
 
 
     @GetMapping("/lien-he")
-    public String lienHe(
-            Model model) {
+    public String lienHe(Model model) {
         if (principalCustom.getCurrentUserNameCustomer() != null) {
             KhachHang khachHang = khachHangService.getById(idKhachHang);
             model.addAttribute("checkDangNhap", "true");
@@ -199,6 +200,29 @@ public class CustomerController {
         }
         return "/customer/lien-he";
     }
+
+    @GetMapping("/lien-he/add")
+    public String addLienHe(@RequestParam("hoTen") String hoTen,
+                            @RequestParam("email") String email,
+                            @RequestParam("chuDe") String chuDe,
+                            @RequestParam("tinNhan") String tinNhan,
+                            RedirectAttributes redirectAttributes) {
+        khachHangService.guiLieuHe(hoTen, email, chuDe, tinNhan);
+        redirectAttributes.addFlashAttribute("checkTBLienHe", true);
+        return "redirect:/lien-he";
+    }
+
+    @GetMapping("/chinh-sach")
+    public String chinhSach(Model model) {
+        if (principalCustom.getCurrentUserNameCustomer() != null) {
+            KhachHang khachHang = khachHangService.getById(idKhachHang);
+            model.addAttribute("checkDangNhap", "true");
+        } else {
+            model.addAttribute("checkDangNhap", "false");
+        }
+        return "/customer/chinh-sach";
+    }
+
     @PostMapping("/user/dia-chi/add")
     public String adđDiaChi(
             @RequestParam("phuongXaID") String phuongXa,
@@ -218,6 +242,7 @@ public class CustomerController {
         diaChiService.save(diaChi);
         return "redirect:/user/cart";
     }
+
     @PostMapping("/user/dia-chi/update")
     public String updateDiaChi(
             @RequestParam("idDiaChi") Long idDiaChi,
@@ -257,6 +282,7 @@ public class CustomerController {
 
         return "redirect:/user/cart";
     }
+
     @GetMapping("/user/dia-chi")
     public String diaChiKhachHang(
             Model model) {
@@ -273,5 +299,26 @@ public class CustomerController {
             model.addAttribute("soDiaChi", diaChi.size());
         }
         return "/customer/dia-chi";
+    }
+
+    @GetMapping("/tra-cuu-don-hang")
+    public String traCuuDonHang(Model model) {
+        if (principalCustom.getCurrentUserNameCustomer() != null) {
+            KhachHang khachHang = khachHangService.getById(idKhachHang);
+            model.addAttribute("checkDangNhap", "true");
+//            model.addAttribute("soLuongSPGioHangCT",
+//                    gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
+        } else {
+            model.addAttribute("checkDangNhap", "false");
+        }
+        return "/customer/tra-cuu-don-hang";
+    }
+
+    @GetMapping("/user/thankyou")
+    public String thankYou(Model model){
+        KhachHang khachHang =khachHangService.getById(idKhachHang);
+//            model.addAttribute("soLuongSPGioHangCT",
+//                    gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
+        return "/customer/thankyou";
     }
 }

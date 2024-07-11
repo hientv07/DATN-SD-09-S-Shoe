@@ -9,16 +9,15 @@
     <link href="../../static/img/favicon.png" rel="icon">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,400,700"/>
     <link rel="stylesheet" href="../../static/../../static/fonts/icomoon/style.css"/>
+
     <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="../../static/css/magnific-popup.css"/>
     <link rel="stylesheet" href="../../static/css/jquery-ui.css"/>
     <link rel="stylesheet" href="../../static/css/owl.carousel.min.css"/>
     <link rel="stylesheet" href="../../static/css/owl.theme.default.min.css"/>
 
-    <!--    thư viện toast-->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@latest/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <link rel="stylesheet" href="../../static/css/aos.css"/>
+
     <link rel="stylesheet" href="../../static/css/style-customer-template.css"/>
 </head>
 
@@ -146,130 +145,64 @@
     <div class="site-section">
         <div class="container">
             <div class="row">
-                <div class="col-md-7" style="margin: auto">
-                    <h2 class="h3 mb-3 text-black">Liên Hệ:</h2>
+                <div class="col-md-12" style="margin-top: -5%">
+                    <h1 style="text-align: center;font-size: 4rem">S-Shoe</h1>
+                    <h6 style="text-align: center;font-size: 1.3rem; margin-bottom: 5%">Tra cứu đơn hàng chỉ với 1
+                        chạm!</h6>
                 </div>
                 <div class="col-md-7" style="margin: auto">
-                    <form th:action="@{/lien-he/add}" method="get">
+                    <form th:action="@{/tra-cuu-don-hang/{idHoaDon}/{email}}">
                         <div class="p-3 p-lg-5 border">
                             <div class="form-group row">
                                 <div class="col-md-12">
-                                    <label for="c_lname" class="text-black">Họ và tên <span
+                                    <label for="c_lname" class="text-black">Mã Đơn Hàng: <span
                                             class="text-danger">*</span></label>
-                                    <input type="text" class="form-control" id="c_lname" name="hoTen"/>
-                                    <div class="check-loi" style="display: none;color: red" id="iDc_lname"></div>
-
+                                    <input type="text" name="maDonHang" placeholder="Nhập mã đơn hàng cần tra cứu"
+                                           class="form-control" id="c_lname"/>
+                                    <div class="check-loi" id="idc_lname" style="margin-top: 2%;display: none"></div>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <div class="col-md-12">
-                                    <label for="c_email" class="text-black">Email <span
+                                    <label for="c_email" class="text-black">SĐT:<span
                                             class="text-danger">*</span></label>
-                                    <input type="email" class="form-control" id="c_email" name="email"
-                                           placeholder=""/>
-                                    <div class="check-loi" style="display: none;color: red" id="iDc_email"></div>
-
+                                    <input type="text" class="form-control" id="c_email" name="sdt"
+                                           placeholder="Nhập số điện thoại của đơn hàng"/>
+                                    <div class="check-loi" id="idc_email" style="margin-top: 2%;display: none"></div>
+                                    <div class="check-loi" id="checkLoiTra" style="text-align: center;margin-top: 2%"
+                                         th:text="${checkLoiTraCuuHoaDon}"></div>
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <div class="col-md-12">
-                                    <label for="c_subject" class="text-black">Chủ đề <span
-                                            class="text-danger">*</span></label></label>
-                                    <input type="text" class="form-control" id="c_subject" name="chuDe"/>
-                                    <div class="check-loi" style="display: none;color: red" id="iDc_subject"></div>
-
-                                </div>
+                            <div class="col-md-4" style="margin: auto;margin-top: 5%">
+                                <button type="submit" onclick="return checkTraDon()" class="btn btn-primary">Tìm kiếm</button>
                             </div>
-
-                            <div class="form-group row">
-                                <div class="col-md-12">
-                                    <label for="c_message" class="text-black">Tin nhắn <span
-                                            class="text-danger">*</span></label></label>
-                                    <textarea name="tinNhan" id="c_message" cols="30" rows="7"
-                                              class="form-control"></textarea>
-                                    <div class="check-loi" style="display: none;color: red" id="iDc_message"></div>
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <div class="col-lg-12">
-                                    <input type="submit" onclick="return checkGuiLienHe()"
-                                           class="btn btn-primary btn-lg btn-block"
-                                           value="Gửi"/>
-                                </div>
-                            </div>
+                            <script>
+                                function checkTraDon() {
+                                    var check = true
+                                    var c_lname = document.getElementById("c_lname")
+                                    var c_email = document.getElementById("c_email")
+                                    var idc_lname = document.getElementById("idc_lname")
+                                    var idc_email = document.getElementById("idc_email")
+                                    var checkLoiTra = document.getElementById("checkLoiTra")
+                                    idc_lname.style.display = 'none'
+                                    idc_email.style.display = 'none'
+                                    checkLoiTra.style.display = 'none'
+                                    if (c_lname.value.trim() == '') {
+                                        idc_lname.style.display = "block"
+                                        idc_lname.innerText = "Bạn chưa nhập mã đơn hàng"
+                                        check = false
+                                    }
+                                    if (c_email.value.trim() == '') {
+                                        idc_email.style.display = "block"
+                                        idc_email.innerText = "Bạn chưa nhập số điện thoại"
+                                        check = false
+                                    }
+                                    return check;
+                                }
+                            </script>
                         </div>
                     </form>
                 </div>
-                <script>
-                    function checkGuiLienHe() {
-                        var check = true;
-                        var c_lname = document.getElementById("c_lname")
-                        var c_email = document.getElementById("c_email")
-                        var c_subject = document.getElementById("c_subject")
-                        var c_message = document.getElementById("c_message")
-
-                        var iDc_lname = document.getElementById("iDc_lname")
-                        var iDc_email = document.getElementById("iDc_email")
-                        var iDc_subject = document.getElementById("iDc_subject")
-                        var iDc_message = document.getElementById("iDc_message")
-                        iDc_lname.style.display = 'none'
-                        iDc_email.style.display = 'none'
-                        iDc_subject.style.display = 'none'
-                        iDc_message.style.display = 'none'
-
-                        if (c_lname.value.trim() == '') {
-                            iDc_lname.style.display = 'block'
-                            iDc_lname.innerText = 'Không được để trống họ tên'
-                            check = false
-                        }
-                        if (c_email.value.trim() == '') {
-                            iDc_email.style.display = 'block'
-                            iDc_email.innerText = 'Không được để trống email'
-                            check = false
-                        }
-                        if (c_subject.value.trim() == '') {
-                            iDc_subject.style.display = 'block'
-                            iDc_subject.innerText = 'Không được để trống chủ đề'
-                            check = false
-                        }
-                        if (c_message.value.trim() == '') {
-                            iDc_message.style.display = 'block'
-                            iDc_message.innerText = 'Không được để trống nội dung'
-                            check = false
-                        }
-                        return check
-
-                    }
-                </script>
-            </div>
-        </div>
-    </div>
-
-    <!--js bật modal khi check-->
-    <script th:if="${checkTBLienHe=='true'}">
-        window.addEventListener('DOMContentLoaded', (event) => {
-            // Hiển thị modal
-            var toast = new bootstrap.Toast(document.getElementById('thongBaoThemThanhCong'));
-            toast.show();
-        });
-    </script>
-    <!--js bật modal khi check-->
-    <!-- Modal thông báo check chọn sản phẩm-->
-    <div class="toast-container position-fixed top-50 start-50 translate-middle">
-        <div id="thongBaoThemThanhCong" class="toast" role="alert" aria-live="assertive" data-bs-delay="2000"
-             aria-atomic="true"
-             style="background-color: #7e7e7e;">
-            <div class="toast-body center-image" style=";display: flex;justify-content: center;align-items: center;">
-                <img src="../../static/img/successful_notification.png" alt="Notification Image"
-                     style="margin-top:7%;width: 12%;height: 12%;">
-            </div>
-            <div class="toast-body" style="color: white;display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            margin-bottom: 7%;
-            text-align: center;">
-                Gửi liên hệ thành công
             </div>
         </div>
     </div>
@@ -308,7 +241,7 @@
                 <div class="col-md-6 col-lg-3 mb-4 mb-lg-0">
                     <h3 class="footer-heading mb-4">Mẫu mã</h3>
                     <a href="/shop" class="block-6">
-                        <img src="../../static/img/hero_1.jpg" alt="Image placeholder"
+                        <img src="../../static/img/ImgShoe/adidas22_ULTRABOOST%2022%20(3).jpg" alt="Image placeholder"
                              class="img-fluid rounded mb-4"/>
                         <h3 class="font-weight-light mb-0">
                             Tìm đôi giày hoàn hảo của bạn
@@ -317,7 +250,7 @@
                 </div>
                 <div class="col-md-6 col-lg-3">
                     <div class="block-5 mb-5">
-                        <h3 class="footer-heading mb-4">Thông tin liên lạc</h3>
+                        <h3 class="footer-heading mb-4">Thông tin liên lạc:</h3>
                         <ul class="list-unstyled">
                             <li class="address">
                                 13 P. Trịnh Văn Bô, Xuân Phương, Nam Từ Liêm, Hà Nội, Việt Nam
@@ -331,21 +264,9 @@
                 </div>
             </div>
 
-            <div class="row pt-5 mt-5 text-center">
-                <div class="col-md-12">
-                    <p>
-                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        Copyright &copy;<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" class="text-primary">S-Shoe</a>
-                        <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                    </p>
-                </div>
-
-            </div>
-
         </div>
     </footer>
 </div>
-
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
         crossorigin="anonymous"></script>

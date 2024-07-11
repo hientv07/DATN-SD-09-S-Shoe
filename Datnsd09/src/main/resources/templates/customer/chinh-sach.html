@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>S-Shoe</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <link href="../../static/img/favicon.png" rel="icon">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,400,700"/>
+    <link rel="stylesheet" href="../../static/fonts/icomoon/style.css"/>
+
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/css/magnific-popup.css"/>
+    <link rel="stylesheet" href="../../static/css/jquery-ui.css"/>
+    <link rel="stylesheet" href="../../static/css/owl.carousel.min.css"/>
+    <link rel="stylesheet" href="../../static/css/owl.theme.default.min.css"/>
+
+    <link rel="stylesheet" href="../../static/css/aos.css"/>
+
+    <link rel="stylesheet" href="../../static/css/style-customer-template.css"/>
+</head>
+
+<body>
+<div class="site-wrap">
+    <header class="site-navbar" role="banner">
+        <div class="site-navbar-top">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-6 col-md-4 order-2 order-md-1 site-search-icon text-left">
+                        <form action="" class="site-block-top-search">
+                            <span class="icon icon-search2"></span>
+                            <input type="text" class="form-control border-0" id="timKiemAll"
+                                   placeholder="Tìm kiếm theo tên sản phẩm"/>
+                            <script>
+                                var inputElementTimKiemAll = document.getElementById('timKiemAll');
+
+                                inputElementTimKiemAll.addEventListener('blur', function () {
+                                    var inputValueTimKiemAll = inputElementTimKiemAll.value;
+                                    console.log('Giá trị của input:', inputValueTimKiemAll);
+
+                                    var fullUrl = window.location.origin + "/shop"
+
+                                    if (inputValueTimKiemAll !== '') {
+                                        fullUrl = updateQueryStringParameterAll('keyword', inputValueTimKiemAll, fullUrl);
+                                    } else {
+                                        fullUrl = removeQueryStringParameterAll('keyword', fullUrl);
+                                    }
+
+                                    window.location.href = fullUrl
+
+                                });
+
+                                // Hàm cập nhật giá trị của query parameter trong URL
+                                function updateQueryStringParameterAll(key, value, url) {
+                                    var regex = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+                                    var separator = url.indexOf('?') !== -1 ? "&" : "?";
+                                    if (url.match(regex)) {
+                                        return url.replace(regex, '$1' + key + "=" + value + '$2');
+                                    } else {
+                                        return url + separator + key + "=" + value;
+                                    }
+                                }
+
+                                // Hàm xóa query parameter khỏi URL
+                                function removeQueryStringParameterAll(key, url) {
+                                    var urlParts = url.split('?');
+                                    if (urlParts.length >= 2) {
+                                        var prefix = encodeURIComponent(key) + '=';
+                                        var queryString = urlParts[1].split('&');
+
+                                        for (var i = queryString.length - 1; i >= 0; i--) {
+                                            if (queryString[i].lastIndexOf(prefix, 0) !== -1) {
+                                                queryString.splice(i, 1);
+                                            }
+                                        }
+
+                                        url = urlParts[0] + (queryString.length > 0 ? '?' + queryString.join('&') : '');
+                                    }
+
+                                    return url;
+                                }
+                            </script>
+                        </form>
+                    </div>
+
+                    <div class="col-12 mb-3 mb-md-0 col-md-4 order-1 order-md-2 text-center">
+                        <div class="site-logo">
+                            <a href="/home" class="js-logo-clone">S-Shoe</a>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4 order-3 order-md-3 text-right">
+                        <div class="site-top-icons">
+                            <ul class="nav nav-pills" style="margin-left: 54%">
+                                <li class="nav-item dropdown" th:if="${checkDangNhap=='true'}">
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
+                                       role="button" aria-expanded="false"><span class="icon icon-person"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="/user/thong-tin-khach-hang">Tài Khoản Của
+                                            Tôi</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="/user/don-mua">Đơn Mua</a></li>
+                                        <li><a class="dropdown-item" th:href="@{/logout}">Đăng Xuất</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown" th:if="${checkDangNhap=='false'}">
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
+                                       role="button" aria-expanded="false"><span class="icon icon-person"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="/login">Đăng Nhập</a></li>
+
+                                    </ul>
+                                </li>
+
+                                <li class="nav-item" style="margin-top: 5%;margin-left: -5%">
+                                    <a class="site-cart" href="/user/cart">
+                                        <span class="icon icon-shopping_cart"></span>
+                                        <span class="count" th:if="${checkDangNhap=='true'}"
+                                              th:text="${soLuongSPGioHangCT}"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav class="site-navigation text-right text-md-center" role="navigation">
+            <div class="container">
+                <ul class="site-menu js-clone-nav d-none d-md-block">
+                    <li><a href="/home">Trang chủ</a></li>
+                    <li><a href="/shop">Sản phẩm</a></li>
+                    <li><a href="/lien-he">Liên hệ</a></li>
+                    <li><a href="/chinh-sach">Chính Sách</a></li>
+                    <li><a href="/tra-cuu-don-hang">Tra Cứu Đơn Hàng</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <style>
+        .col-md-12 {
+            margin-bottom: 5%;
+        }
+    </style>
+
+    <div class="site-section border-bottom" data-aos="fade">
+        <div class="container">
+            <div class="row mb-5">
+                <div class="col-md-12">
+                    <div class="site-section-heading pt-3 mb-4">
+                        <h2 class="text-black" style="font-weight: bold">S-Shoe - Mua Sắm Tiện Lợi với Chất Lượng Chính
+                            Hãng, Sự Đa Dạng Đặc Sắc Và Sự Nhanh Chóng Tiếp Cận Những Xu Hướng Mới!</h2>
+                    </div>
+                    <p>
+                        • Khám Phá Sự Tiện Lợi Trong Việc Mua Sắm Tại S-Shoe: Chất Lượng Chính Hãng 100%, Sự Đa Dạng Đặc
+                        Sắc Trong Thế Giới Giày Thể Thao, Và Dễ Dàng Tiếp Cận Các Sản Phẩm Mới Nhất Trên Thị Trường."
+                    </p>
+
+                </div>
+                <div class="col-md-12">
+                    <div class="site-section-heading pt-3 mb-4">
+                        <h2 class="text-black" style="font-weight: bold">Giao Hàng Nhanh - Mua Sắm Trực Tuyến Thuận Tiện!</h2>
+                    </div>
+                    <p>
+                        • Thương Mại Điện Tử: Hệ thống giao hàng chuyên nghiệp để đảm bảo việc mua sắm trực tuyến của
+                        bạn là trải nghiệm mượt mà và thuận tiện nhất.
+
+                    </p>
+                    <p>
+                        • Giao Nhanh Toàn Quốc: Dịch vụ giao hàng nhanh chóng và đáng tin cậy, phủ sóng toàn quốc để đưa
+                        sản phẩm đến tận tay bạn một cách nhanh chóng.
+
+                    </p>
+                    <p>
+                        • Miễn Phí Thu Hộ COD: Khách hàng có thể thanh toán khi nhận hàng mà không mất bất kỳ chi phí
+                        nào.
+
+                    </p>
+                </div>
+                <div class="col-md-12">
+                    <div class="site-section-heading pt-3 mb-4">
+                        <h2 class="text-black" style="font-weight: bold">Chính Sách Bảo Hành Tại S-Shoe:</h2>
+                    </div>
+                    <p>
+                    <h6 style="font-weight: bold">1.Bảo Hành Chính Hãng 6 Tháng:</h6>
+                    </p>
+                    <p>
+                        • Tại S-Shoe, chúng tôi cam kết bảo hành chính hãng cho tất cả các sản phẩm giày thể thao trong
+                        thời gian 6 tháng. Điều này là minh chứng cho niềm tin của chúng tôi vào chất lượng và tính
+                        chính xác của từng đôi giày. Đặc biệt, sau khi thời gian bảo hành chính hãng kết thúc, S-Shoe sẽ
+                        mở rộng thêm 3 tháng bảo hành, mang lại sự yên tâm cho khách hàng về bảo vệ cho sản phẩm yêu
+                        thích của họ. Chúng tôi không chỉ cam kết về thời gian bảo hành mà còn về chất lượng dịch vụ,
+                        với việc miễn phí sửa chữa trong thời gian này đối với các vấn đề như gãy gót, bong keo, hoặc hư
+                        da.
+                    </p>
+                    <h6 style="font-weight: bold">2.Thời Gian Nhận và Trả Bảo Hành:</h6>
+                    </p>
+                    <p>
+                        • Chúng tôi hiểu rằng thời gian của quý khách là quan trọng, vì vậy, dịch vụ nhận và trả bảo
+                        hành tại S-Shoe hoạt động từ 8h30 đến 20h00 trong suốt cả tuần. Điều này giúp quý khách linh động
+                        trong việc chọn lựa thời điểm phù hợp nhất để nhận và trả lại sản phẩm.
+                    </p>
+                    <h6 style="font-weight: bold">3.Trường Hợp Được Bảo Hành:</h6>
+                    </p>
+                    <p>
+                        • Chúng tôi luôn sẵn sàng bảo hành cho những sản phẩm nằm trong thời hạn còn bảo hành, đặc biệt
+                        chú trọng đến các lỗi thường gặp như giày gãy gót, bong keo, và hư da. Để đảm bảo quyền lợi của
+                        quý khách, vui lòng mang theo phiếu bảo hành khi đến trung tâm bảo hành.
+                    </p>
+                    <h6 style="font-weight: bold">4.Trường Hợp Không Được Bảo Hành:</h6>
+                    </p>
+                    <p>
+                        • Đồng thời, để quý khách hiểu rõ hơn về quy trình bảo hành, chúng tôi xin chia sẻ những trường
+                        hợp không được bảo hành, như sản phẩm không được mua tại Glacat, hoặc khi phiếu bảo hành không
+                        đủ điều kiện. Chúng tôi cam kết mang đến cho quý khách hàng trải nghiệm mua sắm không chỉ về sản
+                        phẩm chất lượng mà còn về dịch vụ hậu mãi tận tâm và đáng tin cậy.
+                    </p>
+                </div>
+                <div class="col-md-12">
+                    <div class="site-section-heading pt-3 mb-4">
+                        <h2 class="text-black" style="font-weight: bold">Chính Sách Hoàn Trả Tại S-Shoe:</h2>
+                    </div>
+                    <p>
+                    <h6 style="font-weight: bold">1.Quý Khách Vui Lòng Chú Ý:</h6>
+                    </p>
+                    <p>
+                        • Sản phẩm mà quý khách đã mua tại S-Shoe có thể được hoàn trả trong thời hạn 7 ngày, miễn là
+                        sản phẩm vẫn giữ được tình trạng mới tuyệt đối 100%. Chúng tôi chỉ thực hiện hoàn trả đối với
+                        sản phẩm nếu phát hiện có lỗi xuất phát từ nhà sản xuất.
+                    </p>
+                    <p>
+                        • Lỗi từ nhà sản xuất (NSX) được hiểu là bất kỳ vấn đề nào xuất hiện trước hoặc trong quá trình
+                        sử dụng do NSX gây ra, bao gồm cả trầy xước, mòn đế, và các vấn đề tương tự.
+                    </p>
+                    <h6 style="font-weight: bold">2.Điều Kiện Đối Với Quá Trình Hoàn Trả:</h6>
+                    </p>
+                    <p>
+                        • Thời gian hoàn trả được giữ trong khoảng 7 ngày kể từ ngày mua sản phẩm.
+                    </p>
+                    <p>
+                        • Sản phẩm cần phải giữ nguyên trạng và không có dấu hiệu của việc đã qua sử dụng.
+                    </p>
+                    <p>
+                        • Sản phẩm không được bị trầy xước, hỏng hóc, hay ảnh hưởng từ các chất hoá học.
+                    </p>
+                    <p>
+                        • Bao bì, hộp đựng, và đóng gói của sản phẩm phải được giữ nguyên vẹn.
+                    </p>
+                    <h6 style="font-weight: bold">3.Một Số Điều Cần Lưu Ý:</h6>
+                    </p>
+                    <p>
+                        •  Quý khách vui lòng lưu ý rằng quy trình hoàn trả chỉ có thể thực hiện tại quầy của cửa hàng S-Shoe.
+                    </p>
+                    <p>
+                        • Trong quá trình hoàn trả sản phẩm, việc sử dụng voucher trước đó sẽ không được áp dụng. Quý
+                        khách vui lòng lưu ý rằng mọi ưu đãi từ voucher đã sử dụng trước đó sẽ không được hoàn lại hoặc
+                        chuyển đổi sang ưu đãi khác.
+                    </p>
+                    <p>
+                        • Phí ship đã thanh toán trong quá trình mua hàng cũng không được hoàn lại khi quý khách thực hiện
+                        quyết định hoàn trả sản phẩm. Chúng tôi mong quý khách hiểu và chấp nhận điều này để tạo điều
+                        kiện thuận lợi nhất trong quá trình mua sắm và hoàn trả tại S-Shoe.
+                    </p>
+                    <p>
+                        • Những tình trạng như va chạm dẫn đến trầy xước hoặc làm cho sản phẩm bị ảnh hưởng bởi nước
+                        không được xem xét là lỗi từ nhà sản xuất. Trong trường hợp này, sản phẩm sẽ được chuyển sang
+                        chế độ bảo hành theo quy định của hãng.
+                    </p>
+                    <p>
+                        • Hoàn trả sản phẩm không áp dụng với bất kỳ lý do nào khác.
+                    </p>
+                    <p>
+                        • Để tránh những vấn đề không mong muốn, chúng tôi khuyến khích quý khách hạn chế va chạm mạnh,
+                        sử dụng cẩn thận, và tránh tiếp xúc với chất ăn mòn, nhiệt độ cao, hoặc từ trường mạnh.
+                    </p>
+                    <p>
+                        • Sản phẩm cần được hoàn trả phải giữ nguyên trạng mới 100%, không có dấu hiệu sử dụng hoặc giặt
+                        tẩy, giữ nguyên phiếu bảo hành, tem nhãn sản phẩm, không bị dơ bẩn, trầy xước, và bao bì đóng
+                        gói đầy đủ (nếu có).
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="site-section site-section-sm site-blocks-1 border-0" data-aos="fade">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-lg-4 d-lg-flex mb-4 mb-lg-0 pl-4" data-aos="fade-up" data-aos-delay="">
+                    <div class="icon mr-4 align-self-start">
+                        <span class="icon-truck"></span>
+                    </div>
+                    <div class="text">
+                        <h2 class="text-uppercase">Miễn phí vận chuyển</h2>
+                        <p>
+                            Khám Phá Trải Nghiệm Mua Sắm Tinh Tế Và Đầy Ấn Tượng!
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 d-lg-flex mb-4 mb-lg-0 pl-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="icon mr-4 align-self-start">
+                        <span class="icon-refresh2"></span>
+                    </div>
+                    <div class="text">
+                        <h2 class="text-uppercase">Trả lại miễn phí</h2>
+                        <p>
+                            Sự An Tâm Cho Quá Trình Mua Sắm Của Bạn!
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 d-lg-flex mb-4 mb-lg-0 pl-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="icon mr-4 align-self-start">
+                        <span class="icon-help"></span>
+                    </div>
+                    <div class="text">
+                        <h2 class="text-uppercase">Hỗ trợ khách hàng</h2>
+                        <p>
+                            Luôn Sẵn Sàng Đồng Hành Và Giải Quyết Mọi Nhu Cầu Của Bạn!
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="site-footer border-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="footer-heading mb-4">Điều hướng:</h3>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Vận chuyển</a></li>
+                                <li><a href="#">Khu vực</a></li>
+                                <li><a href="#">Kênh bán hàng</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <ul class="list-unstyled">
+                                <li><a href="/about">Đội ngũ</a></li>
+                                <li><a href="/chinh-sach">Trả hàng</a></li>
+                                <li><a href="#">Bảo mật</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <ul class="list-unstyled">
+                                <li><a href="/lien-he">Liên hệ</a></li>
+                                <li><a href="/lien-he">Chăm sóc khách hàng</a></li>
+                                <li><a href="/lien-he">Phản hồi</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-4 mb-lg-0">
+                    <h3 class="footer-heading mb-4">Mẫu mã:</h3>
+                    <a href="/shop" class="block-6">
+                        <img src="../../static/img/ImgShoe/adidas22_ULTRABOOST%2022%20(3).jpg" alt="Image placeholder"
+                             class="img-fluid rounded mb-4"/>
+                        <h3 class="font-weight-light mb-0">
+                            Tìm đôi giày hoàn hảo của bạn
+                        </h3>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="block-5 mb-5">
+                        <h3 class="footer-heading mb-4">Thông tin liên lạc:</h3>
+                        <ul class="list-unstyled">
+                            <li class="address">
+                                13 P. Trịnh Văn Bô, Xuân Phương, Nam Từ Liêm, Hà Nội, Việt Nam
+                            </li>
+                            <li class="phone">
+                                <a href="tel://23923929210">+84 986 553 564</a>
+                            </li>
+                            <li class="email">sshoeshopshoes@gmail.com</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+<script src="../../static/js/jquery-3.3.1.min.js"></script>
+<script src="../../static/js/jquery-ui.js"></script>
+<script src="../../static/js/popper.min.js"></script>
+
+<script src="../../static/js/owl.carousel.min.js"></script>
+<script src="../../static/js/jquery.magnific-popup.min.js"></script>
+<script src="../../static/js/aos.js"></script>
+
+<script src="../../static/js/main.js"></script>
+</body>
+
+</html>

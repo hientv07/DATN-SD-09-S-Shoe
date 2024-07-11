@@ -41,4 +41,7 @@ public interface KhachHangService {
     String addUser(KhachHang userInfo);
 
     String updateUser(KhachHang userInfo);
+
+    // Ngọc Hiếu
+    void guiLieuHe(String hoTen,String email,String chuDe,String tinNhan);
 }
