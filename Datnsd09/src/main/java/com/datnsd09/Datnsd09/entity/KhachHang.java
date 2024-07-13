@@ -82,5 +82,10 @@ public class KhachHang {
     @Column(name = "ten_vai_tro")
     private String vaiTro = "ROLE_USER";
 
+    @OneToOne(mappedBy = "khachHang")
+    GioHang gioHang;
+
+//    @OneToOne(mappedBy = "gioHang")
+//    private KhachHang khachHang;
 
 }
