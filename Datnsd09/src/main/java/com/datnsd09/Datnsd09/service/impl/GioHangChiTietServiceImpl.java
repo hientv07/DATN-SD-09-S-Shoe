@@ -29,4 +29,19 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
        // return gioHangChiTietRepository.soLuongSpTrongGioHangCT(idGioHang);
       // return null;
     }
+
+    @Override
+    public void deleteById(Long id) {
+        gioHangChiTietRepository.deleteById(id);
+    }
+
+    @Override
+    public GioHangChiTiet fillById(Long id) {
+        return gioHangChiTietRepository.findById(id).get();
+    }
+
+    @Override
+    public GioHangChiTiet update(GioHangChiTiet gioHangChiTiet) {
+        return gioHangChiTietRepository.save(gioHangChiTiet);
+    }
 }

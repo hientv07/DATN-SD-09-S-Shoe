@@ -231,6 +231,22 @@ public class CustomerController {
         return "/customer/cart";
     }
 
+    @GetMapping("/user/cart/detele/{id}")
+    public String deleteCart(@PathVariable("id") Long id){
+        gioHangChiTietService.deleteById(id);
+        return "redirect:/user/cart";
+    }
+
+    @GetMapping("/user/cart/update/{id}")
+    public String updateCart(
+            @PathVariable("id") Long id,
+            @RequestParam("soLuong") String soLuong
+    ){
+        GioHangChiTiet gioHangChiTiet = gioHangChiTietService.fillById(id);
+        gioHangChiTiet.setSoLuong(Integer.valueOf(soLuong));
+        gioHangChiTietService.update(gioHangChiTiet);
+        return "redirect:/user/cart";
+    }
 
 
 

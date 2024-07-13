@@ -9,4 +9,10 @@ public interface GioHangChiTietService {
     List<GioHangChiTiet> fillAllByIdGioHang(Long idGioHang);
 
     Integer soLuongSPGioHangCT(Long idGioHang);
+
+    void deleteById(Long id);
+
+    GioHangChiTiet fillById(Long id);
+
+    GioHangChiTiet update(GioHangChiTiet gioHangChiTiet);
 }
