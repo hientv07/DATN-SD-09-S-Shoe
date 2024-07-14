@@ -308,30 +308,28 @@
                         </div>
                         <!-- Modal thêm sản phẩm end-->
 
-                        <table id="example" class="display" style="width:100%">
+                        <table id="sanPhamTable">
                             <thead>
+                            <!-- Phần tiêu đề bảng -->
                             <tr>
                                 <th>STT</th>
-                                <th>Ảnh</th>
-                                <th>Mã Sản Phẩm</th>
-                                <th>Tên Sản Phẩm</th>
-                                <th>Thương Hiệu</th>
-                                <th>Mô Tả</th>
-                                <th>Số Lượng</th>
-                                <th>Trạng Thái</th>
-                                <th>Hành Động</th>
+                                <th>Hình ảnh</th>
+                                <th>Mã</th>
+                                <th>Tên</th>
+                                <th>Thương hiệu</th>
+                                <th>Mô tả</th>
+                                <th>Số lượng</th>
+                                <th>Trạng thái</th>
+                                <th>Chỉnh sửa</th>
                             </tr>
-                            <thead>
+                            </thead>
                             <tbody>
                             <tr th:each="sanPham,iterStat : ${listSanPham}">
-
                                 <td th:text="${iterStat.index+1}"></td>
                                 <td>
-                                    <div style=" margin: auto; width: 144px;height: 144px;object-fit: cover">
-                                        <img th:each="anh : ${sanPham.listHinhAnhSanPham[0]}"
-                                             th:src="@{'../../../static/img/ImgShoe/' + ${anh.url}}"
+                                    <div style="margin: auto; width: 144px; height: 144px; object-fit: cover">
+                                        <img th:src="@{'../../../static/img/ImgShoe/' + ${sanPham.listHinhAnhSanPham[0].url}}"
                                              class="img-fluid product-thumbnail">
-
                                     </div>
                                 </td>
                                 <td th:text="${sanPham.ma}"></td>
@@ -339,30 +337,27 @@
                                 <td th:text="${sanPham.thuongHieu.ten}"></td>
                                 <td th:text="${sanPham.moTa}"></td>
 
-                                    <!-- chạy db theo chiều dọc-->
-                                <td>
-                                    <ul style="list-style-type: none; padding: 0; margin: 0; text-align: center;">
-                                        <li th:each="ctsp : ${sanPham.listCTSP}" style="margin-bottom: 5px;">
-                                            <span th:text="${ctsp.soLuong}"></span>
-                                        </li>
-                                    </ul>
+                                <!-- Ẩn số lượng sản phẩm của từng size -->
+                                <td class="quantity-list" th:each="ctsp : ${sanPham.listCTSP}" th:data-quantity="${ctsp.soLuong}" hidden>
+                                    <span th:text="${ctsp.soLuong}"></span>
                                 </td>
 
-                                <!--chạy db theo chiều ngang-->
-<!--                                <td th:each="ctsp : ${sanPham.listCTSP}">-->
-<!--                                    <span th:text="${ctsp.soLuong}"></span>-->
-<!--                                </td>-->
+                                <!-- Cột để hiển thị tổng số lượng sản phẩm -->
+                                <td class="total-quantity"></td>
 
-                                <td class="trangthaidkd" th:if="${sanPham.trangThai==0}">Đang kinh doanh</td>
-                            <td class="trangthainkd" th:if="${sanPham.trangThai==1}">Ngừng kinh doanh</td>
-                            <td>
-                                <a th:href="@{/admin/san-pham/view-update/{id}(id=${sanPham.id})}"
-                                   class="btn btn-warning">
-                                    <i class="bi bi-pencil-fill"></i>
-                                </a>
-                            </td>
+                                <!-- Hiển thị trạng thái sản phẩm -->
+                                <td th:classappend="${sanPham.trangThai==0} ? 'trangthaidkd' : 'trangthainkd'">
+                                    <span th:text="${sanPham.trangThai==0} ? 'Đang kinh doanh' : 'Ngừng kinh doanh'"></span>
+                                </td>
+
+                                <!-- Chỉnh sửa sản phẩm -->
+                                <td>
+                                    <a th:href="@{/admin/san-pham/view-update/{id}(id=${sanPham.id})}"
+                                       class="btn btn-warning">
+                                        <i class="bi bi-pencil-fill"></i>
+                                    </a>
+                                </td>
                             </tr>
-
                             </tbody>
                             <tfoot hidden="hidden">
                             <tr>
@@ -384,6 +379,22 @@
     </section>
 
 </main><!-- End #main -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const rows = document.querySelectorAll("#sanPhamTable tbody tr");
+
+        rows.forEach(row => {
+            const quantities = row.querySelectorAll(".quantity-list");
+            let totalQuantity = 0;
+
+            quantities.forEach(quantity => {
+                totalQuantity += parseInt(quantity.getAttribute("data-quantity"));
+            });
+
+            row.querySelector(".total-quantity").textContent = totalQuantity;
+        });
+    });
+</script>
 
 <!--Thông báo thành công-->
 <div class="toast-container position-fixed top-0 end-0 p-3">
