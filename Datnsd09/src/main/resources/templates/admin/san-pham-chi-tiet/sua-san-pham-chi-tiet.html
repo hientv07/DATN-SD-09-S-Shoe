@@ -332,6 +332,7 @@
                                         <table class="table">
                                             <thead>
                                             <tr>
+                                                <th scope="col">STT</th>
                                                 <th scope="col">Kích Cỡ</th>
                                                 <th scope="col">Màu Sắc</th>
                                                 <th scope="col">Loại Đế</th>
@@ -350,6 +351,8 @@
                                                     <option th:value="${chiTietSanPham.sanPham.id}"
                                                             th:label="${chiTietSanPham.sanPham.ten}"></option>
                                                 </select>
+
+                                                <td th:text="${iterStat.index+1}"></td>
 
                                                 <td>
                                                     <select class="form-control" name="listKichCo"

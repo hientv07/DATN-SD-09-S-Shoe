@@ -217,8 +217,21 @@ public class SanPhamChiTietController {
         sanPhamChiTietService.add(listSanPham, listKichCo, listMauSac, listLoaiDe, listSoLuong, listDonGia);
         return "redirect:/admin/san-pham-chi-tiet";
 
-
     }
+
+//    @PostMapping("/add")
+//    public String addSanPhamChiTiet(@RequestParam("listSanPham") Long sanPhamId,
+//                                    @RequestParam("listLoaiDe") Long loaiDeId,
+//                                    @RequestParam("listKichCo") List<Long> kichCoIds,
+//                                    @RequestParam("listMauSac") List<Long> mauSacIds,
+//                                    @RequestParam("listSoLuong") List<Integer> soLuongs,
+//                                    @RequestParam("listDonGia") List<Integer> donGias,
+//                                    Model model) {
+//        // Xử lý logic thêm sản phẩm chi tiết ở đây
+//
+//        return "redirect:/admin/san-pham-chi-tiet"; // Chuyển hướng đến trang hiển thị danh sách sản phẩm chi tiết
+//    }
+
 
     @DeleteMapping("/delete/{id}")
     public String delete(@PathVariable("id") Long id,
@@ -229,3 +242,4 @@ public class SanPhamChiTietController {
         return "redirect:/admin/san-pham-chi-tiet";
     }
 }
+
