@@ -97,6 +97,7 @@ public class CustomerController {
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "28") Integer size,
             Model model) {
+        SanPhamChiTiet sanPhamChiTiet = sanPhamChiTietService.getAllDangHoatDong().get(size);
         if (MauSac == null) {
             MauSac = sanPhamChiTietService.getAllIdMauSacCTSP();
         }
@@ -141,6 +142,8 @@ public class CustomerController {
         model.addAttribute("listKichCo", kichCoService.getAll());
         model.addAttribute("listLoaiDe", loaiDeService.findAll());
         model.addAttribute("listThuongHieu", thuongHieuService.getAllDangHoatDong());
+        model.addAttribute("formattedPrice", formatCurrency(sanPhamChiTiet.getGiaHienHanh()));
+
         return "/customer/shop";
     }
 
@@ -168,10 +171,11 @@ public class CustomerController {
         return "/customer/shop-single";
     }
 
-    public String formatCurrency(long giaHienHanh) {
+    public static String formatCurrency(long giaHienHanh) {
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
         return formatter.format(giaHienHanh) + " VND";
     }
+
     @GetMapping("/user/shop-single/get-so-luong")
     @ResponseBody
     public Integer getSoLuongGHCT() {
@@ -180,6 +184,7 @@ public class CustomerController {
         return soLuong;
       //  return null;
     }
+
     @GetMapping("/user/shop-single/check-so-luong/{idCTSP}")
     @ResponseBody
     public Integer checkSoLuongSpEndGHCT(@PathVariable String idCTSP) {

@@ -53,7 +53,7 @@ public class LoginController {
     @GetMapping("/login")
     public String formLogin() {
         if (principalCustom.getCurrentUserNameAdmin() != null) {
-            return "redirect:/admin/nhan-vien";
+            return "redirect:/ban-hang-tai-quay/hoa-don";
         } else if (principalCustom.getCurrentUserNameCustomer() != null) {
             return "redirect:/home";
         } else {

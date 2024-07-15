@@ -67,7 +67,7 @@ public class SecurityConfig {
                 } else {
                     if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"))) {
                         System.out.println(userDetails.getPassword());
-                        return "/admin/nhan-vien";
+                        return "/ban-hang-tai-quay/hoa-don";
                     } else if (authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_USER"))) {
                         return "/home";
                     } else {
@@ -90,6 +90,7 @@ public class SecurityConfig {
                         "/static/js/**", "/static/scss/**", "/static/vendor/**").permitAll()
                 .and()
                 .authorizeHttpRequests()
+                .requestMatchers("/ban-hang-tai-quay/**").hasAnyAuthority("ROLE_ADMIN")
                 .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                 .requestMatchers("/user/**").hasAuthority("ROLE_USER")
                 .requestMatchers("/products/**").authenticated()

@@ -585,7 +585,7 @@
                                         <h3 class="product-title"
                                             th:text="${chiTiepSp.sanPham.ten+' ['+chiTiepSp.mauSac.ten+ ' - ' +chiTiepSp.kichCo.ten}+']'"></h3>
                                         <strong class="product-price"
-                                                th:text="${chiTiepSp.giaHienHanh + ' VNĐ'}"></strong>
+                                                th:text="${formattedPrice}"></strong>
                                         <span class="icon-cross">
 							                 <img src="../../static/img/plus-black.png" class="img-fluid">
 						                </span>

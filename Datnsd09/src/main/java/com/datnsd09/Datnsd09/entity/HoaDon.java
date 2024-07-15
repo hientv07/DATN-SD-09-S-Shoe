@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -51,6 +52,7 @@ public class HoaDon {
 
     @Column(name = "sdt_nguoi_nhan", length = 15)
     private String sdtNguoiNhan;
+
     @Column(name = "thanh_pho", length = 50)
     private String thanhPho;
 
@@ -90,4 +92,84 @@ public class HoaDon {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "nhan_vien_id", referencedColumnName = "id_nv")
     private NhanVien nhanVien;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "khach_hang_id", referencedColumnName = "id_kh")
+    private KhachHang khachHang;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "voucher_id", referencedColumnName = "id_voucher")
+    private Voucher voucher;
+
+    @OneToMany(mappedBy = "hoaDon")
+    private List<HoaDonChiTiet> lstHoaDonChiTiet;
+
+    public Long tongTienHoaDon() {
+        Long total = (long) 0;
+        for (HoaDonChiTiet hoaDonChiTiet : lstHoaDonChiTiet) {
+            total += hoaDonChiTiet.tongTien();
+        }
+        return formatCurrency(total);
+    }
+
+    public Long tongTienHoaDonHoanTra() {
+        Long total = (long) 0;
+        for (HoaDonChiTiet hoaDonChiTiet : lstHoaDonChiTiet) {
+            if (hoaDonChiTiet.getTrangThai() == 2) {
+                total += hoaDonChiTiet.tongTien();
+            }
+        }
+        return total;
+    }
+
+
+
+    public Long tongTienHoaDonDaNhan() {
+        Long total = (long) 0;
+        for (HoaDonChiTiet hoaDonChiTiet : lstHoaDonChiTiet) {
+            if (hoaDonChiTiet.getTrangThai() == 0) {
+                total += hoaDonChiTiet.tongTien();
+            }
+        }
+        return total;
+    }
+
+
+    public Long tongTienHoaDonKhiGiam() {
+
+        return this.tongTienHoaDonDaNhan() + this.getPhiShip()-this.getGiamGia();
+    }
+
+    public Long getGiamGia() {
+        return this.tienGiam!=null?this.tienGiam:0;
+    }
+
+
+    public String getStringTrangThai() {
+        switch (this.trangThai) {
+            case 0:
+                return "Chờ xác nhận";
+            case 1:
+                return "Chờ giao";
+            case 2:
+                return "Đang giao";
+
+            case 3:
+                return "Hoàn thành";
+            case 4:
+                return "Chờ thanh toán";
+            case 5:
+                return "Đã hủy";
+            case 6:
+                return "Hoàn trả";
+
+            case 8:
+                return "Đơn đổi trả tạm";
+            default:
+                break;
+        }
+        return "";
+    }
+
+
 }

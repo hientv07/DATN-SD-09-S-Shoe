@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -87,5 +88,6 @@ public class KhachHang {
 
 //    @OneToOne(mappedBy = "gioHang")
 //    private KhachHang khachHang;
-
+    @OneToMany(mappedBy = "khachHang")
+    List<DiaChi> lstDiaChi;
 }

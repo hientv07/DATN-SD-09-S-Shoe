@@ -166,7 +166,8 @@ public class KhachHangServiceImpl implements KhachHangService {
                 "Chào bạn," + "<br>" +
                         "Chúc mừng! Tài khoản Khách Hàng mới của bạn tại S-Shoe đã được tạo thành công. Dưới đây là thông tin đăng nhập của bạn:" + "<br>" +
                         "- Tài khoản:  " + taiKhoan.getTenTaiKhoan() + "<br>" +
-                        "- Mật khẩu:   " + random +
+                        "- Mật khẩu:   " + taiKhoan.getMatKhau() + "<br>" +
+                        "- Mã xác minh:   " + random +
                         "<br>" +
                         "Cảm ơn bạn đã chọn S-shoe! Nếu bạn có bất kỳ câu hỏi hoặc cần hỗ trợ, đừng ngần ngại liên hệ với chúng tôi.";
         try {
@@ -295,5 +296,15 @@ public class KhachHangServiceImpl implements KhachHangService {
             e.printStackTrace();
         }
 
+    }
+
+    @Override
+    public KhachHang findKhachLe() {
+        return repository.findKhachLe();
+    }
+
+    @Override
+    public void addKhachLe() {
+        repository.addKhachLe();
     }
 }

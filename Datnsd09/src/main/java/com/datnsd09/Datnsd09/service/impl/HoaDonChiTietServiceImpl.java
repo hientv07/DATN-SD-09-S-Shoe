@@ -21,6 +21,31 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
     private HoaDonRepository hoaDonRepository;
 
     @Override
+    public List<HoaDonChiTiet> findAll() {
+        return hoaDonChiTietRepository.findAll();
+    }
+
+    @Override
+    public HoaDonChiTiet findById(Long id) {
+        return hoaDonChiTietRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        hoaDonChiTietRepository.deleteById(id);
+    }
+
+    @Override
+    public void saveOrUpdate(HoaDonChiTiet hoaDonChiTiet) {
+        hoaDonChiTietRepository.save(hoaDonChiTiet);
+    }
+
+    @Override
+    public List<HoaDonChiTiet> findByIdHoaDon(Long idHoaDon) {
+        return hoaDonChiTietRepository.findByIdHoaDon(idHoaDon);
+    }
+
+    @Override
     public List<Object[]> findByTongSoLuongBetween(Date startDate, Date endDate) {
         return hoaDonChiTietRepository.findByTongSoLuongBetween(startDate,endDate);
     }

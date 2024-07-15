@@ -11,7 +11,8 @@ import java.util.List;
 
 @Repository
 public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, Long> {
-
+    @Query("Select hdct from HoaDonChiTiet hdct where hdct.hoaDon.id=:idHoaDon")
+    List<HoaDonChiTiet> findByIdHoaDon(@Param("idHoaDon") Long idHoaDon);
     //Thống kê bình
     //top san pham ban chay chuyen ngay
     @Query("SELECT hdct.sanPhamChiTiet.sanPham.ten, SUM(hdct.soLuong), SUM(hdct.donGia) " +

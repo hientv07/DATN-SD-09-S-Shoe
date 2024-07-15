@@ -55,5 +55,8 @@ public class HoaDonChiTiet {
     @JoinColumn(name = "chi_tiet_san_pham_id", referencedColumnName = "id_ctsp")
     private SanPhamChiTiet sanPhamChiTiet;
 
+    public Long tongTien(){
+        return this.donGia*this.soLuong;
+    }
 
 }
