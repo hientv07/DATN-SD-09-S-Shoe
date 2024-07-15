@@ -38,4 +38,5 @@ public class GioHang {
     @JoinColumn(name = "khach_hang_id", referencedColumnName = "id_kh")
     private KhachHang khachHang;
 
+
 }

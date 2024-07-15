@@ -204,11 +204,15 @@
 <!--                        <div class="product-price">-->
 <!--                                <span class="offer-price" id="giaHienThi"-->
 <!--                                      th:text="${chiTietSp.giaHienHanh}+' VND'"></span>-->
-<!--                        </div>-->
+                        </div>
                         <div class="product-price">
                             <span class="offer-price" id="giaHienThi" th:text="${formattedPrice}"></span>
                         </div>
 
+<!--                              <div class="product-price">-->
+<!--                                 <span class="offer-price" id="giaHienThi"-->
+<!--                                th:text="${#numbers.formatNumber(chiTietSp.giaHienHanh, 0, 'VI') + ' VND'}"></span>-->
+<!--                                 </div>-->
                         <div class="product-details">
                             <h3>Mô tả</h3>
                             <p th:text="${chiTietSp.sanPham.moTa}"></p>

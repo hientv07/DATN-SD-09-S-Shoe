@@ -32,8 +32,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.text.NumberFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 @Controller
 @RequestMapping("/admin/san-pham-chi-tiet")
@@ -241,5 +243,21 @@ public class SanPhamChiTietController {
         redirectAttributes.addFlashAttribute("checkModal", "modal");
         return "redirect:/admin/san-pham-chi-tiet";
     }
+
+//    @GetMapping("/product")
+//    public String getProduct(Model model) {
+//        // Giả sử bạn có một đối tượng chiTietSp
+//        SanPhamChiTiet chiTietSp = new SanPhamChiTiet();
+//        chiTietSp.setGiaHienHanh(12345678L); // ví dụ giá trị số tiền
+//
+//        // Định dạng số tiền
+//        NumberFormat numberFormat = NumberFormat.getInstance(new Locale("vi", "VN"));
+//        String formattedPrice = numberFormat.format(chiTietSp.getGiaHienHanh());
+//
+//        // Thêm giá trị đã định dạng vào model
+//        model.addAttribute("formattedPrice", formattedPrice + " VND");
+//
+//        return "product"; // tên của file HTML Thymeleaf
+//    }
 }
 

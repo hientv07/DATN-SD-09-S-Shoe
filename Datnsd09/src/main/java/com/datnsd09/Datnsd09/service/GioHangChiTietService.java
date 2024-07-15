@@ -15,4 +15,9 @@ public interface GioHangChiTietService {
     GioHangChiTiet fillById(Long id);
 
     GioHangChiTiet update(GioHangChiTiet gioHangChiTiet);
+
+    GioHangChiTiet fillByIdCTSP(Long idCTSP);
+
+    List<GioHangChiTiet> save(Long idGioHang, List<String> idChiTietSp, Integer soLuong);
+
 }

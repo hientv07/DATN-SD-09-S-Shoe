@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 @Controller
 public class CustomerController {
@@ -183,6 +180,24 @@ public class CustomerController {
         return soLuong;
       //  return null;
     }
+    @GetMapping("/user/shop-single/check-so-luong/{idCTSP}")
+    @ResponseBody
+    public Integer checkSoLuongSpEndGHCT(@PathVariable String idCTSP) {
+        try {
+            Long id = Long.valueOf(idCTSP);
+            GioHangChiTiet gioHangChiTiet = gioHangChiTietService.fillByIdCTSP(id);
+
+            if (gioHangChiTiet != null) {
+                return gioHangChiTiet.getSoLuong();
+            } else {
+                return 0;
+            }
+        } catch (NumberFormatException e) {
+            return 0;
+        } catch (Exception e) {
+            return 0;
+        }
+    }
 
 
     //giohang
@@ -248,6 +263,16 @@ public class CustomerController {
         return "redirect:/user/cart";
     }
 
+    @PostMapping("/user/gio-hang-chi-tiet/add/{idChiTietSpAdd}/{soLuongAdd}")
+    public String addGioHangChiTiet(
+            @PathVariable String idChiTietSpAdd,
+            @PathVariable String soLuongAdd) {
+        String[] optionArray = idChiTietSpAdd.split(",");
+        List<String> listIdString = Arrays.asList(optionArray);
+        KhachHang khachHang = khachHangService.getById(idKhachHang);
+        gioHangChiTietService.save(khachHang.getGioHang().getId(), listIdString, Integer.valueOf(soLuongAdd));
+        return "redirect:/shop";
+    }
 
 
     ////////sau
