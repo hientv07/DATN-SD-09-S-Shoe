@@ -33,6 +33,11 @@ public class KhachHangServiceImpl implements KhachHangService {
     }
 
     @Override
+    public KhachHang save(KhachHang khachHang) {
+        return repository.save(khachHang);
+    }
+
+    @Override
     public List<KhachHang> getAllDangHoatDong() {
         return repository.fillAllDangHoatDong();
     }

@@ -3,8 +3,10 @@ package com.datnsd09.Datnsd09.controller;
 import com.datnsd09.Datnsd09.config.PrincipalCustom;
 import com.datnsd09.Datnsd09.config.UserInfoUserDetails;
 import com.datnsd09.Datnsd09.entity.DiaChi;
+import com.datnsd09.Datnsd09.entity.GioHang;
 import com.datnsd09.Datnsd09.entity.KhachHang;
 import com.datnsd09.Datnsd09.service.DiaChiService;
+import com.datnsd09.Datnsd09.service.GioHangService;
 import com.datnsd09.Datnsd09.service.KhachHangService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -30,8 +32,8 @@ public class KhachHangController {
     @Autowired
     DiaChiService diaChiService;
 
-//    @Autowired
-//    GioHangService gioHangService;
+    @Autowired
+    GioHangService gioHangService;
 
     String random3 = ranDom1();
 
@@ -289,14 +291,14 @@ public class KhachHangController {
             userInfo.setTrangThai(0);
             khachHangService.update(userInfo);
 
-//            GioHang gioHang = new GioHang();
-//            gioHang.setMaGioHang("GH" + gioHangService.genMaTuDong());
-//            gioHang.setGhiChu("");
-//            gioHang.setNgaySua(new Date());
-//            gioHang.setNgayTao(new Date());
-//            gioHang.setTaiKhoan(TaiKhoan.builder().id(userInfo.getId()).build());
-//            gioHang.setTrangThai(0);
-//            gioHangService.save(gioHang);
+            GioHang gioHang = new GioHang();
+            gioHang.setMaGioHang("GH" + gioHangService.genMaTuDong());
+            gioHang.setGhiChu("");
+            gioHang.setNgaySua(new Date());
+            gioHang.setNgayTao(new Date());
+            gioHang.setKhachHang(KhachHang.builder().id(userInfo.getId()).build());
+            gioHang.setTrangThai(0);
+            gioHangService.save(gioHang);
 
             return "redirect:/admin/khach-hang";
         }
