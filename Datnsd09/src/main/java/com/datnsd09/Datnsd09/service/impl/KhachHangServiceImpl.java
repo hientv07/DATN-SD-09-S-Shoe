@@ -1,9 +1,11 @@
 package com.datnsd09.Datnsd09.service.impl;
 
+import com.datnsd09.Datnsd09.entity.GioHang;
 import com.datnsd09.Datnsd09.entity.KhachHang;
 import com.datnsd09.Datnsd09.entity.NhanVien;
 import com.datnsd09.Datnsd09.repository.KhachHangRepository;
 import com.datnsd09.Datnsd09.repository.NhanVienRepository;
+import com.datnsd09.Datnsd09.service.GioHangService;
 import com.datnsd09.Datnsd09.service.KhachHangService;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ public class KhachHangServiceImpl implements KhachHangService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private GioHangService gioHangService;
 
     @Autowired
     private JavaMailSender javaMailSender;
@@ -199,15 +204,15 @@ public class KhachHangServiceImpl implements KhachHangService {
         userInfo.setTrangThai(0);
         userInfo.setMatKhau(passwordEncoder.encode(userInfo.getMatKhau()));
         repository.save(userInfo);
-//        GioHang gioHang = new GioHang();
-//        Date currentDate = new Date();
-//        gioHang.setMaGioHang("GH" + gioHangService.genMaTuDong());
-//        gioHang.setGhiChu("");
-//        gioHang.setNgayTao(currentDate);
-//        gioHang.setNgaySua(currentDate);
-//        gioHang.setTaiKhoan(TaiKhoan.builder().id(userInfo.getId()).build());
-//        gioHang.setTrangThai(0);
-//        gioHangService.save(gioHang);
+        GioHang gioHang = new GioHang();
+        Date currentDate = new Date();
+        gioHang.setMaGioHang("GH" + gioHangService.genMaTuDong());
+        gioHang.setGhiChu("");
+        gioHang.setNgayTao(currentDate);
+        gioHang.setNgaySua(currentDate);
+        gioHang.setKhachHang(KhachHang.builder().id(userInfo.getId()).build());
+        gioHang.setTrangThai(0);
+        gioHangService.save(gioHang);
         return "user added to system";
     }
 
