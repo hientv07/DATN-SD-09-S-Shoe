@@ -109,7 +109,7 @@ public class HoaDon {
         for (HoaDonChiTiet hoaDonChiTiet : lstHoaDonChiTiet) {
             total += hoaDonChiTiet.tongTien();
         }
-        return formatCurrency(total);
+        return (total);
     }
 
     public Long tongTienHoaDonHoanTra() {

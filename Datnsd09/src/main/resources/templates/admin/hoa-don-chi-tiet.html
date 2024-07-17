@@ -1433,9 +1433,10 @@
                                                                                 .then(response => response.json())
                                                                                 .then(data => {
                                                                                     const shippingFeeResult = document.getElementById('shippingFeeResult');
+                                                                                    const formattedShippingFee = data.data.total.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
                                                                                     shippingFeeResult.value = `${data.data.total}`; // Thay đổi ở đây
                                                                                     const shippingFeeResult2 = document.getElementById('phi-van-chuyen');
-                                                                                    shippingFeeResult2.innerHTML = `${data.data.total} VND`;
+                                                                                    shippingFeeResult2.innerHTML = `${formattedShippingFee}`;
                                                                                     console.log(data)
                                                                                     const phiShipInput = document.getElementById('shippingFeeResult');
 
@@ -1457,9 +1458,10 @@
 
                                                                                         // Thực hiện phép cộng
                                                                                         const tongGia = tongTienHoaDon + phiShip - giamGia1;
+                                                                                        const formattedTongGia = tongGia.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
 
                                                                                         // Hiển thị kết quả trong thẻ <h6>
-                                                                                        tongGiaValue.textContent = tongGia.toFixed(0); // Giữ hai chữ số sau dấu thập phân
+                                                                                        tongGiaValue.textContent = formattedTongGia; // Giữ hai chữ số sau dấu thập phân
                                                                                         tongAll.value = tongGia.toFixed(0);
                                                                                     }
 
@@ -1474,6 +1476,14 @@
                                                                                 })
                                                                                 .catch(error => console.error('Error:', error));
                                                                         }
+                                                                        // Hàm format lại các giá trị giá tiền ngay khi trang được tải
+                                                                        const prices = document.querySelectorAll('.price');
+                                                                        prices.forEach(price => {
+                                                                            let value = parseFloat(price.textContent.trim().replace(/,/g, '').replace(/ VND/g, ''));
+                                                                            if (!isNaN(value)) {
+                                                                                price.textContent = value.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                                                                            }
+                                                                        });
                                                                     </script>
                                                                 </div>
                                                                 <div class="col-md-6">
@@ -1740,7 +1750,7 @@
                                                                         <h6>Tổng tiền sản phẩm:</h6>
                                                                     </div>
                                                                     <div class="col">
-                                                                        <h6 id="totalAmount" class="thong-tin-gia">
+                                                                        <h6 id="totalAmount" class="thong-tin-gia price">
                                                                             [[${hoaDon.tongTienHoaDon()}]]
                                                                             VND</h6>
                                                                         <input th:value="${hoaDon.tongTienHoaDon()}"
@@ -1753,14 +1763,14 @@
                                                                     </div>
                                                                     <div class="col">
                                                                         <h6 id="phi-van-chuyen"
-                                                                            class="thong-tin-gia">
+                                                                            class="thong-tin-gia price">
                                                                             [[${hoaDon.phiShip}]]
                                                                             VND</h6>
 
 
                                                                         <input th:value="${hoaDon.phiShip}"
                                                                                name="phiShip" type="hidden"
-                                                                               id="shippingFeeResult">
+                                                                               id="shippingFeeResult" class="price">
                                                                     </div>
                                                                 </div>
                                                                 <div class="row">
@@ -1769,10 +1779,10 @@
 
                                                                         <input id="giamGiaInput" type="hidden"
                                                                                th:value="${hoaDon.tongTien}-${hoaDon.tongTienKhiGiam}"
-                                                                               name="giamGia">
+                                                                               name="giamGia" class="price">
                                                                     </div>
                                                                     <div class="col">
-                                                                        <h6 id="moneyVoucher" class="thong-tin-gia">
+                                                                        <h6 id="moneyVoucher" class="thong-tin-gia price">
                                                                             [[${hoaDon.tongTien}-${hoaDon.tongTienKhiGiam}]]
                                                                             VND
                                                                         </h6>
@@ -1787,7 +1797,7 @@
                                                                     <div class="col">
 
                                                                         <input cla id="tienKhachTra"
-                                                                               class="thong-tin-gia form-control"
+                                                                               class="thong-tin-gia  form-control"
                                                                                type="number">
                                                                     </div>
 
@@ -1800,7 +1810,7 @@
                                                                     </div>
                                                                     <div class="col">
 
-                                                                        <h6 class="thong-tin-gia"><span
+                                                                        <h6 class="thong-tin-gia price"><span
                                                                                 id="traLai">0</span>
                                                                             VND</h6>
                                                                     </div>
@@ -1812,14 +1822,14 @@
                                                                         <h3>Tổng tiền:</h3>
                                                                     </div>
                                                                     <div class="col">
-                                                                        <h6 class="thong-tin-gia" id="tongGiaH6">
+                                                                        <h6 class="thong-tin-gia price" id="tongGiaH6">
                                                                                 <span
                                                                                         id="tongGiaValue">[[${hoaDon.tongTienHoaDonKhiGiam()}]]</span>
                                                                             VND
                                                                         </h6>
                                                                         <input
                                                                                 th:value="${hoaDon.tongTienHoaDonKhiGiam()}"
-                                                                                type="hidden" id="tongAll">
+                                                                                type="hidden" id="tongAll" class="price">
                                                                     </div>
 
 
@@ -2273,6 +2283,19 @@
 </script>
 <!--  css + js chọn voucher-->
 <script src="../../static/js/banHangValid.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const prices = document.querySelectorAll('.price');
+        prices.forEach(price => {
+            let value = parseInt(price.textContent.trim().replace(/,/g, ''));
+            if (!isNaN(value)) {
+                price.textContent = value.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+            }
+        });
+    });
+</script>
+
 <script>
 
     function disabledInput() {

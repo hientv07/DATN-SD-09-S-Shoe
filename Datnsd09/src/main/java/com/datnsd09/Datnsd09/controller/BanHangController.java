@@ -647,4 +647,48 @@ public class BanHangController {
         return "/admin/detail-hoa-don";
     }
 
+    @PostMapping("/hoa-don/xac-nhan")
+    public String xacNhan(
+            @RequestParam Long idHoaDon,
+            @RequestParam String ghiChu,
+            @RequestParam(defaultValue = "") String detail,
+            @RequestParam Long phiShip2,
+            @RequestParam Long giamGia,
+            @RequestParam String voucherID, RedirectAttributes redirectAttributes) {
+
+        HoaDon hd = hoaDonService.findById(idHoaDon);
+        if (!checkSlDb(hd)) {
+            thongBao(redirectAttributes, "Có sản phẩm vượt quá số lượng vui lòng kiểm tra lại", 0);
+            return "redirect:/ban-hang-tai-quay/hoa-don/detail/" + hd.getId();
+        }
+        if(hd.getTrangThai()==5){
+            thongBao(redirectAttributes, "Khách hàng đã hủy đơn", 0);
+            return "redirect:/ban-hang-tai-quay/hoa-don/detail/" + hd.getId();
+        }
+        if (voucherID != "") {
+            hd.setVoucher(voucherService.findById(Long.parseLong(voucherID)));
+            hd.setTienGiam(giamGia);
+        }
+        if (hd.getTrangThai() == 0 && hd.getLoaiHoaDon() == 1) {
+            updateSl(hd);
+        }
+
+        hd.setTrangThai(hd.getTrangThai() + 1);
+        hd.setNgaySua(new Date());
+
+        hoaDonService.saveOrUpdate(hd);
+        System.out.println(ghiChu + "ghiChu");
+        sendMail(hd);
+        if (detail.equals("ok")) {
+            hd.setTongTien(hd.tongTienHoaDon() );
+            hd.setTongTienKhiGiam(hd.tongTienHoaDon()- giamGia);
+            hoaDonService.saveOrUpdate(hd);
+            thongBao(redirectAttributes, "Thành công", 1);
+            return "redirect:/ban-hang-tai-quay/hoa-don/detail/" + hd.getId();
+        } else {
+            return "redirect:/ban-hang-tai-quay/hoa-don/quan-ly";
+        }
+
+    }
+
 }
