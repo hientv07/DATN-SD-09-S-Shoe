@@ -45,6 +45,9 @@ public class CustomerController {
     private VoucherService voucherService;
 
     @Autowired
+    private HoaDonService hoaDonService;
+
+    @Autowired
     private HoaDonChiTietService hoaDonChiTietService;
 
     @Autowired
@@ -173,7 +176,7 @@ public class CustomerController {
 
     public static String formatCurrency(long giaHienHanh) {
         NumberFormat formatter = NumberFormat.getInstance(new Locale("vi", "VN"));
-        return formatter.format(giaHienHanh) + " VND";
+        return formatter.format(giaHienHanh) + " VNĐ";
     }
 
     @GetMapping("/user/shop-single/get-so-luong")
@@ -182,7 +185,7 @@ public class CustomerController {
         KhachHang khachHang = khachHangService.getById(idKhachHang);
         Integer soLuong = gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId());
         return soLuong;
-      //  return null;
+        //  return null;
     }
 
     @GetMapping("/user/shop-single/check-so-luong/{idCTSP}")
@@ -252,7 +255,7 @@ public class CustomerController {
     }
 
     @GetMapping("/user/cart/detele/{id}")
-    public String deleteCart(@PathVariable("id") Long id){
+    public String deleteCart(@PathVariable("id") Long id) {
         gioHangChiTietService.deleteById(id);
         return "redirect:/user/cart";
     }
@@ -261,7 +264,7 @@ public class CustomerController {
     public String updateCart(
             @PathVariable("id") Long id,
             @RequestParam("soLuong") String soLuong
-    ){
+    ) {
         GioHangChiTiet gioHangChiTiet = gioHangChiTietService.fillById(id);
         gioHangChiTiet.setSoLuong(Integer.valueOf(soLuong));
         gioHangChiTietService.update(gioHangChiTiet);
@@ -293,38 +296,68 @@ public class CustomerController {
 //                gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
         return "/customer/thong-tin-khach-hang";
     }
-//
-//    @GetMapping("/tra-cuu-don-hang")
-//    public String traCuuDonHang(Model model) {
-//        if (principalCustom.getCurrentUserNameCustomer() != null) {
-//            KhachHang khachHang = khachHangService.getById(idKhachHang);
-//            model.addAttribute("checkDangNhap", "true");
-////            model.addAttribute("soLuongSPGioHangCT",
-////                    gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
-//        } else {
-//            model.addAttribute("checkDangNhap", "false");
-//        }
-//        return "/customer/tra-cuu-don-hang";
-//    }
-//
-//    @GetMapping("/user/thankyou")
-//    public String thankYou(Model model){
-//        KhachHang khachHang =khachHangService.getById(idKhachHang);
-////            model.addAttribute("soLuongSPGioHangCT",
-////                    gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
-//        return "/customer/thankyou";
-//    }
-//
-//    @GetMapping("/chinh-sach")
-//    public String chinhSach(Model model) {
-//        if (principalCustom.getCurrentUserNameCustomer() != null) {
-//            KhachHang khachHang = khachHangService.getById(idKhachHang);
-//            model.addAttribute("checkDangNhap", "true");
-//        } else {
-//            model.addAttribute("checkDangNhap", "false");
-//        }
-//        return "/customer/chinh-sach";
-//    }
+
+    @GetMapping("/tra-cuu-don-hang")
+    public String traCuuHoaDon(Model model) {
+        if (principalCustom.getCurrentUserNameCustomer() != null) {
+            KhachHang khachHang = khachHangService.getById(idKhachHang);
+            model.addAttribute("checkDangNhap", "true");
+            model.addAttribute("soLuongSPGioHangCT",
+                    gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
+        } else {
+            model.addAttribute("checkDangNhap", "false");
+        }
+        return "/customer/tra-cuu-don-hang";
+    }
+
+    @GetMapping("/tra-cuu-don-hang/{idHoaDon}/{email}")
+    public String detailTraCuuHoaDon(
+            @RequestParam("maDonHang") String maDonHang,
+            @RequestParam("sdt") String sdt,
+            Model model,
+            RedirectAttributes attributes
+    ) {
+        if (principalCustom.getCurrentUserNameCustomer() != null) {
+            KhachHang khachHang = khachHangService.getById(idKhachHang);
+            model.addAttribute("checkDangNhap", "true");
+            model.addAttribute("soLuongSPGioHangCT",
+                    gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
+        } else {
+            model.addAttribute("checkDangNhap", "false");
+        }
+
+        HoaDon hoaDon = hoaDonService.finByHoaDonMaHDSdt(maDonHang, sdt);
+        if (hoaDon == null) {
+            attributes.addFlashAttribute("checkLoiTraCuuHoaDon",
+                    "Không tìm thấy đơn hàng. Vui lòng kiểm tra lại mã đơn hàng và số điện thoại.");
+            return "redirect:/tra-cuu-don-hang";
+        } else {
+            model.addAttribute("byHoaDon", hoaDonService.findById(hoaDon.getId()));
+//            model.addAttribute("listLichSuHoaDon", lichSuHoaDonService.findByIdhdNgaySuaAsc(hoaDon.getId()));
+        }
+        return "/customer/detail-tra-cuu-don-hang";
+    }
+
+    @GetMapping("/user/thankyou")
+    public String thankYou(Model model) {
+        KhachHang khachHang = khachHangService.getById(idKhachHang);
+        model.addAttribute("soLuongSPGioHangCT",
+                gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
+        return "/customer/thankyou";
+    }
+
+    @GetMapping("/chinh-sach")
+    public String chinhSach(Model model) {
+        if (principalCustom.getCurrentUserNameCustomer() != null) {
+            KhachHang khachHang = khachHangService.getById(idKhachHang);
+            model.addAttribute("checkDangNhap", "true");
+            model.addAttribute("soLuongSPGioHangCT",
+                    gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
+        } else {
+            model.addAttribute("checkDangNhap", "false");
+        }
+        return "/customer/chinh-sach";
+    }
 //
 //    @PostMapping("/user/dia-chi/add")
 //    public String adđDiaChi(
@@ -403,29 +436,30 @@ public class CustomerController {
 //        }
 //        return "/customer/dia-chi";
 //    }
-//    @GetMapping("/lien-he")
-//    public String lienHe(Model model) {
-//        if (principalCustom.getCurrentUserNameCustomer() != null) {
-//            KhachHang khachHang = khachHangService.getById(idKhachHang);
-//            model.addAttribute("checkDangNhap", "true");
-////            model.addAttribute("soLuongSPGioHangCT",
-////                    gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
-//        } else {
-//            model.addAttribute("checkDangNhap", "false");
-//        }
-//        return "/customer/lien-he";
-//    }
-//
-//    @GetMapping("/lien-he/add")
-//    public String addLienHe(@RequestParam("hoTen") String hoTen,
-//                            @RequestParam("email") String email,
-//                            @RequestParam("chuDe") String chuDe,
-//                            @RequestParam("tinNhan") String tinNhan,
-//                            RedirectAttributes redirectAttributes) {
-//        khachHangService.guiLieuHe(hoTen, email, chuDe, tinNhan);
-//        redirectAttributes.addFlashAttribute("checkTBLienHe", true);
-//        return "redirect:/lien-he";
-//    }
+
+    @GetMapping("/lien-he")
+    public String lienHe(Model model) {
+        if (principalCustom.getCurrentUserNameCustomer() != null) {
+            KhachHang khachHang = khachHangService.getById(idKhachHang);
+            model.addAttribute("checkDangNhap", "true");
+            model.addAttribute("soLuongSPGioHangCT",
+                    gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
+        } else {
+            model.addAttribute("checkDangNhap", "false");
+        }
+        return "/customer/lien-he";
+    }
+
+    @GetMapping("/lien-he/add")
+    public String addLienHe(@RequestParam("hoTen") String hoTen,
+                            @RequestParam("email") String email,
+                            @RequestParam("chuDe") String chuDe,
+                            @RequestParam("tinNhan") String tinNhan,
+                            RedirectAttributes redirectAttributes) {
+        khachHangService.guiLieuHe(hoTen, email, chuDe, tinNhan);
+        redirectAttributes.addFlashAttribute("checkTBLienHe", true);
+        return "redirect:/lien-he";
+    }
 
 
 }

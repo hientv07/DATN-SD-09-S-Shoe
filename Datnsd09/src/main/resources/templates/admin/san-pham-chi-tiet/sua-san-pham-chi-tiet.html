@@ -165,12 +165,12 @@
             <ul id="tables-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
                     <a href="/admin/nhan-vien">
-                        <i class="bi bi-circle"></i><span>Quản lý nhân viên</span>
+                        <i class="bi bi-circle"></i><span>Quản Lý Nhân Viên</span>
                     </a>
                 </li>
                 <li>
                     <a href="../admin/khach-hang">
-                        <i class="bi bi-circle"></i><span>Quản lý khách hàng</span>
+                        <i class="bi bi-circle"></i><span>Quản Lý Khách Hàng</span>
                     </a>
                 </li>
             </ul>
@@ -190,6 +190,305 @@
     <div class="pagetitle">
         <h1>Quản Lý Chi Tiết Sản Phẩm</h1>
     </div><!-- End Page Title -->
+
+<!--    <section class="section">-->
+<!--        <div class="row">-->
+<!--            <div class="col-lg-12">-->
+<!--                <div class="card">-->
+<!--                    <div class="card-body">-->
+
+<!--                        <div class="row g-3">-->
+<!--                            <div class="col-md-12">-->
+<!--                                <a class="btn btn-link" style="float: left;margin-top: 1%;"-->
+<!--                                   href="/admin/san-pham-chi-tiet">-->
+<!--                                    <i class=" bi bi-arrow-left-circle-fill"></i>-->
+<!--                                </a>-->
+<!--                            </div>-->
+<!--                            <div class="col-md-12">-->
+<!--                                <h1 class="modal-title fs-5" id="exampleModalLabel" style="text-align: center">-->
+<!--                                    Cập Nhật Chi Tiết Sản Phẩm-->
+<!--                                </h1>-->
+<!--                            </div>-->
+<!--                            <div class="col-md-12">-->
+<!--                                <div class="row g-3" style="margin-top: 2%;width: 95%; margin: auto">-->
+<!--                                    <div class="col-md-12">-->
+<!--                                        <label class="col-form-label">-->
+<!--                                            <span class="dausao">*</span>Tên sản phẩm:-->
+<!--                                        </label>-->
+<!--                                        <input type="text" class="form-control"-->
+<!--                                               th:value="${sanPhamDetail != null ? sanPhamDetail.ten : ''}" disabled>-->
+
+<!--                                    </div>-->
+<!--                                    <div class="col-md-12">-->
+<!--                                        <label class="col-form-label">-->
+<!--                                            <span class="dausao">*</span>Thương Hiệu:-->
+<!--                                        </label>-->
+<!--                                        &lt;!&ndash; Kiểm tra nếu sanPhamDetail không null thì hiển thị giá trị, ngược lại hiển thị một giá trị mặc định hoặc không hiển thị gì cả &ndash;&gt;-->
+<!--                                        <input type="text" class="form-control"-->
+<!--                                               th:value="${sanPhamDetail != null ? sanPhamDetail.thuongHieu.ten : ''}"-->
+<!--                                               disabled>-->
+
+<!--                                    </div>-->
+<!--                                    <div class="col-md-6">-->
+<!--                                        <label class="col-form-label">-->
+<!--                                            <span class="dausao">*</span>Ngày Tạo:-->
+<!--                                        </label>-->
+<!--                                        &lt;!&ndash; Kiểm tra nếu sanPhamDetail không null thì hiển thị giá trị, ngược lại hiển thị một giá trị mặc định hoặc không hiển thị gì cả &ndash;&gt;-->
+<!--                                        <input type="text" class="form-control"-->
+<!--                                               th:value="${#dates.format(listCTSP[0].ngayTao, 'HH:mm dd/MM/yyyy')}"-->
+<!--                                               disabled>-->
+
+<!--                                    </div>-->
+<!--                                    <div class="col-md-6">-->
+<!--                                        <label class="col-form-label">-->
+<!--                                            <span class="dausao">*</span>Ngày Sửa:-->
+<!--                                        </label>-->
+<!--                                        &lt;!&ndash; Kiểm tra nếu sanPhamDetail không null thì hiển thị giá trị, ngược lại hiển thị một giá trị mặc định hoặc không hiển thị gì cả &ndash;&gt;-->
+<!--                                        <input type="text" class="form-control"-->
+<!--                                               th:value="${#dates.format(listCTSP[0].ngaySua, 'HH:mm dd/MM/yyyy')}"-->
+<!--                                               disabled>-->
+
+<!--                                    </div>-->
+<!--                                    <div class="col-md-12">-->
+<!--                                        <label class="col-form-label"><span-->
+<!--                                                class="dausao">*</span>Mô tả</label>-->
+<!--                                        <textarea class="form-control"-->
+<!--                                                  th:text="${sanPhamDetail != null ? sanPhamDetail.moTa : ''}"-->
+<!--                                                  id="exampleFormControlTextarea1" rows="3" disabled>-->
+<!--                                        </textarea>-->
+<!--                                    </div>-->
+
+
+<!--                                    <div class="col-md-12" id="nhapFullDuLieu">-->
+<!--                                        <div class="row">-->
+<!--                                            <div class="col-md-6">-->
+<!--                                                <label class="form-label">-->
+<!--                                                    <span class="dau-sao">*</span>Chọn Tất Cả Trạng thái:</label>-->
+<!--                                                <div style="margin-top: 1%;">-->
+<!--                                                    <input class="form-check-input" id="trangThai1" type="radio"-->
+<!--                                                           name="trangThai1" style="margin-left:5%;"-->
+<!--                                                           onchange="selectOnChange(0)">-->
+<!--                                                    <label class="form-check-label" for="trangThai1">Đang hoạt-->
+<!--                                                        động</label>-->
+
+<!--                                                    <input class="form-check-input" id="trangThai2" type="radio"-->
+<!--                                                           name="trangThai1" style="margin-left:5%;"-->
+<!--                                                           onchange="selectOnChange(1)">-->
+<!--                                                    <label class="form-check-label" for="trangThai2">Ngừng hoạt-->
+<!--                                                        động</label>-->
+
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                            <div class="col-md-6">-->
+<!--                                                <div class="row">-->
+<!--                                                    <div class="col-md-6">-->
+
+<!--                                                        <label class="form-label">-->
+<!--                                                            <span class="dau-sao">*</span>Nhập tất cả số lượng:</label>-->
+<!--                                                        <input class="form-control" type="number"-->
+<!--                                                               oninput="updateInputsSoLuong(this)">-->
+<!--                                                        <script>-->
+<!--                                                            function updateInputsSoLuong(sourceInput) {-->
+<!--                                                                // Lấy giá trị của input nguồn-->
+<!--                                                                var sourceValue = sourceInput.value;-->
+<!--                                                                console.log(sourceValue)-->
+<!--                                                                const donGiaInputs = document.getElementsByName("listSoLuong");-->
+<!--                                                                for (let i = 0; i < donGiaInputs.length; i++) {-->
+<!--                                                                    donGiaInputs[i].value = sourceValue-->
+
+<!--                                                                }-->
+<!--                                                            }-->
+<!--                                                        </script>-->
+<!--                                                    </div>-->
+<!--                                                    <div class="col-md-6">-->
+<!--                                                        <label class="form-label">-->
+<!--                                                            <span class="dau-sao">*</span> Nhập tất cả giá:</label>-->
+
+<!--                                                        <input class="form-control" type="number"-->
+<!--                                                               oninput="updateInputsGia(this)">-->
+<!--                                                        <script>-->
+<!--                                                            function updateInputsGia(sourceInput) {-->
+<!--                                                                // Lấy giá trị của input nguồn-->
+<!--                                                                var sourceValue = sourceInput.value;-->
+<!--                                                                console.log(sourceValue)-->
+<!--                                                                const donGiaInputs = document.getElementsByName("listDonGia");-->
+<!--                                                                for (let i = 0; i < donGiaInputs.length; i++) {-->
+<!--                                                                    donGiaInputs[i].value = sourceValue-->
+
+<!--                                                                }-->
+<!--                                                            }-->
+<!--                                                        </script>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                                <form th:action="@{/admin/san-pham-chi-tiet/update}" method="post"-->
+<!--                                      enctype="multipart/form-data"-->
+<!--                                      class="row g-3" style="margin-top: 2%;width: 95%; margin: auto">-->
+<!--                                    <div class="col-md-12">-->
+<!--                                        <table class="table">-->
+<!--                                            <thead>-->
+<!--                                            <tr>-->
+<!--                                                <th scope="col">STT</th>-->
+<!--                                                <th scope="col">Kích Cỡ</th>-->
+<!--                                                <th scope="col">Màu Sắc</th>-->
+<!--                                                <th scope="col">Loại Đế</th>-->
+<!--                                                <th scope="col" style="width: 18%">Trạng Thái</th>-->
+<!--                                                <th scope="col" style="width: 12%">Số Lượng</th>-->
+<!--                                                <th scope="col" style="width: 17%">Đơn Giá</th>-->
+<!--                                            </tr>-->
+<!--                                            </thead>-->
+<!--                                            <tbody>-->
+<!--                                            <tr th:each="chiTietSanPham,iterStat : ${listCTSP}">-->
+
+<!--                                                <input type="hidden" th:value="${chiTietSanPham.id}"-->
+<!--                                                       name="listIdChiTietSp">-->
+<!--                                                <select hidden=class="form-control" name="listSanPham"-->
+<!--                                                        aria-label="Default select example">-->
+<!--                                                    <option th:value="${chiTietSanPham.sanPham.id}"-->
+<!--                                                            th:label="${chiTietSanPham.sanPham.ten}"></option>-->
+<!--                                                </select>-->
+
+<!--                                                <td th:text="${iterStat.index+1}"></td>-->
+
+<!--                                                <td>-->
+<!--                                                    <select class="form-control" name="listKichCo"-->
+<!--                                                            style="color: black; pointer-events: none; user-select: none; opacity: 0.6;"-->
+<!--                                                            aria-label="Default select example">-->
+<!--                                                        <option th:value="${chiTietSanPham.kichCo.id}"-->
+<!--                                                                th:label="${chiTietSanPham.kichCo.ten}"></option>-->
+<!--                                                    </select>-->
+<!--                                                </td>-->
+<!--                                                <td>-->
+<!--                                                    <select class="form-control" name="listMauSac"-->
+<!--                                                            style="color: black; pointer-events: none; user-select: none; opacity: 0.6;"-->
+<!--                                                            aria-label="Default select example">-->
+<!--                                                        <option th:value="${chiTietSanPham.mauSac.id}"-->
+<!--                                                                th:label="${chiTietSanPham.mauSac.ten}"></option>-->
+<!--                                                    </select>-->
+<!--                                                </td>-->
+<!--                                                <td>-->
+<!--                                                    <select class="form-control" name="listLoaiDe"-->
+<!--                                                            style="color: black; pointer-events: none; user-select: none; opacity: 0.6;"-->
+<!--                                                            aria-label="Default select example">-->
+<!--                                                        <option th:value="${chiTietSanPham.loaiDe.id}"-->
+<!--                                                                th:label="${chiTietSanPham.loaiDe.ten}"></option>-->
+<!--                                                    </select>-->
+<!--                                                </td>-->
+<!--                                                <td>-->
+<!--                                                    <style>-->
+<!--                                                        #selectTrangThai1 {-->
+<!--                                                            background-color: rgb(19, 163, 19);-->
+<!--                                                        }-->
+
+<!--                                                        #selectTrangThai2 {-->
+<!--                                                            background-color: #ff5959;-->
+<!--                                                        }-->
+<!--                                                    </style>-->
+<!--                                                    <select class="form-control listTrangThai"-->
+<!--                                                            th:id="${chiTietSanPham.trangThai == 0} ? 'selectTrangThai1' : 'selectTrangThai2'"-->
+<!--                                                            name="listTrangThai"-->
+<!--                                                            aria-label="Default select example">-->
+<!--                                                        <option th:value="0" th:label="|Đang hoạt động|"-->
+<!--                                                                th:selected="${chiTietSanPham.trangThai == 0}"></option>-->
+<!--                                                        <option th:value="1" th:label="|Ngừng hoạt động|"-->
+<!--                                                                th:selected="${chiTietSanPham.trangThai == 1}"></option>-->
+<!--                                                    </select>-->
+<!--                                                    <script>-->
+<!--                                                        // Hàm xử lý sự kiện onchange của radio buttons-->
+<!--                                                        function selectOnChange(trangThai) {-->
+<!--                                                            // Lấy thẻ select-->
+<!--                                                            var selectElements = document.querySelectorAll('.listTrangThai');-->
+
+<!--                                                            // Chọn option tương ứng với giá trị của radio button-->
+<!--                                                            selectElements.forEach(function (selectElement) {-->
+<!--                                                                selectElement.value = trangThai;-->
+<!--                                                            });-->
+<!--                                                        }-->
+<!--                                                    </script>-->
+<!--                                                </td>-->
+<!--                                                <td>-->
+<!--                                                    <input type="number" class="form-control" min="0" name="listSoLuong"-->
+
+<!--                                                           th:value="${chiTietSanPham.soLuong}">-->
+<!--                                                    <div class="error-message"-->
+<!--                                                         th:id="'checkSoLuong' + ${iterStat.index}"-->
+<!--                                                         style="display: none;color: #ff0000;font-size: 14px;font-weight: bold;"></div>-->
+<!--                                                </td>-->
+<!--                                                <td>-->
+<!--                                                    <input type="text" class="form-control" name="listDonGia"-->
+<!--                                                           th:value="${chiTietSanPham.giaHienHanh}"-->
+<!--                                                           oninput="formatDonGia()">-->
+<!--                                                    <div class="error-message" th:id="'checkDonGia' + ${iterStat.index}"-->
+<!--                                                         style="display: none;color: #ff0000;font-size: 14px;font-weight: bold;"></div>-->
+<!--                                                </td>-->
+
+<!--                                            </tr>-->
+<!--                                            </tbody>-->
+<!--                                        </table>-->
+
+<!--                                    </div>-->
+<!--                                    <div class="modal-footer">-->
+<!--                                        <button type="submit" onclick="return checkSuaCtsp()" class="btn btn-warning">-->
+<!--                                            Cập nhật-->
+<!--                                        </button>-->
+<!--                                        <script>-->
+<!--                                            function checkSuaCtsp() {-->
+<!--                                                const soLuongInputs = document.getElementsByName("listSoLuong");-->
+<!--                                                const donGiaInputs = document.getElementsByName("listDonGia");-->
+
+<!--                                                let hasError = false; // Biến flag để kiểm tra lỗi-->
+
+<!--                                                for (let i = 0; i < donGiaInputs.length; i++) {-->
+<!--                                                    const checkDonGia = donGiaInputs[i].value;-->
+<!--                                                    const errorDiv = document.getElementById("checkDonGia" + i);-->
+
+<!--                                                    if (checkDonGia < 10000 || checkDonGia >= 1000000000) {-->
+<!--                                                        hasError = true; // Có lỗi-->
+<!--                                                        errorDiv.style.display = "block"; // Hiển thị div thông báo lỗi-->
+<!--                                                        errorDiv.textContent = (checkDonGia < 10000) ? "Giá phải >= 10000" : "Giá phải <= 1000000000"; // Hiển thị thông báo lỗi-->
+<!--                                                    } else {-->
+<!--                                                        errorDiv.style.display = "none"; // Ẩn div thông báo lỗi nếu giá trị hợp lệ-->
+<!--                                                    }-->
+<!--                                                }-->
+
+<!--                                                for (let i = 0; i < soLuongInputs.length; i++) {-->
+<!--                                                    const checkSoLuong = soLuongInputs[i].value;-->
+<!--                                                    const errorDiv = document.getElementById("checkSoLuong" + i);-->
+
+<!--                                                    if (checkSoLuong == "") {-->
+<!--                                                        hasError = true; // Có lỗi-->
+<!--                                                        errorDiv.style.display = "block"; // Hiển thị div thông báo lỗi-->
+<!--                                                        errorDiv.textContent = "Không được để null"; // Hiển thị thông báo lỗi-->
+<!--                                                    } else if (checkSoLuong < 0 || checkSoLuong >= 100000) {-->
+<!--                                                        hasError = true; // Có lỗi-->
+<!--                                                        errorDiv.style.display = "block"; // Hiển thị div thông báo lỗi-->
+<!--                                                        errorDiv.textContent = (checkSoLuong < 0) ? "Số lượng phải >= 0" : "Số lượng phải <= 100000"; // Hiển thị thông báo lỗi-->
+<!--                                                    } else {-->
+<!--                                                        errorDiv.style.display = "none"; // Ẩn div thông báo lỗi nếu giá trị hợp lệ-->
+<!--                                                    }-->
+<!--                                                }-->
+
+<!--                                                if (!hasError) {-->
+<!--                                                    return true; // Trả về true nếu không có lỗi-->
+<!--                                                } else {-->
+<!--                                                    return false; // Trả về false nếu có lỗi-->
+<!--                                                }-->
+<!--                                            }-->
+<!--                                        </script>-->
+<!--                                    </div>-->
+<!--                                </form>-->
+
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+<!--        </div>-->
+<!--    </section>-->
 
     <section class="section">
         <div class="row">
@@ -301,12 +600,13 @@
                                                         </script>
                                                     </div>
                                                     <div class="col-md-6">
-
                                                         <label class="form-label">
                                                             <span class="dau-sao">*</span> Nhập tất cả giá:</label>
 
-                                                        <input class="form-control" type="number"
+                                                        <input class="form-control" type="text"
                                                                oninput="updateInputsGia(this)">
+
+
                                                         <script>
                                                             function updateInputsGia(sourceInput) {
                                                                 // Lấy giá trị của input nguồn
@@ -419,11 +719,13 @@
                                                          style="display: none;color: #ff0000;font-size: 14px;font-weight: bold;"></div>
                                                 </td>
                                                 <td>
-                                                    <input type="number" class="form-control" min="0" name="listDonGia"
-                                                           th:value="${chiTietSanPham.giaHienHanh}">
+                                                    <input type="text" class="form-control" name="listDonGia"
+                                                           th:value="${chiTietSanPham.giaHienHanh}"
+                                                           oninput="formatDonGia()">
                                                     <div class="error-message" th:id="'checkDonGia' + ${iterStat.index}"
                                                          style="display: none;color: #ff0000;font-size: 14px;font-weight: bold;"></div>
                                                 </td>
+
                                             </tr>
                                             </tbody>
                                         </table>
@@ -478,7 +780,6 @@
                                             }
                                         </script>
                                     </div>
-
                                 </form>
 
                             </div>
@@ -490,7 +791,37 @@
         </div>
     </section>
 
-</main><!-- End #main -->
+</main>
+
+<script>
+    // Hàm format số thành định dạng tiền tệ VNĐ
+    function formatCurrency(value) {
+        value = value.replace(/[^\d]/g, '');
+        value = parseInt(value, 10);
+        if (isNaN(value)) value = 0;
+        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value);
+    }
+
+    // Hàm cập nhật giá trị giá và đơn giá
+    function updateInputsGia(sourceInput) {
+        let sourceValue = sourceInput.value.replace(/[^\d]/g, ''); // Lấy giá trị nhập vào và loại bỏ ký tự không phải số
+        sourceValue = parseInt(sourceValue, 10); // Chuyển đổi sang số nguyên
+        if (isNaN(sourceValue)) sourceValue = 0; // Xử lý trường hợp không phải số
+
+        // Format giá trị nhập vào thành số nguyên mà không có VNĐ
+        const formattedValue = sourceValue.toLocaleString('vi-VN');
+
+        // Hiển thị giá trị đã format trong ô nhập tất cả giá
+        sourceInput.value = formattedValue;
+
+        // Cập nhật các ô Đơn Giá dưới bảng với định dạng tiền tệ VNĐ
+        const donGiaInputs = document.getElementsByName("listDonGia");
+        for (let i = 0; i < donGiaInputs.length; i++) {
+            donGiaInputs[i].value = formatCurrency(sourceValue.toString());
+        }
+    }
+</script>
+
 
 
 <!--Thông báo thành công-->
