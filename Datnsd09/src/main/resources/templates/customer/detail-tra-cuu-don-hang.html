@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+
+<head>
+    <title>S-Shoe</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <link href="../../static/img/favicon.png" rel="icon">
+
+    <!--    thư viện của bảng tích hợp tìm kiếm-->
+    <link rel='stylesheet' href='https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css'>
+    <!--    thư viện của bảng tích hợp tìm kiếm end-->
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,400,700"/>
+    <link rel="stylesheet" href="../../static/fonts/icomoon/style.css"/>
+
+    <link href="../../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/css/magnific-popup.css"/>
+    <link rel="stylesheet" href="../../static/css/jquery-ui.css"/>
+    <link rel="stylesheet" href="../../static/css/owl.carousel.min.css"/>
+    <link rel="stylesheet" href="../../static/css/owl.theme.default.min.css"/>
+
+    <link rel="stylesheet" href="../../static/css/aos.css"/>
+
+    <link rel="stylesheet" href="../../static/css/style-customer-template.css"/>
+</head>
+
+<body>
+<div class="site-wrap">
+    <header class="site-navbar" role="banner">
+        <div class="site-navbar-top">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-6 col-md-4 order-2 order-md-1 site-search-icon text-left">
+                        <form action="" class="site-block-top-search">
+                            <span class="icon icon-search2"></span>
+                            <input type="text" class="form-control border-0" id="timKiemAll"
+                                   placeholder="Tìm kiếm theo tên sản phẩm"/>
+                            <script>
+                                var inputElementTimKiemAll = document.getElementById('timKiemAll');
+
+                                inputElementTimKiemAll.addEventListener('blur', function () {
+                                    var inputValueTimKiemAll = inputElementTimKiemAll.value;
+                                    console.log('Giá trị của input:', inputValueTimKiemAll);
+
+                                    var fullUrl = window.location.origin + "/shop"
+
+                                    if (inputValueTimKiemAll !== '') {
+                                        fullUrl = updateQueryStringParameterAll('keyword', inputValueTimKiemAll, fullUrl);
+                                    } else {
+                                        fullUrl = removeQueryStringParameterAll('keyword', fullUrl);
+                                    }
+
+                                    window.location.href = fullUrl
+
+
+                                });
+
+                                // Hàm cập nhật giá trị của query parameter trong URL
+                                function updateQueryStringParameterAll(key, value, url) {
+                                    var regex = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+                                    var separator = url.indexOf('?') !== -1 ? "&" : "?";
+                                    if (url.match(regex)) {
+                                        return url.replace(regex, '$1' + key + "=" + value + '$2');
+                                    } else {
+                                        return url + separator + key + "=" + value;
+                                    }
+                                }
+
+                                // Hàm xóa query parameter khỏi URL
+                                function removeQueryStringParameterAll(key, url) {
+                                    var urlParts = url.split('?');
+                                    if (urlParts.length >= 2) {
+                                        var prefix = encodeURIComponent(key) + '=';
+                                        var queryString = urlParts[1].split('&');
+
+                                        for (var i = queryString.length - 1; i >= 0; i--) {
+                                            if (queryString[i].lastIndexOf(prefix, 0) !== -1) {
+                                                queryString.splice(i, 1);
+                                            }
+                                        }
+
+                                        url = urlParts[0] + (queryString.length > 0 ? '?' + queryString.join('&') : '');
+                                    }
+
+                                    return url;
+                                }
+                            </script>
+                        </form>
+                    </div>
+
+                    <div class="col-12 mb-3 mb-md-0 col-md-4 order-1 order-md-2 text-center">
+                        <div class="site-logo">
+                            <a href="/home" class="js-logo-clone">S-Shoe</a>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4 order-3 order-md-3 text-right">
+                        <div class="site-top-icons">
+                            <ul class="nav nav-pills" style="margin-left: 54%">
+                                <li class="nav-item dropdown" th:if="${checkDangNhap=='true'}">
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
+                                       role="button" aria-expanded="false"><span class="icon icon-person"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="/user/thong-tin-khach-hang">Tài Khoản Của
+                                            Tôi</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="/user/don-mua">Đơn Mua</a></li>
+                                        <li><a class="dropdown-item" th:href="@{/logout}">Đăng Xuất</a></li>
+                                    </ul>
+                                </li>
+                                <li class="nav-item dropdown" th:if="${checkDangNhap=='false'}">
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
+                                       role="button" aria-expanded="false"><span class="icon icon-person"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="/login">Đăng Nhập</a></li>
+
+                                    </ul>
+                                </li>
+
+                                <li class="nav-item" style="margin-top: 5%;margin-left: -5%">
+                                    <a class="site-cart" href="/user/cart">
+                                        <span class="icon icon-shopping_cart"></span>
+                                        <span class="count" th:if="${checkDangNhap=='true'}"
+                                              th:text="${soLuongSPGioHangCT}"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav class="site-navigation text-right text-md-center" role="navigation">
+            <div class="container">
+                <ul class="site-menu js-clone-nav d-none d-md-block">
+                    <li>
+                        <a href="/home">Trang chủ</a>
+                    </li>
+                    <li><a href="/shop">Sản phẩm</a></li>
+                    <li><a href="/lien-he">Liên hệ</a></li>
+                    <li><a href="/chinh-sach">Chính Sách</a></li>
+                    <li><a href="/tra-cuu-don-hang">Tra Cứu Đơn Hàng</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container" style="max-width: 90%">
+        <div class="row" style="margin-top: 5%;margin-bottom: 5%">
+            <div class="col-md-9" style="background-color: #fafafa;margin-bottom: 5%;margin: auto">
+                <div class="row">
+                    <div class="col-md-12">
+                        <section class="section-top-dmct">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="">
+                                        <a href="/tra-cuu-don-hang"
+                                           style="display: inline;border-right: 1px solid black;padding-right: 15px">
+                                            <i class=" bi bi-arrow-left-circle-fill"></i>
+                                        </a>
+                                        <h6 th:if="${byHoaDon.loaiHoaDon==1}"
+                                            style="display: inline;color: red;padding-left: 15px">Hóa Đơn Online</h6>
+                                        <h6 th:if="${byHoaDon.loaiHoaDon==2}"
+                                            style="display: inline;color: red;padding-left: 15px">Hóa Đơn Offline</h6>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="divider-line">
+                                        <h6 th:if="${byHoaDon.trangThai==0}" class="trang-thai-don">CHỜ XÁC NHẬN</h6>
+                                        <h6 th:if="${byHoaDon.trangThai==1}" class="trang-thai-don">CHỜ GIAO</h6>
+                                        <h6 th:if="${byHoaDon.trangThai==2}" class="trang-thai-don">ĐANG GIAO</h6>
+                                        <h6 th:if="${byHoaDon.trangThai==3}" class="trang-thai-don">HOÀN THÀNH</h6>
+                                        <h6 th:if="${byHoaDon.trangThai==5}" class="trang-thai-don">ĐÃ HỦY</h6>
+                                        <h6 th:if="${byHoaDon.trangThai==6}" class="trang-thai-don">HOÀN TRẢ</h6>
+                                        <h6 class="ma-don" th:text="${'MÃ ĐƠN HÀNG: ' + byHoaDon.maHoaDon}"></h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
+
+<!--                    <div class="col-md-12" th:if="${byHoaDon.trangThai==5}">-->
+<!--                        <section class="section-top-dmct-don-huy">-->
+<!--                            <div class="row" th:each="lshd, iterStat : ${listLichSuHoaDon}"-->
+<!--                                 th:if="${lshd.trangThai == 5}">-->
+<!--                                <div class="col-md-6">-->
+<!--                                    <h4>Đã hủy đơn hàng</h4>-->
+<!--                                    <span th:text="${'vào ' + lshd.ngaySua}"></span>-->
+<!--                                </div>-->
+<!--                                <div class="col-md-6">-->
+<!--                                    <h6 th:text="${'Lý do: ' + lshd.ghiChu}"></h6>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </section>-->
+<!--                    </div>-->
+
+                    <div class="col-md-12">
+<!--                        <div style="width: 80%;margin: auto;margin-top: 5%;margin-bottom: 5%;">-->
+<!--                            <div class="row shop-tracking-status">-->
+<!--                                <div class="col-md-12">-->
+<!--                                    <div class="well">-->
+<!--                                        <div class="order-status">-->
+<!--                                            <div class="order-status-timeline">-->
+<!--                                                &lt;!&ndash; class names: c0 c1 c2 c3 and c4 &ndash;&gt;-->
+<!--                                                <div th:if="${byHoaDon.trangThai==0}"-->
+<!--                                                     class="order-status-timeline-completion c0"></div>-->
+<!--                                                <div th:if="${byHoaDon.trangThai==1}"-->
+<!--                                                     class="order-status-timeline-completion c1"></div>-->
+<!--                                                <div th:if="${byHoaDon.trangThai==2}"-->
+<!--                                                     class="order-status-timeline-completion c2"></div>-->
+
+<!--                                                <div th:if="${byHoaDon.loaiHoaDon==1}">-->
+<!--                                                    <div th:if="${byHoaDon.trangThai==3}"-->
+<!--                                                         class="order-status-timeline-completion c3"></div>-->
+<!--                                                </div>-->
+
+<!--                                                <div th:if="${byHoaDon.loaiHoaDon==2}">-->
+<!--                                                    <div th:if="${listLichSuHoaDon.size()>2}">-->
+<!--                                                        <div th:if="${byHoaDon.trangThai==3}"-->
+<!--                                                             class="order-status-timeline-completion c3"></div>-->
+<!--                                                    </div>-->
+<!--                                                    <div th:if="${listLichSuHoaDon.size()==2}">-->
+<!--                                                        <div th:if="${byHoaDon.trangThai==3}"-->
+<!--                                                             class="order-status-timeline-completion c1"></div>-->
+<!--                                                    </div>-->
+<!--                                                    <div th:if="${listLichSuHoaDon.size()==2}">-->
+<!--                                                        <div th:if="${byHoaDon.trangThai==6}"-->
+<!--                                                             class="order-status-timeline-completion c1"></div>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+
+
+<!--                                                <div th:if="${listLichSuHoaDon.size()==2}">-->
+<!--                                                    <div th:if="${byHoaDon.trangThai==5}"-->
+<!--                                                         class="order-status-timeline-completion c1"></div>-->
+<!--                                                </div>-->
+
+<!--                                                <div th:if="${listLichSuHoaDon.size()==3}">-->
+<!--                                                    <div th:if="${byHoaDon.trangThai==5}"-->
+<!--                                                         class="order-status-timeline-completion c2"></div>-->
+<!--                                                    <div th:if="${byHoaDon.trangThai==6}"-->
+<!--                                                         class="order-status-timeline-completion c2">-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                                <div th:if="${listLichSuHoaDon.size()!=3}">-->
+<!--                                                    <div th:if="${byHoaDon.trangThai==6}"-->
+<!--                                                         class="order-status-timeline-completion c4">-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+
+<!--                                            &lt;!&ndash; tất cả trạng thái hóa đơn - loại hóa đơn 1&ndash;&gt;-->
+<!--                                            <div th:if="${byHoaDon.loaiHoaDon==1}">-->
+<!--                                                <div th:if="${byHoaDon.trangThai!=5}">-->
+<!--                                                    <div th:each="lshd, iterStat : ${listLichSuHoaDon}"-->
+<!--                                                         th:class="'image-order-status image-order-status-' +-->
+<!--                                                        (${iterStat.index} == 0 ? 'new' :-->
+<!--                                                        (${iterStat.index} == 1 ? 'active' :-->
+<!--                                                        (${iterStat.index} == 2 ? 'intransit' :-->
+<!--                                                        (${iterStat.index} == 3 ? 'delivered' :-->
+<!--                                                        (${iterStat.index} == 4 ? 'completed' :-->
+<!--                                                         '')))))+ ' img-circle'">-->
+<!--                                                        <div class="icon"></div>-->
+<!--                                                        <span class="status" th:switch="${lshd.trangThai}">-->
+<!--                                                            <span th:case="0">Đã Đặt Hàng</span>-->
+<!--                                                            <span th:case="1">Đã Xác Nhận</span>-->
+<!--                                                            <span th:case="2">Đã Giao Cho ĐVVC</span>-->
+<!--                                                            <span th:case="3">Đã Nhận Được Hàng</span>-->
+<!--                                                            <span th:case="6">Hoàn Trả Thành Công</span>-->
+<!--                                                        </span>-->
+<!--                                                        <span class="status-end"-->
+<!--                                                              th:text="${#dates.format(lshd.ngaySua, 'HH:mm dd/MM/yyyy')}"></span>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                                <div th:if="${byHoaDon.trangThai==5}">-->
+<!--                                                    <div th:if="${listLichSuHoaDon.size()==2}">-->
+<!--                                                        <div th:each="lshd, iterStat : ${listLichSuHoaDon}"-->
+<!--                                                             th:class="'image-order-status image-order-status-' +-->
+<!--                                                        (${iterStat.index} == 0 ? 'new' :-->
+<!--                                                        (${iterStat.index} == 1 ? 'cancel' :''))+ ' img-circle'">-->
+<!--                                                            <div class="icon"></div>-->
+<!--                                                            <span class="status" th:switch="${lshd.trangThai}">-->
+<!--                                                            <span th:case="0">Đã Đặt Hàng</span>-->
+<!--                                                            <span th:case="5">Đã Hủy</span>-->
+<!--                                                        </span>-->
+<!--                                                            <span class="status-end"-->
+<!--                                                                  th:text="${#dates.format(lshd.ngaySua, 'HH:mm dd/MM/yyyy')}"></span>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                    <div th:if="${listLichSuHoaDon.size()==3}">-->
+<!--                                                        <div th:each="lshd, iterStat : ${listLichSuHoaDon}"-->
+<!--                                                             th:class="'image-order-status image-order-status-' +-->
+<!--                                                        (${iterStat.index} == 0 ? 'new' :-->
+<!--                                                        (${iterStat.index} == 1 ? 'active' :-->
+<!--                                                        (${iterStat.index} == 2 ? 'cancel2' :'')))+ ' img-circle'">-->
+<!--                                                            <div class="icon"></div>-->
+<!--                                                            <span class="status" th:switch="${lshd.trangThai}">-->
+<!--                                                            <span th:case="0">Đã Đặt Hàng</span>-->
+<!--                                                            <span th:case="1">Đã Xác Nhận</span>-->
+<!--                                                            <span th:case="5">Đã Hủy</span>-->
+<!--                                                        </span>-->
+<!--                                                            <span class="status-end"-->
+<!--                                                                  th:text="${#dates.format(lshd.ngaySua, 'HH:mm dd/MM/yyyy')}"></span>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                            &lt;!&ndash; tất cả trạng thái hóa đơn - loại hóa đơn 1&ndash;&gt;-->
+
+
+<!--                                            &lt;!&ndash;cần check lại trạng thái lịch sử&ndash;&gt;-->
+<!--                                            &lt;!&ndash; tất cả trạng thái hóa đơn - loại hóa đơn 2&ndash;&gt;-->
+<!--                                            <div th:if="${byHoaDon.loaiHoaDon==2}">-->
+<!--                                                <div th:if="${listLichSuHoaDon.size()>1}">-->
+<!--                                                    <div th:if="${byHoaDon.trangThai!=5&&byHoaDon.trangThai!=6}">-->
+<!--                                                        <div th:each="lshd, iterStat : ${listLichSuHoaDon}"-->
+<!--                                                             th:class="'image-order-status image-order-status-' +-->
+<!--                                                        (${iterStat.index} == 0 ? 'new' :-->
+<!--                                                        (${iterStat.index} == 1 ? 'active' :-->
+<!--                                                        (${iterStat.index} == 2 ? 'intransit' :-->
+<!--                                                        (${iterStat.index} == 3 ? 'delivered' :-->
+<!--                                                        (${iterStat.index} == 4 ? 'completed' :-->
+<!--                                                        (${iterStat.index} == 5 ? 'activeHoanTra' :-->
+<!--                                                         ''))))))+ ' img-circle'">-->
+<!--                                                            <div class="icon"></div>-->
+<!--                                                            <span class="status" th:switch="${lshd.trangThai}">-->
+<!--                                                            <span th:case="0">Đã Đặt Hàng</span>-->
+<!--                                                            <span th:case="1">Đã Xác Nhận</span>-->
+<!--                                                            <span th:case="2">Đã Giao Cho ĐVVC</span>-->
+<!--                                                            <span th:case="3">Đã Nhận Được Hàng</span>-->
+<!--                                                            <span th:case="6">Hoàn Trả Thành Công</span>-->
+<!--                                                        </span>-->
+<!--                                                            <span class="status-end"-->
+<!--                                                                  th:text="${#dates.format(lshd.ngaySua, 'HH:mm dd/MM/yyyy')}"></span>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                    &lt;!&ndash;check hoàn trả khi mua tại quầy&ndash;&gt;-->
+<!--                                                    <div th:if="${byHoaDon.trangThai==6}">-->
+<!--                                                        <div th:if="${listLichSuHoaDon.size()==5}">-->
+<!--                                                            <div th:each="lshd, iterStat : ${listLichSuHoaDon}"-->
+<!--                                                                 th:class="'image-order-status image-order-status-' +-->
+<!--                                                        (${iterStat.index} == 0 ? 'new' :-->
+<!--                                                        (${iterStat.index} == 1 ? 'active' :-->
+<!--                                                        (${iterStat.index} == 2 ? 'intransit' :-->
+<!--                                                        (${iterStat.index} == 3 ? 'delivered' :-->
+<!--                                                        (${iterStat.index} == 4 ? 'completed' :-->
+<!--                                                        (${iterStat.index} == 5 ? 'activeHoanTra' :-->
+<!--                                                         ''))))))+ ' img-circle'">-->
+<!--                                                                <div class="icon"></div>-->
+<!--                                                                <span class="status" th:switch="${lshd.trangThai}">-->
+<!--                                                            <span th:case="0">Đã Đặt Hàng</span>-->
+<!--                                                            <span th:case="1">Đã Xác Nhận</span>-->
+<!--                                                            <span th:case="2">Đã Giao Cho ĐVVC</span>-->
+<!--                                                            <span th:case="3">Đã Nhận Được Hàng</span>-->
+<!--                                                            <span th:case="6">Hoàn Trả Thành Công</span>-->
+<!--                                                        </span>-->
+<!--                                                                <span class="status-end"-->
+<!--                                                                      th:text="${#dates.format(lshd.ngaySua, 'HH:mm dd/MM/yyyy')}"></span>-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+<!--                                                        <div th:if="${listLichSuHoaDon.size()==3}">-->
+<!--                                                            <div th:each="lshd, iterStat : ${listLichSuHoaDon}"-->
+<!--                                                                 th:class="'image-order-status image-order-status-' +-->
+<!--                                                        (${iterStat.index} == 0 ? 'new' :-->
+<!--                                                        (${iterStat.index} == 1 ? 'activeHoanThanh' :-->
+<!--                                                        (${iterStat.index} == 2 ? 'activeHoanTra2' :-->
+<!--                                                         '')))+ ' img-circle'">-->
+<!--                                                                <div class="icon"></div>-->
+<!--                                                                <span class="status" th:switch="${lshd.trangThai}">-->
+<!--                                                            <span th:case="0">Đã Đặt Hàng</span>-->
+<!--                                                            <span th:case="3">Đã Nhận Được Hàng</span>-->
+<!--                                                            <span th:case="6">Hoàn Trả Thành Công</span>-->
+<!--                                                        </span>-->
+<!--                                                                <span class="status-end"-->
+<!--                                                                      th:text="${#dates.format(lshd.ngaySua, 'HH:mm dd/MM/yyyy')}"></span>-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                    &lt;!&ndash;check hoàn trả khi mua tại quầy end&ndash;&gt;-->
+<!--                                                </div>-->
+<!--                                                <div th:if="${byHoaDon.trangThai==3}">-->
+<!--                                                    <div th:if="${listLichSuHoaDon.size()==2}">-->
+<!--                                                        <div th:if="${byHoaDon.trangThai!=5}">-->
+<!--                                                            <div th:each="lshd, iterStat : ${listLichSuHoaDon}"-->
+<!--                                                                 th:class="'image-order-status image-order-status-' +-->
+<!--                                                        (${iterStat.index} == 0 ? 'new' :-->
+<!--                                                        (${iterStat.index} == 1 ? 'activeHoanThanh' :-->
+<!--                                                        ''))+ ' img-circle'">-->
+<!--                                                                <div class="icon"></div>-->
+<!--                                                                <span class="status" th:switch="${lshd.trangThai}">-->
+<!--                                                            <span th:case="0">Đã Đặt Hàng</span>-->
+<!--                                                            <span th:case="3">Đã Nhận Được Hàng</span>-->
+<!--                                                        </span>-->
+<!--                                                                <span class="status-end"-->
+<!--                                                                      th:text="${#dates.format(lshd.ngaySua, 'HH:mm dd/MM/yyyy')}"></span>-->
+<!--                                                            </div>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+
+<!--                                                &lt;!&ndash; tất cả trạng thái hóa đơn - loại hóa đơn 2&ndash;&gt;-->
+
+<!--                                                &lt;!&ndash;trạng thái hủy&ndash;&gt;-->
+<!--                                                <div th:if="${byHoaDon.trangThai==5}">-->
+<!--                                                    <div th:if="${listLichSuHoaDon.size()==2}">-->
+<!--                                                        <div th:each="lshd, iterStat : ${listLichSuHoaDon}"-->
+<!--                                                             th:class="'image-order-status image-order-status-' +-->
+<!--                                                        (${iterStat.index} == 0 ? 'new' :-->
+<!--                                                        (${iterStat.index} == 1 ? 'cancel' :''))+ ' img-circle'">-->
+<!--                                                            <div class="icon"></div>-->
+<!--                                                            <span class="status" th:switch="${lshd.trangThai}">-->
+<!--                                                            <span th:case="0">Đã Đặt Hàng</span>-->
+<!--                                                            <span th:case="5">Đã Hủy</span>-->
+<!--                                                        </span>-->
+<!--                                                            <span class="status-end"-->
+<!--                                                                  th:text="${#dates.format(lshd.ngaySua, 'HH:mm dd/MM/yyyy')}"></span>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                    <div th:if="${listLichSuHoaDon.size()==3}">-->
+<!--                                                        <div th:each="lshd, iterStat : ${listLichSuHoaDon}"-->
+<!--                                                             th:class="'image-order-status image-order-status-' +-->
+<!--                                                        (${iterStat.index} == 0 ? 'new' :-->
+<!--                                                        (${iterStat.index} == 1 ? 'active' :-->
+<!--                                                        (${iterStat.index} == 2 ? 'cancel2' :'')))+ ' img-circle'">-->
+<!--                                                            <div class="icon"></div>-->
+<!--                                                            <span class="status" th:switch="${lshd.trangThai}">-->
+<!--                                                            <span th:case="0">Đã Đặt Hàng</span>-->
+<!--                                                            <span th:case="1">Đã Xác Nhận</span>-->
+<!--                                                            <span th:case="5">Đã Hủy</span>-->
+<!--                                                        </span>-->
+<!--                                                            <span class="status-end"-->
+<!--                                                                  th:text="${#dates.format(lshd.ngaySua, 'HH:mm dd/MM/yyyy')}"></span>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                                &lt;!&ndash;trạng thái hủy&ndash;&gt;-->
+
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </div>-->
+<!--                        </div>-->
+
+
+                        <section class="section-dmct">
+                            <div class="border-duoi"></div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h5>Địa Chỉ Nhận Hàng</h5>
+                                    <span style="display: block" th:text="${'Tên Khách Hàng: '+ byHoaDon.nguoiNhan}">Nguyễn Ngọc Hiếu</span>
+                                    <span style="display: block" th:text="${'Số điện thoại: '+ byHoaDon.sdtNguoiNhan}">0986553564</span>
+                                    <span th:text="${'Địa Chỉ: ' + byHoaDon.diaChiNguoiNhan}+','"></span>
+                                    <span id="phuongXaColumn"></span>
+                                    <span id="quanHuyenColumn"></span>
+                                    <span id="thanhPhoColumn"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-12">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+
+                        <section class="section-mid">
+                            <div class="border-duoi-dmct"></div>
+                            <div th:each="listHoaDonCT : ${byHoaDon.lstHoaDonChiTiet}">
+                                <input type="hidden" th:name="${'listNameChiTietSP2'+byHoaDon.id}"
+                                       th:value="${listHoaDonCT.chiTietSanPham.id +' '+listHoaDonCT.chiTietSanPham.soLuong}">
+
+                                <div class="row" th:if="${byHoaDon.trangThai!=6}">
+                                    <div class="col-md-10 d-flex align-items-center">
+                                        <img class="img-mid"
+                                             th:each="anh : ${listHoaDonCT.chiTietSanPham.sanPham.listHinhAnhSanPham[0]}"
+                                             th:src="${'../../static/img/ImgShoe/'+anh.url}"
+                                             alt="">
+                                        <div class="divider-line">
+                                            <h6 th:text="${listHoaDonCT.chiTietSanPham.sanPham.ten}">Giày Nike Air
+                                                Max</h6>
+                                            <span th:text="${'Phân loại hàng: ' + listHoaDonCT.chiTietSanPham.mauSac.ten + ' - ' + listHoaDonCT.chiTietSanPham.kichCo.ten}"></span>
+                                            <p th:text="${'x'+listHoaDonCT.soLuong}"></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 d-flex align-items-center justify-content-center">
+                                        <span th:text="${listHoaDonCT.donGia + ' VNĐ'}"></span>
+                                    </div>
+                                    <div class="border-duoi"></div>
+                                </div>
+
+                                <div class="row" th:if="${byHoaDon.trangThai==6}">
+                                    <div class="col-md-7 d-flex align-items-center">
+                                        <img class="img-mid"
+                                             th:each="anh : ${listHoaDonCT.chiTietSanPham.sanPham.listHinhAnhSanPham[0]}"
+                                             th:src="${'../../static/img/ImgShoe/'+anh.url}"
+                                             alt="">
+                                        <div class="divider-line">
+                                            <h6 th:text="${listHoaDonCT.chiTietSanPham.sanPham.ten}">Giày Nike Air
+                                                Max</h6>
+                                            <span th:text="${'Phân loại hàng: ' + listHoaDonCT.chiTietSanPham.mauSac.ten + ' - ' + listHoaDonCT.chiTietSanPham.kichCo.ten}"></span>
+                                            <p th:text="${'x'+listHoaDonCT.soLuong}"></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 d-flex align-items-center justify-content-center">
+                                        <span th:text="${listHoaDonCT.donGia + ' VNĐ'}"></span>
+                                    </div>
+                                    <div class="col-md-3 d-flex align-items-center justify-content-center">
+                                        <h6 th:if="${listHoaDonCT.trangThai==0}">Hàng Đã Nhận</h6>
+                                        <h6 th:if="${listHoaDonCT.trangThai==2}">Hàng Hoàn Trả</h6>
+                                    </div>
+                                    <div class="border-duoi"></div>
+                                </div>
+
+                            </div>
+
+                        </section>
+
+                        <section class="section-bottom-table">
+                            <table>
+                                <tbody th:if="${byHoaDon.trangThai!=6}">
+                                <tr>
+                                    <td colspan="2">Tổng tiền hàng</td>
+                                    <td class="tien-table" th:text="${byHoaDon.tongTien+ ' VNĐ'}">
+                                        30000VNĐ
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Phí vận chuyển</td>
+                                    <td class="tien-table" th:text="${byHoaDon.phiShip+ ' VNĐ'}">30000VNĐ</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Tiền giảm</td>
+                                    <td class="tien-table"
+                                        th:text="${byHoaDon.tienGiam+ ' VNĐ'}">
+                                        30000VNĐ
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Thành tiền</td>
+                                    <td class="tong-tien-table"
+                                        th:text="${byHoaDon.tongTienKhiGiam + byHoaDon.phiShip+ ' VNĐ'}">30000VNĐ
+                                    </td>
+                                </tr>
+                                </tbody>
+
+                                <tbody th:if="${byHoaDon.trangThai==6}">
+                                <tr>
+                                    <td colspan="2">Tổng tiền hàng</td>
+                                    <td class="tien-table" th:text="${byHoaDon.tongTienHoaDon()+ ' VNĐ'}">
+                                        30000VNĐ
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Phí vận chuyển</td>
+                                    <td class="tien-table" th:text="${byHoaDon.phiShip+ ' VNĐ'}">30000VNĐ</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Tiền giảm</td>
+                                    <td class="tien-table">
+                                        <del
+                                                th:text="${byHoaDon.tienGiam+ ' VNĐ'}">
+                                        </del>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Tiền khách thanh toán</td>
+                                    <td class="tien-table"
+                                        th:text="${byHoaDon.tongTienHoaDon() + byHoaDon.phiShip + ' VNĐ'}">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Tổng tiền hoàn trả</td>
+                                    <td class="tong-tien-table" th:text="${byHoaDon.tongTienHoaDonHoanTra()+ ' VNĐ'}">
+                                        30000VNĐ
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">Tổng tiền thanh toán</td>
+                                    <td class="tong-tien-table"
+                                        th:if="${byHoaDon.tongTienHoaDonDaNhan()==0}"
+                                        th:text="${'0 VNĐ'}">30000VNĐ
+                                    </td>
+                                    <td class="tong-tien-table"
+                                        th:if="${byHoaDon.tongTienHoaDonDaNhan()!=0}"
+                                        th:text="${byHoaDon.tongTienHoaDon() + byHoaDon.phiShip - byHoaDon.tienGiam + ' VNĐ'}">30000VNĐ
+                                    </td>
+                                </tr>
+                                </tbody>
+
+                            </table>
+                        </section>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        <!--footer-->
+        <footer class="site-footer border-top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6 mb-5 mb-lg-0">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="footer-heading mb-4">Điều hướng</h3>
+                            </div>
+                            <div class="col-md-6 col-lg-4">
+                                <ul class="list-unstyled">
+                                    <li><a href="#">Vận chuyển</a></li>
+                                    <li><a href="#">Khu vực</a></li>
+                                    <li><a href="#">Kênh bán hàng</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6 col-lg-4">
+                                <ul class="list-unstyled">
+                                    <li><a href="/about">Đội ngũ</a></li>
+                                    <li><a href="/chinh-sach">Trả hàng</a></li>
+                                    <li><a href="#">Bảo mật</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6 col-lg-4">
+                                <ul class="list-unstyled">
+                                    <li><a href="/lien-he">Liên hệ</a></li>
+                                    <li><a href="/lien-he">Chăm sóc khách hàng</a></li>
+                                    <li><a href="/lien-he">Phản hồi</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3 mb-4 mb-lg-0">
+                        <h3 class="footer-heading mb-4">Mẫu mã</h3>
+                        <a href="/shop" class="block-6">
+                            <img src="../../static/img/ImgShoe/adidas22_ULTRABOOST%2022%20(3).jpg" alt="Image placeholder"
+                                 class="img-fluid rounded mb-4"/>
+                            <h3 class="font-weight-light mb-0">
+                                Tìm đôi giày hoàn hảo của bạn!
+                            </h3>
+                        </a>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="block-5 mb-5">
+                            <h3 class="footer-heading mb-4">Thông tin liên lạc</h3>
+                            <ul class="list-unstyled">
+                                <li class="address">
+                                    13 P. Trịnh Văn Bô, Xuân Phương, Nam Từ Liêm, Hà Nội, Việt Nam
+                                </li>
+                                <li class="phone">
+                                    <a href="tel://23923929210">+84 986 553 564</a>
+                                </li>
+                                <li class="email">sshoeshopshoes@gmail.com</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </footer>
+    </div>
+
+    <!-- detail api địa chỉ lẻn bảng-->
+    <script th:inline="javascript">
+
+        document.addEventListener('DOMContentLoaded', function () {
+            fetch('https://online-gateway.ghn.vn/shiip/public-api/master-data/province', {
+                method: 'GET',
+                headers: {
+                    'token': 'd900c67f-742d-11ee-96dc-de6f804954c9',
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Lấy giá trị id thành phố từ thymeleaf
+                    var idThanhPhoArray = /*[[ ${byHoaDon.thanhPho}]]*/ [];
+
+
+                    // Tìm thành phố trong data.data dựa trên id
+                    var thanhPho = data.data.find(city => city.ProvinceID == idThanhPhoArray);
+                    console.log(thanhPho.ProvinceName)
+                    // Đặt tên thành phố vào thẻ có class là thanhPhoColumn trong dòng hiện tại
+                    var thanhPhoColumn = document.getElementById("thanhPhoColumn")
+                    thanhPhoColumn.innerText = thanhPho.ProvinceName;
+                })
+                .catch(error => {
+                    console.error('Lỗi khi tải dữ liệu thành phố:', error);
+                });
+
+            // Hàm để tải và populate quận/huyện
+            fetch(`https://online-gateway.ghn.vn/shiip/public-api/master-data/district`, {
+                method: 'GET',
+                headers: {
+                    'token': 'd900c67f-742d-11ee-96dc-de6f804954c9',
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Lấy giá trị id thành phố từ thymeleaf
+                    var idQuanHuyenArray = /*[[ ${byHoaDon.quanHuyen}]]*/ [];
+                    // Tìm thành phố trong data.data dựa trên id
+                    var quanHuyen = data.data.find(district => district.DistrictID == idQuanHuyenArray);
+                    // Đặt tên thành phố vào thẻ có class là quanHuyenColumn trong dòng hiện tại
+                    var quanHuyenColumn = document.getElementById("quanHuyenColumn")
+                    quanHuyenColumn.innerText = quanHuyen.DistrictName + ',';
+                })
+                .catch(error => {
+                    console.error('Lỗi khi tải dữ liệu quận:', error);
+                });
+
+
+            // Lấy danh sách id quận/huyện từ một danh sách district
+            var idQuanHuyenArray = /*[[ ${byHoaDon.quanHuyen}]]*/ [];
+            // Lặp qua từng id quận/huyện và gọi API cho mỗi id
+            fetch(`https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=${idQuanHuyenArray}`, {
+                method: 'GET',
+                headers: {
+                    'token': 'd900c67f-742d-11ee-96dc-de6f804954c9',
+                    'Content-Type': 'application/json',
+                },
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Lấy giá trị id thành phố từ thymeleaf
+                    var idPhuongXaArray = /*[[ ${byHoaDon.phuongXa}]]*/ [];
+
+                    var phuongXa = data.data.find(ward => ward.WardCode == idPhuongXaArray);
+                    console.log(phuongXa)
+
+                    // Đặt tên thành phố vào thẻ có class là phuongXaColumn trong dòng hiện tại
+                    var phuongXaColumn = document.getElementById('phuongXaColumn');
+                    phuongXaColumn.innerText = phuongXa.WardName + ',';
+                })
+                .catch(error => {
+                    console.error('Lỗi khi tải dữ liệu xã:', error);
+                });
+        });
+
+    </script>
+    <!-- detail api địa chỉ end-->
+
+    <!--    thư viện của bảng tích hợp tìm kiếm-->
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/jquery.dataTables.js'></script>
+    <script>
+
+        for (let index = 1; index <= 7; index++) {
+            $(document).ready(function () {
+                var table = $('#exampleTable' + index).DataTable({
+                    "language": {
+                        "info": "Hiển thị _START_ đến _END_ trong tổng số _TOTAL_ kết quả",
+                        "emptyTable": "Không có kết quả nào được tìm thấy",
+                        "zeroRecords": "Không có kết quả phù hợp",
+                        "infoEmpty": "Không có dữ liệu để hiển thị"
+                    },
+                    "initComplete": function (settings, json) {
+                        // CSS changes
+                        $('#exampleTable' + index + '_filter input[type="search"]').addClass('form-control');
+                        $('#exampleTable' + index + '_filter input[type="search"]').attr('placeholder', 'Tìm kiếm');
+                        $('#exampleTable' + index + '_filter label').contents().filter(function () {
+                            return this.nodeType === 3;
+                        }).replaceWith(' ');
+
+                        $('#exampleTable' + index + '_length label').contents().filter(function () {
+                            return this.nodeType === 3;
+                        }).first().replaceWith('Hiển thị');
+                        $('#exampleTable' + index + '_length label').contents().filter(function () {
+                            return this.nodeType === 3;
+                        }).last().replaceWith('mục');
+
+                        $('#exampleTable' + index + '_length select').addClass('form-select');
+                    }
+                });
+
+                table.on('draw.dt', function () {
+                    var pageInfo = table.page.info();
+
+                    var newInfo = 'Hiển thị ' + pageInfo.start + ' đến ' + pageInfo.end + ' trong tổng số ' + pageInfo.recordsDisplay + ' kết quả';
+                    $('#exampleTable' + index + '_info').html(newInfo);
+
+                });
+            });
+        }
+
+    </script>
+    <style>
+        /*input tìm kiếm*/
+        #example_filter input[type="search"] {
+            width: 180%;
+            margin-left: -80%;
+            margin-bottom: 10%;
+        }
+
+        /*select hiển thị mục*/
+        .dataTables_length label {
+            white-space: nowrap; /* Ngăn các phần tử xuống dòng */
+            display: flex; /* Hiển thị label và select trên cùng một dòng */
+            align-items: center; /* Canh chỉnh label và select theo chiều dọc */
+        }
+
+        .dataTables_length select {
+            margin-left: 5px; /* Tạo khoảng cách giữa label và select */
+        }
+
+        .dataTables_length label:after {
+            /* Sử dụng pseudo-element :after để ẩn văn bản cuối cùng */
+            content: ''; /* Xóa nội dung */
+        }
+    </style>
+    <!--    thư viện của bảng tích hợp tìm kiếm end-->
+
+    <script src="../../../static/vendor/apexcharts/apexcharts.min.js"></script>
+    <script src="../../../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../../static/vendor/chart.js/chart.umd.js"></script>
+    <script src="../../../static/vendor/echarts/echarts.min.js"></script>
+    <script src="../../../static/vendor/quill/quill.min.js"></script>
+    <script src="../../../static/vendor/simple-datatables/simple-datatables.js"></script>
+    <script src="../../../static/vendor/tinymce/tinymce.min.js"></script>
+    <script src="../../../static/vendor/php-email-form/validate.js"></script>
+
+    <script src="../../static/js/main.js"></script>
+</body>
+
+</html>
+
+</html>

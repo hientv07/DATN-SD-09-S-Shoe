@@ -264,12 +264,11 @@
                                         <td th:text="${iterStat.index+1}"></td>
                                         <td th:text="${chiTietSP.sanPham.ten}"></td>
                                         <td th:text="${chiTietSP.sanPham.thuongHieu.ten}"></td>
-                                        <td th:text="${chiTietSP.giaHienHanh+' VNĐ'}"></td>
+                                        <td class="format-currency" th:text="${chiTietSP.giaHienHanh}"></td>
                                         <td class="trangthaidhd" th:if="${chiTietSP.trangThai==0}">Đang Hoạt Động</td>
                                         <td class="trangthainhd" th:if="${chiTietSP.trangThai==1}">Ngừng Hoạt Động</td>
                                         <td>
-                                            <a th:href="@{/admin/san-pham-chi-tiet/view-update/{id}(id=${chiTietSP.sanPham.id})}"
-                                               class="btn btn-info">
+                                            <a th:href="@{/admin/san-pham-chi-tiet/view-update/{id}(id=${chiTietSP.sanPham.id})}" class="btn btn-info">
                                                 <i class="bi bi-pencil-fill"></i></i>
                                             </a>
                                         </td>
@@ -285,7 +284,8 @@
                                         <th>Hành Động</th>
                                     </tr>
                                     </tfoot>
-                                </table><!-- partial -->
+                                </table>
+
                             </div>
 
                             <!-- chi tiết sp - tạo mới -->
@@ -695,7 +695,7 @@
 
                                 <!--Thêm đc 1 sp-->
                                 <form th:action="@{/admin/san-pham-chi-tiet/add}" class="row g-3"
-                                      onsubmit="return checkSelections()"
+                                      onsubmit="removeFormatBeforeSubmit(); return checkSelections()"
                                       enctype="multipart/form-data" method="post" style="margin-top: 2%;">
                                     <div class="col-12">
                                         <label class="form-label">Tên sản phẩm:</label>
@@ -707,8 +707,7 @@
                                             </select>
                                             <!-- Button trigger modal -->
                                             <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                    data-bs-target="#them-san-pham-nhanh">
-                                                +
+                                                    data-bs-target="#them-san-pham-nhanh">+
                                             </button>
                                         </div>
                                     </div>
@@ -761,18 +760,8 @@
                                                     </div>
                                                     <div class="col-md-6">
                                                         Nhập tất cả giá:
-                                                        <input class="form-control" type="number"
-                                                               oninput="updateInputsGia(this)">
-                                                        <script>
-                                                            function updateInputsGia(sourceInput) {
-                                                                var sourceValue = sourceInput.value;
-                                                                console.log(sourceValue);
-                                                                const donGiaInputs = document.getElementsByName("listDonGia");
-                                                                for (let i = 0; i < donGiaInputs.length; i++) {
-                                                                    donGiaInputs[i].value = sourceValue;
-                                                                }
-                                                            }
-                                                        </script>
+                                                        <input class="form-control" type="text"
+                                                               oninput="updateFormattedGiaInputs(this)" onblur="formatInputValue(this)">
                                                     </div>
                                                 </div>
                                             </div>
@@ -833,30 +822,35 @@
                                                     let hasError = false;
 
                                                     for (let i = 0; i < donGiaInputs.length; i++) {
-                                                        const checkDonGia = donGiaInputs[i].value;
+                                                        const checkDonGia = parseFormattedValue(donGiaInputs[i].value);
                                                         const errorDiv = document.getElementById("checkDonGia" + (i * 2 + 2));
 
-                                                        if (checkDonGia < 1 || checkDonGia > 1000000000) {
-                                                            hasError = true;
+                                                        if (checkDonGia === "") {
                                                             errorDiv.style.display = "block";
-                                                            errorDiv.textContent = (checkDonGia < 1) ? "Giá phải >= 1" : "Giá phải <= 1000000000";
+                                                            errorDiv.textContent = "Vui lòng nhập đơn giá!";
+                                                            hasError = true;
+                                                        } else if (checkDonGia <= 0) {
+                                                            errorDiv.style.display = "block";
+                                                            errorDiv.textContent = "Vui lòng nhập đơn giá lớn hơn 0!";
+                                                            hasError = true;
                                                         } else {
                                                             errorDiv.style.display = "none";
                                                         }
                                                     }
 
                                                     for (let i = 0; i < soLuongInputs.length; i++) {
-                                                        const checkSoLuong = soLuongInputs[i].value;
+                                                        const soLuongInput = soLuongInputs[i];
                                                         const errorDiv = document.getElementById("checkSoLuong" + (i * 2 + 1));
+                                                        const checkSoLuong = soLuongInput.value;
 
-                                                        if (checkSoLuong == "") {
-                                                            hasError = true;
+                                                        if (checkSoLuong === "") {
                                                             errorDiv.style.display = "block";
-                                                            errorDiv.textContent = "Không được để null";
-                                                        } else if (checkSoLuong < 0 || checkSoLuong > 100000) {
+                                                            errorDiv.textContent = "Vui lòng nhập số lượng!";
                                                             hasError = true;
+                                                        } else if (checkSoLuong <= 0) {
                                                             errorDiv.style.display = "block";
-                                                            errorDiv.textContent = (checkSoLuong < 0) ? "Số lượng phải >= 0" : "Số lượng phải <= 100000";
+                                                            errorDiv.textContent = "Vui lòng nhập số lượng lớn hơn 0!";
+                                                            hasError = true;
                                                         } else {
                                                             errorDiv.style.display = "none";
                                                         }
@@ -919,11 +913,17 @@
                                                                             cell.appendChild(errorDiv);
                                                                         } else if (index === 6) {
                                                                             const input = document.createElement("input");
-                                                                            input.type = "number";
+                                                                            input.type = "text";
                                                                             input.className = "form-control";
                                                                             input.name = "listDonGia";
                                                                             input.readOnly = false;
                                                                             input.id = "checkDonGiaInput" + rowCount;
+                                                                            input.oninput = function() {
+                                                                                updateFormattedGiaInputs(this);
+                                                                            };
+                                                                            input.onblur = function() {
+                                                                                formatInputValue(this);
+                                                                            };
                                                                             cell.appendChild(input);
                                                                             const errorDiv = document.createElement("div");
                                                                             errorDiv.className = "error-message";
@@ -1024,7 +1024,7 @@
                                                         <label class="form-label"><span class="dau-sao">*</span>Mô
                                                             Tả:</label>
                                                         <textarea class="form-control"
-                                                                  placeholder="Nhập tên thương hiệu"
+                                                                  placeholder="Nhập thông tin sản phẩm"
                                                                   th:field="*{moTa}"></textarea>
                                                         <span class="check-loi" th:errors="*{moTa}"></span>
                                                     </div>
@@ -1071,6 +1071,53 @@
 
 </main><!-- End #main -->
 
+<script>
+    function formatVNĐ(amount) {
+        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+    }
+
+    function formatInputValue(input) {
+        const value = input.value.replace(/,/g, '');
+        if (!isNaN(value) && value.trim() !== "") {
+            input.value = formatVNĐ(value);
+        }
+    }
+
+    function parseFormattedValue(formattedValue) {
+        return formattedValue.replace(/\D/g, '');
+    }
+
+    function updateFormattedGiaInputs(sourceInput) {
+        const sourceValue = parseFormattedValue(sourceInput.value);
+        const donGiaInputs = document.getElementsByName("listDonGia");
+        for (let i = 0; i < donGiaInputs.length; i++) {
+            donGiaInputs[i].value = sourceValue;
+            formatInputValue(donGiaInputs[i]);
+        }
+    }
+
+    function removeFormatBeforeSubmit() {
+        const donGiaInputs = document.getElementsByName("listDonGia");
+        for (let i = 0; i < donGiaInputs.length; i++) {
+            donGiaInputs[i].value = parseFormattedValue(donGiaInputs[i].value);
+        }
+    }
+</script>
+
+
+
+<script type="text/javascript">
+    function formatCurrency(number) {
+        return new Intl.NumberFormat('vi-VN').format(number) + ' VNĐ';
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.format-currency').forEach(function(element) {
+            var value = parseFloat(element.innerText);
+            element.innerText = formatCurrency(value);
+        });
+    });
+</script>
 
 <!--Thông báo thành công-->
 <div class="toast-container position-fixed top-0 end-0 p-3">
