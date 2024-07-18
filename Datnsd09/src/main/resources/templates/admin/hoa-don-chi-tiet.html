@@ -1750,7 +1750,7 @@
                                                                         <h6>Tổng tiền sản phẩm:</h6>
                                                                     </div>
                                                                     <div class="col">
-                                                                        <h6 id="totalAmount" class="thong-tin-gia price">
+                                                                        <h6 id="totalAmount" class="thong-tin-gia price ">
                                                                             [[${hoaDon.tongTienHoaDon()}]]
                                                                             VND</h6>
                                                                         <input th:value="${hoaDon.tongTienHoaDon()}"
@@ -1763,14 +1763,14 @@
                                                                     </div>
                                                                     <div class="col">
                                                                         <h6 id="phi-van-chuyen"
-                                                                            class="thong-tin-gia price">
+                                                                            class="thong-tin-gia ">
                                                                             [[${hoaDon.phiShip}]]
                                                                             VND</h6>
 
 
                                                                         <input th:value="${hoaDon.phiShip}"
                                                                                name="phiShip" type="hidden"
-                                                                               id="shippingFeeResult" class="price">
+                                                                               id="shippingFeeResult" class="">
                                                                     </div>
                                                                 </div>
                                                                 <div class="row">
@@ -1779,10 +1779,10 @@
 
                                                                         <input id="giamGiaInput" type="hidden"
                                                                                th:value="${hoaDon.tongTien}-${hoaDon.tongTienKhiGiam}"
-                                                                               name="giamGia" class="price">
+                                                                               name="giamGia" >
                                                                     </div>
                                                                     <div class="col">
-                                                                        <h6 id="moneyVoucher" class="thong-tin-gia price">
+                                                                        <h6 id="moneyVoucher" class="thong-tin-gia">
                                                                             [[${hoaDon.tongTien}-${hoaDon.tongTienKhiGiam}]]
                                                                             VND
                                                                         </h6>
@@ -1796,8 +1796,8 @@
                                                                     </div>
                                                                     <div class="col">
 
-                                                                        <input cla id="tienKhachTra"
-                                                                               class="thong-tin-gia  form-control"
+                                                                        <input id="tienKhachTra"
+                                                                               class="thong-tin-gia form-control"
                                                                                type="number">
                                                                     </div>
 
@@ -1810,7 +1810,7 @@
                                                                     </div>
                                                                     <div class="col">
 
-                                                                        <h6 class="thong-tin-gia price"><span
+                                                                        <h6 class="thong-tin-gia"><span
                                                                                 id="traLai">0</span>
                                                                             VND</h6>
                                                                     </div>
@@ -1828,7 +1828,7 @@
                                                                             VND
                                                                         </h6>
                                                                         <input
-                                                                                th:value="${hoaDon.tongTienHoaDonKhiGiam()}"
+                                                                                th:value="${hoaDon.tongTienHoaDonKhiGiam}"
                                                                                 type="hidden" id="tongAll" class="price">
                                                                     </div>
 
@@ -2192,7 +2192,7 @@
     function handleRadioVoucher(rowIndex) {
         var index = rowIndex.getAttribute('data-index');
         if (index == null) {
-            indẽ
+            index;
         }
         console.log(index)
         // Tách chuỗi thành mảng các phần tử (số)
@@ -2224,35 +2224,42 @@
         var detailVoucher = document.getElementById("c_code");
 
 
-        var shippingFeeResultInt = parseInt(shippingFeeResult.innerText);
-        // var tongTien = document.getElementById("tongAll");
-        var tongTienHangInt = parseInt(tongTienHang.innerText);
+        var shippingFeeResultInt = parseInt(shippingFeeResult.innerText.replace(/[,.]/g, ''));
+
+        var tongTienHangInt = parseInt(tongTienHang.innerText.replace(/[,.]/g, ''));
 
         var tongTienGiamTheoPhanTram = ((tongTienHangInt * phamTramGiam) / 100)
         if (tongTienGiamTheoPhanTram > giaTriGiam) {
             tongTienGiamTheoPhanTram = giaTriGiam
         }
 
-        detailVoucher.value = - tongTienGiamTheoPhanTram + ' VND';
-        moneyVoucher.innerText = tongTienGiamTheoPhanTram + ' VND';
-        // document.getElementById('giamGiaIn').innerText = tongTienGiamTheoPhanTram;
-        console.log(tongTienGiamTheoPhanTram + 'giamgia')
-        // tongTien.value = shippingFeeResultInt + tongTienHangInt;
-        tongTienAndSale.value = shippingFeeResultInt + tongTienHangInt - tongTienGiamTheoPhanTram.toFixed(0);
-        totalElementSale.innerHTML = shippingFeeResultInt + tongTienHangInt - tongTienGiamTheoPhanTram.toFixed(0);
+        detailVoucher.value = (- tongTienGiamTheoPhanTram).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+        moneyVoucher.innerText = tongTienGiamTheoPhanTram.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+
+        console.log("tien giam: " ,tongTienGiamTheoPhanTram)
+
+        var totalMonney = (shippingFeeResultInt + tongTienHangInt - tongTienGiamTheoPhanTram)
+
+        console.log("tong tien: ",totalMonney )
+
+        tongTienAndSale.value = totalMonney.toFixed(0);
+        console.log("tong tien: ",tongTienAndSale )
+        totalElementSale.innerHTML =  totalMonney.toFixed(0);
         // document.getElementById('thanhTienIn').innerHTML = shippingFeeResultInt + tongTienHangInt - tongTienGiamTheoPhanTram.toFixed(0);
         document.getElementById('giamGiaInput').value = tongTienGiamTheoPhanTram.toFixed(0);
+
+
     }
 
     function checkAndDisplayVouchers() {
 
         // Lấy giá trị totalAmount từ #totalAmount
-        var totalAmount = parseFloat(document.getElementById('totalAmount').innerText.replace(' VND', '').trim());
+        var totalAmount = parseFloat(document.getElementById('totalAmount').innerText.replace(/[,.]/g, '').replace(' VND', '').trim());
         console.log(totalAmount)
 
         // Lặp qua danh sách voucher và kiểm tra điều kiện
         document.querySelectorAll('.card.mb-3').forEach(function (card) {
-            var voucherGiaTriDonToiThieu = parseFloat(card.querySelector('#donToiThieu').innerText.replace('Đơn Tối Thiểu ', '').replace(' VND', '').trim());
+            var voucherGiaTriDonToiThieu = parseFloat(card.querySelector('#donToiThieu').innerText.replace(/[,.]/g, '').replace('Đơn Tối Thiểu ', '').replace(' VND', '').trim());
             var radio = card.querySelector('input[name="voucherRadio"]');
             var thongBao = card.querySelector('#thongBaoThieuTien');
 
@@ -2266,7 +2273,7 @@
 
                 thongBao.style.display = 'block';
                 // thongBao.style
-                thongBao.innerText += 'Mua thêm ' + (voucherGiaTriDonToiThieu - totalAmount) + ' sản phẩm để sử dụng Voucher cho mã ';
+                thongBao.innerText += 'Mua thêm ' + (voucherGiaTriDonToiThieu - totalAmount).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }) + ' để sử dụng Voucher cho mã ';;
             } else {
                 radio.classList.remove('muted-radio');
                 card.classList.remove('muted-card');

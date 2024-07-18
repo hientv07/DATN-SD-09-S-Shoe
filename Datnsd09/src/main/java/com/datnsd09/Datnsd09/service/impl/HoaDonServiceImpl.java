@@ -293,10 +293,10 @@ public class HoaDonServiceImpl implements HoaDonService {
 
                     "<div class=\"col-md-12\">" +
                             "<p style=\"color: black;\" class=\"email-content\">\n" +
-                            "Cảm ơn bạn đã chọn Glacat! Nếu có bất kỳ thắc mắc nào hoặc cần hỗ trợ, hãy liên hệ với chúng tôi qua số 0377463664 để được hỗ trợ.\n" +
+                            "Cảm ơn bạn đã chọn S-Shoe! Nếu có bất kỳ thắc mắc nào hoặc cần hỗ trợ, hãy liên hệ với chúng tôi qua số 0377463664 để được hỗ trợ.\n" +
                             "</p>" +
                             "<p style=\"color: black;\">Trân trọng,</p>" +
-                            "<p style=\"color: black;\">Glacat</p>" +
+                            "<p style=\"color: black;\">S-Shoe</p>" +
                             "</div>"
 
             );

@@ -2092,8 +2092,8 @@
                     <th th:text="${state.index+1}"></th>
                     <td th:text="${obj.sanPhamChiTiet.sanPham.ten}" colspan="2"></td>
                     <td th:text="${obj.soLuong}"></td>
-                    <td th:text="${obj.sanPhamChiTiet.giaHienHanh}" class="price"></td>
-                    <td th:text="${obj.soLuong*obj.sanPhamChiTiet.giaHienHanh}" class="price"></td>
+                    <td th:text="${obj.donGia}" class="price"></td>
+                    <td th:text="${obj.soLuong*obj.donGia}" class="price"></td>
                     <td th:if="${hoaDon.trangThai==6}" th:text="${obj.trangThai==0?'Đã nhận':'Hoàn trả'}"></td>
                 </tr>
 
