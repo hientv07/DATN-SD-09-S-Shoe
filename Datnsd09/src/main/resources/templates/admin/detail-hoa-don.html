@@ -2133,7 +2133,7 @@
                             VND</span></p>
 
                 <p><span class="info-label">Tổng tiền thanh toán:</span> <span class="info-value price">
-                                <span th:if="${hoaDon.tongTienHoaDonDaNhan()!=0}" id="thanhTienIn">[[${hoaDon.tongTien+hoaDon.phiShip}]]</span>
+                                <span th:if="${hoaDon.tongTienHoaDonDaNhan()!=0}" id="thanhTienIn">[[${hoaDon.tongTien+hoaDon.phiShip-hoaDon.tienGiam}]]</span>
                                 <span th:if="${hoaDon.tongTienHoaDonDaNhan()==0}">0</span>
                                 VND</span></p>
             </div>

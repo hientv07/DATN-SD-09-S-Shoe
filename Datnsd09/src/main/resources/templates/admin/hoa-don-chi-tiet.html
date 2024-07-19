@@ -1630,119 +1630,51 @@
                                                                     </div>
                                                                     <div class="col" style="margin-top: 1%">
                                                                         <div class="input-group flex-nowrap">
-                                                                            <input type="text" class="form-control"
-                                                                                   id="c_code" disabled
-                                                                                   aria-label="Coupon Code"
-                                                                                   aria-describedby="button-addon2" />
-                                                                            <button
-                                                                                    th:if="${hoaDon.khachHang.tenTaiKhoan!=null}"
-                                                                                    class="btn btn-primary btn-sm"
-                                                                                    type="button"
-                                                                                    onclick="checkAndDisplayVouchers()"
-                                                                                    data-bs-toggle="modal"
-                                                                                    data-bs-target="#voucher">
-                                                                                Chọn voucher
-                                                                            </button>
+                                                                            <input type="text" class="form-control" id="c_code" disabled aria-label="Coupon Code" aria-describedby="button-addon2" />
+                                                                            <button th:if="${hoaDon.khachHang.tenTaiKhoan!=null}" class="btn btn-primary btn-sm" type="button" onclick="checkAndDisplayVouchers()" data-bs-toggle="modal" data-bs-target="#voucher">Chọn voucher</button>
                                                                             <!-- Modal -->
-                                                                            <div class="modal fade" id="voucher"
-                                                                                 tabindex="-1"
-                                                                                 aria-labelledby="voucherLabel"
-                                                                                 aria-hidden="true">
+                                                                            <div class="modal fade" id="voucher" tabindex="-1" aria-labelledby="voucherLabel" aria-hidden="true">
                                                                                 <div class="modal-dialog">
                                                                                     <div class="modal-content">
                                                                                         <div class="modal-header">
-                                                                                            <h3 class="modal-title fs-5"
-                                                                                                style="margin: auto"
-                                                                                                id="voucherLabel">
-                                                                                                Chọn
-                                                                                                Voucher
-                                                                                            </h3>
+                                                                                            <h3 class="modal-title fs-5" style="margin: auto" id="voucherLabel">Chọn Voucher</h3>
                                                                                         </div>
                                                                                         <div class="modal-body">
-                                                                                            <div class="card mb-3"
-                                                                                                 style="height: 10%"
-                                                                                                 th:each="voucher : ${listVoucher}">
-                                                                                                <div
-                                                                                                        class="row g-0">
-                                                                                                    <div
-                                                                                                            class="col-md-3">
-                                                                                                        <div class="card-body"
-                                                                                                             style="margin-left: 5px;margin-top: 15px">
-                                                                                                            <img src="../../static/img/logo.png"
-                                                                                                                 style="margin-left: 15px"
-                                                                                                                 class="img-fluid rounded-start"
-                                                                                                                 alt="...">
+                                                                                            <div class="card mb-3" style="height: 10%" th:each="voucher : ${listVoucher}">
+                                                                                                <div class="row g-0">
+                                                                                                    <div class="col-md-3">
+                                                                                                        <div class="card-body" style="margin-left: 5px;margin-top: 15px">
+                                                                                                            <img src="../../static/img/logo.png" style="margin-left: 15px" class="img-fluid rounded-start" alt="...">
                                                                                                         </div>
                                                                                                     </div>
-                                                                                                    <div
-                                                                                                            class="col-md-7">
-                                                                                                        <div
-                                                                                                                class="card-body">
-                                                                                                            <h5 class="card-title"
-                                                                                                                style="margin-bottom: -3px"
-                                                                                                                th:text="${'Giảm '+ voucher.phanTramGiam + '%'}">
-                                                                                                            </h5>
-                                                                                                            <small
-                                                                                                                    class="text-body-secondary"
-                                                                                                                    style="display: block"
-                                                                                                                    th:text="${'Giảm tối đa '+voucher.giamToiDa+ ' VND'}"></small>
-                                                                                                            <small
-                                                                                                                    id="donToiThieu"
-                                                                                                                    class="text-body-secondary"
-                                                                                                                    style="display: block"
-                                                                                                                    th:text="${'Đơn Tối Thiểu '+voucher.giaTriDonToiThieu+ ' VND'}"></small>
-                                                                                                            <small
-                                                                                                                    class="text-body-secondary"
-                                                                                                                    style="display: block"
-                                                                                                                    th:text="${'Số Lượng '+voucher.soLuong}"></small>
-                                                                                                            <small
-                                                                                                                    class="text-body-secondary"
-                                                                                                                    style="display: block"
-                                                                                                                    th:text="${#temporals.format(voucher.ngayKetThuc, 'HH:mm dd/MM/yyyy')}"></small>
+                                                                                                    <div class="col-md-7">
+                                                                                                        <div class="card-body">
+                                                                                                            <h5 class="card-title" style="margin-bottom: -3px" th:text="${'Giảm '+ voucher.phanTramGiam + '%'}"></h5>
+                                                                                                            <small class="text-body-secondary" style="display: block" th:text="${'Giảm tối đa '+voucher.giamToiDa+ ' VND'}"></small>
+                                                                                                            <small id="donToiThieu" class="text-body-secondary" style="display: block" th:text="${'Đơn Tối Thiểu '+voucher.giaTriDonToiThieu+ ' VND'}"></small>
+                                                                                                            <small class="text-body-secondary" style="display: block" th:text="${'Số Lượng '+voucher.soLuong}"></small>
+                                                                                                            <small class="text-body-secondary" style="display: block" th:text="${#temporals.format(voucher.ngayKetThuc, 'HH:mm dd/MM/yyyy')}"></small>
                                                                                                         </div>
                                                                                                     </div>
-                                                                                                    <div
-                                                                                                            class="col-md-2">
-                                                                                                        <div
-                                                                                                                class="card-body">
-                                                                                                            <input
-                                                                                                                    type="radio"
-                                                                                                                    style="margin-top: 35px"
-                                                                                                                    name="voucherRadio"
-                                                                                                                    th:data-index="${voucher.id + ' ' +voucher.phanTramGiam+ ' ' +voucher.giamToiDa}"
-                                                                                                                    onchange="handleRadioVoucher(this)">
+                                                                                                    <div class="col-md-2">
+                                                                                                        <div class="card-body">
+                                                                                                            <input type="radio" style="margin-top: 35px" name="voucherRadio" th:data-index="${voucher.id + ' ' +voucher.phanTramGiam+ ' ' +voucher.giamToiDa}" onchange="handleRadioVoucher(this)">
                                                                                                         </div>
                                                                                                     </div>
-                                                                                                    <div
-                                                                                                            class="col-md-12">
-                                                                                                        <small
-                                                                                                                class="text-body-secondary"
-                                                                                                                style=" display: none;margin-left: 50px;color: red"
-                                                                                                                id="thongBaoThieuTien"></small>
+                                                                                                    <div class="col-md-12">
+                                                                                                        <small class="text-body-secondary" style=" display: none;margin-left: 50px;color: red" id="thongBaoThieuTien"></small>
                                                                                                     </div>
                                                                                                 </div>
                                                                                             </div>
-
-
                                                                                         </div>
                                                                                         <div class="modal-footer">
-                                                                                            <button type="button"
-                                                                                                    onclick="boChonVoucher()"
-                                                                                                    class="btn btn-secondary"
-                                                                                                    data-bs-dismiss="modal">Bỏ
-                                                                                                chọn
-                                                                                            </button>
-                                                                                            <button type="button"
-                                                                                                    class="btn btn-secondary"
-                                                                                                    data-bs-dismiss="modal">Quay
-                                                                                                lại
-                                                                                            </button>
+                                                                                            <button type="button" onclick="boChonVoucher()" class="btn btn-secondary" data-bs-dismiss="modal">Bỏ chọn</button>
+                                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Quay lại</button>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
                                                                             </div>
                                                                         </div>
-
                                                                     </div>
                                                                 </div>
                                                                 <div class="row">
@@ -1750,11 +1682,10 @@
                                                                         <h6>Tổng tiền sản phẩm:</h6>
                                                                     </div>
                                                                     <div class="col">
-                                                                        <h6 id="totalAmount" class="thong-tin-gia price ">
-                                                                            [[${hoaDon.tongTienHoaDon()}]]
-                                                                            VND</h6>
-                                                                        <input th:value="${hoaDon.tongTienHoaDon()}"
-                                                                               type="hidden" name="tongTienHoaDon">
+                                                                        <h6 id="totalAmount" class="thong-tin-gia">
+                                                                            <span id="totalAmountValue">[[${hoaDon.tongTienHoaDon()}]]</span> VND
+                                                                        </h6>
+                                                                        <input th:value="${hoaDon.tongTienHoaDon()}" type="hidden" name="tongTienHoaDon">
                                                                     </div>
                                                                 </div>
                                                                 <div class="row">
@@ -1762,78 +1693,52 @@
                                                                         <h6>Phí vận chuyển:</h6>
                                                                     </div>
                                                                     <div class="col">
-                                                                        <h6 id="phi-van-chuyen"
-                                                                            class="thong-tin-gia ">
-                                                                            [[${hoaDon.phiShip}]]
-                                                                            VND</h6>
-
-
-                                                                        <input th:value="${hoaDon.phiShip}"
-                                                                               name="phiShip" type="hidden"
-                                                                               id="shippingFeeResult" class="">
+                                                                        <h6 id="phi-van-chuyen" class="thong-tin-gia">
+                                                                            [[${hoaDon.phiShip}]] VND
+                                                                        </h6>
+                                                                        <input th:value="${hoaDon.phiShip}" name="phiShip" type="hidden" id="shippingFeeResult">
                                                                     </div>
                                                                 </div>
                                                                 <div class="row">
                                                                     <div class="col">
                                                                         <h6>Giảm giá:</h6>
-
-                                                                        <input id="giamGiaInput" type="hidden"
-                                                                               th:value="${hoaDon.tongTien}-${hoaDon.tongTienKhiGiam}"
-                                                                               name="giamGia" >
+                                                                        <input id="giamGiaInput" type="hidden" th:value="${hoaDon.tongTien}-${hoaDon.tongTienKhiGiam}" name="giamGia">
                                                                     </div>
                                                                     <div class="col">
                                                                         <h6 id="moneyVoucher" class="thong-tin-gia">
-                                                                            [[${hoaDon.tongTien}-${hoaDon.tongTienKhiGiam}]]
-                                                                            VND
+                                                                            [[${hoaDon.tongTien}-${hoaDon.tongTienKhiGiam}]] VND
                                                                         </h6>
                                                                     </div>
                                                                 </div>
-
-                                                                <div th:if="${hoaDon.trangThai==-1||hoaDon.trangThai==4}"
-                                                                     class="row">
+                                                                <div th:if="${hoaDon.trangThai==-1||hoaDon.trangThai==4}" class="row">
                                                                     <div class="col">
                                                                         <h6>Tiền khách trả:</h6>
                                                                     </div>
                                                                     <div class="col">
-
-                                                                        <input id="tienKhachTra"
-                                                                               class="thong-tin-gia form-control"
-                                                                               type="number">
+                                                                        <input id="tienKhachTra" class="thong-tin-gia form-control" type="number" oninput="updateTraLai()">
                                                                     </div>
-
-
                                                                 </div>
-                                                                <div th:if="${hoaDon.trangThai==-1||hoaDon.trangThai==4}"
-                                                                     class="row">
+                                                                <div th:if="${hoaDon.trangThai==-1||hoaDon.trangThai==4}" class="row">
                                                                     <div class="col">
                                                                         <h6>Trả lại:</h6>
                                                                     </div>
                                                                     <div class="col">
-
-                                                                        <h6 class="thong-tin-gia"><span
-                                                                                id="traLai">0</span>
-                                                                            VND</h6>
+                                                                        <h6 class="thong-tin-gia"><span id="traLai">0</span></h6>
                                                                     </div>
-
-
                                                                 </div>
                                                                 <div class="row">
                                                                     <div class="col">
                                                                         <h3>Tổng tiền:</h3>
                                                                     </div>
                                                                     <div class="col">
-                                                                        <h6 class="thong-tin-gia price" id="tongGiaH6">
-                                                                                <span
-                                                                                        id="tongGiaValue">[[${hoaDon.tongTienHoaDonKhiGiam()}]]</span>
-                                                                            VND
+                                                                        <h6 class="thong-tin-gia" id="tongGiaH6">
+                                                                            <span id="tongGiaValue">[[${hoaDon.tongTienHoaDonKhiGiam()}]]</span> VND
                                                                         </h6>
-                                                                        <input
-                                                                                th:value="${hoaDon.tongTienHoaDonKhiGiam}"
-                                                                                type="hidden" id="tongAll" class="price">
+                                                                        <input th:value="${hoaDon.tongTienHoaDonKhiGiam()}" type="hidden" id="tongAll" class="price">
                                                                     </div>
-
-
                                                                 </div>
+
+
 
                                                             </div>
                                                         </div>
@@ -2192,64 +2097,85 @@
     function handleRadioVoucher(rowIndex) {
         var index = rowIndex.getAttribute('data-index');
         if (index == null) {
-            index;
+            return;
         }
-        console.log(index)
-        // Tách chuỗi thành mảng các phần tử (số)
-        var numbersArray = index.split(' ');
+        console.log(index);
 
-        // Chuyển đổi các phần tử thành số nguyên
+        var numbersArray = index.split(' ');
         var idVoucher = parseInt(numbersArray[0], 10);
         var phamTramGiam = parseInt(numbersArray[1], 10);
         var giaTriGiam = parseInt(numbersArray[2], 10);
-        // In ra kết quả
+
         console.log('Số thứ nhất:', idVoucher);
         console.log('Số thứ hai:', phamTramGiam);
 
-        var voucher1 = document.getElementById("voucherID"); //ok
-        voucher1.value = idVoucher
+        var voucher1 = document.getElementById("voucherID");
+        voucher1.value = idVoucher;
 
-        var moneyVoucher = document.getElementById("moneyVoucher"); //ok
-        //tổng tiền khi giảm
-        var totalElementSale = document.getElementById("tongGiaValue");  //ok
-
-        //tổng tiền khi giảm input
-        var tongTienAndSale = document.getElementById("tongAll"); //ok
-
-        //tổng tiền
-        var tongTienHang = document.getElementById("totalAmount"); //ok
-
-        var shippingFeeResult = document.getElementById("phi-van-chuyen"); //ok
-
+        var moneyVoucher = document.getElementById("moneyVoucher");
+        var totalElementSale = document.getElementById("tongGiaValue");
+        var tongTienAndSale = document.getElementById("tongAll");
+        var totalAmountValue = document.getElementById("totalAmountValue");
+        var shippingFeeResult = document.getElementById("phi-van-chuyen");
         var detailVoucher = document.getElementById("c_code");
 
-
         var shippingFeeResultInt = parseInt(shippingFeeResult.innerText.replace(/[,.]/g, ''));
+        var tongTienHangInt = parseInt(totalAmountValue.innerText.replace(/[,.]/g, ''));
 
-        var tongTienHangInt = parseInt(tongTienHang.innerText.replace(/[,.]/g, ''));
-
-        var tongTienGiamTheoPhanTram = ((tongTienHangInt * phamTramGiam) / 100)
+        var tongTienGiamTheoPhanTram = ((tongTienHangInt * phamTramGiam) / 100);
         if (tongTienGiamTheoPhanTram > giaTriGiam) {
-            tongTienGiamTheoPhanTram = giaTriGiam
+            tongTienGiamTheoPhanTram = giaTriGiam;
         }
 
-        detailVoucher.value = (- tongTienGiamTheoPhanTram).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+        detailVoucher.value = (-tongTienGiamTheoPhanTram).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
         moneyVoucher.innerText = tongTienGiamTheoPhanTram.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
 
-        console.log("tien giam: " ,tongTienGiamTheoPhanTram)
+        console.log("tien giam: ", tongTienGiamTheoPhanTram);
 
-        var totalMonney = (shippingFeeResultInt + tongTienHangInt - tongTienGiamTheoPhanTram)
-
-        console.log("tong tien: ",totalMonney )
+        var totalMonney = (shippingFeeResultInt + tongTienHangInt - tongTienGiamTheoPhanTram);
+        console.log("tong tien: ", totalMonney);
 
         tongTienAndSale.value = totalMonney.toFixed(0);
-        console.log("tong tien: ",tongTienAndSale )
-        totalElementSale.innerHTML =  totalMonney.toFixed(0);
-        // document.getElementById('thanhTienIn').innerHTML = shippingFeeResultInt + tongTienHangInt - tongTienGiamTheoPhanTram.toFixed(0);
+        totalElementSale.innerText = totalMonney.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
         document.getElementById('giamGiaInput').value = tongTienGiamTheoPhanTram.toFixed(0);
 
-
+        updateTraLai();
     }
+
+    function updateTraLai() {
+        var totalMonney = parseInt(document.getElementById('tongAll').value);
+        var tienKhachTra = parseInt(document.getElementById('tienKhachTra').value);
+        var traLai = tienKhachTra - totalMonney;
+
+        if (!isNaN(traLai) && traLai >= 0) {
+            document.getElementById('traLai').innerText = formatVND(traLai);
+        } else {
+            document.getElementById('traLai').innerText = '0 VND';
+        }
+    }
+
+    // Định dạng giá trị của tổng tiền sản phẩm ngay khi trang được tải
+    document.addEventListener('DOMContentLoaded', function() {
+        var totalAmountValue = document.getElementById("totalAmountValue");
+        var totalAmountInt = parseInt(totalAmountValue.innerText.replace(/[,.]/g, ''));
+        totalAmountValue.innerText = formatVND(totalAmountInt);
+
+        var tongGiaValue = document.getElementById("tongGiaValue");
+        var tongGiaInt = parseInt(tongGiaValue.innerText.replace(/[,.]/g, ''));
+        tongGiaValue.innerText = formatVND(tongGiaInt);
+
+        var traLai = document.getElementById('traLai');
+        var traLaiInt = parseInt(traLai.innerText.replace(/[,.]/g, ''));
+        traLai.innerText = formatVND(traLaiInt);
+
+        document.getElementById('tienKhachTra').addEventListener('input', updateTraLai);
+    });
+
+    function formatVND(amount) {
+        return amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+    }
+
+
 
     function checkAndDisplayVouchers() {
 
@@ -2291,17 +2217,17 @@
 <!--  css + js chọn voucher-->
 <script src="../../static/js/banHangValid.js"></script>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const prices = document.querySelectorAll('.price');
-        prices.forEach(price => {
-            let value = parseInt(price.textContent.trim().replace(/,/g, ''));
-            if (!isNaN(value)) {
-                price.textContent = value.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-            }
-        });
-    });
-</script>
+<!--<script>-->
+<!--    document.addEventListener('DOMContentLoaded', function () {-->
+<!--        const prices = document.querySelectorAll('.price');-->
+<!--        prices.forEach(price => {-->
+<!--            let value = parseInt(price.textContent.trim().replace(/,/g, ''));-->
+<!--            if (!isNaN(value)) {-->
+<!--                price.textContent = value.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });-->
+<!--            }-->
+<!--        });-->
+<!--    });-->
+<!--</script>-->
 
 <script>
 
