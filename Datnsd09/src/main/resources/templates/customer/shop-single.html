@@ -119,14 +119,14 @@
                                 </li>
 
                                 <li class="nav-item" style="margin-top: 5%;margin-left: -5%">
-                                    <a class="site-cart" href="/user/cart">
-                                        <span class="icon icon-shopping_cart"></span>
-                                        <span class="count" th:if="${checkDangNhap=='true'}" th:text="${soLuongSPGioHangCT}"></span>
-                                    </a>
 <!--                                    <a class="site-cart" href="/user/cart">-->
 <!--                                        <span class="icon icon-shopping_cart"></span>-->
-<!--                                        <span class="count" th:text="${soLuongSPGioHangCT}"></span>-->
+<!--                                        <span class="count" th:if="${checkDangNhap=='true'}" th:text="${soLuongSPGioHangCT}"></span>-->
 <!--                                    </a>-->
+                                    <a class="site-cart" href="/user/cart">
+                                        <span class="icon icon-shopping_cart"></span>
+                                        <span class="count" th:text="${soLuongSPGioHangCT}"></span>
+                                    </a>
                                 </li>
                             </ul>
                         </div>
@@ -209,10 +209,6 @@
                             <span class="offer-price" id="giaHienThi" th:text="${formattedPrice}"></span>
                         </div>
 
-<!--                              <div class="product-price">-->
-<!--                                 <span class="offer-price" id="giaHienThi"-->
-<!--                                th:text="${#numbers.formatNumber(chiTietSp.giaHienHanh, 0, 'VI') + ' VND'}"></span>-->
-<!--                                 </div>-->
                         <div class="product-details">
                             <h3>Mô tả</h3>
                             <p th:text="${chiTietSp.sanPham.moTa}"></p>
@@ -234,344 +230,553 @@
                         <!-- Thêm thẻ script trước khi sử dụng Axios -->
                         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
-                        <script>
-                            document.querySelectorAll('input[name="mauSac"]').forEach(function (input) {
+<!--                        <script>-->
+<!--                            document.querySelectorAll('input[name="mauSac"]').forEach(function (input) {-->
+<!--                                input.addEventListener('change', function () {-->
+<!--                                    var idMauSac = this.value; // Lấy giá trị idMauSac khi màu sắc được chọn-->
+<!--                                    var idSanPhamAn = document.getElementById("idSanPhamAn");-->
+<!--                                    idSanPham = idSanPhamAn.value;-->
+<!--                                    console.log(idSanPham + 'id sản phẩm');-->
+<!--                                    console.log(idMauSac + 'id màu sắc');-->
+<!--                                    document.getElementById('so-luong-ton').style.display = 'none';-->
+<!--                                    getAllbyIdSPAndIdMS(idSanPham, idMauSac); // Gọi hàm để lấy danh sách kích cỡ-->
+
+<!--                                    var soLuong = document.getElementById('soLuong');-->
+<!--                                    soLuong.value = '';-->
+<!--                                    var rqIdChiTietSp = document.getElementById('idChiTietSp');-->
+<!--                                    rqIdChiTietSp.value = '';-->
+
+<!--                                });-->
+<!--                            });-->
+
+<!--                            // Định nghĩa hàm để lấy danh sách kích cỡ bằng idMauSac-->
+<!--                            function getAllbyIdSPAndIdMS(idSanPham, idMauSac) {-->
+<!--                                var xhr = new XMLHttpRequest();-->
+<!--                                xhr.open('GET', '/user/san-pham-chi-tiet/' + idSanPham + '/' + idMauSac, true);-->
+<!--                                xhr.setRequestHeader('Content-Type', 'application/json');-->
+
+<!--                                xhr.onreadystatechange = function () {-->
+<!--                                    if (xhr.readyState === 4) {-->
+<!--                                        if (xhr.status === 200) {-->
+<!--                                            var listChiTietSpByMauSac = JSON.parse(xhr.responseText); // Chuyển từ JSON thành danh sách-->
+<!--                                            console.log(listChiTietSpByMauSac);-->
+<!--                                            displaylistChiTietSpByMauSac(listChiTietSpByMauSac);-->
+<!--                                        } else {-->
+<!--                                            console.error('Lỗi trong quá trình lấy danh sách kích cỡ.');-->
+<!--                                        }-->
+<!--                                    }-->
+<!--                                };-->
+
+<!--                                xhr.send();-->
+<!--                            }-->
+
+
+<!--                            function displaylistChiTietSpByMauSac(listChiTietSpByMauSac) {-->
+<!--                                // Hiển thị danh sách kích cỡ trên trang web-->
+<!--                                var kichCoContainer = document.getElementById('kichCoContainer');-->
+<!--                                var labelKichThuoc = document.getElementById('labelKichThuoc');-->
+<!--                                labelKichThuoc.style.display = 'block';-->
+<!--                                kichCoContainer.className = 'product-size';-->
+<!--                                kichCoContainer.innerHTML = ''; // Xóa nội dung cũ-->
+
+<!--                                listChiTietSpByMauSac.forEach(function (chiTietSp, index) {-->
+
+<!--                                    var kichCoElement = document.createElement('div');-->
+<!--                                    console.log(chiTietSp)-->
+<!--                                    // Tạo phần tử input-->
+<!--                                    var input = document.createElement('input');-->
+<!--                                    input.type = 'radio';-->
+<!--                                    input.name = 'size';-->
+<!--                                    input.className = 'size-input';-->
+<!--                                    input.value = chiTietSp.kichCo.ten; // Đặt giá trị tên kích cỡ vào value-->
+<!--                                    input.id = index; // Đặt giá trị id từ mauSac.id-->
+
+<!--                                    // Tạo phần tử label-->
+<!--                                    var label = document.createElement('label');-->
+<!--                                    label.htmlFor = index; // Sử dụng mauSac.id làm htmlFor-->
+<!--                                    label.className = 'size';-->
+<!--                                    label.innerText = chiTietSp.kichCo.ten; // Hiển thị tên kích cỡ-->
+
+<!--                                    // Thêm input và label vào phần tử div-->
+<!--                                    kichCoElement.className = 'size-layout'-->
+<!--                                    kichCoElement.appendChild(input);-->
+<!--                                    kichCoElement.appendChild(label);-->
+<!--                                    kichCoContainer.appendChild(kichCoElement);-->
+
+<!--                                    // Sự kiện change cho input-->
+<!--                                    input.addEventListener('change', function () {-->
+<!--                                        // Điều này xảy ra khi người dùng chọn một kích cỡ-->
+<!--                                        // Lấy số lượng từ listChiTietSpByMauSac-->
+
+<!--                                        var soLuongHienThi = chiTietSp.soLuong;-->
+<!--                                        var giaHienThi = chiTietSp.giaHienHanh;-->
+<!--                                        var idCTSP = chiTietSp.id;-->
+
+<!--                                        var divSoLuongCon = document.getElementById('so-luong-ton');-->
+<!--                                        var rqIdChiTietSp = document.getElementById('idChiTietSp');-->
+<!--                                        var inputSoLuong = document.getElementById('soLuong');-->
+<!--                                        var spanGia = document.getElementById('giaHienThi');-->
+
+<!--                                        // Hiển thị thông tin (ở đây là cần thay thế số lượng trên trang web)-->
+<!--                                        spanGia.innerText = giaHienThi + ' VND';-->
+
+<!--                                        rqIdChiTietSp.value = idCTSP;-->
+
+<!--                                        inputSoLuong.value = 1;-->
+<!--                                        inputSoLuong.max = soLuongHienThi-->
+
+<!--                                        divSoLuongCon.style.display = 'block';-->
+<!--                                        divSoLuongCon.innerText = soLuongHienThi + ' sản phẩm có sẵn';-->
+<!--                                        divSoLuongCon.style = 'color: red';-->
+<!--                                    });-->
+
+<!--                                });-->
+
+<!--                            }-->
+
+<!--                            function limitInput(inputElement) {-->
+<!--                                var minValue = parseInt(inputElement.min, 10);-->
+<!--                                var maxValue = parseInt(inputElement.max, 10);-->
+<!--                                var stepValue = parseInt(inputElement.step, 10);-->
+
+<!--                                // Chuyển giá trị nhập vào thành số nguyên-->
+<!--                                var enteredValue = parseInt(inputElement.value, 10);-->
+
+<!--                                // Kiểm tra giá trị nhập vào-->
+<!--                                if (isNaN(enteredValue)) {-->
+<!--                                    // Nếu giá trị không phải là số, đặt giá trị mặc định là giá trị nhỏ nhất-->
+<!--                                    inputElement.value = minValue;-->
+<!--                                } else if (enteredValue < minValue) {-->
+<!--                                    // Nếu giá trị nhỏ hơn giá trị nhỏ nhất, đặt giá trị nhỏ nhất-->
+<!--                                    inputElement.value = minValue;-->
+<!--                                } else if (enteredValue > maxValue) {-->
+<!--                                    // Nếu giá trị lớn hơn giá trị lớn nhất, đặt giá trị lớn nhất-->
+<!--                                    inputElement.value = maxValue;-->
+<!--                                } else if (enteredValue % stepValue !== 0) {-->
+<!--                                    // Nếu giá trị không chia hết cho bước, làm tròn đến giá trị gần nhất chia hết cho bước-->
+<!--                                    inputElement.value = Math.round(enteredValue / stepValue) * stepValue;-->
+<!--                                }-->
+<!--                            }-->
+
+
+<!--                            function themVaoGioHang() {-->
+
+<!--                                var fillErro = document.getElementById('so-luong-ton');-->
+
+<!--                                var mauSacInputs = document.getElementsByName('mauSac');-->
+
+<!--                                var isMauSacSelected = false;-->
+
+<!--                                for (var i = 0; i < mauSacInputs.length; i++) {-->
+<!--                                    if (mauSacInputs[i].checked) {-->
+<!--                                        isMauSacSelected = true;-->
+<!--                                        break; // Ngừng lặp nếu đã có kích thước được chọn-->
+<!--                                    }-->
+<!--                                }-->
+
+<!--                                if (!isMauSacSelected) {-->
+<!--                                    console.log("Vui lòng chọn một màu sắc.");-->
+<!--                                    fillErro.innerHTML = '';-->
+<!--                                    fillErro.innerText = 'Vui lòng chọn Phân loại hàng';-->
+<!--                                    fillErro.style = 'color: red'-->
+<!--                                    return false;-->
+<!--                                }-->
+
+<!--                                var sizeInputs = document.getElementsByName('size');-->
+
+<!--                                var isSizeSelected = false;-->
+
+<!--                                for (var i = 0; i < sizeInputs.length; i++) {-->
+<!--                                    if (sizeInputs[i].checked) {-->
+<!--                                        isSizeSelected = true;-->
+<!--                                        break; // Ngừng lặp nếu đã có kích thước được chọn-->
+<!--                                    }-->
+<!--                                }-->
+
+<!--                                if (!isSizeSelected) {-->
+<!--                                    console.log("Vui lòng chọn một màu sắc.");-->
+<!--                                    fillErro.innerHTML = '';-->
+<!--                                    fillErro.innerText = 'Vui lòng chọn Phân loại hàng';-->
+<!--                                    fillErro.style = 'color: red';-->
+<!--                                    return false;-->
+<!--                                }-->
+
+<!--                                var soLuong = document.getElementById('soLuong');-->
+<!--                                var soLuongAdd = soLuong.value;-->
+
+<!--                                var rqIdChiTietSp = document.getElementById('idChiTietSp');-->
+
+<!--                                var rqIdChiTietSp = rqIdChiTietSp.value;-->
+<!--                                var soLuongTruoc = 0;-->
+<!--                                var soLuongCheck = 0;-->
+
+<!--                                //check số lượng trong giỏ hàng chi tiết-->
+<!--                                fetch('/user/shop-single/check-so-luong/' + rqIdChiTietSp)-->
+<!--                                    .then(response => response.json())-->
+<!--                                    .then(data => {-->
+<!--                                        soLuongTruoc = data;-->
+<!--                                        var soLuongTonInt = parseInt(fillErro.innerText);-->
+<!--                                        soLuongCheck = parseInt(soLuong.value) + soLuongTruoc-->
+
+<!--                                        if (soLuongCheck > soLuongTonInt) {-->
+
+<!--                                            console.log("Không thể thêm số lượng đã chọn vào giỏ hàng vì sẽ vượt quá giới hạn mua hàng của bạn.")-->
+<!--                                            //thông báo lỗi-->
+<!--                                            $('#checkSoLuongGHCT').modal('show')-->
+<!--                                            return false;-->
+<!--                                        } else {-->
+<!--                                            // Lấy URL cần gửi phương thức POST-->
+<!--                                            var url = '/user/gio-hang-chi-tiet/add/' + rqIdChiTietSp + '/' + soLuongAdd; // Thay thế bằng URL thực tế-->
+<!--                                            // Thực hiện phương thức POST-->
+<!--                                            fetch(url, {-->
+<!--                                                method: 'POST',-->
+<!--                                                headers: {-->
+<!--                                                    'Content-Type': 'application/json'-->
+<!--                                                }-->
+<!--                                            })-->
+<!--                                                .then(response => {-->
+<!--                                                    if (response.ok) {-->
+<!--                                                        //thông báo-->
+<!--                                                        var toast = new bootstrap.Toast(document.getElementById('thongBaoThemThanhCong'));-->
+<!--                                                        toast.show();-->
+<!--                                                        console.log('Đã thêm vào giỏ hàng');-->
+
+<!--                                                        //update số lượng-->
+<!--                                                        fetch('/user/shop-single/get-so-luong')-->
+<!--                                                            .then(response => response.json())-->
+<!--                                                            .then(data => {-->
+<!--                                                                soLuongTruoc = data;-->
+<!--                                                                var soLuongGHCT = document.getElementById("soLuongGHCT")-->
+<!--                                                                soLuongGHCT.innerHTML = ''-->
+<!--                                                                soLuongGHCT.innerText = soLuongTruoc-->
+<!--                                                                console.log("Sô lượng GHCT trong giỏ: " + soLuongTruoc)-->
+<!--                                                            })-->
+<!--                                                            .catch(error => {-->
+<!--                                                                console.error('Lỗi trong quá trình lấy số lượng từ cơ sở dữ liệu:', error)-->
+<!--                                                            });-->
+
+<!--                                                    } else {-->
+<!--                                                        throw new Error('Lỗi trong quá trình thêm vào giỏ hàng.');-->
+<!--                                                    }-->
+<!--                                                })-->
+<!--                                                .catch(error => {-->
+<!--                                                    console.error(error);-->
+<!--                                                });-->
+<!--                                        }-->
+<!--                                    })-->
+<!--                                    .catch(error => {-->
+<!--                                        console.error('Lỗi trong quá trình lấy số lượng từ cơ sở dữ liệu:', error)-->
+<!--                                    });-->
+
+
+<!--                            }-->
+
+<!--                            function themVaoGioHangNhanh() {-->
+
+<!--                                var fillErro = document.getElementById('so-luong-ton');-->
+
+<!--                                var mauSacInputs = document.getElementsByName('mauSac');-->
+
+<!--                                var isMauSacSelected = false;-->
+
+<!--                                for (var i = 0; i < mauSacInputs.length; i++) {-->
+<!--                                    if (mauSacInputs[i].checked) {-->
+<!--                                        isMauSacSelected = true;-->
+<!--                                        break; // Ngừng lặp nếu đã có kích thước được chọn-->
+<!--                                    }-->
+<!--                                }-->
+
+<!--                                if (!isMauSacSelected) {-->
+<!--                                    console.log("Vui lòng chọn một màu sắc.");-->
+<!--                                    fillErro.innerHTML = '';-->
+<!--                                    fillErro.innerText = 'Vui lòng chọn Phân loại hàng';-->
+<!--                                    fillErro.style = 'color: red'-->
+<!--                                    return false;-->
+<!--                                }-->
+
+<!--                                var sizeInputs = document.getElementsByName('size');-->
+
+<!--                                var isSizeSelected = false;-->
+
+<!--                                for (var i = 0; i < sizeInputs.length; i++) {-->
+<!--                                    if (sizeInputs[i].checked) {-->
+<!--                                        isSizeSelected = true;-->
+<!--                                        break; // Ngừng lặp nếu đã có kích thước được chọn-->
+<!--                                    }-->
+<!--                                }-->
+
+<!--                                if (!isSizeSelected) {-->
+<!--                                    console.log("Vui lòng chọn một màu sắc.");-->
+<!--                                    fillErro.innerHTML = '';-->
+<!--                                    fillErro.innerText = 'Vui lòng chọn Phân loại hàng';-->
+<!--                                    fillErro.style = 'color: red';-->
+<!--                                    return false;-->
+<!--                                }-->
+
+<!--                                var soLuong = document.getElementById('soLuong');-->
+<!--                                var soLuongAdd = soLuong.value;-->
+
+<!--                                var rqIdChiTietSp = document.getElementById('idChiTietSp');-->
+<!--                                var rqIdChiTietSp = rqIdChiTietSp.value;-->
+<!--                                var soLuongTruoc = 0;-->
+<!--                                var soLuongCheck = 0;-->
+
+<!--                                //check số lượng trong giỏ hàng chi tiết-->
+<!--                                fetch('/user/shop-single/check-so-luong/' + rqIdChiTietSp)-->
+<!--                                    .then(response => response.json())-->
+<!--                                    .then(data => {-->
+<!--                                        soLuongTruoc = data;-->
+<!--                                        var soLuongTonInt = parseInt(fillErro.innerText);-->
+<!--                                        soLuongCheck = parseInt(soLuong.value) + soLuongTruoc-->
+<!--                                        if (soLuongCheck > soLuongTonInt) {-->
+
+<!--                                            console.log("Không thể thêm số lượng đã chọn vào giỏ hàng vì sẽ vượt quá giới hạn mua hàng của bạn.")-->
+<!--                                            //thông báo lỗi-->
+<!--                                            $('#checkSoLuongGHCT').modal('show')-->
+<!--                                            return false;-->
+<!--                                        } else {-->
+<!--                                            // Lấy URL cần gửi phương thức POST-->
+<!--                                            var url = '/user/gio-hang-chi-tiet/add-fast/' + rqIdChiTietSp + '/' + soLuongAdd; // Thay thế bằng URL thực tế-->
+
+<!--                                            // Thực hiện phương thức POST-->
+<!--                                            fetch(url, {-->
+<!--                                                method: 'POST',-->
+<!--                                                headers: {-->
+<!--                                                    'Content-Type': 'application/json'-->
+<!--                                                }-->
+<!--                                            })-->
+<!--                                                .then(response => {-->
+<!--                                                    if (response.ok) {-->
+<!--                                                        // Xử lý kết quả nếu cần-->
+<!--                                                        console.log('Đã thêm vào giỏ hàng');-->
+<!--                                                        window.location.href = '/user/cart?checkGHCT=true1';-->
+<!--                                                    } else {-->
+<!--                                                        throw new Error('Lỗi trong quá trình thêm vào giỏ hàng.');-->
+<!--                                                    }-->
+<!--                                                })-->
+<!--                                                .catch(error => {-->
+<!--                                                    console.error(error);-->
+<!--                                                });-->
+<!--                                        }-->
+<!--                                    })-->
+<!--                                    .catch(error => {-->
+<!--                                        console.error('Lỗi trong quá trình lấy số lượng từ cơ sở dữ liệu:', error)-->
+<!--                                    });-->
+
+<!--                            }-->
+<!--                        </script>-->
+
+                    <script>
+                        // Hàm định dạng giá tiền
+                        function formatVND(value) {
+                            value = value.replace(/\D/g, '');
+                            if (value.length === 0) return '0 VNĐ';
+                            return value.replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' VNĐ';
+                        }
+
+                        document.querySelectorAll('input[name="mauSac"]').forEach(function (input) {
+                            input.addEventListener('change', function () {
+                                var idMauSac = this.value; // Lấy giá trị idMauSac khi màu sắc được chọn
+                                var idSanPhamAn = document.getElementById("idSanPhamAn");
+                                idSanPham = idSanPhamAn.value;
+                                console.log(idSanPham + 'id sản phẩm');
+                                console.log(idMauSac + 'id màu sắc');
+                                document.getElementById('so-luong-ton').style.display = 'none';
+                                getAllbyIdSPAndIdMS(idSanPham, idMauSac); // Gọi hàm để lấy danh sách kích cỡ
+
+                                var soLuong = document.getElementById('soLuong');
+                                soLuong.value = '';
+                                var rqIdChiTietSp = document.getElementById('idChiTietSp');
+                                rqIdChiTietSp.value = '';
+                            });
+                        });
+
+                        // Định nghĩa hàm để lấy danh sách kích cỡ bằng idMauSac
+                        function getAllbyIdSPAndIdMS(idSanPham, idMauSac) {
+                            var xhr = new XMLHttpRequest();
+                            xhr.open('GET', '/user/san-pham-chi-tiet/' + idSanPham + '/' + idMauSac, true);
+                            xhr.setRequestHeader('Content-Type', 'application/json');
+
+                            xhr.onreadystatechange = function () {
+                                if (xhr.readyState === 4) {
+                                    if (xhr.status === 200) {
+                                        var listChiTietSpByMauSac = JSON.parse(xhr.responseText); // Chuyển từ JSON thành danh sách
+                                        console.log(listChiTietSpByMauSac);
+                                        displaylistChiTietSpByMauSac(listChiTietSpByMauSac);
+                                    } else {
+                                        console.error('Lỗi trong quá trình lấy danh sách kích cỡ.');
+                                    }
+                                }
+                            };
+
+                            xhr.send();
+                        }
+
+                        function displaylistChiTietSpByMauSac(listChiTietSpByMauSac) {
+                            // Hiển thị danh sách kích cỡ trên trang web
+                            var kichCoContainer = document.getElementById('kichCoContainer');
+                            var labelKichThuoc = document.getElementById('labelKichThuoc');
+                            labelKichThuoc.style.display = 'block';
+                            kichCoContainer.className = 'product-size';
+                            kichCoContainer.innerHTML = ''; // Xóa nội dung cũ
+
+                            listChiTietSpByMauSac.forEach(function (chiTietSp, index) {
+                                var kichCoElement = document.createElement('div');
+                                console.log(chiTietSp)
+                                // Tạo phần tử input
+                                var input = document.createElement('input');
+                                input.type = 'radio';
+                                input.name = 'size';
+                                input.className = 'size-input';
+                                input.value = chiTietSp.kichCo.ten; // Đặt giá trị tên kích cỡ vào value
+                                input.id = index; // Đặt giá trị id từ mauSac.id
+
+                                // Tạo phần tử label
+                                var label = document.createElement('label');
+                                label.htmlFor = index; // Sử dụng mauSac.id làm htmlFor
+                                label.className = 'size';
+                                label.innerText = chiTietSp.kichCo.ten; // Hiển thị tên kích cỡ
+
+                                // Thêm input và label vào phần tử div
+                                kichCoElement.className = 'size-layout'
+                                kichCoElement.appendChild(input);
+                                kichCoElement.appendChild(label);
+                                kichCoContainer.appendChild(kichCoElement);
+
+                                // Sự kiện change cho input
                                 input.addEventListener('change', function () {
-                                    var idMauSac = this.value; // Lấy giá trị idMauSac khi màu sắc được chọn
-                                    var idSanPhamAn = document.getElementById("idSanPhamAn");
-                                    idSanPham = idSanPhamAn.value;
-                                    console.log(idSanPham + 'id sản phẩm');
-                                    console.log(idMauSac + 'id màu sắc');
-                                    document.getElementById('so-luong-ton').style.display = 'none';
-                                    getAllbyIdSPAndIdMS(idSanPham, idMauSac); // Gọi hàm để lấy danh sách kích cỡ
+                                    // Điều này xảy ra khi người dùng chọn một kích cỡ
+                                    // Lấy số lượng từ listChiTietSpByMauSac
 
-                                    var soLuong = document.getElementById('soLuong');
-                                    soLuong.value = '';
+                                    var soLuongHienThi = chiTietSp.soLuong;
+                                    var giaHienThi = chiTietSp.giaHienHanh;
+                                    var idCTSP = chiTietSp.id;
+
+                                    var divSoLuongCon = document.getElementById('so-luong-ton');
                                     var rqIdChiTietSp = document.getElementById('idChiTietSp');
-                                    rqIdChiTietSp.value = '';
+                                    var inputSoLuong = document.getElementById('soLuong');
+                                    var spanGia = document.getElementById('giaHienThi');
 
+                                    // Hiển thị thông tin (ở đây là cần thay thế số lượng trên trang web)
+                                    spanGia.innerText = formatVND(giaHienThi.toString());
+
+                                    rqIdChiTietSp.value = idCTSP;
+
+                                    inputSoLuong.value = 1;
+                                    inputSoLuong.max = soLuongHienThi
+
+                                    divSoLuongCon.style.display = 'block';
+                                    divSoLuongCon.innerText = soLuongHienThi + ' sản phẩm có sẵn';
+                                    divSoLuongCon.style = 'color: red';
                                 });
                             });
+                        }
 
-                            // Định nghĩa hàm để lấy danh sách kích cỡ bằng idMauSac
-                            function getAllbyIdSPAndIdMS(idSanPham, idMauSac) {
-                                var xhr = new XMLHttpRequest();
-                                xhr.open('GET', '/user/san-pham-chi-tiet/' + idSanPham + '/' + idMauSac, true);
-                                xhr.setRequestHeader('Content-Type', 'application/json');
+                        function limitInput(inputElement) {
+                            var minValue = parseInt(inputElement.min, 10);
+                            var maxValue = parseInt(inputElement.max, 10);
+                            var stepValue = parseInt(inputElement.step, 10);
 
-                                xhr.onreadystatechange = function () {
-                                    if (xhr.readyState === 4) {
-                                        if (xhr.status === 200) {
-                                            var listChiTietSpByMauSac = JSON.parse(xhr.responseText); // Chuyển từ JSON thành danh sách
-                                            console.log(listChiTietSpByMauSac);
-                                            displaylistChiTietSpByMauSac(listChiTietSpByMauSac);
-                                        } else {
-                                            console.error('Lỗi trong quá trình lấy danh sách kích cỡ.');
-                                        }
-                                    }
-                                };
+                            // Chuyển giá trị nhập vào thành số nguyên
+                            var enteredValue = parseInt(inputElement.value, 10);
 
-                                xhr.send();
+                            // Kiểm tra giá trị nhập vào
+                            if (isNaN(enteredValue)) {
+                                // Nếu giá trị không phải là số, đặt giá trị mặc định là giá trị nhỏ nhất
+                                inputElement.value = minValue;
+                            } else if (enteredValue < minValue) {
+                                // Nếu giá trị nhỏ hơn giá trị nhỏ nhất, đặt giá trị nhỏ nhất
+                                inputElement.value = minValue;
+                            } else if (enteredValue > maxValue) {
+                                // Nếu giá trị lớn hơn giá trị lớn nhất, đặt giá trị lớn nhất
+                                inputElement.value = maxValue;
+                            } else if (enteredValue % stepValue !== 0) {
+                                // Nếu giá trị không chia hết cho bước, làm tròn đến giá trị gần nhất chia hết cho bước
+                                inputElement.value = Math.round(enteredValue / stepValue) * stepValue;
+                            }
+                        }
+
+                        function themVaoGioHang() {
+                            var fillErro = document.getElementById('so-luong-ton');
+
+                            var mauSacInputs = document.getElementsByName('mauSac');
+                            var isMauSacSelected = false;
+                            for (var i = 0; i < mauSacInputs.length; i++) {
+                                if (mauSacInputs[i].checked) {
+                                    isMauSacSelected = true;
+                                    break; // Ngừng lặp nếu đã có màu sắc được chọn
+                                }
+                            }
+                            if (!isMauSacSelected) {
+                                console.log("Vui lòng chọn một màu sắc.");
+                                fillErro.innerHTML = '';
+                                fillErro.innerText = 'Vui lòng chọn Phân loại hàng';
+                                fillErro.style = 'color: red'
+                                return false;
                             }
 
+                            var sizeInputs = document.getElementsByName('size');
+                            var isSizeSelected = false;
+                            for (var i = 0; i < sizeInputs.length; i++) {
+                                if (sizeInputs[i].checked) {
+                                    isSizeSelected = true;
+                                    break; // Ngừng lặp nếu đã có kích thước được chọn
+                                }
+                            }
+                            if (!isSizeSelected) {
+                                console.log("Vui lòng chọn một kích cỡ.");
+                                fillErro.innerHTML = '';
+                                fillErro.innerText = 'Vui lòng chọn Phân loại hàng';
+                                fillErro.style = 'color: red';
+                                return false;
+                            }
 
-                            function displaylistChiTietSpByMauSac(listChiTietSpByMauSac) {
-                                // Hiển thị danh sách kích cỡ trên trang web
-                                var kichCoContainer = document.getElementById('kichCoContainer');
-                                var labelKichThuoc = document.getElementById('labelKichThuoc');
-                                labelKichThuoc.style.display = 'block';
-                                kichCoContainer.className = 'product-size';
-                                kichCoContainer.innerHTML = ''; // Xóa nội dung cũ
+                            var soLuong = document.getElementById('soLuong');
+                            var soLuongAdd = soLuong.value;
+                            var rqIdChiTietSp = document.getElementById('idChiTietSp').value;
+                            var soLuongTruoc = 0;
+                            var soLuongCheck = 0;
 
-                                listChiTietSpByMauSac.forEach(function (chiTietSp, index) {
+                            //check số lượng trong giỏ hàng chi tiết
+                            fetch('/user/shop-single/check-so-luong/' + rqIdChiTietSp)
+                                .then(response => response.json())
+                                .then(data => {
+                                    soLuongTruoc = data;
+                                    var soLuongTonInt = parseInt(fillErro.innerText);
+                                    soLuongCheck = parseInt(soLuong.value) + soLuongTruoc;
 
-                                    var kichCoElement = document.createElement('div');
-                                    console.log(chiTietSp)
-                                    // Tạo phần tử input
-                                    var input = document.createElement('input');
-                                    input.type = 'radio';
-                                    input.name = 'size';
-                                    input.className = 'size-input';
-                                    input.value = chiTietSp.kichCo.ten; // Đặt giá trị tên kích cỡ vào value
-                                    input.id = index; // Đặt giá trị id từ mauSac.id
-
-                                    // Tạo phần tử label
-                                    var label = document.createElement('label');
-                                    label.htmlFor = index; // Sử dụng mauSac.id làm htmlFor
-                                    label.className = 'size';
-                                    label.innerText = chiTietSp.kichCo.ten; // Hiển thị tên kích cỡ
-
-                                    // Thêm input và label vào phần tử div
-                                    kichCoElement.className = 'size-layout'
-                                    kichCoElement.appendChild(input);
-                                    kichCoElement.appendChild(label);
-                                    kichCoContainer.appendChild(kichCoElement);
-
-                                    // Sự kiện change cho input
-                                    input.addEventListener('change', function () {
-                                        // Điều này xảy ra khi người dùng chọn một kích cỡ
-                                        // Lấy số lượng từ listChiTietSpByMauSac
-
-                                        var soLuongHienThi = chiTietSp.soLuong;
-                                        var giaHienThi = chiTietSp.giaHienHanh;
-                                        var idCTSP = chiTietSp.id;
-
-                                        var divSoLuongCon = document.getElementById('so-luong-ton');
-                                        var rqIdChiTietSp = document.getElementById('idChiTietSp');
-                                        var inputSoLuong = document.getElementById('soLuong');
-                                        var spanGia = document.getElementById('giaHienThi');
-
-                                        // Hiển thị thông tin (ở đây là cần thay thế số lượng trên trang web)
-                                        spanGia.innerText = giaHienThi + ' VND';
-
-                                        rqIdChiTietSp.value = idCTSP;
-
-                                        inputSoLuong.value = 1;
-                                        inputSoLuong.max = soLuongHienThi
-
-                                        divSoLuongCon.style.display = 'block';
-                                        divSoLuongCon.innerText = soLuongHienThi + ' sản phẩm có sẵn';
-                                        divSoLuongCon.style = 'color: red';
-                                    });
-
+                                    if (soLuongCheck > soLuongTonInt) {
+                                        console.log("Không thể thêm số lượng đã chọn vào giỏ hàng vì sẽ vượt quá giới hạn mua hàng của bạn.");
+                                        //thông báo lỗi
+                                        $('#checkSoLuongGHCT').modal('show');
+                                        return false;
+                                    } else {
+                                        // Lấy URL cần gửi phương thức POST
+                                        var url = '/user/gio-hang-chi-tiet/add/' + rqIdChiTietSp + '/' + soLuongAdd; // Thay thế bằng URL thực tế
+                                        // Thực hiện yêu cầu POST đến URL trên
+                                        fetch(url, { method: 'POST' })
+                                            .then(response => {
+                                                if (response.ok) {
+                                                    console.log('Sản phẩm đã được thêm vào giỏ hàng.');
+                                                    // Bạn có thể cập nhật giao diện người dùng tại đây, nếu cần thiết
+                                                    location.reload(); // Tải lại trang sau khi thêm sản phẩm vào giỏ hàng
+                                                } else {
+                                                    console.error('Lỗi khi thêm sản phẩm vào giỏ hàng.');
+                                                }
+                                            })
+                                            .catch(error => {
+                                                console.error('Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng:', error);
+                                            });
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Đã xảy ra lỗi khi kiểm tra số lượng trong giỏ hàng chi tiết:', error);
                                 });
-
-                            }
-
-                            function limitInput(inputElement) {
-                                var minValue = parseInt(inputElement.min, 10);
-                                var maxValue = parseInt(inputElement.max, 10);
-                                var stepValue = parseInt(inputElement.step, 10);
-
-                                // Chuyển giá trị nhập vào thành số nguyên
-                                var enteredValue = parseInt(inputElement.value, 10);
-
-                                // Kiểm tra giá trị nhập vào
-                                if (isNaN(enteredValue)) {
-                                    // Nếu giá trị không phải là số, đặt giá trị mặc định là giá trị nhỏ nhất
-                                    inputElement.value = minValue;
-                                } else if (enteredValue < minValue) {
-                                    // Nếu giá trị nhỏ hơn giá trị nhỏ nhất, đặt giá trị nhỏ nhất
-                                    inputElement.value = minValue;
-                                } else if (enteredValue > maxValue) {
-                                    // Nếu giá trị lớn hơn giá trị lớn nhất, đặt giá trị lớn nhất
-                                    inputElement.value = maxValue;
-                                } else if (enteredValue % stepValue !== 0) {
-                                    // Nếu giá trị không chia hết cho bước, làm tròn đến giá trị gần nhất chia hết cho bước
-                                    inputElement.value = Math.round(enteredValue / stepValue) * stepValue;
-                                }
-                            }
+                        }
+                    </script>
 
 
-                            function themVaoGioHang() {
-
-                                var fillErro = document.getElementById('so-luong-ton');
-
-                                var mauSacInputs = document.getElementsByName('mauSac');
-
-                                var isMauSacSelected = false;
-
-                                for (var i = 0; i < mauSacInputs.length; i++) {
-                                    if (mauSacInputs[i].checked) {
-                                        isMauSacSelected = true;
-                                        break; // Ngừng lặp nếu đã có kích thước được chọn
-                                    }
-                                }
-
-                                if (!isMauSacSelected) {
-                                    console.log("Vui lòng chọn một màu sắc.");
-                                    fillErro.innerHTML = '';
-                                    fillErro.innerText = 'Vui lòng chọn Phân loại hàng';
-                                    fillErro.style = 'color: red'
-                                    return false;
-                                }
-
-                                var sizeInputs = document.getElementsByName('size');
-
-                                var isSizeSelected = false;
-
-                                for (var i = 0; i < sizeInputs.length; i++) {
-                                    if (sizeInputs[i].checked) {
-                                        isSizeSelected = true;
-                                        break; // Ngừng lặp nếu đã có kích thước được chọn
-                                    }
-                                }
-
-                                if (!isSizeSelected) {
-                                    console.log("Vui lòng chọn một màu sắc.");
-                                    fillErro.innerHTML = '';
-                                    fillErro.innerText = 'Vui lòng chọn Phân loại hàng';
-                                    fillErro.style = 'color: red';
-                                    return false;
-                                }
-
-                                var soLuong = document.getElementById('soLuong');
-                                var soLuongAdd = soLuong.value;
-
-                                var rqIdChiTietSp = document.getElementById('idChiTietSp');
-
-                                var rqIdChiTietSp = rqIdChiTietSp.value;
-                                var soLuongTruoc = 0;
-                                var soLuongCheck = 0;
-
-                                //check số lượng trong giỏ hàng chi tiết
-                                fetch('/user/shop-single/check-so-luong/' + rqIdChiTietSp)
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        soLuongTruoc = data;
-                                        var soLuongTonInt = parseInt(fillErro.innerText);
-                                        soLuongCheck = parseInt(soLuong.value) + soLuongTruoc
-
-                                        if (soLuongCheck > soLuongTonInt) {
-
-                                            console.log("Không thể thêm số lượng đã chọn vào giỏ hàng vì sẽ vượt quá giới hạn mua hàng của bạn.")
-                                            //thông báo lỗi
-                                            $('#checkSoLuongGHCT').modal('show')
-                                            return false;
-                                        } else {
-                                            // Lấy URL cần gửi phương thức POST
-                                            var url = '/user/gio-hang-chi-tiet/add/' + rqIdChiTietSp + '/' + soLuongAdd; // Thay thế bằng URL thực tế
-                                            // Thực hiện phương thức POST
-                                            fetch(url, {
-                                                method: 'POST',
-                                                headers: {
-                                                    'Content-Type': 'application/json'
-                                                }
-                                            })
-                                                .then(response => {
-                                                    if (response.ok) {
-                                                        //thông báo
-                                                        var toast = new bootstrap.Toast(document.getElementById('thongBaoThemThanhCong'));
-                                                        toast.show();
-                                                        console.log('Đã thêm vào giỏ hàng');
-
-                                                        //update số lượng
-                                                        fetch('/user/shop-single/get-so-luong')
-                                                            .then(response => response.json())
-                                                            .then(data => {
-                                                                soLuongTruoc = data;
-                                                                var soLuongGHCT = document.getElementById("soLuongGHCT")
-                                                                soLuongGHCT.innerHTML = ''
-                                                                soLuongGHCT.innerText = soLuongTruoc
-                                                                console.log("Sô lượng GHCT trong giỏ: " + soLuongTruoc)
-                                                            })
-                                                            .catch(error => {
-                                                                console.error('Lỗi trong quá trình lấy số lượng từ cơ sở dữ liệu:', error)
-                                                            });
-
-                                                    } else {
-                                                        throw new Error('Lỗi trong quá trình thêm vào giỏ hàng.');
-                                                    }
-                                                })
-                                                .catch(error => {
-                                                    console.error(error);
-                                                });
-                                        }
-                                    })
-                                    .catch(error => {
-                                        console.error('Lỗi trong quá trình lấy số lượng từ cơ sở dữ liệu:', error)
-                                    });
-
-
-                            }
-
-                            function themVaoGioHangNhanh() {
-
-                                var fillErro = document.getElementById('so-luong-ton');
-
-                                var mauSacInputs = document.getElementsByName('mauSac');
-
-                                var isMauSacSelected = false;
-
-                                for (var i = 0; i < mauSacInputs.length; i++) {
-                                    if (mauSacInputs[i].checked) {
-                                        isMauSacSelected = true;
-                                        break; // Ngừng lặp nếu đã có kích thước được chọn
-                                    }
-                                }
-
-                                if (!isMauSacSelected) {
-                                    console.log("Vui lòng chọn một màu sắc.");
-                                    fillErro.innerHTML = '';
-                                    fillErro.innerText = 'Vui lòng chọn Phân loại hàng';
-                                    fillErro.style = 'color: red'
-                                    return false;
-                                }
-
-                                var sizeInputs = document.getElementsByName('size');
-
-                                var isSizeSelected = false;
-
-                                for (var i = 0; i < sizeInputs.length; i++) {
-                                    if (sizeInputs[i].checked) {
-                                        isSizeSelected = true;
-                                        break; // Ngừng lặp nếu đã có kích thước được chọn
-                                    }
-                                }
-
-                                if (!isSizeSelected) {
-                                    console.log("Vui lòng chọn một màu sắc.");
-                                    fillErro.innerHTML = '';
-                                    fillErro.innerText = 'Vui lòng chọn Phân loại hàng';
-                                    fillErro.style = 'color: red';
-                                    return false;
-                                }
-
-                                var soLuong = document.getElementById('soLuong');
-                                var soLuongAdd = soLuong.value;
-
-                                var rqIdChiTietSp = document.getElementById('idChiTietSp');
-                                var rqIdChiTietSp = rqIdChiTietSp.value;
-                                var soLuongTruoc = 0;
-                                var soLuongCheck = 0;
-
-                                //check số lượng trong giỏ hàng chi tiết
-                                fetch('/user/shop-single/check-so-luong/' + rqIdChiTietSp)
-                                    .then(response => response.json())
-                                    .then(data => {
-                                        soLuongTruoc = data;
-                                        var soLuongTonInt = parseInt(fillErro.innerText);
-                                        soLuongCheck = parseInt(soLuong.value) + soLuongTruoc
-                                        if (soLuongCheck > soLuongTonInt) {
-
-                                            console.log("Không thể thêm số lượng đã chọn vào giỏ hàng vì sẽ vượt quá giới hạn mua hàng của bạn.")
-                                            //thông báo lỗi
-                                            $('#checkSoLuongGHCT').modal('show')
-                                            return false;
-                                        } else {
-                                            // Lấy URL cần gửi phương thức POST
-                                            var url = '/user/gio-hang-chi-tiet/add-fast/' + rqIdChiTietSp + '/' + soLuongAdd; // Thay thế bằng URL thực tế
-
-                                            // Thực hiện phương thức POST
-                                            fetch(url, {
-                                                method: 'POST',
-                                                headers: {
-                                                    'Content-Type': 'application/json'
-                                                }
-                                            })
-                                                .then(response => {
-                                                    if (response.ok) {
-                                                        // Xử lý kết quả nếu cần
-                                                        console.log('Đã thêm vào giỏ hàng');
-                                                        window.location.href = '/user/cart?checkGHCT=true1';
-                                                    } else {
-                                                        throw new Error('Lỗi trong quá trình thêm vào giỏ hàng.');
-                                                    }
-                                                })
-                                                .catch(error => {
-                                                    console.error(error);
-                                                });
-                                        }
-                                    })
-                                    .catch(error => {
-                                        console.error('Lỗi trong quá trình lấy số lượng từ cơ sở dữ liệu:', error)
-                                    });
-
-                            }
-
-
-                        </script>
-                        <!-- Thêm một phần tử để hiển thị danh sách kích cỡ -->
+                    <!-- Thêm một phần tử để hiển thị danh sách kích cỡ -->
                         <div id="kichCoContainer">
                         </div>
                         <div class="product-size">
@@ -636,7 +841,7 @@
             color: white;
             margin-bottom: 7%;
             text-align: center;">
-                Sản phẩm đã được thêm vào Giỏ hàng.
+                Sản phẩm đã được thêm vào giỏ hàng.
             </div>
         </div>
     </div>
@@ -1054,45 +1259,44 @@
         }
     </style>
 
-    <div class="container">
-        <div class="site-section block-3 site-blocks-2 ">
-            <div class="container ">
-                <div class="row justify-content-center">
-                    <div class="col-md-7 site-section-heading text-center pt-4">
-                        <h2>Sản phẩm nổi bật</h2>
-                    </div>
+<div class="container">
+    <div class="site-section block-3 site-blocks-2 ">
+        <div class="container ">
+            <div class="row justify-content-center">
+                <div class="col-md-7 site-section-heading text-center pt-4">
+                    <h2>Sản phẩm nổi bật</h2>
                 </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="nonloop-block-3 owl-carousel">
-                            <div class="item" th:each="hoaDonCT : ${listTop5HDCT}" style=";height: 420px;">
-                                <div>
-                                    <div class="product-section">
-                                        <div class="container" style="width: 90%">
-                                            <div class="pf-card" style="margin-top: -30%">
-                                                <a class="product-item"
-                                                   th:href="@{/user/shop-single/{id}(id=${hoaDonCT.sanPhamChiTiet.sanPham.id})}">
-                                                    <div class="product-thumbnail-container">
-                                                        <img th:each="anh : ${hoaDonCT.sanPhamChiTiet.sanPham.listHinhAnhSanPham[0]}"
-                                                             th:src="@{'../../../static/img/ImgShoe/' + ${anh.url}}"
-                                                             th:data-segment="${hoaDonCT.sanPhamChiTiet.mauSac.ten}"
-                                                             th:data-seating="${hoaDonCT.sanPhamChiTiet.kichCo.ten}"
-                                                             th:data-power="${hoaDonCT.sanPhamChiTiet.loaiDe.ten}"
-                                                             class="img-fluid product-thumbnail">
-                                                    </div>
-                                                    <div class="product-info-container">
-                                                        <h3 class="product-title"
-                                                            th:text="${hoaDonCT.sanPhamChiTiet.sanPham.ten+' ['+hoaDonCT.sanPhamChiTiet.mauSac.ten+ ' - ' +hoaDonCT.sanPhamChiTiet.kichCo.ten}+']'"></h3>
-                                                        <strong class="product-price"
-                                                                style="display: block;margin: 0 auto;"
-                                                                th:text="${hoaDonCT.sanPhamChiTiet.giaHienHanh + ' VNĐ'}"></strong>
-                                                        <span class="icon-cross">
-							                                 <img src="../../static/img/plus-black.png"
-                                                                  class="img-fluid">
-                                                        </span>
-                                                    </div>
-                                                </a>
-                                            </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="nonloop-block-3 owl-carousel"> <!-- Phần tử cần format -->
+                        <div class="item" th:each="hoaDonCT : ${listTop5HDCT}" style=";height: 420px;">
+                            <div>
+                                <div class="product-section">
+                                    <div class="container" style="width: 90%">
+                                        <div class="pf-card" style="margin-top: -30%">
+                                            <a class="product-item"
+                                               th:href="@{/user/shop-single/{id}(id=${hoaDonCT.sanPhamChiTiet.sanPham.id})}">
+                                                <div class="product-thumbnail-container">
+                                                    <img th:each="anh : ${hoaDonCT.sanPhamChiTiet.sanPham.listHinhAnhSanPham[0]}"
+                                                         th:src="@{'../../../static/img/ImgShoe/' + ${anh.url}}"
+                                                         th:data-segment="${hoaDonCT.sanPhamChiTiet.mauSac.ten}"
+                                                         th:data-seating="${hoaDonCT.sanPhamChiTiet.kichCo.ten}"
+                                                         th:data-power="${hoaDonCT.sanPhamChiTiet.loaiDe.ten}"
+                                                         class="img-fluid product-thumbnail">
+                                                </div>
+                                                <div class="product-info-container">
+                                                    <h3 class="product-title"
+                                                        th:text="${hoaDonCT.sanPhamChiTiet.sanPham.ten+' ['+hoaDonCT.sanPhamChiTiet.mauSac.ten+ ' - ' +hoaDonCT.sanPhamChiTiet.kichCo.ten}+']'"></h3>
+                                                    <strong class="product-price"
+                                                            style="display: block;margin: 0 auto;"
+                                                            th:text="${hoaDonCT.sanPhamChiTiet.giaHienHanh + ' VNĐ'}"></strong>
+                                                    <span class="icon-cross">
+                                                        <img src="../../static/img/plus-black.png"
+                                                             class="img-fluid">
+                                                    </span>
+                                                </div>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -1103,7 +1307,38 @@
             </div>
         </div>
     </div>
+</div>
 
+<script>
+    // Hàm format giá
+    function formatVND(value) {
+        value = value.replace(/\D/g, '');
+        if (value.length === 0) return '0 VNĐ';
+        return value.replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' VNĐ';
+    }
+
+    // Hàm format tất cả các giá trong phần cụ thể
+    function formatPricesInSection(sectionSelector) {
+        const section = document.querySelector(sectionSelector);
+        if (!section) return; // Nếu phần tử không tồn tại, thoát hàm
+
+        const priceElements = section.querySelectorAll('.product-price');
+        priceElements.forEach(element => {
+            let priceText = element.textContent;
+            let rawPrice = priceText.replace(' VNĐ', '');
+            element.textContent = formatVND(rawPrice);
+        });
+    }
+
+    // Gọi hàm formatPricesInSection cho phần tử cụ thể khi trang được tải
+    document.addEventListener('DOMContentLoaded', () => {
+        formatPricesInSection('.nonloop-block-3'); // Chỉ định phần tử cần format
+    });
+</script>
+
+
+
+<!--footer-->
     <footer class="site-footer border-top">
         <div class="container">
             <div class="row">

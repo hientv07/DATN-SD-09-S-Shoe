@@ -139,12 +139,129 @@
                 <form class="col-md-12" method="post">
                     <div class="site-blocks-table">
                         <table class="table table-bordered">
+<!--                            <table class="table">-->
+<!--                                <thead>-->
+<!--                                <tr>-->
+<!--                                    <th class="product-price">-->
+<!--                                        <input class="form-check-input" type="checkbox" id="selectAll" value=""-->
+<!--                                               style="margin: auto">-->
+<!--                                    </th>-->
+<!--                                    <th class="product-thumbnail">Ảnh</th>-->
+<!--                                    <th class="product-name">Sản Phẩm</th>-->
+<!--                                    <th class="product-name">Phân Loại</th>-->
+<!--                                    <th class="product-quantity">Số Lượng</th>-->
+<!--                                    <th class="product-quantity">Số Tiền</th>-->
+<!--                                    <th class="product-remove">Thao Tác</th>-->
+<!--                                </tr>-->
+<!--                                </thead>-->
+<!--                                <tbody>-->
+<!--                                <tr th:each="gioHangCT : ${listGioHangChiTiet}">-->
+<!--                                    <td class="product-price">-->
+<!--                                        <input class="form-check-input" name="options[]" id="checkboxID" type="checkbox"-->
+<!--                                               th:value="${gioHangCT.id}"-->
+<!--                                               style="margin: auto">-->
+<!--                                    </td>-->
+<!--                                    <td class="product-thumbnail">-->
+<!--                                                                            <img th:src="@{'../../../static/img/ImgShoe/' + ${gioHangCT.chiTietSanPham.sanPham.listHinhAnhSanPham[0].url}}"-->
+<!--                                                                                 alt="Image" class="img-fluid"/>-->
+<!--&lt;!&ndash;                                        <h3>Đang lỗi</h3>&ndash;&gt;-->
+<!--                                    </td>-->
+
+<!--                                    <td class="product-name">-->
+<!--                                        <h2 class="h5 text-black" th:text="${gioHangCT.chiTietSanPham.sanPham.ten}"></h2>-->
+<!--                                        <span th:if="${gioHangCT.soLuong>gioHangCT.chiTietSanPham.soLuong}"-->
+<!--                                              th:text="${'Số lượng còn: '+ gioHangCT.chiTietSanPham.soLuong}"-->
+<!--                                              id="checkSoLuongVuotQua"-->
+<!--                                              style="color: rgb(255, 255, 255); font-weight: bold;background-color: red; padding: 10px 20px;"></span>-->
+<!--&lt;!&ndash;                                        <h3>Đang lỗi</h3>&ndash;&gt;-->
+<!--                                    </td>-->
+<!--                                    <td class="product-name">-->
+<!--                                        <p>Kích Thước:-->
+<!--                                            <span th:text="${gioHangCT.chiTietSanPham.kichCo.ten}"></span>-->
+<!--                                        </p>-->
+<!--                                        <p>Màu Sắc:-->
+<!--                                            <span th:text="${gioHangCT.chiTietSanPham.mauSac.ten}"></span>-->
+<!--                                        </p>-->
+<!--                                        <p>Loại Đế:-->
+<!--                                            <span th:text="${gioHangCT.chiTietSanPham.loaiDe.ten}"></span>-->
+<!--                                        </p>-->
+<!--&lt;!&ndash;                                        <h3>Đang lỗi</h3>&ndash;&gt;-->
+
+<!--                                    </td>-->
+<!--                                    <td>-->
+<!--                                        <div class="input-group mb-3" style="max-width: 120px">-->
+<!--                                            <div class="input-group-prepend">-->
+<!--                                                <button class="btn btn-outline-primary js-btn-minus" type="button">-->
+<!--                                                    &minus;-->
+<!--                                                </button>-->
+<!--                                            </div>-->
+<!--                                            <input type="text" min="1"-->
+<!--                                                   th:max="${gioHangCT.chiTietSanPham.soLuong}"-->
+<!--                                                   oninput="limitInput(this)"-->
+<!--                                                   step="1"-->
+<!--                                                   class="form-control text-center" style="width: 50px;"-->
+<!--                                                   th:value="${gioHangCT.soLuong}"-->
+<!--                                                   th:id="${'soLuong_' + gioHangCT.id}+'_'+${gioHangCT.chiTietSanPham.soLuong}"-->
+<!--                                                   placeholder="" aria-label="Example text with button addon"-->
+<!--                                                   aria-describedby="button-addon1"/>-->
+
+
+<!--                                            <div class="input-group-append">-->
+<!--                                                <button class="btn btn-outline-primary js-btn-plus" type="button">-->
+<!--                                                    &plus;-->
+<!--                                                </button>-->
+<!--                                            </div>-->
+<!--                                            <script>-->
+<!--                                                // Biến để lưu trữ vị trí trang-->
+<!--                                                var scrollPosition = 0;-->
+
+<!--                                                // Lấy vị trí trang khi trang được load-->
+<!--                                                window.onload = function () {-->
+<!--                                                    scrollPosition = window.pageYOffset;-->
+<!--                                                };-->
+<!--                                            </script>-->
+<!--                                            <script>-->
+<!--                                                function limitInput(inputElement) {-->
+<!--                                                    var minValue = parseInt(inputElement.min, 10);-->
+<!--                                                    var maxValue = parseInt(inputElement.max, 10);-->
+<!--                                                    var stepValue = parseInt(inputElement.step, 10);-->
+
+<!--                                                    // Chuyển giá trị nhập vào thành số nguyên-->
+<!--                                                    var enteredValue = parseInt(inputElement.value, 10);-->
+
+<!--                                                    // Kiểm tra giá trị nhập vào-->
+<!--                                                    if (isNaN(enteredValue)) {-->
+<!--                                                        // Nếu giá trị không phải là số, đặt giá trị mặc định là giá trị nhỏ nhất-->
+<!--                                                        inputElement.value = minValue;-->
+<!--                                                    } else if (enteredValue < minValue) {-->
+<!--                                                        // Nếu giá trị nhỏ hơn giá trị nhỏ nhất, đặt giá trị nhỏ nhất-->
+<!--                                                        inputElement.value = minValue;-->
+<!--                                                    } else if (enteredValue > maxValue) {-->
+<!--                                                        // Nếu giá trị lớn hơn giá trị lớn nhất, đặt giá trị lớn nhất-->
+<!--                                                        inputElement.value = maxValue;-->
+<!--                                                    } else if (enteredValue % stepValue !== 0) {-->
+<!--                                                        // Nếu giá trị không chia hết cho bước, làm tròn đến giá trị gần nhất chia hết cho bước-->
+<!--                                                        inputElement.value = Math.round(enteredValue / stepValue) * stepValue;-->
+<!--                                                    }-->
+<!--                                                }-->
+<!--                                            </script>-->
+
+<!--                                        </div>-->
+<!--                                    </td>-->
+<!--                                    <td th:text="${gioHangCT.tongTien() + ' VNĐ'}"></td>-->
+<!--                                    <td>-->
+<!--                                        <a th:href="@{/user/cart/detele/{id}(id=${gioHangCT.id})}"-->
+<!--                                           class="btn btn-primary btn-sm">X</a>-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+<!--                                </tbody>-->
+<!--                            </table>-->
+
                             <table class="table">
                                 <thead>
                                 <tr>
                                     <th class="product-price">
-                                        <input class="form-check-input" type="checkbox" id="selectAll" value=""
-                                               style="margin: auto">
+                                        <input class="form-check-input" type="checkbox" id="selectAll" value="" style="margin: auto">
                                     </th>
                                     <th class="product-thumbnail">Ảnh</th>
                                     <th class="product-name">Sản Phẩm</th>
@@ -157,108 +274,60 @@
                                 <tbody>
                                 <tr th:each="gioHangCT : ${listGioHangChiTiet}">
                                     <td class="product-price">
-                                        <input class="form-check-input" name="options[]" id="checkboxID" type="checkbox"
-                                               th:value="${gioHangCT.id}"
-                                               style="margin: auto">
+                                        <input class="form-check-input" name="options[]" id="checkboxID" type="checkbox" th:value="${gioHangCT.id}" style="margin: auto">
                                     </td>
                                     <td class="product-thumbnail">
-                                                                            <img th:src="@{'../../../static/img/ImgShoe/' + ${gioHangCT.chiTietSanPham.sanPham.listHinhAnhSanPham[0].url}}"
-                                                                                 alt="Image" class="img-fluid"/>
-<!--                                        <h3>Đang lỗi</h3>-->
+                                        <img th:src="@{'../../../static/img/ImgShoe/' + ${gioHangCT.chiTietSanPham.sanPham.listHinhAnhSanPham[0].url}}" alt="Image" class="img-fluid"/>
                                     </td>
-
                                     <td class="product-name">
                                         <h2 class="h5 text-black" th:text="${gioHangCT.chiTietSanPham.sanPham.ten}"></h2>
-                                        <span th:if="${gioHangCT.soLuong>gioHangCT.chiTietSanPham.soLuong}"
-                                              th:text="${'Số lượng còn: '+ gioHangCT.chiTietSanPham.soLuong}"
-                                              id="checkSoLuongVuotQua"
-                                              style="color: rgb(255, 255, 255); font-weight: bold;background-color: red; padding: 10px 20px;"></span>
-<!--                                        <h3>Đang lỗi</h3>-->
+                                        <span th:if="${gioHangCT.soLuong > gioHangCT.chiTietSanPham.soLuong}" th:text="${'Số lượng còn: ' + gioHangCT.chiTietSanPham.soLuong}" id="checkSoLuongVuotQua" style="color: rgb(255, 255, 255); font-weight: bold;background-color: red; padding: 10px 20px;"></span>
                                     </td>
                                     <td class="product-name">
-                                        <p>Kích Thước:
-                                            <span th:text="${gioHangCT.chiTietSanPham.kichCo.ten}"></span>
-                                        </p>
-                                        <p>Màu Sắc:
-                                            <span th:text="${gioHangCT.chiTietSanPham.mauSac.ten}"></span>
-                                        </p>
-                                        <p>Loại Đế:
-                                            <span th:text="${gioHangCT.chiTietSanPham.loaiDe.ten}"></span>
-                                        </p>
-<!--                                        <h3>Đang lỗi</h3>-->
-
+                                        <p>Kích Thước: <span th:text="${gioHangCT.chiTietSanPham.kichCo.ten}"></span></p>
+                                        <p>Màu Sắc: <span th:text="${gioHangCT.chiTietSanPham.mauSac.ten}"></span></p>
+                                        <p>Loại Đế: <span th:text="${gioHangCT.chiTietSanPham.loaiDe.ten}"></span></p>
                                     </td>
                                     <td>
                                         <div class="input-group mb-3" style="max-width: 120px">
                                             <div class="input-group-prepend">
-                                                <button class="btn btn-outline-primary js-btn-minus" type="button">
-                                                    &minus;
-                                                </button>
+                                                <button class="btn btn-outline-primary js-btn-minus" type="button">&minus;</button>
                                             </div>
-                                            <input type="text" min="1"
-                                                   th:max="${gioHangCT.chiTietSanPham.soLuong}"
-                                                   oninput="limitInput(this)"
-                                                   step="1"
-                                                   class="form-control text-center" style="width: 50px;"
-                                                   th:value="${gioHangCT.soLuong}"
-                                                   th:id="${'soLuong_' + gioHangCT.id}+'_'+${gioHangCT.chiTietSanPham.soLuong}"
-                                                   placeholder="" aria-label="Example text with button addon"
-                                                   aria-describedby="button-addon1"/>
-
-
+                                            <input type="text" min="1" th:max="${gioHangCT.chiTietSanPham.soLuong}" oninput="limitInput(this)" step="1" class="form-control text-center" style="width: 50px;" th:value="${gioHangCT.soLuong}" th:id="${'soLuong_' + gioHangCT.id}+'_'+${gioHangCT.chiTietSanPham.soLuong}" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1"/>
                                             <div class="input-group-append">
-                                                <button class="btn btn-outline-primary js-btn-plus" type="button">
-                                                    &plus;
-                                                </button>
+                                                <button class="btn btn-outline-primary js-btn-plus" type="button">&plus;</button>
                                             </div>
-                                            <script>
-                                                // Biến để lưu trữ vị trí trang
-                                                var scrollPosition = 0;
-
-                                                // Lấy vị trí trang khi trang được load
-                                                window.onload = function () {
-                                                    scrollPosition = window.pageYOffset;
-                                                };
-                                            </script>
-                                            <script>
-                                                function limitInput(inputElement) {
-                                                    var minValue = parseInt(inputElement.min, 10);
-                                                    var maxValue = parseInt(inputElement.max, 10);
-                                                    var stepValue = parseInt(inputElement.step, 10);
-
-                                                    // Chuyển giá trị nhập vào thành số nguyên
-                                                    var enteredValue = parseInt(inputElement.value, 10);
-
-                                                    // Kiểm tra giá trị nhập vào
-                                                    if (isNaN(enteredValue)) {
-                                                        // Nếu giá trị không phải là số, đặt giá trị mặc định là giá trị nhỏ nhất
-                                                        inputElement.value = minValue;
-                                                    } else if (enteredValue < minValue) {
-                                                        // Nếu giá trị nhỏ hơn giá trị nhỏ nhất, đặt giá trị nhỏ nhất
-                                                        inputElement.value = minValue;
-                                                    } else if (enteredValue > maxValue) {
-                                                        // Nếu giá trị lớn hơn giá trị lớn nhất, đặt giá trị lớn nhất
-                                                        inputElement.value = maxValue;
-                                                    } else if (enteredValue % stepValue !== 0) {
-                                                        // Nếu giá trị không chia hết cho bước, làm tròn đến giá trị gần nhất chia hết cho bước
-                                                        inputElement.value = Math.round(enteredValue / stepValue) * stepValue;
-                                                    }
-                                                }
-                                            </script>
-
                                         </div>
                                     </td>
-                                    <td th:text="${gioHangCT.tongTien() + ' VNĐ'}"></td>
+                                    <td class="product-quantity" data-type="soTien" th:text="${gioHangCT.tongTien()}"></td>
                                     <td>
-                                        <a th:href="@{/user/cart/detele/{id}(id=${gioHangCT.id})}"
-                                           class="btn btn-primary btn-sm">X</a>
+                                        <a th:href="@{/user/cart/detele/{id}(id=${gioHangCT.id})}" class="btn btn-primary btn-sm">X</a>
                                     </td>
                                 </tr>
                                 </tbody>
                             </table>
+
+                        </table>
                     </div>
                 </form>
             </div>
+            <script>
+                // Hàm định dạng giá tiền
+                function formatVND(value) {
+                    value = value.replace(/\D/g, '');
+                    if (value.length === 0) return '0 VNĐ';
+                    return value.replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' VNĐ';
+                }
+
+                // Định dạng tất cả các ô "Số Tiền" sau khi tải trang
+                document.addEventListener('DOMContentLoaded', function() {
+                    var soTienElements = document.querySelectorAll('.product-quantity[data-type="soTien"]');
+                    soTienElements.forEach(function(element) {
+                        element.innerText = formatVND(element.innerText);
+                    });
+                });
+            </script>
+
 
             <div class="row">
                 <div class="col-md-12 pl-5" style="float: right">
@@ -405,7 +474,7 @@
                 <div class="col-md-6 col-lg-3 mb-4 mb-lg-0">
                     <h3 class="footer-heading mb-4">Mẫu mã</h3>
                     <a href="/shop" class="block-6">
-                        <img src="../../static/img/hero_1.jpg" alt="Image placeholder"
+                        <img src="../../static/img/ImgShoe/adidas22_ULTRABOOST%2022%20(3).jpg" alt="Image placeholder"
                              class="img-fluid rounded mb-4"/>
                         <h3 class="font-weight-light mb-0">
                             Tìm đôi giày hoàn hảo của bạn
@@ -420,7 +489,7 @@
                                 13 P. Trịnh Văn Bô, Xuân Phương, Nam Từ Liêm, Hà Nội, Việt Nam
                             </li>
                             <li class="phone">
-                                <a href="tel://23923929210">+84 377 463 664</a>
+                                <a href="tel://23923929210">+84 865 535 64</a>
                             </li>
                             <li class="email">shopshoes@gmail.com</li>
                         </ul>

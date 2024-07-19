@@ -33,7 +33,8 @@
                     <div class="col-6 col-md-4 order-2 order-md-1 site-search-icon text-left">
                         <form action="" class="site-block-top-search">
                             <span class="icon icon-search2"></span>
-                            <input type="text" class="form-control border-0" id="timKiemAll" placeholder="Tìm kiếm theo tên sản phẩm"/>
+                            <input type="text" class="form-control border-0" id="timKiemAll"
+                                   placeholder="Tìm kiếm theo tên sản phẩm"/>
                             <script>
                                 var inputElementTimKiemAll = document.getElementById('timKiemAll');
 
@@ -52,6 +53,7 @@
                                     window.location.href = fullUrl
 
                                 });
+
                                 // Hàm cập nhật giá trị của query parameter trong URL
                                 function updateQueryStringParameterAll(key, value, url) {
                                     var regex = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
@@ -99,7 +101,8 @@
                                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
                                        role="button" aria-expanded="false"><span class="icon icon-person"></span></a>
                                     <ul class="dropdown-menu">
-                                        <li><a class="dropdown-item" href="/user/thong-tin-khach-hang">Tài Khoản Của Tôi</a>
+                                        <li><a class="dropdown-item" href="/user/thong-tin-khach-hang">Tài Khoản Của
+                                            Tôi</a>
                                         </li>
                                         <li><a class="dropdown-item" href="/user/don-mua">Đơn Mua</a></li>
                                         <li><a class="dropdown-item" th:href="@{/logout}">Đăng Xuất</a></li>
@@ -117,7 +120,8 @@
                                 <li class="nav-item" style="margin-top: 5%;margin-left: -5%">
                                     <a class="site-cart" href="/user/cart">
                                         <span class="icon icon-shopping_cart"></span>
-                                        <span class="count" th:if="${checkDangNhap=='true'}" th:text="${soLuongSPGioHangCT}"></span>
+                                        <span class="count" th:if="${checkDangNhap=='true'}"
+                                              th:text="${soLuongSPGioHangCT}"></span>
                                     </a>
                                 </li>
                             </ul>
@@ -568,11 +572,38 @@
                         style="margin-bottom: 25%;margin-right: 10%;text-align: center" id='checkLoi'>Không tìm thấy sản
                         phẩm phù hợp
                         với bộ lọc đã chọn. Hãy thử lại với các bộ lọc khác.</h1>
+                    <!--                    <div class="row" style="margin-top: -13%">-->
+                    <!--                        <div id="pf-Container" class="pf-container live-search-list">-->
+                    <!--                            <div class="fail-message" style="text-align: center;margin-top: 20%;display: none"></div>-->
+                    <!--                            <div class="pf-card" th:each="chiTiepSp,stage : ${listCTSP}"-->
+                    <!--                                 style="margin-top: 5%">-->
+                    <!--                                <a class="product-item" th:href="@{/user/shop-single/{id}(id=${chiTiepSp.sanPham.id})}">-->
+                    <!--                                    <input type="hidden" th:value="${chiTiepSp.sanPham.ten}">-->
+                    <!--                                    <input type="hidden" th:value="${chiTiepSp.sanPham.id}">-->
+                    <!--                                    <div class="product-thumbnail-container">-->
+                    <!--                                        <img th:each="anh : ${chiTiepSp.sanPham.listHinhAnhSanPham[0]}"-->
+                    <!--                                             th:src="@{'../../../static/img/ImgShoe/' + ${anh.url}}"-->
+                    <!--                                             class="img-fluid product-thumbnail">-->
+                    <!--                                    </div>-->
+                    <!--                                    <div class="product-info-container">-->
+                    <!--                                        <h3 class="product-title"-->
+                    <!--                                            th:text="${chiTiepSp.sanPham.ten+' ['+chiTiepSp.mauSac.ten+ ' - ' +chiTiepSp.kichCo.ten}+']'"></h3>-->
+                    <!--                                        -->
+                    <!--                                        <strong class="product-price"-->
+                    <!--                                                th:text="${chiTiepSp.giaHienHanh + ' VNĐ'}"></strong>-->
+                    <!--                                        <span class="icon-cross">-->
+                    <!--							                 <img src="../../static/img/plus-black.png" class="img-fluid">-->
+                    <!--						                </span>-->
+                    <!--                                    </div>-->
+                    <!--                                </a>-->
+                    <!--                            </div>-->
+                    <!--                        </div>-->
+                    <!--                    </div>-->
+
                     <div class="row" style="margin-top: -13%">
                         <div id="pf-Container" class="pf-container live-search-list">
-                            <div class="fail-message" style="text-align: center;margin-top: 20%;display: none"></div>
-                            <div class="pf-card" th:each="chiTiepSp,stage : ${listCTSP}"
-                                 style="margin-top: 5%">
+                            <div class="fail-message" style="text-align: center; margin-top: 20%; display: none"></div>
+                            <div class="pf-card" th:each="chiTiepSp,stage : ${listCTSP}" style="margin-top: 5%">
                                 <a class="product-item" th:href="@{/user/shop-single/{id}(id=${chiTiepSp.sanPham.id})}">
                                     <input type="hidden" th:value="${chiTiepSp.sanPham.ten}">
                                     <input type="hidden" th:value="${chiTiepSp.sanPham.id}">
@@ -584,16 +615,20 @@
                                     <div class="product-info-container">
                                         <h3 class="product-title"
                                             th:text="${chiTiepSp.sanPham.ten+' ['+chiTiepSp.mauSac.ten+ ' - ' +chiTiepSp.kichCo.ten}+']'"></h3>
+
+                                        <!-- Định dạng giá với dấu chấm phân cách hàng nghìn -->
                                         <strong class="product-price"
-                                                th:text="${formattedPrice}"></strong>
+                                                th:text="${chiTiepSp.giaHienHanh}"></strong>
                                         <span class="icon-cross">
-							                 <img src="../../static/img/plus-black.png" class="img-fluid">
-						                </span>
+                                            <img src="../../static/img/plus-black.png" class="img-fluid">
+                                        </span>
                                     </div>
                                 </a>
                             </div>
                         </div>
                     </div>
+
+
                     <nav aria-label="Page navigation example" style="margin-left: 35%">
                         <ul class="pagination" style="font-size: 1.4rem">
                             <li class="page-item">
@@ -626,6 +661,24 @@
                             </li>
                         </ul>
                         <script>
+
+                            function formatVND(value) {
+                                value = value.replace(/\D/g, ''); // Xóa các ký tự không phải số
+                                if (value.length === 0) return '0 VNĐ';
+                                // Định dạng giá với dấu chấm phân cách hàng nghìn
+                                return value.replace(/\B(?=(\d{3})+(?!\d))/g, '.') + ' VNĐ';
+                            }
+
+                            // Áp dụng định dạng giá cho tất cả các sản phẩm khi trang tải xong
+                            document.addEventListener('DOMContentLoaded', function () {
+                                const priceElements = document.querySelectorAll('.product-price');
+                                priceElements.forEach(element => {
+                                    const rawValue = element.textContent.replace(/\D/g, ''); // Lấy giá trị thực tế từ nội dung
+                                    element.textContent = formatVND(rawValue); // Hiển thị giá đã định dạng
+                                });
+                            });
+
+
                             // --------------------nút điều hướng trên----------------
                             var preTop = document.getElementById("preTop");
 
@@ -864,7 +917,11 @@
                 <div class="col-md-12">
                     <p>
                         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                        Copyright &copy;<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank" class="text-primary">S-Shoe</a>
+                        Copyright &copy;<script data-cfasync="false"
+                                                src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+                        <script>document.write(new Date().getFullYear());</script>
+                        All rights reserved | This template is made with <i class="icon-heart" aria-hidden="true"></i>
+                        by <a href="https://colorlib.com" target="_blank" class="text-primary">S-Shoe</a>
                         <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
                     </p>
                 </div>
