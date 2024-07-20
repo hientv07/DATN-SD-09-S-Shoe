@@ -25,4 +25,8 @@ public interface GioHangChiTietRepository extends JpaRepository<GioHangChiTiet, 
 
     @Query(value = "select * from gio_hang_chi_tiet where gio_hang_id = :idGioHang  and chi_tiet_san_pham_id IN (:idChiTetSP)",nativeQuery = true)
     List<GioHangChiTiet> getByGioHangChiTiet(@Param("idGioHang")Long idGioHang,@Param("idChiTetSP")List<String> idChiTetSP);
+
+    @Query(value = "SELECT * FROM gio_hang_chi_tiet WHERE id_ghct IN (:listId)\n" +
+            "AND gio_hang_id = :idGioHang",nativeQuery = true)
+    List<GioHangChiTiet> findAllByIdGHCT(@Param("listId")List<Long> listId,@Param("idGioHang")Long idGioHang);
 }

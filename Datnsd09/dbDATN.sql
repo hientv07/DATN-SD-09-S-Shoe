@@ -609,3 +609,9 @@ select * from gio_hang_chi_tiet where id_ghct = 1
 select * from gio_hang_chi_tiet where id_ghct = :idGioHang
                        and trang_thai = 0 order by ngay_sua desc
 
+SELECT * FROM gio_hang_chi_tiet WHERE id_ghct IN (2, 4, 6)
+AND gio_hang_id = 1
+
+SELECT * FROM gio_hang_chi_tiet WHERE id_ghct IN (:listId)
+AND gio_hang_id = :idGioHang
+

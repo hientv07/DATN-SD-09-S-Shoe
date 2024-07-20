@@ -1,0 +1,2080 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>S-Shoe</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <link href="../../static/img/favicon.png" rel="icon">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,400,700"/>
+    <link rel="stylesheet" href="../../static/fonts/icomoon/style.css"/>
+
+    <!--    thư viện của bảng tích hợp tìm kiếm-->
+    <link rel='stylesheet' href='https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css'>
+    <!--    thư viện của bảng tích hợp tìm kiếm end-->
+
+    <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="../../static/css/magnific-popup.css"/>
+    <link rel="stylesheet" href="../../static/css/jquery-ui.css"/>
+    <link rel="stylesheet" href="../../static/css/owl.carousel.min.css"/>
+    <link rel="stylesheet" href="../../static/css/owl.theme.default.min.css"/>
+
+    <link rel="stylesheet" href="../../static/css/aos.css"/>
+
+    <link rel="stylesheet" href="../../static/css/style-customer-template.css"/>
+    <!--    <link rel="stylesheet" href="../../static/css/style.css"/>-->
+
+</head>
+
+<body>
+<div class="site-wrap">
+    <header class="site-navbar" role="banner">
+        <div class="site-navbar-top">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-6 col-md-4 order-2 order-md-1 site-search-icon text-left">
+                        <form action="" class="site-block-top-search">
+                            <span class="icon icon-search2"></span>
+                            <input type="text" class="form-control border-0" id="timKiemAll"
+                                   placeholder="Tìm kiếm theo tên sản phẩm"/>
+                            <script>
+                                var inputElementTimKiemAll = document.getElementById('timKiemAll');
+
+                                inputElementTimKiemAll.addEventListener('blur', function () {
+                                    var inputValueTimKiemAll = inputElementTimKiemAll.value;
+                                    console.log('Giá trị của input:', inputValueTimKiemAll);
+
+                                    var fullUrl = window.location.origin + "/shop"
+
+                                    if (inputValueTimKiemAll !== '') {
+                                        fullUrl = updateQueryStringParameterAll('keyword', inputValueTimKiemAll, fullUrl);
+                                    } else {
+                                        fullUrl = removeQueryStringParameterAll('keyword', fullUrl);
+                                    }
+
+                                    window.location.href = fullUrl
+
+
+                                });
+
+                                // Hàm cập nhật giá trị của query parameter trong URL
+                                function updateQueryStringParameterAll(key, value, url) {
+                                    var regex = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+                                    var separator = url.indexOf('?') !== -1 ? "&" : "?";
+                                    if (url.match(regex)) {
+                                        return url.replace(regex, '$1' + key + "=" + value + '$2');
+                                    } else {
+                                        return url + separator + key + "=" + value;
+                                    }
+                                }
+
+                                // Hàm xóa query parameter khỏi URL
+                                function removeQueryStringParameterAll(key, url) {
+                                    var urlParts = url.split('?');
+                                    if (urlParts.length >= 2) {
+                                        var prefix = encodeURIComponent(key) + '=';
+                                        var queryString = urlParts[1].split('&');
+
+                                        for (var i = queryString.length - 1; i >= 0; i--) {
+                                            if (queryString[i].lastIndexOf(prefix, 0) !== -1) {
+                                                queryString.splice(i, 1);
+                                            }
+                                        }
+
+                                        url = urlParts[0] + (queryString.length > 0 ? '?' + queryString.join('&') : '');
+                                    }
+
+                                    return url;
+                                }
+                            </script>
+                        </form>
+                    </div>
+
+                    <div class="col-12 mb-3 mb-md-0 col-md-4 order-1 order-md-2 text-center">
+                        <div class="site-logo">
+                            <a href="/home" class="js-logo-clone">Glacat</a>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-4 order-3 order-md-3 text-right">
+                        <div class="site-top-icons">
+                            <ul class="nav nav-pills" style="margin-left: 54%">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
+                                       role="button" aria-expanded="false"><span class="icon icon-person"></span></a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="/user/thong-tin-khach-hang">Tài Khoản Của
+                                            Tôi</a>
+                                        </li>
+                                        <li><a class="dropdown-item" href="/user/don-mua">Đơn Mua</a></li>
+                                        <li><a class="dropdown-item" th:href="@{/logout}">Đăng Xuất</a></li>
+                                    </ul>
+                                </li>
+
+                                <!--                                <li class="nav-item" style="margin-left: -15%">-->
+                                <!--                                    <a class="nav-link" href="#"><span class="icon icon-heart-o"></span></a>-->
+                                <!--                                </li>-->
+                                <li class="nav-item" style="margin-top: 5%;margin-left: -5%">
+                                    <a class="site-cart" href="/user/cart">
+                                        <span class="icon icon-shopping_cart"></span>
+                                        <span class="count" th:text="${soLuongSPGioHangCT}"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav class="site-navigation text-right text-md-center" role="navigation">
+            <div class="container">
+                <ul class="site-menu js-clone-nav d-none d-md-block">
+                    <li>
+                        <a href="/home">Trang chủ</a>
+                        <!-- <ul class="dropdown">
+                    <li><a href="#">Menu One</a></li>
+                    <li><a href="#">Menu Two</a></li>
+                    <li><a href="#">Menu Three</a></li>
+                    <li class="has-children">
+                      <a href="#">Sub Menu</a>
+                      <ul class="dropdown">
+                        <li><a href="#">Menu One</a></li>
+                        <li><a href="#">Menu Two</a></li>
+                        <li><a href="#">Menu Three</a></li>
+                      </ul>
+                    </li>
+                  </ul> -->
+                    </li>
+                    <!-- <li>
+                  <a href="about.html">Về chúng tôi</a>
+                  <ul class="dropdown">
+                  <li><a href="#">Menu One</a></li>
+                  <li><a href="#">Menu Two</a></li>
+                  <li><a href="#">Menu Three</a></li>
+                </ul>
+                </li> -->
+                    <li><a href="/shop">Sản phẩm</a></li>
+                    <li><a href="/about">Về chúng tôi</a></li>
+                    <li><a href="/lien-he">Liên hệ</a></li>
+                    <li><a href="/chinh-sach">Chính Sách</a></li>
+                    <li><a href="/tra-cuu-don-hang">Tra Cứu Đơn Hàng</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <!--    <div class="bg-light py-3">-->
+    <!--        <div class="container">-->
+    <!--            <div class="row">-->
+    <!--                <div class="col-md-12 mb-0">-->
+    <!--                    <a href="/home">Home</a> <span class="mx-2 mb-0">/</span>-->
+    <!--                    <a href="/user/cart">Cart</a> <span class="mx-2 mb-0">/</span>-->
+    <!--                    <strong class="text-black">Checkout</strong>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
+
+    <div class="site-section">
+        <div class="container" style="max-width: 90%">
+            <div class="row mb-3">
+                <form class="col-md-12" method="post">
+                    <div class="site-blocks-table">
+                        <!--                        <table class="table table-bordered">-->
+                        <table id="myTable" class="table">
+                            <thead>
+                            <tr>
+                                <th class="product-thumbnail">Ảnh</th>
+                                <th class="product-name">Sản Phẩm</th>
+                                <th class="product-name">Phân Loại</th>
+                                <th class="product-quantity">Đơn Giá</th>
+                                <th class="product-quantity">Số Lượng</th>
+                                <th class="product-quantity">Thành Tiền</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="gioHangCT : ${listGioHangChiTiet}">
+                                <td class="product-thumbnail">
+                                    <input type="hidden" name="allIDGioHangCT" th:value="${gioHangCT.id}">
+                                    <img th:src="@{'../../../static/img/ImgShoe/' + ${gioHangCT.chiTietSanPham.sanPham.listHinhAnhSanPham[0].url}}"
+                                         alt="Image" class="img-fluid"/>
+                                </td>
+                                <td class="product-name">
+                                    <h2 class="h5 text-black" th:text="${gioHangCT.chiTietSanPham.sanPham.ten}"></h2>
+                                    <span th:if="${gioHangCT.soLuong>gioHangCT.ChiTietSanPham.soLuong}"
+                                          th:text="${'Số lượng còn: '+ gioHangCT.ChiTietSanPham.soLuong}"
+                                          id="checkSoLuongVuotQua"
+                                          style="color: rgb(255, 255, 255); font-weight: bold;background-color: red; padding: 10px 20px;"></span>
+                                </td>
+                                <td class="product-name">
+                                    <p>Kích Thước:
+                                        <span th:text="${gioHangCT.chiTietSanPham.kichCo.ten}"></span>
+                                    </p>
+                                    <p>Màu Sắc:
+                                        <span th:text="${gioHangCT.chiTietSanPham.mauSac.ten}"></span>
+                                    </p>
+                                    <p>Loại Đế:
+                                        <span th:text="${gioHangCT.chiTietSanPham.loaiDe.ten}"></span>
+                                    </p>
+
+                                </td>
+                                <td th:text="${gioHangCT.chiTietSanPham.giaHienHanh + ' VNĐ'}"></td>
+
+                                <td th:text="${gioHangCT.soLuong}">
+                                </td>
+
+                                <td th:text="${gioHangCT.tongTien() + ' VNĐ'}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+            </div>
+            <div class="row">
+                <div class="col-md-7 mb-5 mb-md-0">
+                    <h2 class="h3 mb-3 text-black">Thông tin của bạn</h2>
+
+
+                    <div th:if="${checkDiaChi=='DiaChi'}">
+                        <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+                        <table class="table p-3 p-lg-5 border">
+                            <div class="row md-3">
+                                <div class="col-md-6">
+                                    <h5 style="display: inline">Địa chỉ giao hàng: <h5 style="display: inline"
+                                                                                       th:text="${soDiaChi+' / 5'}"></h5>
+                                    </h5>
+                                </div>
+                                <div class="col-md-6">
+                                    <button type="button" th:if="${checkButtonAdd!='true'}"
+                                            class="btn btn-primary" style="float: right;margin-bottom: 2%"
+                                            data-bs-toggle="modal" data-bs-target="#addDiaChi">
+                                        Thêm địa chỉ
+                                    </button>
+                                    <button type="button" th:if="${checkButtonAdd=='true'}" disabled
+                                            class="btn btn-primary" style="float: right;margin-bottom: 2%"
+                                            data-bs-toggle="modal" data-bs-target="#addDiaChi" title="Chỉ được thêm tối đa 5 địa chỉ">
+                                        Thêm địa chỉ
+                                    </button>
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="addDiaChi" tabindex="-1"
+                                         aria-labelledby="addDiaChiLabel" aria-hidden="true">
+                                        <div class="modal-dialog" style="margin-top: 5%;">
+                                            <div class="modal-content" style="width: 130%;margin: auto">
+                                                <div class="modal-header">
+                                                    <h3 class="modal-title fs-5" style="margin: auto">Thêm địa chỉ
+                                                    </h3>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form id="myFormAdd" th:action="@{/user/dia-chi/add}"
+                                                          method="post"
+                                                          onsubmit="return submitFormAndReloadAdd(event)">
+                                                        <div class="form-group row">
+                                                            <input type="hidden" name="idDiaChi">
+                                                            <div class="col-md-4">
+                                                                <label class="text-black">
+                                                                    <span class="text-danger">*</span>
+                                                                    Tỉnh/thành phố
+                                                                </label>
+                                                                <select id="citySelectAdd"
+                                                                        class="form-control"
+                                                                        name="thanhPhoID">
+                                                                    <option disabled selected>Chọn Thành Phố</option>
+                                                                    <!-- Options will be filled dynamically here -->
+                                                                </select>
+                                                                <span class="check-loi" id="checkLoiThanhPhoAdd"
+                                                                      style="display: none"></span>
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label class="text-black">
+                                                                    <span class="text-danger">*</span>
+                                                                    Quận/huyện
+                                                                </label>
+                                                                <select id="districtSelectAdd"
+                                                                        class="form-control"
+                                                                        name="quanHuyenID">
+                                                                    <option value="" disabled selected>Chọn Quận Huyện
+                                                                    </option>
+                                                                    <!-- Options will be filled dynamically here -->
+                                                                </select>
+                                                                <span class="check-loi" id="checkLoiQuanHuyenAdd"
+                                                                      style="display: none"></span>
+
+                                                            </div>
+                                                            <div class="col-md-4">
+                                                                <label class="text-black">
+                                                                    <span class="text-danger">*</span>
+                                                                    Xã/phường
+                                                                </label>
+                                                                <select id="wardSelectAdd"
+                                                                        class="form-control"
+                                                                        name="phuongXaID">
+                                                                    <option value="" disabled selected>Chọn Phường /
+                                                                        Xã
+                                                                    </option>
+                                                                    <!-- Options will be filled dynamically here -->
+                                                                </select>
+                                                                <span class="check-loi" id="checkLoiPhuongXaAdd"
+                                                                      style="display: none"></span>
+                                                            </div>
+
+                                                            <div class="col-md-12" style="margin-top: 1%">
+                                                                <label class="text-black">
+                                                                    <span class="text-danger">*</span>
+                                                                    Địa chỉ cụ thể</label>
+                                                                <input type="text"
+                                                                       class="form-control"
+                                                                       id="c_address1" name="diaChiCuThe"
+                                                                       placeholder="Địa chỉ cụ thể"/>
+                                                                <span class="check-loi" id="checkLoiDCCTAdd"
+                                                                      style="display: none"></span>
+
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="modal-footer">
+                                                            <button type="submit" class="btn btn-success">Thêm
+                                                            </button>
+
+                                                            <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">Đóng
+                                                            </button>
+                                                        </div>
+                                                    </form>
+                                                    <!-- call api địa chỉ cho form add địa chỉ-->
+                                                    <script th:inline="javascript">
+                                                        document.addEventListener('DOMContentLoaded', function () {
+                                                            var citySelect = document.getElementById('citySelectAdd');
+                                                            var districtSelect = document.getElementById('districtSelectAdd');
+                                                            var wardSelect = document.getElementById('wardSelectAdd');
+
+                                                            fetch('https://online-gateway.ghn.vn/shiip/public-api/master-data/province', {
+                                                                method: 'GET',
+                                                                headers: {
+                                                                    'token': 'd900c67f-742d-11ee-96dc-de6f804954c9',
+                                                                    'Content-Type': 'application/json',
+                                                                },
+                                                            })
+                                                                .then(response => response.json())
+                                                                .then(data => {
+                                                                    // Xử lý dữ liệu khi API trả về thành công
+                                                                    populateSelect(citySelect, data.data, 'ProvinceID', 'ProvinceName');
+                                                                })
+                                                                .catch(error => {
+                                                                    console.error('Lỗi khi tải dữ liệu thành phố:', error);
+                                                                });
+
+                                                            // Sự kiện khi chọn thành phố
+                                                            citySelect.addEventListener('change', function () {
+                                                                // Lấy ID của thành phố đã chọn
+                                                                var selectedCityId = this.value;
+                                                                // Kiểm tra nếu giá trị thành phố đã được chọn
+                                                                if (selectedCityId) {
+                                                                    // Xóa hết các quận/huyện hiện tại trước khi tải mới
+                                                                    districtSelect.innerHTML = '<option value="">Chọn quận/huyện</option>';
+                                                                    // Gọi hàm để tải và populate quận/huyện dựa trên ID của thành phố
+                                                                    populateDistricts(selectedCityId);
+                                                                }
+                                                            });
+
+                                                            // Sự kiện khi chọn quận
+                                                            districtSelect.addEventListener('change', function () {
+                                                                // Lấy ID của quận đã chọn
+                                                                var selectedDistrictId = this.value;
+
+                                                                // Kiểm tra nếu giá trị quận đã được chọn
+                                                                if (selectedDistrictId) {
+                                                                    // Xóa hết các quận/huyện hiện tại trước khi tải mới
+                                                                    wardSelect.innerHTML = '<option value="">Chọn xã/phường</option>';
+                                                                    // Gọi hàm để tải và populate quận/huyện dựa trên ID của thành phố
+                                                                    populateWard(selectedDistrictId);
+                                                                }
+                                                            });
+
+                                                            // Hàm để tải và populate quận/huyện
+                                                            function populateDistricts(selectedCityId) {
+                                                                fetch(`https://online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=${selectedCityId}`, {
+                                                                    method: 'GET',
+                                                                    headers: {
+                                                                        'token': 'd900c67f-742d-11ee-96dc-de6f804954c9',
+                                                                        'Content-Type': 'application/json',
+                                                                    },
+                                                                })
+                                                                    .then(response => response.json())
+                                                                    .then(data => {
+                                                                        // Xử lý dữ liệu khi API trả về thành công
+                                                                        populateSelect(districtSelect, data.data, 'DistrictID', 'DistrictName');
+                                                                    })
+                                                                    .catch(error => {
+                                                                        console.error('Lỗi khi tải dữ liệu quận:', error);
+                                                                    });
+                                                            }
+
+                                                            // Hàm để tải và populate xã phường
+                                                            function populateWard(selectedDistrictId) {
+                                                                fetch(`https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=${selectedDistrictId}`, {
+                                                                    method: 'GET',
+                                                                    headers: {
+                                                                        'token': 'd900c67f-742d-11ee-96dc-de6f804954c9',
+                                                                        'Content-Type': 'application/json',
+                                                                    },
+                                                                })
+                                                                    .then(response => response.json())
+                                                                    .then(data => {
+                                                                        // Xử lý dữ liệu khi API trả về thành công
+                                                                        populateSelect(wardSelect, data.data, 'WardCode', 'WardName');
+                                                                    })
+                                                                    .catch(error => {
+                                                                        console.error('Lỗi khi tải dữ liệu xã:', error);
+                                                                    });
+                                                            }
+
+                                                            // Hàm để populate dropdown
+                                                            function populateSelect(select, data, idKey, textKey) {
+                                                                // select.innerHTML = '<option value="">Chọn thành phố</option>';
+                                                                data.forEach(item => {
+                                                                    var option = document.createElement('option');
+                                                                    option.value = item[idKey];
+                                                                    option.text = item[textKey];
+                                                                    select.appendChild(option);
+                                                                });
+                                                            }
+                                                        });
+
+                                                    </script>
+                                                    <!-- call api địa chỉ cho form add địa chỉ  end-->
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <thead>
+                            <tr>
+                                <th>Chọn</th>
+                                <th colspan="4" style="text-align: center">Địa Chỉ Cụ Thể</th>
+                                <th>Thao Tác</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="diaChi, status : ${listDiaChi}" class="diaChiRow">
+                                <td>
+                                    <input type="radio" id="defaultRadio" name="chonDiaChi"
+                                           th:data-index="${status.index}"
+                                           onchange="handleRadioChange(this)">
+                                </td>
+                                <td th:text="${diaChi.diaChiCuThe}"></td>
+                                <td th:id="${diaChi.phuongXa}" class="phuongXaColumn"></td>
+                                <td th:id="${diaChi.quanHuyen}" class="quanHuyenColumn"></td>
+                                <td th:id="${diaChi.thanhPho}" class="thanhPhoColumn"></td>
+                                <td>
+                                    <button type="button" class="btn btn-warning" data-bs-toggle="modal"
+                                            th:data-bs-target="${'#modalDiaChi'+diaChi.id}">
+                                        Sửa
+                                    </button>
+                                    <!-- Modal -->
+                                    <div class="modal fade" th:id="${'modalDiaChi'+diaChi.id}" tabindex="-1"
+                                         data-bs-backdrop="static" data-bs-keyboard="false"
+                                         aria-labelledby="modalDiaChiLabel" aria-hidden="true">
+
+                                        <div class="modal-dialog" style="margin-top: 5%;">
+                                            <div class="modal-content" style="width: 130%;margin: auto">
+                                                <div class="modal-header">
+                                                    <h3 class="modal-title fs-5" style="margin: auto">Cập nhật địa chỉ
+                                                    </h3>
+                                                </div>
+                                                <div class="modal-body">
+
+                                                    <!--form sửa địa chỉ-->
+                                                    <form th:id="${'myForm'+diaChi.id}"
+                                                          th:action="@{/user/dia-chi/update}"
+                                                          method="post"
+                                                          th:onsubmit="'submitFormAndReload(event,'+ ${diaChi.id} + ')'">
+                                                        <div class="row mb-3">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group row">
+                                                                    <input type="hidden" name="idDiaChi"
+                                                                           th:value="${diaChi.id}">
+                                                                    <div class="col-md-4">
+                                                                        <label class="text-black" style="float: left">
+                                                                            <span class="text-danger">*</span>
+                                                                            Tỉnh/thành phố
+                                                                        </label>
+                                                                        <select th:id="${'citySelect'+status.index}"
+                                                                                class="form-control"
+                                                                                name="thanhPho">
+                                                                            <option disabled selected>Chọn Thành Phố
+                                                                            </option>
+                                                                            <!-- Options will be filled dynamically here -->
+                                                                        </select>
+                                                                        <span class="check-loi"
+                                                                              id="checkLoiThanhPhoUpdate"
+                                                                              style="display: none"></span>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <label class="text-black" style="float: left">
+                                                                            <span class="text-danger">*</span>
+                                                                            Quận/huyện
+                                                                        </label>
+                                                                        <select th:id="${'districtSelect'+status.index}"
+                                                                                class="form-control"
+                                                                                name="quanHuyen">
+                                                                            <option value="" disabled selected>Chọn Quận
+                                                                                Huyện
+                                                                            </option>
+                                                                            <!-- Options will be filled dynamically here -->
+                                                                        </select>
+                                                                        <span class="check-loi"
+                                                                              th:id="${'checkLoiQuanHuyenUpdate'+status.index}"
+                                                                              style="display: none"></span>
+                                                                    </div>
+                                                                    <div class="col-md-4">
+                                                                        <label class="text-black" style="float: left">
+                                                                            <span class="text-danger">*</span>
+                                                                            Xã/phường
+                                                                        </label>
+                                                                        <select th:id="${'wardSelect'+status.index}"
+                                                                                class="form-control"
+                                                                                name="phuongXa">
+                                                                            <option value="" disabled selected>Chọn
+                                                                                Phường /
+                                                                                Xã
+                                                                            </option>
+                                                                            <!-- Options will be filled dynamically here -->
+                                                                        </select>
+                                                                        <span class="check-loi"
+                                                                              th:id="${'checkLoiPhuongXaUpdate'+status.index}"
+                                                                              style="display: none"></span>
+                                                                    </div>
+                                                                    <div class="col-md-12" style="margin-top: 1%">
+                                                                        <label th:for="${'c_address'+status.index}"
+                                                                               class="text-black"
+                                                                               style="float: left">
+                                                                            <span class="text-danger">*</span>
+                                                                            Địa chỉ cụ thể</label>
+                                                                        <input th:value="${diaChi.diaChiCuThe}"
+                                                                               type="text"
+                                                                               class="form-control"
+                                                                               th:id="${'c_addresUpdate'+status.index}"
+                                                                               name="diaChiCuThe"
+                                                                               placeholder="Địa chỉ đường phố"/>
+                                                                        <span class="check-loi"
+                                                                              th:id="${'checkLoiDCCTUpdate'+status.index}"
+                                                                              style="display: none"></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <div class="form-check" style="float: left">
+                                                                    <input type="hidden" name="trangThai"
+                                                                           th:id="${'trangThaiHidden'+diaChi.id}"
+                                                                           th:value="${diaChi.trangThai}">
+                                                                    <input class="form-check-input" type="checkbox"
+                                                                           name="trangThaiCheckbox"
+                                                                           th:id="${'defaultCheck'+diaChi.id}"
+                                                                           th:onclick="'updateTrangThai('+ ${diaChi.id} + ')'"
+                                                                           th:checked="${diaChi.trangThai == 0}"
+                                                                           th:disabled="${diaChi.trangThai == 0}">
+                                                                    <label class="form-check-label"
+                                                                           th:for="${'defaultCheck'+diaChi.id}">
+                                                                        Đặt làm địa chỉ mặc định
+                                                                    </label>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="col-md-12" style="margin-top: 2%">
+                                                                <button type="button"
+                                                                        style="float: right;margin-left: 5%"
+                                                                        class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal" onclick="buttonDong()">
+                                                                    Đóng
+                                                                </button>
+                                                                <button type="submit" style="float: right"
+                                                                        class="btn btn-primary">Cập Nhật
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+
+                                                    <!--        api detail địa chỉ-->
+                                                    <script th:inline="javascript">
+                                                        document.addEventListener('DOMContentLoaded', function () {
+                                                            var citySelect = document.getElementById(/*[[ ${'citySelect'+status.index} ]]*/ '');
+                                                            var districtSelect = document.getElementById(/*[[ ${'districtSelect'+status.index} ]]*/ '');
+                                                            var wardSelect = document.getElementById(/*[[ ${'wardSelect'+status.index} ]]*/ '');
+                                                            var selectedCityValue = /*[[ ${diaChi.thanhPho} ]]*/ '';
+                                                            var selectedDistrictValue = /*[[ ${diaChi.quanHuyen} ]]*/ '';
+                                                            var selectedWardValue = /*[[ ${diaChi.phuongXa} ]]*/ '';
+                                                            fetch('https://online-gateway.ghn.vn/shiip/public-api/master-data/province', {
+                                                                method: 'GET',
+                                                                headers: {
+                                                                    'token': 'd900c67f-742d-11ee-96dc-de6f804954c9',
+                                                                    'Content-Type': 'application/json',
+                                                                },
+                                                            })
+                                                                .then(response => response.json())
+                                                                .then(data => {
+                                                                    // Xử lý dữ liệu khi API trả về thành công
+                                                                    populateSelect(citySelect, data.data, 'ProvinceID', 'ProvinceName');
+
+                                                                    // Tìm option có giá trị là selectedCityValue và đặt nó làm được chọn
+                                                                    var selectedOption = citySelect.querySelector(`option[value="${selectedCityValue}"]`);
+                                                                    if (selectedOption) {
+                                                                        selectedOption.selected = true;
+                                                                        // Kiểm tra nếu giá trị thành phố đã được chọn
+                                                                        if (selectedCityValue) {
+                                                                            // Gọi hàm để tải và populate quận/huyện dựa trên ID của thành phố
+                                                                            populateDistricts(selectedCityValue);
+                                                                        }
+                                                                    }
+
+                                                                })
+                                                                .catch(error => {
+                                                                    console.error('Lỗi khi tải dữ liệu thành phố:', error);
+                                                                });
+
+                                                            // Sự kiện khi chọn thành phố
+                                                            citySelect.addEventListener('change', function () {
+                                                                // Lấy ID của thành phố đã chọn
+                                                                var selectedCityId = this.value;
+
+                                                                console.log(selectedCityId);
+                                                                // Kiểm tra nếu giá trị thành phố đã được chọn
+                                                                if (selectedCityId) {
+                                                                    // Xóa hết các quận/huyện hiện tại trước khi tải mới
+                                                                    districtSelect.innerHTML = '<option value="">Chọn quận/huyện</option>';
+                                                                    // Gọi hàm để tải và populate quận/huyện dựa trên ID của thành phố
+                                                                    populateDistricts(selectedCityId);
+                                                                }
+                                                            });
+
+                                                            // Sự kiện khi chọn quận
+                                                            districtSelect.addEventListener('change', function () {
+                                                                // Lấy ID của quận đã chọn
+                                                                var selectedDistrictId = this.value;
+
+                                                                console.log(selectedDistrictId);
+                                                                // Kiểm tra nếu giá trị quận đã được chọn
+                                                                if (selectedDistrictId) {
+                                                                    // Xóa hết các quận/huyện hiện tại trước khi tải mới
+                                                                    wardSelect.innerHTML = '<option value="">Chọn xã/phường</option>';
+                                                                    // Gọi hàm để tải và populate quận/huyện dựa trên ID của thành phố
+                                                                    populateWard(selectedDistrictId);
+                                                                }
+                                                            });
+
+                                                            // Hàm để tải và populate quận/huyện
+                                                            function populateDistricts(selectedCityId) {
+                                                                fetch(`https://online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=${selectedCityId}`, {
+                                                                    method: 'GET',
+                                                                    headers: {
+                                                                        'token': 'd900c67f-742d-11ee-96dc-de6f804954c9',
+                                                                        'Content-Type': 'application/json',
+                                                                    },
+                                                                })
+                                                                    .then(response => response.json())
+                                                                    .then(data => {
+                                                                        // Xử lý dữ liệu khi API trả về thành công
+                                                                        populateSelect(districtSelect, data.data, 'DistrictID', 'DistrictName');
+
+                                                                        // Tìm option có giá trị là selectedCityValue và đặt nó làm được chọn
+                                                                        var selectedOption = districtSelect.querySelector(`option[value="${selectedDistrictValue}"]`);
+                                                                        if (selectedOption) {
+                                                                            selectedOption.selected = true;
+                                                                            // Kiểm tra nếu giá trị thành phố đã được chọn
+                                                                            if (selectedDistrictValue) {
+                                                                                // Gọi hàm để tải và populate quận/huyện dựa trên ID của thành phố
+                                                                                populateWard(selectedDistrictValue);
+                                                                            }
+                                                                        }
+
+                                                                    })
+                                                                    .catch(error => {
+                                                                        console.error('Lỗi khi tải dữ liệu quận:', error);
+                                                                    });
+                                                            }
+
+                                                            // Hàm để tải và populate xã phường
+                                                            function populateWard(selectedDistrictId) {
+                                                                fetch(`https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=${selectedDistrictId}`, {
+                                                                    method: 'GET',
+                                                                    headers: {
+                                                                        'token': 'd900c67f-742d-11ee-96dc-de6f804954c9',
+                                                                        'Content-Type': 'application/json',
+                                                                    },
+                                                                })
+                                                                    .then(response => response.json())
+                                                                    .then(data => {
+                                                                        // Xử lý dữ liệu khi API trả về thành công
+                                                                        populateSelect(wardSelect, data.data, 'WardCode', 'WardName');
+
+                                                                        // Tìm option có giá trị là selectedCityValue và đặt nó làm được chọn
+                                                                        var selectedOption = wardSelect.querySelector(`option[value="${selectedWardValue}"]`);
+                                                                        if (selectedOption) {
+                                                                            selectedOption.selected = true;
+                                                                        }
+
+                                                                    })
+                                                                    .catch(error => {
+                                                                        console.error('Lỗi khi tải dữ liệu xã:', error);
+                                                                    });
+                                                            }
+
+                                                            // Hàm để populate dropdown
+                                                            function populateSelect(select, data, idKey, textKey) {
+                                                                // select.innerHTML = '<option value="">Chọn thành phố</option>';
+                                                                data.forEach(item => {
+                                                                    var option = document.createElement('option');
+                                                                    option.value = item[idKey];
+                                                                    option.text = item[textKey];
+                                                                    select.appendChild(option);
+                                                                });
+                                                            }
+                                                        });
+
+                                                    </script>
+                                                    <!--    api detail địa chỉ end-->
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <!--  update địa chỉ-->
+                        <script>
+                            function updateTrangThai(index) {
+                                var defaultCheck = 'defaultCheck' + index
+                                var trangThaiHidden = 'trangThaiHidden' + index
+
+                                var checkbox = document.getElementById(defaultCheck);
+                                var trangThaiHidden = document.getElementById(trangThaiHidden);
+
+                                // Nếu checkbox được chọn, thiết lập giá trị của input hidden là 0
+                                // Ngược lại, giữ giá trị là 1
+                                trangThaiHidden.value = checkbox.checked ? '1' : '0';
+                                trangThaiHidden.value = checkbox.checked ? '0' : '1';
+                            }
+
+                            function buttonDong() {
+                                location.reload();
+                            }
+
+                            function submitFormAndReload(event, index) {
+                                event.preventDefault(); // Prevent the default form submission behavior
+                                var nameForm = 'myForm' + index
+                                var formElement = document.getElementById(nameForm);
+                                var formData = new FormData(formElement);
+
+                                var isValid = true; // Biến để theo dõi trạng thái tổng thể
+
+                                for (var stt = 0; stt < 5; stt++) {
+                                    var districtSelectUpdateCheck = document.getElementById('districtSelect' + stt);
+                                    var checkLoiQuanHuyenUpdate = document.getElementById('checkLoiQuanHuyenUpdate' + stt);
+                                    checkLoiQuanHuyenUpdate.style.display = 'none'
+                                    if (districtSelectUpdateCheck.value == '') {
+                                        console.log("Chưa chọn quận/huyện")
+                                        checkLoiQuanHuyenUpdate.innerHTML = ''
+                                        checkLoiQuanHuyenUpdate.style.display = 'block'
+                                        checkLoiQuanHuyenUpdate.innerText = "Chưa chọn quận/huyện"
+                                        isValid = false
+                                    }
+
+                                    var wardSelectUpdateCheck = document.getElementById('wardSelect' + stt);
+                                    var checkLoiPhuongXaUpdate = document.getElementById('checkLoiPhuongXaUpdate' + stt);
+                                    checkLoiPhuongXaUpdate.style.display = 'none'
+                                    if (wardSelectUpdateCheck.value.trim() == '') {
+                                        checkLoiPhuongXaUpdate.innerHTML = ''
+                                        checkLoiPhuongXaUpdate.style.display = 'block'
+                                        checkLoiPhuongXaUpdate.innerText = "Chưa chọn phường/xã"
+                                        isValid = false
+                                    }
+
+                                    var diaChiCuTheCheck = document.getElementById('c_addresUpdate' + stt);
+                                    var checkLoiDCCTUpdate = document.getElementById('checkLoiDCCTUpdate' + stt);
+                                    checkLoiDCCTUpdate.style.display = 'none'
+                                    if (diaChiCuTheCheck.value.trim() == '') {
+                                        checkLoiDCCTUpdate.innerHTML = ''
+                                        checkLoiDCCTUpdate.style.display = 'block'
+                                        checkLoiDCCTUpdate.innerText = "Chưa nhập địa chỉ cụ thể"
+                                        isValid = false
+                                    }
+
+                                    if (isValid) {
+                                        fetch(formElement.action, {
+                                            method: 'POST',
+                                            body: formData
+                                        })
+                                            .then(response => {
+                                                if (!response.ok) {
+                                                    throw new Error('Network response was not ok');
+                                                }
+                                                // Nếu muốn xử lý dữ liệu trả về từ máy chủ, thêm logic xử lý ở đây
+                                                // ...
+
+                                                // Load lại trang hiện tại sau khi gửi dữ liệu thành công
+                                                location.reload();
+                                            })
+                                            .catch(error => {
+                                                console.error('There was a problem with the fetch operation:', error);
+                                                // Xử lý lỗi nếu cần thiết
+                                            });
+                                    }
+                                }
+                                console.log("thành công")
+
+                            }
+
+                            function submitFormAndReloadAdd(event) {
+                                event.preventDefault(); // Prevent the default form submission behavior
+                                var formElement = document.getElementById('myFormAdd');
+
+                                // Check spam submit
+                                var btnThem = event.target.querySelector('button[type="submit"]');
+                                setTimeout(function () {
+                                    btnThem.disabled = false;
+                                }, 2000); // 2000 miligiây = 2 giây
+
+
+                                var formData = new FormData(formElement);
+                                var isValid = true; // Biến để theo dõi trạng thái tổng thể
+
+                                var citySelectAddCheck = document.getElementById("citySelectAdd");
+                                var checkLoiThanhPhoAdd = document.getElementById("checkLoiThanhPhoAdd");
+                                checkLoiThanhPhoAdd.style.display = 'none'
+                                if (citySelectAddCheck.value.trim() == 'Chọn Thành Phố') {
+                                    checkLoiThanhPhoAdd.innerHTML = ''
+                                    checkLoiThanhPhoAdd.style.display = 'block'
+                                    checkLoiThanhPhoAdd.innerText = "Chưa chọn tỉnh/thành phố"
+                                    isValid = false
+                                }
+
+                                var districtSelectAddCheck = document.getElementById("districtSelectAdd");
+                                var checkLoiQuanHuyenAdd = document.getElementById("checkLoiQuanHuyenAdd");
+                                checkLoiQuanHuyenAdd.style.display = 'none'
+                                if (districtSelectAddCheck.value.trim() == '') {
+                                    checkLoiQuanHuyenAdd.innerHTML = ''
+                                    checkLoiQuanHuyenAdd.style.display = 'block'
+                                    checkLoiQuanHuyenAdd.innerText = "Chưa chọn quận/huyện"
+                                    isValid = false
+                                }
+
+                                var wardSelectAddCheck = document.getElementById("wardSelectAdd");
+                                var checkLoiPhuongXaAdd = document.getElementById("checkLoiPhuongXaAdd");
+                                checkLoiPhuongXaAdd.style.display = 'none'
+                                if (wardSelectAddCheck.value.trim() == '') {
+                                    checkLoiPhuongXaAdd.innerHTML = ''
+                                    checkLoiPhuongXaAdd.style.display = 'block'
+                                    checkLoiPhuongXaAdd.innerText = "Chưa chọn phường/xã"
+                                    isValid = false
+                                }
+
+                                var diaChiCuTheCheck = document.getElementById("c_address1");
+                                var checkLoiDCCTAdd = document.getElementById("checkLoiDCCTAdd");
+                                checkLoiDCCTAdd.style.display = 'none'
+                                if (diaChiCuTheCheck.value.trim() == '') {
+                                    checkLoiDCCTAdd.innerHTML = ''
+                                    checkLoiDCCTAdd.style.display = 'block'
+                                    checkLoiDCCTAdd.innerText = "Chưa nhập địa chỉ cụ thể"
+                                    isValid = false
+                                }
+
+                                if (isValid) {
+                                    fetch(formElement.action, {
+                                        method: 'POST',
+                                        body: formData
+                                    })
+                                        .then(response => {
+                                            if (!response.ok) {
+                                                throw new Error('Network response was not ok');
+                                            }
+                                            // Nếu muốn xử lý dữ liệu trả về từ máy chủ, thêm logic xử lý ở đây
+                                            // ...
+
+                                            // Load lại trang hiện tại sau khi gửi dữ liệu thành công
+                                            location.reload();
+                                        })
+                                        .catch(error => {
+                                            console.error('There was a problem with the fetch operation:', error);
+                                            // Xử lý lỗi nếu cần thiết
+                                        });
+                                }
+                            }
+                        </script>
+                        <!-- update địa chỉ end-->
+
+                        <!--  radio địa chỉ + hiển thị phí ship-->
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                // Chọn radio button có ID là "defaultRadio" và gọi sự kiện onchange
+                                var defaultRadio = document.getElementById('defaultRadio');
+                                if (defaultRadio) {
+                                    defaultRadio.checked = true;
+                                    setTimeout(function () {
+                                        defaultRadio.dispatchEvent(new Event('change'));
+                                    }, 800); // Trì hoãn 1000 miligiây (1 giây)
+                                }
+                            });
+
+                            function handleRadioChange(rowIndex) {
+                                var index = rowIndex.getAttribute('data-index');
+                                var selectedRow = $('.diaChiRow:eq(' + index + ')');
+
+                                // Sử dụng .attr() để lấy giá trị thuộc tính id
+                                var thanhPhoId = selectedRow.find('.thanhPhoColumn').attr('id');
+                                var phuongXaId = selectedRow.find('.phuongXaColumn').attr('id');
+                                var quanHuyenId = selectedRow.find('.quanHuyenColumn').attr('id');
+                                console.log(phuongXaId)
+                                console.log(quanHuyenId)
+                                var secondTdValue2 = selectedRow.find('td:nth-child(2)').text();
+                                // var secondTdValue3 = selectedRow.find('td:nth-child(3)').text();
+                                // var secondTdValue4 = selectedRow.find('td:nth-child(4)').text();
+                                // var secondTdValue5 = selectedRow.find('td:nth-child(5)').text();
+                                var diaChi = document.getElementById("diaChiCuTheAll");
+                                // console.log(secondTdValue2)
+                                // console.log(secondTdValue3)
+                                diaChi.value = secondTdValue2;
+                                var thanhPhoID = document.getElementById("thanhPhoID")
+                                var quanHuyenID = document.getElementById("quanHuyenID")
+                                var phuongXaID = document.getElementById("phuongXaID")
+                                thanhPhoID.value = thanhPhoId
+                                quanHuyenID.value = quanHuyenId
+                                phuongXaID.value = phuongXaId
+                                // Thực hiện các thao tác khác dựa trên giá trị của secondTdValue
+
+                                const shippingInfo = {
+                                    // weight: parseFloat(weight),
+                                    service_type_id: 2,
+                                    // from_district_id: 3440,
+                                    to_district_id: Number(quanHuyenId),
+                                    to_ward_code: phuongXaId,
+                                    height: 30, //cao cm
+                                    length: 30, //chieu dai cm
+                                    weight: 1000, //can nang (g)
+                                    width: 30, //rong cm
+                                    insurance_value: 0,
+                                    coupon: null,
+                                    items: [
+                                        {
+                                            "name": "TEST1",
+                                            "quantity": 1,
+                                            "height": 20,
+                                            "weight": 1,
+                                            "length": 20,
+                                            "width": 20
+                                        }
+                                    ]
+                                };
+                                console.log(shippingInfo)
+
+                                fetch('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'Token': '0c4a5894-7fc8-11ee-96dc-de6f804954c9', // Replace with your GHN API token
+                                        // 'shop_id': 4689281
+                                    },
+                                    body: JSON.stringify(shippingInfo)
+                                })
+                                    .then(response => response.json())
+                                    .then(data => {
+
+                                        const shippingFeeResult = document.getElementById('shippingFeeResult');
+                                        const tienShip = document.getElementById('tienShip');
+                                        tienShip.value = `${data.data.total}`
+                                        shippingFeeResult.innerHTML = `${data.data.total + ' VND'}`;
+
+                                        //tổng tiền khi giảm
+                                        var totalElementSale = document.getElementById("totalAmountAndSale");
+
+                                        //tổng tiền khi giảm input
+                                        var tongTienAndSale = document.getElementById("tongTienAndSale");
+
+                                        //tổng tiền
+                                        var tongTienHang = document.getElementById("totalAmount");
+
+                                        //voucher
+                                        var moneyVoucher = document.getElementById("moneyVoucher");
+
+
+                                        var tienVoucher = parseInt(moneyVoucher.innerText);
+                                        var tongTien = document.getElementById("tongTien");
+                                        var tongTienHangInt = parseInt(tongTienHang.innerText);
+
+                                        // tongTien.value = `${data.data.total + tongTienHangInt}`;
+                                        tongTienAndSale.value = tongTienHangInt - tienVoucher;
+                                        totalElementSale.innerHTML = `${data.data.total + tongTienHangInt - tienVoucher + ' VND'}`;
+
+                                        console.log(data)
+                                    })
+                                    .catch(error => console.error('Error:', error));
+                            }
+                        </script>
+                        <!-- js radio địa chỉ + hiển thị phí ship enđ-->
+
+                        <!-- detail api địa chỉ lẻn bảng-->
+                        <script th:inline="javascript">
+
+                            document.addEventListener('DOMContentLoaded', function () {
+                                fetch('https://online-gateway.ghn.vn/shiip/public-api/master-data/province', {
+                                    method: 'GET',
+                                    headers: {
+                                        'token': 'd900c67f-742d-11ee-96dc-de6f804954c9',
+                                        'Content-Type': 'application/json',
+                                    },
+                                })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        // Lấy giá trị id thành phố từ thymeleaf
+                                        var idThanhPhoArray = /*[[ ${listDiaChi.![thanhPho] }]]*/ [];
+
+                                        // Duyệt qua mỗi dòng trong bảng
+                                        document.querySelectorAll('.diaChiRow').forEach((row, index) => {
+                                            // Lấy id thành phố cho dòng hiện tại
+                                            var idThanhPho = idThanhPhoArray[index];
+
+                                            // Tìm thành phố trong data.data dựa trên id
+                                            var thanhPho = data.data.find(city => city.ProvinceID == idThanhPho);
+
+                                            // Đặt tên thành phố vào thẻ có class là thanhPhoColumn trong dòng hiện tại
+                                            var thanhPhoColumn = row.querySelector('.thanhPhoColumn');
+                                            if (thanhPhoColumn && thanhPho) {
+                                                thanhPhoColumn.innerText = thanhPho.ProvinceName;
+                                            }
+                                        });
+                                    })
+                                    .catch(error => {
+                                        console.error('Lỗi khi tải dữ liệu thành phố:', error);
+                                    });
+
+                                // Hàm để tải và populate quận/huyện
+                                fetch(`https://online-gateway.ghn.vn/shiip/public-api/master-data/district`, {
+                                    method: 'GET',
+                                    headers: {
+                                        'token': 'd900c67f-742d-11ee-96dc-de6f804954c9',
+                                        'Content-Type': 'application/json',
+                                    },
+                                })
+                                    .then(response => response.json())
+                                    .then(data => {
+                                        // Lấy giá trị id thành phố từ thymeleaf
+                                        var idQuanHuyenArray = /*[[ ${listDiaChi.![quanHuyen] }]]*/ [];
+                                        // Duyệt qua mỗi dòng trong bảng
+                                        document.querySelectorAll('.diaChiRow').forEach((row, index) => {
+                                            // Lấy id thành phố cho dòng hiện tại
+                                            var idQuanHuyen = idQuanHuyenArray[index];
+
+                                            // Tìm thành phố trong data.data dựa trên id
+                                            var quanHuyen = data.data.find(district => district.DistrictID == idQuanHuyen);
+
+                                            // Đặt tên thành phố vào thẻ có class là quanHuyenColumn trong dòng hiện tại
+                                            var quanHuyenColumn = row.querySelector('.quanHuyenColumn');
+                                            if (quanHuyenColumn && quanHuyen) {
+                                                quanHuyenColumn.innerText = quanHuyen.DistrictName;
+                                            }
+                                        });
+                                    })
+                                    .catch(error => {
+                                        console.error('Lỗi khi tải dữ liệu quận:', error);
+                                    });
+
+
+                                // Lấy danh sách id quận/huyện từ một danh sách district
+                                var idQuanHuyenArray = /*[[ ${listDiaChi.![quanHuyen] }]]*/ [];
+                                // Lặp qua từng id quận/huyện và gọi API cho mỗi id
+                                idQuanHuyenArray.forEach(idQuanHuyen => {
+                                    fetch(`https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=${idQuanHuyen}`, {
+                                        method: 'GET',
+                                        headers: {
+                                            'token': 'd900c67f-742d-11ee-96dc-de6f804954c9',
+                                            'Content-Type': 'application/json',
+                                        },
+                                    })
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            // Lấy giá trị id thành phố từ thymeleaf
+                                            var idPhuongXaArray = /*[[ ${listDiaChi.![phuongXa] }]]*/ [];
+                                            // Duyệt qua mỗi dòng trong bảng
+                                            document.querySelectorAll('.diaChiRow').forEach((row, index) => {
+                                                // Lấy id thành phố cho dòng hiện tại
+                                                var idPhuongXa = idPhuongXaArray[index];
+
+                                                // Tìm thành phố trong data.data dựa trên id
+                                                var phuongXa = data.data.find(ward => ward.WardCode == idPhuongXa);
+                                                console.log(phuongXa)
+
+                                                // Đặt tên thành phố vào thẻ có class là phuongXaColumn trong dòng hiện tại
+                                                var phuongXaColumn = row.querySelector('.phuongXaColumn');
+                                                if (phuongXaColumn && phuongXa) {
+                                                    phuongXaColumn.innerText = phuongXa.WardName;
+                                                }
+
+                                            });
+                                        })
+                                        .catch(error => {
+                                            console.error('Lỗi khi tải dữ liệu xã:', error);
+                                        });
+                                });
+                            });
+
+                        </script>
+                        <!-- detail api địa chỉ end-->
+
+                        <form th:action="@{/user/checkout/add}" method="post" id="form1"
+                              class="p-3 p-lg-5 border">
+                            <input type="hidden" name="idGioHangChiTiet" id="idGioHangChiTiet">
+                            <input type="hidden" name="tongTien" id="tongTien">
+                            <input type="hidden" name="tienShip" id="tienShip">
+                            <input type="hidden" name="tienGiam" id="tienGiam" value="0">
+                            <input type="hidden" name="tongTienAndSale" id="tongTienAndSale">
+                            <input type="hidden" th:value="${khachHang.email}" name="email">
+                            <input type="hidden" name="voucher" id="voucherID">
+                            <input type="hidden" name="thanhPhoID" id="thanhPhoID">
+                            <input type="hidden" name="quanHuyenID" id="quanHuyenID">
+                            <input type="hidden" name="phuongXaID" id="phuongXaID">
+                            <input type="hidden" id="diaChiCuTheAll" class="form-control"
+                                   name="diaChiCuThe"/>
+                            <input type="hidden" name="trangThaiLuuDC" value="1">
+
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <label for="c_fname" class="text-black">
+                                        <span class="text-danger">*</span>
+                                        Họ và tên
+                                    </label>
+                                    <input type="text" class="form-control" id="c_fname" name="hoVaTen"
+                                           placeholder="Họ và tên"
+                                           th:value="${khachHang.hoVaTen}"/>
+                                    <span class="check-loi" id="checkLoiHoTen" style="display: none"></span>
+
+                                </div>
+
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <label for="c_companyname" class="text-black">
+                                        <span class="text-danger">*</span>
+                                        Số điện thoại
+                                    </label>
+                                    <input type="text" class="form-control" id="c_companyname" name="soDienThoai"
+                                           placeholder="Số điện thoại"
+                                           th:if="${khachHang.soDienThoai eq '0300000000'}"
+                                    />
+                                    <input type="text" class="form-control" id="c_companyname" name="soDienThoai"
+                                           placeholder="Số điện thoại"
+                                           th:if="${khachHang.soDienThoai ne '0300000000'}"
+                                           th:value="${khachHang.soDienThoai}"/>
+
+                                    <span class="check-loi" id="checkLoiSDT" style="display: none"></span>
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+                                <label for="c_order_notes" class="text-black">Ghi chú</label>
+                                <textarea name="ghiChu" id="c_order_notes" cols="30" rows="5"
+                                          class="form-control" placeholder="Viết ghi chú của bạn ở đây..."></textarea>
+                            </div>
+
+                        </form>
+                    </div>
+                    <div th:if="${checkDiaChi=='DiaChiNull'}">
+                        <form th:action="@{/user/checkout/add}" method="post" id="form1" class="p-3 p-lg-5 border">
+                            <input type="hidden" name="idGioHangChiTiet" id="idGioHangChiTiet">
+                            <input type="hidden" name="tongTien" id="tongTien">
+                            <input type="hidden" name="tienShip" id="tienShip">
+                            <input type="hidden" name="tienGiam" id="tienGiam" value="0">
+                            <input type="hidden" name="tongTienAndSale" id="tongTienAndSale">
+                            <input type="hidden" th:value="${khachHang.email}" name="email">
+                            <input type="hidden" name="voucher" id="voucherID">
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <label for="c_fname" class="text-black">
+                                        <span class="text-danger">*</span>
+                                        Họ và tên
+                                    </label>
+                                    <input type="text" class="form-control" id="c_fname" name="hoVaTen"
+                                           placeholder="Họ và tên"
+                                           th:value="${khachHang.hoVaTen}"/>
+                                    <span class="check-loi" id="checkLoiHoTen" style="display: none"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <label for="c_companyname" class="text-black">
+                                        <span class="text-danger">*</span>
+                                        Số điện thoại
+                                    </label>
+                                    <input type="text" class="form-control" id="c_companyname" name="soDienThoai"
+                                           placeholder="Số điện thoại"
+                                           th:if="${khachHang.soDienThoai eq '0300000000'}"
+                                    />
+                                    <input type="text" class="form-control" id="c_companyname" name="soDienThoai"
+                                           placeholder="Số điện thoại"
+                                           th:if="${khachHang.soDienThoai ne '0300000000'}"
+                                           th:value="${khachHang.soDienThoai}"/>
+                                    <span class="check-loi" id="checkLoiSDT" style="display: none"></span>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-md-4">
+                                    <label class="text-black">
+                                        <span class="text-danger">*</span>
+                                        Tỉnh/thành phố
+                                    </label>
+                                    <select id="citySelect" class="form-control" name="thanhPhoID">
+                                        <option disabled selected>Chọn Thành Phố</option>
+                                        <!-- Options will be filled dynamically here -->
+                                    </select>
+                                    <span class="check-loi" id="checkLoiThanhPho" style="display: none"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="text-black">
+                                        <span class="text-danger">*</span>
+                                        Quận/huyện
+                                    </label>
+                                    <select id="districtSelect" class="form-control" name="quanHuyenID">
+                                        <option value="" disabled selected>Chọn Quận Huyện</option>
+                                        <!-- Options will be filled dynamically here -->
+                                    </select>
+                                    <span class="check-loi" id="checkLoiQuanHuyen" style="display: none"></span>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="text-black">
+                                        <span class="text-danger">*</span>
+                                        Xã/phường
+                                    </label>
+                                    <select id="wardSelect" class="form-control" name="phuongXaID"
+                                            onchange="countShippingFee()">
+                                        <option value="" disabled selected>Chọn Phường / Xã</option>
+                                        <!-- Options will be filled dynamically here -->
+                                    </select>
+                                    <span class="check-loi" id="checkLoiPhuongXa" style="display: none"></span>
+                                </div>
+
+                                <script th:inline="javascript">
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                        var citySelect = document.getElementById('citySelect');
+                                        var districtSelect = document.getElementById('districtSelect');
+                                        var wardSelect = document.getElementById('wardSelect');
+
+                                        fetch('https://online-gateway.ghn.vn/shiip/public-api/master-data/province', {
+                                            method: 'GET',
+                                            headers: {
+                                                'token': 'd900c67f-742d-11ee-96dc-de6f804954c9',
+                                                'Content-Type': 'application/json',
+                                            },
+                                        })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                // Xử lý dữ liệu khi API trả về thành công
+                                                populateSelect(citySelect, data.data, 'ProvinceID', 'ProvinceName');
+                                            })
+                                            .catch(error => {
+                                                console.error('Lỗi khi tải dữ liệu thành phố:', error);
+                                            });
+
+                                        // Sự kiện khi chọn thành phố
+                                        citySelect.addEventListener('change', function () {
+                                            // Lấy ID của thành phố đã chọn
+                                            var selectedCityId = this.value;
+
+                                            console.log(selectedCityId);
+                                            // var thanhPhoDetail = document.getElementById("thanhPhoID")
+                                            // thanhPhoDetail.value = selectedCityId
+                                            // Kiểm tra nếu giá trị thành phố đã được chọn
+                                            if (selectedCityId) {
+                                                // Xóa hết các quận/huyện hiện tại trước khi tải mới
+                                                districtSelect.innerHTML = '<option value="">Chọn quận/huyện</option>';
+                                                // Gọi hàm để tải và populate quận/huyện dựa trên ID của thành phố
+                                                populateDistricts(selectedCityId);
+                                            }
+                                        });
+
+                                        // Sự kiện khi chọn quận
+                                        districtSelect.addEventListener('change', function () {
+                                            // Lấy ID của quận đã chọn
+                                            var selectedDistrictId = this.value;
+                                            console.log(selectedDistrictId)
+                                            // var quanHuyenDetail = document.getElementById("quanHuyenID")
+                                            // quanHuyenDetail.value = selectedDistrictId
+                                            // Kiểm tra nếu giá trị quận đã được chọn
+                                            if (selectedDistrictId) {
+                                                // Xóa hết các quận/huyện hiện tại trước khi tải mới
+                                                wardSelect.innerHTML = '<option value="">Chọn xã/phường</option>';
+                                                // Gọi hàm để tải và populate quận/huyện dựa trên ID của thành phố
+                                                populateWard(selectedDistrictId);
+                                            }
+                                        });
+
+                                        // Hàm để tải và populate quận/huyện
+                                        function populateDistricts(selectedCityId) {
+                                            fetch(`https://online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=${selectedCityId}`, {
+                                                method: 'GET',
+                                                headers: {
+                                                    'token': 'd900c67f-742d-11ee-96dc-de6f804954c9',
+                                                    'Content-Type': 'application/json',
+                                                },
+                                            })
+                                                .then(response => response.json())
+                                                .then(data => {
+                                                    // Xử lý dữ liệu khi API trả về thành công
+                                                    populateSelect(districtSelect, data.data, 'DistrictID', 'DistrictName');
+
+                                                })
+                                                .catch(error => {
+                                                    console.error('Lỗi khi tải dữ liệu quận:', error);
+                                                });
+                                        }
+
+                                        // Hàm để tải và populate xã phường
+                                        function populateWard(selectedDistrictId) {
+                                            fetch(`https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=${selectedDistrictId}`, {
+                                                method: 'GET',
+                                                headers: {
+                                                    'token': 'd900c67f-742d-11ee-96dc-de6f804954c9',
+                                                    'Content-Type': 'application/json',
+                                                },
+                                            })
+                                                .then(response => response.json())
+                                                .then(data => {
+                                                    // Xử lý dữ liệu khi API trả về thành công
+                                                    populateSelect(wardSelect, data.data, 'WardCode', 'WardName');
+
+                                                })
+                                                .catch(error => {
+                                                    console.error('Lỗi khi tải dữ liệu xã:', error);
+                                                });
+                                        }
+
+                                        // Hàm để populate dropdown
+                                        function populateSelect(select, data, idKey, textKey) {
+                                            // select.innerHTML = '<option value="">Chọn thành phố</option>';
+                                            data.forEach(item => {
+                                                var option = document.createElement('option');
+                                                option.value = item[idKey];
+                                                option.text = item[textKey];
+                                                select.appendChild(option);
+                                            });
+                                        }
+                                    });
+
+                                    function countShippingFee() {
+                                        var thanhPhoID = document.getElementById("citySelect")
+                                        var quanHuyenSelect = document.getElementById("districtSelect")
+                                        var phuongXaSelect = document.getElementById("wardSelect")
+
+                                        // Thực hiện các thao tác khác dựa trên giá trị của secondTdValue
+
+                                        const shippingInfo = {
+                                            // weight: parseFloat(weight),
+                                            service_type_id: 2,
+                                            // from_district_id: 3440,
+                                            to_district_id: Number(quanHuyenSelect.value),
+                                            to_ward_code: phuongXaSelect.value,
+                                            height: 30, //cao cm
+                                            length: 30, //chieu dai cm
+                                            weight: 1000, //can nang (g)
+                                            width: 30, //rong cm
+                                            insurance_value: 0,
+                                            coupon: null,
+                                            items: [
+                                                {
+                                                    "name": "TEST1",
+                                                    "quantity": 1,
+                                                    "height": 20,
+                                                    "weight": 1,
+                                                    "length": 20,
+                                                    "width": 20
+                                                }
+                                            ]
+                                        };
+                                        console.log(shippingInfo)
+
+                                        fetch('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'Token': '0c4a5894-7fc8-11ee-96dc-de6f804954c9', // Replace with your GHN API token
+                                                // 'shop_id': 4689281
+                                            },
+                                            body: JSON.stringify(shippingInfo)
+                                        })
+                                            .then(response => response.json())
+                                            .then(data => {
+
+                                                const shippingFeeResult = document.getElementById('shippingFeeResult');
+                                                const tienShip = document.getElementById('tienShip');
+                                                tienShip.value = `${data.data.total}`
+                                                shippingFeeResult.innerHTML = `${data.data.total + ' VND'}`;
+
+                                                //tổng tiền khi giảm
+                                                var totalElementSale = document.getElementById("totalAmountAndSale");
+
+                                                //tổng tiền khi giảm input
+                                                var tongTienAndSale = document.getElementById("tongTienAndSale");
+
+                                                //tổng tiền
+                                                var tongTienHang = document.getElementById("totalAmount");
+
+                                                //voucher
+                                                var moneyVoucher = document.getElementById("moneyVoucher");
+
+
+                                                var tienVoucher = parseInt(moneyVoucher.innerText);
+                                                var tongTien = document.getElementById("tongTien");
+                                                var tongTienHangInt = parseInt(tongTienHang.innerText);
+
+                                                // tongTien.value = `${data.data.total + tongTienHangInt}`;
+                                                tongTienAndSale.value = tongTienHangInt - tienVoucher;
+                                                totalElementSale.innerHTML = `${data.data.total + tongTienHangInt - tienVoucher + ' VND'}`;
+
+                                                console.log(data)
+                                            })
+                                            .catch(error => console.error('Error:', error));
+                                    }
+
+                                </script>
+                            </div>
+
+                            <div class="form-group row">
+                                <div class="col-md-12">
+                                    <label class="text-black">
+                                        <span class="text-danger">*</span>
+                                        Địa chỉ cụ thể</label>
+                                    <input type="text" class="form-control" id="diaChiCuThe" name="diaChiCuThe"
+                                           placeholder="Địa chỉ đường phố"/>
+                                    <span class="check-loi" id="checkLoiDiaChiCT" style="display: none"></span>
+                                </div>
+                            </div>
+                            <div class="form-check">
+                                <input type="hidden" name="trangThaiLuuDC" id="trangThaiAdDiaChiHidden" value="1">
+                                <input class="form-check-input" type="checkbox"
+                                       id="defaultCheckLuuDiaChi"
+                                       onclick="trangThaiLuuDiaChi()">
+
+                                <label class="form-check-label" for="defaultCheckLuuDiaChi"
+                                       style="color: black;margin-bottom: 1%">
+                                    Lưu địa chỉ cho lần sau
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label for="c_order_notes" class="text-black">Ghi chú</label>
+                                <textarea name="ghiChu" id="c_order_notes" cols="30" rows="5"
+                                          class="form-control" placeholder="Viết ghi chú của bạn ở đây..."></textarea>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="row mb-5">
+                        <div class="col-md-12">
+                            <h2 class="h3 mb-3 text-black">Voucher</h2>
+                            <div class="p-3 p-lg-5 border">
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <input type="text" class="form-control" id="c_code" disabled
+                                               aria-label="Coupon Code" aria-describedby="button-addon2"/>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <button class="btn btn-primary btn-sm" type="button"
+                                                onclick="checkAndDisplayVouchers()"
+                                                data-bs-toggle="modal" data-bs-target="#voucher">
+                                            Chọn voucher
+                                        </button>
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="voucher" tabindex="-1"
+                                             aria-labelledby="voucherLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h3 class="modal-title fs-5" style="margin: auto"
+                                                            id="voucherLabel">Chọn Voucher
+                                                        </h3>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="card mb-3" style="height: 10%"
+                                                             th:each="voucher : ${listVoucher}">
+                                                            <div class="row g-0">
+                                                                <div class="col-md-3">
+                                                                    <div class="card-body"
+                                                                         style="margin-left: 5px;margin-top: 15px">
+                                                                        <img src="../../static/img/logo.png"
+                                                                             style="margin-left: 15px"
+                                                                             class="img-fluid rounded-start"
+                                                                             alt="...">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-7">
+                                                                    <div class="card-body">
+                                                                        <h5 class="card-title"
+                                                                            style="margin-bottom: -3px"
+                                                                            th:text="${'Giảm '+ voucher.phanTramGiam + '%'}"></h5>
+                                                                        <small class="text-body-secondary"
+                                                                               style="display: block"
+                                                                               th:text="${'Giảm tối đa ' + voucher.giamToiDa + ' VND'}"></small>
+                                                                        <small class="text-body-secondary"
+                                                                               style="display: block"
+                                                                               id="donToiThieu"
+                                                                               th:text="${'Đơn Tối Thiểu '+ voucher.giaTriDonToiThieu + ' VND'}"></small>
+                                                                        <small class="text-body-secondary"
+                                                                               style="display: block"
+                                                                               th:text="${'Số Lượng '+voucher.soLuong}"></small>
+                                                                        <small class="text-body-secondary"
+                                                                               style="display: block"
+                                                                               th:text="${'Hạn Sử Dụng '+#temporals.format(voucher.ngayKetThuc, 'hh:mm dd/MM/yyyy')}"></small>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <div class="card-body">
+                                                                        <input type="radio" style="margin-top: 35px"
+                                                                               name="voucherRadio"
+                                                                               th:data-index="${voucher.id + ' ' +voucher.phanTramGiam+ ' ' +voucher.giamToiDa}"
+                                                                               onchange="handleRadioVoucher(this)">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-12">
+                                                                    <small class="text-body-secondary"
+                                                                           style=" display: none;margin-left: 50px;color: red"
+                                                                           id="thongBaoThieuTien"></small>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <!--  css + js chọn voucher-->
+                                                        <style>
+                                                            .muted-radio {
+                                                                opacity: 0.5; /* hoặc bất kỳ kiểu định dạng nào bạn muốn để làm mờ */
+                                                                pointer-events: none; /* Ngăn chặn sự kiện click */
+                                                            }
+
+                                                            .muted-card {
+                                                                opacity: 0.5; /* hoặc kiểu định dạng mờ khác */
+                                                            }
+                                                        </style>
+                                                        <script>
+                                                            function handleRadioVoucher(rowIndex) {
+                                                                var index = rowIndex.getAttribute('data-index');
+                                                                console.log(index)
+                                                                // Tách chuỗi thành mảng các phần tử (số)
+                                                                var numbersArray = index.split(' ');
+
+                                                                // Chuyển đổi các phần tử thành số nguyên
+                                                                var idVoucher = parseInt(numbersArray[0], 10);
+                                                                var phamTramGiam = parseInt(numbersArray[1], 10);
+                                                                var giaTriGiam = parseInt(numbersArray[2], 10);
+
+                                                                // In ra kết quả
+                                                                console.log('Số thứ nhất:', idVoucher);
+                                                                console.log('Số thứ hai:', phamTramGiam);
+                                                                console.log('Số thứ 3:', giaTriGiam);
+
+                                                                var voucher1 = document.getElementById("voucherID");
+                                                                voucher1.value = idVoucher
+
+                                                                var moneyVoucher = document.getElementById("moneyVoucher");
+                                                                //tổng tiền khi giảm
+                                                                var totalElementSale = document.getElementById("totalAmountAndSale");
+
+                                                                //tổng tiền khi giảm input
+                                                                var tongTienAndSale = document.getElementById("tongTienAndSale");
+
+                                                                //tổng tiền
+                                                                var tongTienHang = document.getElementById("totalAmount");
+
+                                                                var shippingFeeResult = document.getElementById("shippingFeeResult");
+
+                                                                var detailVoucher = document.getElementById("c_code");
+
+                                                                var tienGiam = document.getElementById("tienGiam");
+
+
+                                                                var shippingFeeResultInt = parseInt(shippingFeeResult.innerText);
+                                                                var tongTien = document.getElementById("tongTien");
+                                                                var tongTienHangInt = parseInt(tongTienHang.innerText);
+
+                                                                var tongTienGiamTheoPhanTram = ((tongTienHangInt * phamTramGiam) / 100).toFixed(0)
+                                                                if (tongTienGiamTheoPhanTram > giaTriGiam) {
+                                                                    tongTienGiamTheoPhanTram = giaTriGiam
+                                                                }
+                                                                console.log("số tiền được giảm là: " + tongTienGiamTheoPhanTram)
+                                                                detailVoucher.value = -tongTienGiamTheoPhanTram + ' VND';
+                                                                moneyVoucher.innerText = tongTienGiamTheoPhanTram + ' VND';
+
+                                                                tienGiam.value = tongTienGiamTheoPhanTram;
+                                                                tongTienAndSale.value =  tongTienHangInt - tongTienGiamTheoPhanTram;
+                                                                totalElementSale.innerHTML = shippingFeeResultInt + tongTienHangInt - tongTienGiamTheoPhanTram + ' VND';
+
+                                                                $('#voucher').modal('hide')
+
+                                                            }
+
+                                                            function checkAndDisplayVouchers() {
+
+                                                                // Lấy giá trị totalAmount từ #totalAmount
+                                                                var totalAmount = parseFloat(document.getElementById('totalAmount').innerText.replace(' VND', '').trim());
+                                                                console.log(totalAmount)
+
+                                                                // Lặp qua danh sách voucher và kiểm tra điều kiện
+                                                                document.querySelectorAll('.card.mb-3').forEach(function (card) {
+                                                                    var voucherGiaTriDonToiThieu = parseFloat(card.querySelector('#donToiThieu').innerText.replace('Đơn Tối Thiểu ', '').replace(' VND', '').trim());
+                                                                    var radio = card.querySelector('input[name="voucherRadio"]');
+                                                                    var thongBao = card.querySelector('#thongBaoThieuTien');
+
+                                                                    // Nếu giá trị voucherGiaTriDonToiThieu nhỏ hơn totalAmount, làm mờ radio button
+                                                                    if (voucherGiaTriDonToiThieu > totalAmount) {
+                                                                        radio.classList.add('muted-radio');
+                                                                        card.classList.add('muted-card');
+
+                                                                        // Thêm thông báo cho mỗi thẻ voucher không đủ điều kiện
+                                                                        thongBao.innerHTML = '';
+
+                                                                        thongBao.style.display = 'block';
+                                                                        thongBao.innerText += 'Mua thêm ' + (voucherGiaTriDonToiThieu - totalAmount) + ' sản phẩm để sử dụng Voucher cho mã ';
+                                                                    } else {
+                                                                        radio.classList.remove('muted-radio');
+                                                                        card.classList.remove('muted-card');
+                                                                    }
+                                                                });
+
+                                                                // Hiển thị modal
+                                                                $('#voucher').modal('show');
+                                                            }
+
+                                                            function boChonVoucher() {
+                                                                location.reload();
+                                                            }
+                                                        </script>
+                                                        <!--  css + js chọn voucher-->
+
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" onclick="boChonVoucher()"
+                                                                class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Bỏ chọn
+                                                        </button>
+                                                        <button type="button" class="btn btn-secondary"
+                                                                data-bs-dismiss="modal">Quay lại
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-5">
+                        <div class="col-md-12">
+                            <div class="p-3 p-lg-5 border">
+                                <table class="table site-block-order-table mb-5">
+                                    <tbody>
+                                    <tr>
+                                        <td>Tổng tiền hàng
+                                            <div id="totalAmount" style="float: right">0 VND</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Phí vận chuyển
+                                            <div id="shippingFeeResult" style="float: right">0 VND</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Voucher
+                                            <div id="moneyVoucher" style="float: right">0 VND</div>
+                                        </td>
+                                    </tr>
+                                    <script>
+                                        document.addEventListener("DOMContentLoaded", function () {
+                                            tinhVaHienThiTongTien();
+                                        });
+
+                                        function tinhVaHienThiTongTien() {
+                                            var table = document.getElementById("myTable");
+                                            var total = 0;
+
+                                            for (var i = 1; i < table.rows.length; i++) {
+                                                var cell = table.rows[i].cells[5];
+                                                var value = cell.innerHTML.replace(" VNĐ", "").trim();
+                                                total += parseFloat(value);
+                                            }
+
+                                            var hiddenInputs = document.querySelectorAll('input[name="allIDGioHangCT"]');
+                                            var allValues = [];
+                                            for (var i = 0; i < hiddenInputs.length; i++) {
+                                                allValues.push(hiddenInputs[i].value);
+                                            }
+                                            var idGioHangChiTiet = document.getElementById("idGioHangChiTiet");
+                                            idGioHangChiTiet.value = allValues;
+
+                                            var tongTien = document.getElementById("tongTien");
+                                            tongTien.value = total;
+
+                                            var tongTienAndSale = document.getElementById("tongTienAndSale");
+                                            tongTienAndSale.value = total;
+
+                                            // Hiển thị tổng tiền trên trang
+                                            var totalElement = document.getElementById("totalAmount");
+                                            totalElement.innerText = total + " VNĐ";
+
+                                            // var sale = document.getElementById("sale");
+                                            // giaGiam =  5/100;
+                                            var tienShip = document.getElementById("shippingFeeResult");
+                                            var soTienShip = parseInt(tienShip.innerText);
+
+                                            var totalElementSale = document.getElementById("totalAmountAndSale");
+                                            totalElementSale.innerText = total + " VNĐ";
+                                        }
+                                    </script>
+                                    <tr>
+                                        <td class="text-black font-weight-bold">
+                                            <strong>Tổng thanh toán
+                                                <strong id="totalAmountAndSale" style="float: right">0 VNĐ</strong>
+                                            </strong>
+                                        </td>
+
+                                    </tr>
+                                    </tbody>
+                                </table>
+                                <div class="form-group">
+                                    <button th:if="${checkDiaChi=='DiaChi'}"
+                                            class="btn btn-primary btn-lg py-3 btn-block"
+                                            onclick="return checkFormDatHang()">
+                                        Đặt hàng
+                                    </button>
+                                    <button th:if="${checkDiaChi=='DiaChiNull'}"
+                                            class="btn btn-primary btn-lg py-3 btn-block"
+                                            onclick="return checkFormDatHangNoDC()">
+                                        Đặt hàng
+                                    </button>
+                                    <!-- Modal thông báo xác nhận đặt hàng-->
+                                    <div class="modal fade" id="xacNhanDatHang" tabindex="-1"
+                                         aria-labelledby="xacNhanDatHangLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="xacNhanDatHangLabel">Xác Nhận</h5>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Bạn có xác nhận đặt hàng không!</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="submit" form="form1" onclick="buttonDatHang()"
+                                                            class="btn btn-primary">Đồng ý
+                                                    </button>
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Đóng
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Modal thông báo xác nhận đặt hàng end-->
+
+                                    <!-- Modal thông báo xác nhận đặt hàng-->
+                                    <div class="modal fade" id="gioHangNull" tabindex="-1"
+                                         aria-labelledby="gioHangNullLabel" data-bs-backdrop="static"
+                                         aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="gioHangNullLabel">Giỏ hàng của bạn đang
+                                                        trống.
+                                                    </h5>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Một số sản phẩm trong giỏ hàng vừa được cập nhật, bạn vui lòng
+                                                        kiểm tra giỏ hàng và thử lại.</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <a href="/user/cart" class="btn btn-primary">Đồng ý</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Modal thông báo xác nhận đặt hàng end-->
+                                    <!-- Modal thông báo check check số lượng-->
+                                    <script th:if="${checkSoLuongDB=='true'}">
+                                        window.addEventListener('DOMContentLoaded', (event) => {
+                                            // Hiển thị modal
+                                            var myModal = new bootstrap.Modal(document.getElementById('checkSoLuongDB'));
+                                            myModal.show();
+                                        });
+
+                                    </script>
+                                    <div class="modal fade" id="checkSoLuongDB" style="margin-top: 8%"
+                                         tabindex="-1"
+                                         aria-labelledby="checkSoLuongDBLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-body" style="text-align: center;margin-top: 3%">
+                                                    <p>Có sản phẩm vượt quá số lượng vui lòng kiểm tra lại!
+                                                    </p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Ok
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Modal thông báo check check số lượng end-->
+                                    <script>
+                                        function trangThaiLuuDiaChi() {
+                                            var checkbox = document.getElementById('defaultCheckLuuDiaChi');
+                                            var trangThaiAdDiaChiHidden = document.getElementById('trangThaiAdDiaChiHidden');
+
+                                            // Nếu checkbox được chọn, thiết lập giá trị của input hidden là 0
+                                            // Ngược lại, giữ giá trị là 1
+                                            trangThaiAdDiaChiHidden.value = checkbox.checked ? '1' : '0';
+                                            trangThaiAdDiaChiHidden.value = checkbox.checked ? '0' : '1';
+                                        }
+
+                                        function buttonDatHang() {
+                                            // Check spam submit
+                                            var btnDatHang2 = document.querySelector('button[th\\:if="${checkDiaChi==\'DiaChi\'}"]');
+                                            setTimeout(function () {
+                                                btnDatHang2.disabled = false;
+                                            }, 2000); // 2000 miligiây = 2 giây
+
+                                            // Check spam submit
+                                            var btnDatHang = document.querySelector('button[th\\:if="${checkDiaChi==\'DiaChiNull\'}"]');
+                                            setTimeout(function () {
+                                                btnDatHang.disabled = false;
+                                            }, 2000); // 2000 miligiây = 2 giây
+
+                                        }
+
+                                        function isValidPhoneNumber(phoneNumber) {
+                                            // Biểu thức chính quy kiểm tra số điện thoại
+                                            var phoneRegex = /^(0[35789][0-9]{8,9})$/;
+
+                                            // Kiểm tra xem số điện thoại có khớp với biểu thức chính quy hay không
+                                            return phoneRegex.test(phoneNumber);
+                                        }
+
+                                        function checkFormDatHang() {
+                                            var isValid = true; // Biến để theo dõi trạng thái tổng thể
+
+                                            var idGioHangChiTiet = document.getElementById("idGioHangChiTiet");
+                                            if (idGioHangChiTiet.value.trim() == '') {
+                                                $('#gioHangNull').modal('show');
+                                                isValid = false;
+                                            }
+                                            var ten = document.getElementById("c_fname");
+                                            var checkTen = document.getElementById("checkLoiHoTen");
+                                            checkTen.style.display = 'none'
+                                            if (ten.value.trim() == '' || ten.value == " ") {
+                                                console.log("Chưa nhập tên")
+                                                checkTen.innerHTML = ''
+                                                checkTen.style.display = 'block'
+                                                checkTen.innerText = "Chưa nhập tên"
+                                                isValid = false;
+                                            }
+                                            var sdt = document.getElementById("c_companyname");
+                                            var checkSDT = document.getElementById("checkLoiSDT");
+                                            checkSDT.style.display = 'none'
+                                            if (sdt.value.trim() == '') {
+                                                console.log("Chưa nhập số điện thoại")
+                                                checkSDT.innerHTML = ''
+                                                checkSDT.style.display = 'block'
+                                                checkSDT.innerText = "Chưa nhập số điện thoại"
+                                                isValid = false;
+                                            } else if (!isValidPhoneNumber(sdt.value.trim())) {
+                                                console.log("Số điện thoại không hợp lệ")
+                                                checkSDT.innerHTML = ''
+                                                checkSDT.style.display = 'block'
+                                                checkSDT.innerText = "Số điện thoại không hợp lệ"
+                                                isValid = false;
+                                            }
+                                            // Kiểm tra xem tất cả điều kiện đã thỏa mãn chưa
+                                            if (isValid) {
+                                                // Hiển thị modal
+                                                $('#xacNhanDatHang').modal('show');
+                                            }
+                                        }
+
+                                        function checkFormDatHangNoDC() {
+                                            var isValid = true; // Biến để theo dõi trạng thái tổng thể
+
+                                            var idGioHangChiTiet = document.getElementById("idGioHangChiTiet");
+                                            if (idGioHangChiTiet.value.trim() == '') {
+                                                $('#gioHangNull').modal('show');
+                                                isValid = false;
+                                            }
+                                            var ten = document.getElementById("c_fname");
+                                            var checkTen = document.getElementById("checkLoiHoTen");
+                                            checkTen.style.display = 'none'
+                                            if (ten.value.trim() == '') {
+                                                console.log("Chưa nhập tên")
+                                                checkTen.innerHTML = ''
+                                                checkTen.style.display = 'block'
+                                                checkTen.innerText = "Chưa nhập tên"
+                                                isValid = false;
+                                            }
+                                            var sdt = document.getElementById("c_companyname");
+                                            var checkSDT = document.getElementById("checkLoiSDT");
+                                            checkSDT.style.display = 'none'
+                                            if (sdt.value.trim() == '') {
+                                                console.log("Chưa nhập số điện thoại")
+                                                checkSDT.innerHTML = ''
+                                                checkSDT.style.display = 'block'
+                                                checkSDT.innerText = "Chưa nhập số điện thoại"
+                                                isValid = false;
+                                            } else if (!isValidPhoneNumber(sdt.value.trim())) {
+                                                console.log("Số điện thoại không hợp lệ")
+                                                checkSDT.innerHTML = ''
+                                                checkSDT.style.display = 'block'
+                                                checkSDT.innerText = "Số điện thoại không hợp lệ"
+                                                isValid = false;
+                                            }
+
+
+                                            var thanhPho = document.getElementById("citySelect");
+                                            var checkThanhPho = document.getElementById("checkLoiThanhPho");
+                                            checkThanhPho.style.display = 'none'
+                                            if (thanhPho.value.trim() == 'Chọn Thành Phố') {
+                                                console.log("Chưa chọn thành phố")
+                                                checkThanhPho.innerHTML = ''
+                                                checkThanhPho.style.display = 'block'
+                                                checkThanhPho.innerText = "Chưa chọn thành phố"
+                                                isValid = false;
+                                            }
+                                            var quanHuyen = document.getElementById("districtSelect");
+                                            var checkQuanHuyen = document.getElementById("checkLoiQuanHuyen");
+                                            checkQuanHuyen.style.display = 'none'
+                                            if (quanHuyen.value.trim() == '') {
+                                                console.log("Chưa chọn quận huyện")
+                                                checkQuanHuyen.innerHTML = ''
+                                                checkQuanHuyen.style.display = 'block'
+                                                checkQuanHuyen.innerText = "Chưa chọn quận huyện"
+                                                isValid = false;
+                                            }
+                                            var xaPhuong = document.getElementById("wardSelect");
+                                            var checkXaPhuong = document.getElementById("checkLoiPhuongXa");
+                                            checkXaPhuong.style.display = 'none'
+                                            if (xaPhuong.value.trim() == '') {
+                                                console.log("Chưa chọn xã phường")
+                                                checkXaPhuong.innerHTML = ''
+                                                checkXaPhuong.style.display = 'block'
+                                                checkXaPhuong.innerText = "Chưa chọn phường xã"
+                                                isValid = false;
+                                            }
+                                            var diaChiCT = document.getElementById("diaChiCuThe");
+                                            var checkDiaChiCT = document.getElementById("checkLoiDiaChiCT");
+                                            checkDiaChiCT.style.display = 'none'
+                                            if (diaChiCT.value.trim() == '') {
+                                                console.log("Chưa nhập địa chỉ cụ thể")
+                                                checkDiaChiCT.innerHTML = ''
+                                                checkDiaChiCT.style.display = 'block'
+                                                checkDiaChiCT.innerText = "Chưa chọn địa chỉ cụ thể"
+                                                isValid = false;
+                                            }
+                                            if (isValid) {
+                                                // Hiển thị modal
+                                                $('#xacNhanDatHang').modal('show');
+                                            }
+                                        }
+
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- </form> -->
+        </div>
+    </div>
+
+    <footer class="site-footer border-top">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h3 class="footer-heading mb-4">Điều hướng</h3>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <ul class="list-unstyled">
+                                <li><a href="#">Vận chuyển</a></li>
+                                <li><a href="#">Khu vực</a></li>
+                                <li><a href="#">Kênh bán hàng</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <ul class="list-unstyled">
+                                <li><a href="/about">Đội ngũ</a></li>
+                                <li><a href="/chinh-sach">Trả hàng</a></li>
+                                <li><a href="#">Bảo mật</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 col-lg-4">
+                            <ul class="list-unstyled">
+                                <li><a href="/lien-he">Liên hệ</a></li>
+                                <li><a href="/lien-he">Chăm sóc khách hàng</a></li>
+                                <li><a href="/lien-he">Phản hồi</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3 mb-4 mb-lg-0">
+                    <h3 class="footer-heading mb-4">Mẫu mã</h3>
+                    <a href="/shop" class="block-6">
+                        <img src="../../static/img/hero_1.jpg" alt="Image placeholder"
+                             class="img-fluid rounded mb-4"/>
+                        <h3 class="font-weight-light mb-0">
+                            Tìm đôi giày hoàn hảo của bạn
+                        </h3>
+                    </a>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="block-5 mb-5">
+                        <h3 class="footer-heading mb-4">Thông tin liên lạc</h3>
+                        <ul class="list-unstyled">
+                            <li class="address">
+                                13 P. Trịnh Văn Bô, Xuân Phương, Nam Từ Liêm, Hà Nội, Việt Nam
+                            </li>
+                            <li class="phone">
+                                <a href="tel://23923929210">+84 377 463 664</a>
+                            </li>
+                            <li class="email">shopshoes@gmail.com</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
+        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
+        crossorigin="anonymous"></script>
+
+<script src="../../static/js/jquery-3.3.1.min.js"></script>
+<script src="../../static/js/jquery-ui.js"></script>
+<script src="../../static/js/popper.min.js"></script>
+<!--<script src="../../static/js/bootstrap.min.js"></script>-->
+<script src="../../static/js/owl.carousel.min.js"></script>
+<script src="../../static/js/jquery.magnific-popup.min.js"></script>
+<script src="../../static/js/aos.js"></script>
+
+<script src="../../static/js/main.js"></script>
+</body>
+
+</html>

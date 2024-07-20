@@ -86,8 +86,11 @@ public class KhachHang {
     @OneToOne(mappedBy = "khachHang")
     GioHang gioHang;
 
-//    @OneToOne(mappedBy = "gioHang")
-//    private KhachHang khachHang;
     @OneToMany(mappedBy = "khachHang")
     List<DiaChi> lstDiaChi;
+
+//    @OneToOne(mappedBy = "gioHang")
+//    private KhachHang khachHang;
+//    @OneToMany(mappedBy = "khachHang")
+//    List<DiaChi> lstDiaChi;
 }

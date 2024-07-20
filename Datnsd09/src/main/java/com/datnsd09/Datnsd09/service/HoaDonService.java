@@ -38,7 +38,7 @@ public interface HoaDonService {
 
     Long sumHoaDonMonth(Date ngayTao);
 
-    Integer countHoaDon(Integer trangThai);
+
 
     Integer countHoaDonBetween(Date startDate,
                                Date endDate);
@@ -46,6 +46,7 @@ public interface HoaDonService {
     Long sumGiaTriHoaDonBetween(Date startDate,
                                 Date endDate);
 
+    //Trạng thái các hóa đơn
     Integer countHoaDonTrangThaiBetween(Date startDate,
                                         Date endDate,
                                         Integer trangThai);
@@ -59,6 +60,12 @@ public interface HoaDonService {
     Integer countHoaDonAll();
 
     Long sumGiaTriHoaDonAll();
+    //trạng thái hoa don
+    Integer countHoaDon(Integer trangThai);
+
+    //lưu hoa don
+    //void saveOrUpdate(HoaDon hoaDonls);
+    //kết thúc thống kê bình
 
     void deleteHoaDonHoanTra();
 

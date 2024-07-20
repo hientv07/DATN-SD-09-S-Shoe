@@ -1,5 +1,6 @@
 package com.datnsd09.Datnsd09.service;
 
+import com.datnsd09.Datnsd09.entity.HoaDon;
 import com.datnsd09.Datnsd09.entity.HoaDonChiTiet;
 
 import java.util.Date;
@@ -28,6 +29,8 @@ public interface HoaDonChiTietService {
     List<Object[]> findByTongSoLuongBetweenGetAll();
 
     Integer sumSanPhamHoaDonAll();
+
+
 
     //kết thúc bình
 

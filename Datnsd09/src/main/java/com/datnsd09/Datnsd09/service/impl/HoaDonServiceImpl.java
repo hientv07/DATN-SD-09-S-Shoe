@@ -124,7 +124,7 @@ public class HoaDonServiceImpl implements HoaDonService {
 
     @Override
     public Long sumGiaTriHoaDonBetween(Date startDate, Date endDate) {
-        return hoaDonRepository.sumGiaTriHoaDonBetween(startDate, endDate);
+        return hoaDonRepository.sumGiaTriHoaDonBetween(startDate,endDate);
     }
 
     @Override
@@ -406,4 +406,9 @@ public class HoaDonServiceImpl implements HoaDonService {
         }
 
     }
+
+//    @Override
+//    public void saveOrUpdate(HoaDon hoaDonls) {
+//        hoaDonRepository.save(hoaDonls);
+//    }
 }

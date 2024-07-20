@@ -1,10 +1,7 @@
 package com.datnsd09.Datnsd09.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
@@ -15,6 +12,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Builder
 @Table(name = "hoa_don")
 
 public class HoaDon {
@@ -86,20 +84,20 @@ public class HoaDon {
     private Integer trangThai;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "phuong_thuc_thanh_toan_id", referencedColumnName = "id_pttt")
-    private PhuongThucThanhToan phuongThucThanhToan;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "nhan_vien_id", referencedColumnName = "id_nv")
-    private NhanVien nhanVien;
+    @JoinColumn(name = "voucher_id", referencedColumnName = "id_voucher")
+    private Voucher voucher;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "khach_hang_id", referencedColumnName = "id_kh")
     private KhachHang khachHang;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "voucher_id", referencedColumnName = "id_voucher")
-    private Voucher voucher;
+    @JoinColumn(name = "phuong_thuc_thanh_toan_id", referencedColumnName = "id_pttt")
+    private PhuongThucThanhToan phuongThucThanhToan;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "nhan_vien_id", referencedColumnName = "id_nv")
+    private NhanVien nhanVien;
 
     @OneToMany(mappedBy = "hoaDon")
     private List<HoaDonChiTiet> lstHoaDonChiTiet;
