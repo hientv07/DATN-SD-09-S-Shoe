@@ -407,24 +407,24 @@
                                                             <td>
                                                                 <div class="row">
                                                                     <div class="col-4">
-                                                                        <img th:src="@{'../../../static/img/ImgShoe/' + ${obj.ChiTietSanPham.SanPham.listHinhAnhSanPham[0].url}}"
+                                                                        <img th:src="@{'../../../static/img/ImgShoe/' + ${obj.SanPhamChiTiet.SanPham.listHinhAnhSanPham[0].url}}"
                                                                              class="fixed-image">
                                                                     </div>
 
                                                                     <div class="col-8">
                                                                         <div class="info-price">
-                                                                            <h6>[[${obj.ChiTietSanPham.SanPham.ten}]]
+                                                                            <h6>[[${obj.SanPhamChiTiet.SanPham.ten}]]
                                                                                 [
-                                                                                [[${obj.ChiTietSanPham.MauSac.ten}]]
+                                                                                [[${obj.SanPhamChiTiet.MauSac.ten}]]
                                                                                 -
-                                                                                [[${obj.ChiTietSanPham.KichCo.ten}]]
+                                                                                [[${obj.SanPhamChiTiet.KichCo.ten}]]
                                                                                 ]
                                                                             </h6>
                                                                             <span>Đơn giá: <span class="gia">
                                                                                             [[${obj.donGia}]]
                                                                                             VND</span></span>
                                                                             <p>Loại đế:
-                                                                                [[${obj.ChiTietSanPham.LoaiDe.ten}]]
+                                                                                [[${obj.SanPhamChiTiet.LoaiDe.ten}]]
                                                                             </p>
                                                                         </div>
                                                                     </div>
@@ -491,7 +491,7 @@
                                                                                             data-bs-dismiss="modal">Đóng
                                                                                     </button>
                                                                                     <button
-                                                                                            th:onclick="'validateAndSubmitTraHang('+${obj.soLuong}+','+${obj.ChiTietSanPham.soLuong}+','+${obj.id}+')'"
+                                                                                            th:onclick="'validateAndSubmitTraHang('+${obj.soLuong}+','+${obj.SanPhamChiTiet.soLuong}+','+${obj.id}+')'"
                                                                                             type="button"
                                                                                             class="btn btn-primary">Xác nhận
                                                                                     </button>
@@ -561,24 +561,24 @@
                                                             <td>
                                                                 <div class="row">
                                                                     <div class="col-4">
-                                                                        <img th:src="@{'../../../static/img/ImgShoe/' + ${obj.ChiTietSanPham.SanPham.listHinhAnhSanPham[0].url}}"
+                                                                        <img th:src="@{'../../../static/img/ImgShoe/' + ${obj.SanPhamChiTiet.SanPham.listHinhAnhSanPham[0].url}}"
                                                                              class="fixed-image">
                                                                     </div>
 
                                                                     <div class="col-8">
                                                                         <div class="info-price">
-                                                                            <h6>[[${obj.ChiTietSanPham.SanPham.ten}]]
+                                                                            <h6>[[${obj.SanPhamChiTiet.SanPham.ten}]]
                                                                                 [
-                                                                                [[${obj.ChiTietSanPham.MauSac.ten}]]
+                                                                                [[${obj.SanPhamChiTiet.MauSac.ten}]]
                                                                                 -
-                                                                                [[${obj.ChiTietSanPham.KichCo.ten}]]
+                                                                                [[${obj.SanPhamChiTiet.KichCo.ten}]]
                                                                                 ]
                                                                             </h6>
                                                                             <span>Đơn giá: <span class="gia">
                                                                                             [[${obj.donGia}]]
                                                                                             VND</span></span>
                                                                             <p>Loại đế:
-                                                                                [[${obj.ChiTietSanPham.LoaiDe.ten}]]
+                                                                                [[${obj.SanPhamChiTiet.LoaiDe.ten}]]
                                                                             </p>
                                                                         </div>
                                                                     </div>
@@ -1089,10 +1089,10 @@
                 <tbody>
                 <tr th:each="obj, state:${hoaDon.lstHoaDonChiTiet}">
                     <th th:text="${state.index+1}"></th>
-                    <td th:text="${obj.chiTietSanPham.sanPham.ten}" colspan="2"></td>
+                    <td th:text="${obj.SanPhamChiTiet.sanPham.ten}" colspan="2"></td>
                     <td th:text="${obj.soLuong}"></td>
-                    <td th:text="${obj.chiTietSanPham.giaHienHanh}"></td>
-                    <td th:text="${obj.soLuong*obj.chiTietSanPham.giaHienHanh}"></td>
+                    <td th:text="${obj.SanPhamChiTiet.giaHienHanh}"></td>
+                    <td th:text="${obj.soLuong*obj.SanPhamChiTiet.giaHienHanh}"></td>
                 </tr>
 
                 </tbody>
