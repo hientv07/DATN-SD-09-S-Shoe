@@ -690,5 +690,79 @@ public class BanHangController {
         }
 
     }
+    @GetMapping("/doi-tra")
+    public String doiTra() {
+        UserInfoUserDetails name = principalCustom.getCurrentUserNameAdmin();
+        if (name != null) {
+            request.setAttribute("tenNhanVien", principalCustom.getCurrentUserNameAdmin().getHoVaTen());
+        } else {
+            return "redirect:/login";
+        }
+        hoaDonService.deleteHoaDonHoanTra();
+
+        return "/admin/doi-tra";
+    }
+    public static boolean checkDate(Date dateToCheck) {
+        // Lấy ngày hiện tại
+        Date currentDate = new Date();
+
+        // Lấy số milliseconds từ ngày hiện tại và ngày cần kiểm tra
+        long millisecondsDifference = dateToCheck.getTime() - currentDate.getTime();
+
+        // Chuyển số milliseconds thành số ngày
+        long daysDifference = millisecondsDifference / (1000 * 60 * 60 * 24);
+
+        // Kiểm tra xem chênh lệch có lớn hơn 7 ngày không
+        return daysDifference <= 7;
+    }
+    @GetMapping("/doi-tra/{maHoaDon}")
+    public String detailHoaDonDoiTra(@PathVariable String maHoaDon, RedirectAttributes redirectAttributes) {
+        UserInfoUserDetails name = principalCustom.getCurrentUserNameAdmin();
+        if (name != null) {
+            request.setAttribute("tenNhanVien", principalCustom.getCurrentUserNameAdmin().getHoVaTen());
+        } else {
+            return "redirect:/login";
+        }
+        HoaDon hd = hoaDonService.findByMa(maHoaDon);
+
+        if(hd==null){
+            thongBao(redirectAttributes, "Không có kết quả phù hợp", 0);
+
+            return "redirect:/ban-hang-tai-quay/doi-tra";
+        }
+
+        if (hd.getTrangThai() != 3||!checkDate(hd.getNgaySua())) {
+            thongBao(redirectAttributes, "Không có kết quả phù hợp", 0);
+            return "redirect:/ban-hang-tai-quay/doi-tra";
+        }
+
+        // hoaDonService.saveOrUpdate(hdHangTra);
+        if (hoaDonService.findByMa(maHoaDon + "-DOITRA") == null) {
+            HoaDon hdHangTra = new HoaDon();
+            hdHangTra.setMaHoaDon(hd.getMaHoaDon() + "-DOITRA");
+            hdHangTra.setTrangThai(8);
+            hoaDonService.saveOrUpdate(hdHangTra);
+            request.setAttribute("check", 0);
+        } else {
+            request.setAttribute("check", 1);
+            request.setAttribute("hdHangTra", hoaDonService.findByMa(maHoaDon + "-DOITRA"));
+        }
+
+        request.setAttribute("lstHoaDon", hoaDonService.find5ByTrangThai(-1));
+        request.setAttribute("lstHdct", hoaDonChiTietService.findAll());
+        request.setAttribute("lstCtsp", chiTietSanPhamSerivce.fillAllDangHoatDongLonHon0());
+        request.setAttribute("lstTaiKhoan", khachHangService.getAll());
+        request.setAttribute("lstTaiKhoanDc",
+                khachHangService.getById(hoaDonService.findById(hd.getId()).getKhachHang().getId()));
+        request.setAttribute("listVoucher", voucherService.fillAllDangDienRa());
+
+        request.setAttribute("lstLshd", hoaDonService.findById(hd.getId()));
+        request.setAttribute("listLichSuHoaDon", hoaDonService.findByIdhdNgaySuaAsc(hd.getId()));
+
+        request.setAttribute("hoaDon", hd);
+        request.setAttribute("byHoaDon", hd);
+        thongBao(redirectAttributes, "Thành công", 1);
+        return "/admin/detail-hoa-don-tra";
+    }
 
 }
