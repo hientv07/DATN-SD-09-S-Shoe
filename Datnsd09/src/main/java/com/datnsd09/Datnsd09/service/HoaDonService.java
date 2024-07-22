@@ -70,5 +70,7 @@ public interface HoaDonService {
     void deleteHoaDonHoanTra();
 
     void guiHoaDonDienTu(HoaDon hoaDon, String url);
+    List<HoaDon> findByIdhd(Long idhd);
+    List<HoaDon> findByIdhdNgaySuaAsc(Long idhd);
 
 }
