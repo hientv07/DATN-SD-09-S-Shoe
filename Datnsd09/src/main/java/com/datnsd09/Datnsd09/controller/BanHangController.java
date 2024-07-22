@@ -329,7 +329,7 @@ public class BanHangController {
             return "redirect:/ban-hang-tai-quay/hoa-don/" + hd.getId();
         } else if (hd.getTrangThai() == 3) {
             thongBao(redirectAttributes, "Thành công", 1);
-            return "redirect:/ban-hang-tai-quay/hoa-don/add-khach-hangban-hang-tai-quay/doi-tra/" + hd.getId();
+            return "redirect:/ban-hang-tai-quay/doi-tra/" + hd.getId();
 
         } else {
             thongBao(redirectAttributes, "Thành công", 1);
@@ -750,19 +750,141 @@ public class BanHangController {
 
         request.setAttribute("lstHoaDon", hoaDonService.find5ByTrangThai(-1));
         request.setAttribute("lstHdct", hoaDonChiTietService.findAll());
-        request.setAttribute("lstCtsp", chiTietSanPhamSerivce.fillAllDangHoatDongLonHon0());
+        request.setAttribute("lstCtsp", chiTietSanPhamSerivce.getAll());
         request.setAttribute("lstTaiKhoan", khachHangService.getAll());
         request.setAttribute("lstTaiKhoanDc",
                 khachHangService.getById(hoaDonService.findById(hd.getId()).getKhachHang().getId()));
         request.setAttribute("listVoucher", voucherService.fillAllDangDienRa());
 
-        request.setAttribute("lstLshd", hoaDonService.findById(hd.getId()));
+        request.setAttribute("lstLshd", hoaDonService.findByIdhd(hd.getId()));
         request.setAttribute("listLichSuHoaDon", hoaDonService.findByIdhdNgaySuaAsc(hd.getId()));
 
         request.setAttribute("hoaDon", hd);
         request.setAttribute("byHoaDon", hd);
         thongBao(redirectAttributes, "Thành công", 1);
         return "/admin/detail-hoa-don-tra";
+    }
+    @PostMapping("/hoa-don-chi-tiet/tra-hang")
+    public String traHang(@RequestParam(defaultValue = "") Integer soLuongEdit,
+                          @RequestParam(defaultValue = "") Integer soLuongEditTra, @RequestParam Long idHdct, @RequestParam Long idhdc) {
+        HoaDonChiTiet hdct = hoaDonChiTietService.findById(idHdct);
+        HoaDon hd = hdct.getHoaDon();
+        HoaDon hdTraHang = hoaDonService.findByMa("HD" + idhdc + "-DOITRA");
+        System.out.println("mama" + hdTraHang.getMaHoaDon());
+        Boolean checkUpdate = false;
+        HoaDonChiTiet hdctnew;
+        hd.setNgaySua(new Date());
+
+        for (HoaDonChiTiet hdctf : hdTraHang.getLstHoaDonChiTiet()) {
+            System.out.println("datimthay");
+            System.out.println(hdctf.toString());
+            if (hdctf.getSanPhamChiTiet().getId() == hdct.getSanPhamChiTiet().getId()) {
+                checkUpdate = true;
+                hdctnew = hdctf;
+                hdctnew.setSoLuong(soLuongEditTra);
+                hdctnew.setTrangThai(2);
+                if (soLuongEditTra <= 0) {
+                    hoaDonChiTietService.deleteById(hdctnew.getId());
+                } else {
+                    hoaDonChiTietService.saveOrUpdate(hdctnew);
+                }
+
+                break;
+            }
+        }
+
+        if (!checkUpdate) {
+            if (soLuongEditTra != 0) {
+                hdctnew = new HoaDonChiTiet();
+                hdctnew.setSoLuong(soLuongEditTra);
+                hdctnew.setSanPhamChiTiet(hdct.getSanPhamChiTiet());
+                hdctnew.setHoaDon(hdTraHang);
+                hdctnew.setTrangThai(2);
+                hdctnew.setDonGia(hdct.getDonGia());
+                hoaDonChiTietService.saveOrUpdate(hdctnew);
+            }
+        }
+
+        return "redirect:/ban-hang-tai-quay/doi-tra/HD" + idhdc;
+
+    }
+//    public void addLichSuHoaDon(Long idHoaDon, String ghiChu, Integer trangThai) {
+//        HoaDon hd = hoaDonService.findById(idHoaDon);
+//        LichSuHoaDon lshd = new LichSuHoaDon();
+//        lshd.setHoaDon(hd);
+//        lshd.setGhiChu(ghiChu);
+//        lshd.setTrangThai(trangThai);
+//        // lshd.setNgayTao(new Date());
+//        lshd.setNgaySua(new Date());
+//        TaiKhoan tk = nhanVienService.getById(idTk);
+//        System.out.println(tk + "====================");
+//        lshd.setNguoiSua(tk.getHoVaTen());
+//        lichSuHoaDonService.saveOrUpdate(lshd);
+//    }
+    @PostMapping("/doi-tra/xac-nhan")
+    public String xacNhan(@RequestParam String lyDo,@RequestParam Long idhdc) {
+        Long tongTienHoanTra;
+        Long tienGiamGia;
+        Long tongTienHdcCu;
+        Long tienShip;
+
+//        addLichSuHoaDon(idhdc, lyDo, 6);
+        System.out.println(idhdc + "-----hdc");
+        HoaDon hdc = hoaDonService.findById(idhdc);
+        System.out.println(hdc.getTrangThai());
+        hdc.setTrangThai(6);
+        // hdc.setTienGiam(hdc.getGiamGia());
+        System.out.println(hdc.getId());
+        System.out.println(hdc.getTrangThai());
+        HoaDon hdDoiTra = hoaDonService.findByMa(hdc.getMaHoaDon() + "-DOITRA");
+        tongTienHoanTra = hdDoiTra.tongTienHoaDon();
+        // tienGiamGia = hdc.getGiamGia();
+        tienShip = hdc.getPhiShip();
+        tongTienHdcCu = hdc.getTongTien() - tienShip;
+
+        for (HoaDonChiTiet hdctChinh : hdc.getLstHoaDonChiTiet()) {
+            for (HoaDonChiTiet hdctDoiTra : hdDoiTra.getLstHoaDonChiTiet()) {
+                if (hdctChinh.getSanPhamChiTiet().getId() == hdctDoiTra.getSanPhamChiTiet().getId()) {
+                    hdctChinh.setSoLuong(hdctChinh.getSoLuong() - hdctDoiTra.getSoLuong());
+                    HoaDonChiTiet hdct = new HoaDonChiTiet();
+                    hdct.setSanPhamChiTiet(hdctDoiTra.getSanPhamChiTiet());
+                    hdct.setHoaDon(hdc);
+                    hdct.setSoLuong(hdctDoiTra.getSoLuong());
+                    hdct.setTrangThai(2);
+                    hdct.setDonGia(hdctDoiTra.getDonGia());
+                    hoaDonChiTietService.saveOrUpdate(hdct);
+                    hoaDonChiTietService.saveOrUpdate(hdctChinh);
+                }
+            }
+        }
+
+
+        // System.out.println("tongTienHdcCu-tongTienHoanTra-tienGiamGia " + tongTienHdcCu + "-" + tongTienHoanTra
+        //         + "-" + tienGiamGia);
+        if (tongTienHdcCu - tongTienHoanTra - hdc.getTienGiam() < 0) {
+            hdc.setTongTienKhiGiam((long) 0);
+            hdc.setTongTien((long)0);
+        }else{
+            hdc.setTongTienKhiGiam(hdc.tongTienHoaDonDaNhan()+hdc.getPhiShip());
+            hdc.setTongTien(hdc.tongTienHoaDonDaNhan());
+            // hdc.setTienGiam((long)0);
+            hdc.setVoucher(null);
+        }
+
+
+
+        hoaDonService.saveOrUpdate(hdc);
+        for (HoaDonChiTiet hdct : hoaDonChiTietService.findByIdHoaDon(idhdc)) {
+            if (hdct.getSoLuong() == 0) {
+                System.out.println(hdct.getId());
+                hoaDonChiTietService.deleteById(hdct.getId());
+
+            }
+        }
+        hoaDonService.deleteHoaDonHoanTra();
+        // hoaDonService.deleteById(hdDoiTra.getId()); // Xóa luôn hóa đơn đổi trả tạm
+
+        return "redirect:/ban-hang-tai-quay/hoa-don/detail/" + idhdc;
     }
 
 }
