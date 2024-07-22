@@ -54,7 +54,7 @@ public interface HoaDonRepository extends JpaRepository<HoaDon,Long> {
 
     @Transactional
     @Modifying
-    @Query(value = "delete hoa_don_chi_tiet where hoa_don_id in(select id from hoa_don where ma_hoa_don like '%DOITRA')\r\n"
+    @Query(value = "delete hoa_don_chi_tiet where hoa_don_id in(select id_hd from hoa_don where ma_hoa_don like '%DOITRA')\r\n"
             + //
             "delete hoa_don where ma_hoa_don like '%DOITRA'", nativeQuery = true)
     void deleteHoaDonHoanTra();
@@ -113,6 +113,11 @@ public interface HoaDonRepository extends JpaRepository<HoaDon,Long> {
             @Param("startDate") Date startDate,
             @Param("endDate") Date endDate
     );
+    @Query("select hd from HoaDon hd where hd.id =:idhd order by hd.ngaySua desc")
+    List<HoaDon> findByIdHd(@Param("idhd") Long idhd);
+
+    @Query(value = "select * from hoa_don where id_hd = :idhd and trang_thai in(0,1,2,3,4,5,6) order by ngay_sua asc", nativeQuery = true)
+    List<HoaDon> findByIdhdNgaySuaAsc(@Param("idhd") Long idhd);
 
     //kết thúc thống kê
 
