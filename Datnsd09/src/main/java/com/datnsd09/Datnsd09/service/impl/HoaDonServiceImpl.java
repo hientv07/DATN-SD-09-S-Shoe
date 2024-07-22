@@ -407,6 +407,16 @@ public class HoaDonServiceImpl implements HoaDonService {
 
     }
 
+    @Override
+    public List<HoaDon> findByIdhd(Long idhd) {
+        return hoaDonRepository.findByIdHd(idhd);
+    }
+
+    @Override
+    public List<HoaDon> findByIdhdNgaySuaAsc(Long idhd) {
+        return hoaDonRepository.findByIdhdNgaySuaAsc(idhd);
+    }
+
 //    @Override
 //    public void saveOrUpdate(HoaDon hoaDonls) {
 //        hoaDonRepository.save(hoaDonls);
