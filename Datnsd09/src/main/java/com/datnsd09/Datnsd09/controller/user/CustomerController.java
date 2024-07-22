@@ -387,20 +387,20 @@ public class CustomerController {
 //                gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
         return "/customer/thong-tin-khach-hang";
     }
-//
-//    @GetMapping("/tra-cuu-don-hang")
-//    public String traCuuDonHang(Model model) {
-//        if (principalCustom.getCurrentUserNameCustomer() != null) {
-//            KhachHang khachHang = khachHangService.getById(idKhachHang);
-//            model.addAttribute("checkDangNhap", "true");
-////            model.addAttribute("soLuongSPGioHangCT",
-////                    gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
-//        } else {
-//            model.addAttribute("checkDangNhap", "false");
-//        }
-//        return "/customer/tra-cuu-don-hang";
-//    }
-//
+
+    @GetMapping("/tra-cuu-don-hang")
+    public String traCuuDonHang(Model model) {
+        if (principalCustom.getCurrentUserNameCustomer() != null) {
+            KhachHang khachHang = khachHangService.getById(idKhachHang);
+            model.addAttribute("checkDangNhap", "true");
+            model.addAttribute("soLuongSPGioHangCT",
+                    gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
+        } else {
+            model.addAttribute("checkDangNhap", "false");
+        }
+        return "/customer/tra-cuu-don-hang";
+    }
+
     @GetMapping("/user/thankyou")
     public String thankYou(Model model){
         KhachHang khachHang =khachHangService.getById(idKhachHang);
@@ -422,18 +422,20 @@ public class CustomerController {
         }
         return "/customer/about";
     }
-//
-//    @GetMapping("/chinh-sach")
-//    public String chinhSach(Model model) {
-//        if (principalCustom.getCurrentUserNameCustomer() != null) {
-//            KhachHang khachHang = khachHangService.getById(idKhachHang);
-//            model.addAttribute("checkDangNhap", "true");
-//        } else {
-//            model.addAttribute("checkDangNhap", "false");
-//        }
-//        return "/customer/chinh-sach";
-//    }
-//
+
+    @GetMapping("/chinh-sach")
+    public String chinhSach(Model model) {
+        if (principalCustom.getCurrentUserNameCustomer() != null) {
+            KhachHang khachHang = khachHangService.getById(idKhachHang);
+            model.addAttribute("checkDangNhap", "true");
+            model.addAttribute("soLuongSPGioHangCT",
+                    gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
+        } else {
+            model.addAttribute("checkDangNhap", "false");
+        }
+        return "/customer/chinh-sach";
+    }
+
     @PostMapping("/user/dia-chi/add")
     public String adđDiaChi(
             @RequestParam("phuongXaID") String phuongXa,
@@ -519,29 +521,30 @@ public class CustomerController {
         }
         return "/customer/dia-chi";
     }
-//    @GetMapping("/lien-he")
-//    public String lienHe(Model model) {
-//        if (principalCustom.getCurrentUserNameCustomer() != null) {
-//            KhachHang khachHang = khachHangService.getById(idKhachHang);
-//            model.addAttribute("checkDangNhap", "true");
-////            model.addAttribute("soLuongSPGioHangCT",
-////                    gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
-//        } else {
-//            model.addAttribute("checkDangNhap", "false");
-//        }
-//        return "/customer/lien-he";
-//    }
-//
-//    @GetMapping("/lien-he/add")
-//    public String addLienHe(@RequestParam("hoTen") String hoTen,
-//                            @RequestParam("email") String email,
-//                            @RequestParam("chuDe") String chuDe,
-//                            @RequestParam("tinNhan") String tinNhan,
-//                            RedirectAttributes redirectAttributes) {
-//        khachHangService.guiLieuHe(hoTen, email, chuDe, tinNhan);
-//        redirectAttributes.addFlashAttribute("checkTBLienHe", true);
-//        return "redirect:/lien-he";
-//    }
+
+    @GetMapping("/lien-he")
+    public String lienHe(Model model) {
+        if (principalCustom.getCurrentUserNameCustomer() != null) {
+            KhachHang khachHang = khachHangService.getById(idKhachHang);
+            model.addAttribute("checkDangNhap", "true");
+            model.addAttribute("soLuongSPGioHangCT",
+                    gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
+        } else {
+            model.addAttribute("checkDangNhap", "false");
+        }
+        return "/customer/lien-he";
+    }
+
+    @GetMapping("/lien-he/add")
+    public String addLienHe(@RequestParam("hoTen") String hoTen,
+                            @RequestParam("email") String email,
+                            @RequestParam("chuDe") String chuDe,
+                            @RequestParam("tinNhan") String tinNhan,
+                            RedirectAttributes redirectAttributes) {
+        khachHangService.guiLieuHe(hoTen, email, chuDe, tinNhan);
+        redirectAttributes.addFlashAttribute("checkTBLienHe", true);
+        return "redirect:/lien-he";
+    }
 
 
 }

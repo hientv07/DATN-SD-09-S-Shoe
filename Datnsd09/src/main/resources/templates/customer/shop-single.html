@@ -743,35 +743,153 @@
                                 .then(data => {
                                     soLuongTruoc = data;
                                     var soLuongTonInt = parseInt(fillErro.innerText);
-                                    soLuongCheck = parseInt(soLuong.value) + soLuongTruoc;
+                                    soLuongCheck = parseInt(soLuong.value) + soLuongTruoc
 
                                     if (soLuongCheck > soLuongTonInt) {
-                                        console.log("Không thể thêm số lượng đã chọn vào giỏ hàng vì sẽ vượt quá giới hạn mua hàng của bạn.");
+
+                                        console.log("Không thể thêm số lượng đã chọn vào giỏ hàng vì sẽ vượt quá giới hạn mua hàng của bạn.")
                                         //thông báo lỗi
-                                        $('#checkSoLuongGHCT').modal('show');
+                                        $('#checkSoLuongGHCT').modal('show')
                                         return false;
                                     } else {
                                         // Lấy URL cần gửi phương thức POST
                                         var url = '/user/gio-hang-chi-tiet/add/' + rqIdChiTietSp + '/' + soLuongAdd; // Thay thế bằng URL thực tế
-                                        // Thực hiện yêu cầu POST đến URL trên
-                                        fetch(url, { method: 'POST' })
+                                        // Thực hiện phương thức POST
+                                        fetch(url, {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json'
+                                            }
+                                        })
                                             .then(response => {
                                                 if (response.ok) {
-                                                    console.log('Sản phẩm đã được thêm vào giỏ hàng.');
-                                                    // Bạn có thể cập nhật giao diện người dùng tại đây, nếu cần thiết
-                                                    location.reload(); // Tải lại trang sau khi thêm sản phẩm vào giỏ hàng
+                                                    //thông báo
+                                                    var toast = new bootstrap.Toast(document.getElementById('thongBaoThemThanhCong'));
+                                                    toast.show();
+                                                    console.log('Đã thêm vào giỏ hàng');
+
+                                                    //update số lượng
+                                                    fetch('/user/shop-single/get-so-luong')
+                                                        .then(response => response.json())
+                                                        .then(data => {
+                                                            soLuongTruoc = data;
+                                                            var soLuongGHCT = document.getElementById("soLuongGHCT")
+                                                            soLuongGHCT.innerHTML = ''
+                                                            soLuongGHCT.innerText = soLuongTruoc
+                                                            console.log("Sô lượng GHCT trong giỏ: " + soLuongTruoc)
+                                                        })
+                                                        .catch(error => {
+                                                            console.error('Lỗi trong quá trình lấy số lượng từ cơ sở dữ liệu:', error)
+                                                        });
+
                                                 } else {
-                                                    console.error('Lỗi khi thêm sản phẩm vào giỏ hàng.');
+                                                    throw new Error('Lỗi trong quá trình thêm vào giỏ hàng.');
                                                 }
                                             })
                                             .catch(error => {
-                                                console.error('Đã xảy ra lỗi khi thêm sản phẩm vào giỏ hàng:', error);
+                                                console.error(error);
                                             });
                                     }
                                 })
                                 .catch(error => {
-                                    console.error('Đã xảy ra lỗi khi kiểm tra số lượng trong giỏ hàng chi tiết:', error);
+                                    console.error('Lỗi trong quá trình lấy số lượng từ cơ sở dữ liệu:', error)
                                 });
+
+
+                        }
+
+                        function themVaoGioHangNhanh() {
+
+                            var fillErro = document.getElementById('so-luong-ton');
+
+                            var mauSacInputs = document.getElementsByName('mauSac');
+
+                            var isMauSacSelected = false;
+
+                            for (var i = 0; i < mauSacInputs.length; i++) {
+                                if (mauSacInputs[i].checked) {
+                                    isMauSacSelected = true;
+                                    break; // Ngừng lặp nếu đã có kích thước được chọn
+                                }
+                            }
+
+                            if (!isMauSacSelected) {
+                                console.log("Vui lòng chọn một màu sắc.");
+                                fillErro.innerHTML = '';
+                                fillErro.innerText = 'Vui lòng chọn Phân loại hàng';
+                                fillErro.style = 'color: red'
+                                return false;
+                            }
+
+                            var sizeInputs = document.getElementsByName('size');
+
+                            var isSizeSelected = false;
+
+                            for (var i = 0; i < sizeInputs.length; i++) {
+                                if (sizeInputs[i].checked) {
+                                    isSizeSelected = true;
+                                    break; // Ngừng lặp nếu đã có kích thước được chọn
+                                }
+                            }
+
+                            if (!isSizeSelected) {
+                                console.log("Vui lòng chọn một màu sắc.");
+                                fillErro.innerHTML = '';
+                                fillErro.innerText = 'Vui lòng chọn Phân loại hàng';
+                                fillErro.style = 'color: red';
+                                return false;
+                            }
+
+                            var soLuong = document.getElementById('soLuong');
+                            var soLuongAdd = soLuong.value;
+
+                            var rqIdChiTietSp = document.getElementById('idChiTietSp');
+                            var rqIdChiTietSp = rqIdChiTietSp.value;
+                            var soLuongTruoc = 0;
+                            var soLuongCheck = 0;
+
+                            //check số lượng trong giỏ hàng chi tiết
+                            fetch('/user/shop-single/check-so-luong/' + rqIdChiTietSp)
+                                .then(response => response.json())
+                                .then(data => {
+                                    soLuongTruoc = data;
+                                    var soLuongTonInt = parseInt(fillErro.innerText);
+                                    soLuongCheck = parseInt(soLuong.value) + soLuongTruoc
+                                    if (soLuongCheck > soLuongTonInt) {
+
+                                        console.log("Không thể thêm số lượng đã chọn vào giỏ hàng vì sẽ vượt quá giới hạn mua hàng của bạn.")
+                                        //thông báo lỗi
+                                        $('#checkSoLuongGHCT').modal('show')
+                                        return false;
+                                    } else {
+                                        // Lấy URL cần gửi phương thức POST
+                                        var url = '/user/gio-hang-chi-tiet/add-fast/' + rqIdChiTietSp + '/' + soLuongAdd; // Thay thế bằng URL thực tế
+
+                                        // Thực hiện phương thức POST
+                                        fetch(url, {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json'
+                                            }
+                                        })
+                                            .then(response => {
+                                                if (response.ok) {
+                                                    // Xử lý kết quả nếu cần
+                                                    console.log('Đã thêm vào giỏ hàng');
+                                                    window.location.href = '/user/cart?checkGHCT=true1';
+                                                } else {
+                                                    throw new Error('Lỗi trong quá trình thêm vào giỏ hàng.');
+                                                }
+                                            })
+                                            .catch(error => {
+                                                console.error(error);
+                                            });
+                                    }
+                                })
+                                .catch(error => {
+                                    console.error('Lỗi trong quá trình lấy số lượng từ cơ sở dữ liệu:', error)
+                                });
+
                         }
                     </script>
 

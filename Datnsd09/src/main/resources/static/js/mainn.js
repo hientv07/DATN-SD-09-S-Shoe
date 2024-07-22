@@ -104,43 +104,57 @@ $(document).ready(function () {
         console.log("Tổng Giá: " + tongGia);
         var tongThanhToan = document.getElementById("tongTienCart");
         tongThanhToan.innerHTML = '';
-        tongThanhToan.innerText = tongGia + ' VND';
+        tongThanhToan.innerText = tongGia + ' VNĐ';
     }
 
 });
 
-
-// var actionExecuted = false;
-//
 // $(document).ready(function () {
-//     if (!actionExecuted) {
-//         $('input[id^="soLuong_"]').each(function () {
-//             // Lấy giá trị max từ thuộc tính th:max
-//             var max = parseInt($(this).attr('id').split('_')[2]);
+//     // Kích hoạt tooltip
 //
-//             // Lấy giá trị hiện tại của input
-//             var currentValue = parseInt($(this).val());
+//     // Select/Deselect checkboxes
+//     var checkbox = $('table tbody input[type="checkbox"]');
+//     var tongGia = 0; // Biến để lưu tổng giá
 //
-//             // Kiểm tra nếu giá trị hiện tại lớn hơn giới hạn max
-//             if (!isNaN(max) && currentValue > max) {
-//                 // Đặt giá trị của input thành giới hạn max
-//                 $(this).val(max);
+//     $("#selectAll").click(function () {
+//         if (this.checked) {
+//             checkbox.each(function () {
+//                 this.checked = true;
+//             });
+//         } else {
+//             checkbox.each(function () {
+//                 this.checked = false;
+//             });
+//         }
+//         tinhTongGia();
+//     });
 //
-//                 // Tự động chọn input
-//                 $(this).focus();
+//     checkbox.click(function () {
+//         if (!this.checked) {
+//             $("#selectAll").prop("checked", false);
+//         }
+//         tinhTongGia();
+//     });
 //
-//                 // Bỏ chọn input sau 1 giây
-//                 setTimeout(function () {
-//                     $(this).blur();
-//                 }.bind(this), 1);
-//
-//                 // Bỏ đánh dấu đã thực hiện hành động
-//                 actionExecuted = true;
+//     // Hàm tính tổng giá
+//     function tinhTongGia() {
+//         tongGia = 0;
+//         checkbox.each(function () {
+//             if (this.checked) {
+//                 var row = $(this).closest('tr');
+//                 var giaSanPham = parseFloat(row.find('td:eq(5)').text().replace(/,/g, ''));
+//                 tongGia += giaSanPham;
 //             }
 //         });
+//
+//         // Hiển thị tổng giá hoặc thực hiện bất kỳ hành động nào khác với nó
+//         console.log("Tổng Giá: " + tongGia.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }));
+//         var tongThanhToan = document.getElementById("tongTienCart");
+//         tongThanhToan.innerHTML = '';
+//         tongThanhToan.innerText = tongGia.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
 //     }
+//
 // });
-
 
 
 // Lấy URL hiện tại
@@ -155,22 +169,6 @@ var params = new URLSearchParams(queryString);
 // Lấy giá trị của tham số 'checkGHCT'
 var checkGHCTValue = params.get('checkGHCT');
 
-// // Kiểm tra giá trị và thực hiện các hành động tương ứng
-// if (checkGHCTValue === 'true') {
-//     // Thực hiện hành động khi giá trị là 'true'
-//     console.log('checkGHCT is true');
-//     $(document).ready(function () {
-//         // Chọn checkbox đầu tiên trong bảng dựa trên name
-//         $('input[name="options[]"]:first').prop('checked', true);
-//         var giaTriCotThu5 = $('input[name="options[]"]:checked').closest('tr').find('td:eq(5)').text();
-//         var tongThanhToan = document.getElementById("tongTienCart");
-//         tongThanhToan.innerHTML = '';
-//         tongThanhToan.innerText = giaTriCotThu5;
-//     });
-// } else {
-//     // Thực hiện hành động khi giá trị không phải 'true'
-//     console.log('checkGHCT is not true');
-// }
 
 if (checkGHCTValue.startsWith('true')) {
     // Lấy số lượng từ chuỗi sau "true"
