@@ -344,6 +344,12 @@ public class CustomerController {
             RedirectAttributes redirectAttributes) {
         String[] optionArray = idGioHangChiTiet.split(",");
 
+        // Remove non-numeric characters from the currency strings
+        tongTien = tongTien.replaceAll("[^\\d]", "");
+        tienGiam = tienGiam.replaceAll("[^\\d]", "");
+        tongTienAndSale = tongTienAndSale.replaceAll("[^\\d]", "");
+        tienShip = tienShip.replaceAll("[^\\d]", "");
+
         KhachHang khachHang = khachHangService.getById(idKhachHang);
         List<String> listIdString = Arrays.asList(optionArray);
         for (GioHangChiTiet gioHangChiTiet : gioHangChiTietService.findAllById(listIdString, khachHang.getGioHang().getId())) {
