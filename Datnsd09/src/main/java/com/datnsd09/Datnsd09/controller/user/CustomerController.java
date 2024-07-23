@@ -281,6 +281,16 @@ public class CustomerController {
         gioHangChiTietService.save(khachHang.getGioHang().getId(), listIdString, Integer.valueOf(soLuongAdd));
         return "redirect:/shop";
     }
+    @PostMapping("/user/gio-hang-chi-tiet/add-fast/{idChiTietSpAdd}/{soLuongAdd}")
+    public String addGioHangChiTietNhanh(
+            @PathVariable String idChiTietSpAdd,
+            @PathVariable String soLuongAdd) {
+        String[] optionArray = idChiTietSpAdd.split(",");
+        List<String> listIdString = Arrays.asList(optionArray);
+        KhachHang khachHang = khachHangService.getById(idKhachHang);
+        gioHangChiTietService.save(khachHang.getGioHang().getId(), listIdString, Integer.valueOf(soLuongAdd));
+        return "redirect:/user/cart";
+    }
 
 
     @GetMapping("/user/checkout")
