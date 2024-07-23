@@ -1647,8 +1647,10 @@
                                                                                                             <img src="../../static/img/logo.png" style="margin-left: 15px" class="img-fluid rounded-start" alt="...">
                                                                                                         </div>
                                                                                                     </div>
+
                                                                                                     <div class="col-md-7">
                                                                                                         <div class="card-body">
+                                                                                                            <h3 th:text="${voucher.tenVoucher}"></h3>
                                                                                                             <h5 class="card-title" style="margin-bottom: -3px" th:text="${'Giảm '+ voucher.phanTramGiam + '%'}"></h5>
                                                                                                             <small class="text-body-secondary" style="display: block" th:text="${'Giảm tối đa '+voucher.giamToiDa+ ' VND'}"></small>
                                                                                                             <small id="donToiThieu" class="text-body-secondary" style="display: block" th:text="${'Đơn Tối Thiểu '+voucher.giaTriDonToiThieu+ ' VND'}"></small>
@@ -2127,8 +2129,8 @@
             tongTienGiamTheoPhanTram = giaTriGiam;
         }
 
-        detailVoucher.value = (-tongTienGiamTheoPhanTram).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-        moneyVoucher.innerText = tongTienGiamTheoPhanTram.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+        detailVoucher.value = (-tongTienGiamTheoPhanTram).toLocaleString('vi-VN')+ ' VND';
+        moneyVoucher.innerText = tongTienGiamTheoPhanTram.toLocaleString('vi-VN')+ ' VND';
 
         console.log("tien giam: ", tongTienGiamTheoPhanTram);
 
@@ -2136,7 +2138,7 @@
         console.log("tong tien: ", totalMonney);
 
         tongTienAndSale.value = totalMonney.toFixed(0);
-        totalElementSale.innerText = totalMonney.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+        totalElementSale.innerText = totalMonney.toLocaleString('vi-VN');
         document.getElementById('giamGiaInput').value = tongTienGiamTheoPhanTram.toFixed(0);
 
         updateTraLai();
@@ -2148,7 +2150,7 @@
         var traLai = tienKhachTra - totalMonney;
 
         if (!isNaN(traLai) && traLai >= 0) {
-            document.getElementById('traLai').innerText = formatVND(traLai);
+            document.getElementById('traLai').innerText = formatVND(traLai) +' VND';
         } else {
             document.getElementById('traLai').innerText = '0 VND';
         }
@@ -2172,7 +2174,7 @@
     });
 
     function formatVND(amount) {
-        return amount.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+        return amount.toLocaleString('vi-VN');
     }
 
 

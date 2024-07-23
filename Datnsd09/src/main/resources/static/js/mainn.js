@@ -95,16 +95,15 @@ $(document).ready(function () {
         checkbox.each(function () {
             if (this.checked) {
                 var row = $(this).closest('tr');
-                var giaSanPham = parseFloat(row.find('td:eq(5)').text());
+                var giaSanPham = parseFloat(row.find('td:eq(5)').text().replace(/[,.]/g, ''));
                 tongGia += giaSanPham;
             }
         });
-
         // Hiển thị tổng giá hoặc thực hiện bất kỳ hành động nào khác với nó
         console.log("Tổng Giá: " + tongGia);
         var tongThanhToan = document.getElementById("tongTienCart");
         tongThanhToan.innerHTML = '';
-        tongThanhToan.innerText = tongGia + ' VNĐ';
+        tongThanhToan.innerText = tongGia.toLocaleString('vi-VN')+ ' VNĐ';
     }
 
 });
