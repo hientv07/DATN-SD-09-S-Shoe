@@ -30,7 +30,10 @@ public interface HoaDonChiTietService {
 
     Integer sumSanPhamHoaDonAll();
 
-
+    List<Object[]> thongKeSanPhamTheoNgay(
+            Date startDateChart,
+            Date endDateChart
+    );
 
     //kết thúc bình
 

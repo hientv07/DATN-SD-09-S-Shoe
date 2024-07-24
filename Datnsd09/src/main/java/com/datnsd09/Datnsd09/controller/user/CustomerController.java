@@ -5,6 +5,7 @@ import com.datnsd09.Datnsd09.config.PrincipalCustom;
 import com.datnsd09.Datnsd09.entity.*;
 import com.datnsd09.Datnsd09.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -207,19 +208,6 @@ public class CustomerController {
         }
     }
 
-
-    //giohang
-//    @GetMapping("/user/cart")
-//    public String cart(
-//            Model model) {
-//        KhachHang khachHang = khachHangService.getById(idKhachHang);
-//        List<GioHangChiTiet> listGioHangChiTiet = gioHangChiTietService
-//                .fillAllByIdGioHang(khachHang.getGioHang().getId());
-//        model.addAttribute("soLuongSPGioHangCT",
-//                gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
-//        model.addAttribute("listGioHangChiTiet", listGioHangChiTiet);
-//        return "/customer/cart";
-//    }
     @GetMapping("/user/cart")
     public String cart(Model model) {
 //        // Giả sử bạn có cách lấy ID khách hàng (ví dụ: từ phiên đăng nhập)
@@ -291,7 +279,6 @@ public class CustomerController {
         gioHangChiTietService.save(khachHang.getGioHang().getId(), listIdString, Integer.valueOf(soLuongAdd));
         return "redirect:/user/cart";
     }
-
 
     @GetMapping("/user/checkout")
     public String checkout(

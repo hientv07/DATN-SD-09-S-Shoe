@@ -65,6 +65,11 @@ public class HoaDonChiTietServiceImpl implements HoaDonChiTietService {
         return hoaDonChiTietRepository.sumSanPhamHoaDonAll();
     }
 
+    @Override
+    public List<Object[]> thongKeSanPhamTheoNgay(Date startDateChart, Date endDateChart) {
+        return hoaDonChiTietRepository.thongKeSanPhamTheoNgay(startDateChart, endDateChart);
+    }
+
     // Ngọc Hiếu
     @Override
     public List<HoaDonChiTiet> finTop5HDCT() {

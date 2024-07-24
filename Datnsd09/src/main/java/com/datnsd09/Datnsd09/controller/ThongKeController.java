@@ -164,6 +164,19 @@ public class ThongKeController {
         return "redirect:/admin/thong-ke";
 
     }
+
+    @PostMapping("/count-range")
+    public String countHoaDonTrongKhoangThoiGian(
+            @RequestParam(name = "startDateChart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date startDateChart,
+            @RequestParam(name = "endDateChart", required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date endDateChart,
+            RedirectAttributes redirectAttributes) {
+        redirectAttributes.addFlashAttribute("startDateChart", startDateChart);
+        redirectAttributes.addFlashAttribute("endDateChart", endDateChart);
+        List<Object[]> thongKeSP = hoaDonChiTietService.thongKeSanPhamTheoNgay(startDateChart, endDateChart);
+        redirectAttributes.addFlashAttribute("thongKeSP", thongKeSP);
+        return "redirect:/admin/thong-ke";
+    }
+
     @PostMapping("/sapHetHang")
     public String countSapHetHang(
             @RequestParam(name = "soLuong", required = false) Integer soLuong,

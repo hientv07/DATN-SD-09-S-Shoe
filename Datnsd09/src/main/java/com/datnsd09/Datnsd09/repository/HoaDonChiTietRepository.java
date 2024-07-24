@@ -51,6 +51,19 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, Lo
             "and (hd.hoaDon.trangThai = 3 or hd.hoaDon.trangThai = 6)")
     Integer sumSanPhamHoaDonAll();
 
+    @Query("SELECT CAST(hd.hoaDon.ngayTao AS DATE) AS ngay, \n" +
+            "       SUM(DISTINCT hd.hoaDon.tongTienKhiGiam) AS sumHoaDon,\n" +
+            "       COUNT(DISTINCT hd.hoaDon) AS countHoaDon,\n" +
+            "       SUM(CASE WHEN hd.trangThai = 0 THEN hd.soLuong ELSE 0 END) AS sumSoLuong\n" +
+            "FROM HoaDonChiTiet hd\n" +
+            "WHERE (hd.hoaDon.trangThai = 3 OR hd.hoaDon.trangThai = 6) AND \n" +
+            "      CAST(hd.hoaDon.ngayTao AS DATE) BETWEEN :startDateChart AND :endDateChart\n" +
+            "GROUP BY CAST(hd.hoaDon.ngayTao AS DATE)\n")
+    List<Object[]> thongKeSanPhamTheoNgay(
+            @Param("startDateChart") Date startDateChart,
+            @Param("endDateChart") Date endDateChart
+    );
+
     //kết thúc thống kê bình
 
 

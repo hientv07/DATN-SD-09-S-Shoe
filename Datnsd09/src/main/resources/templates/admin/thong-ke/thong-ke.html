@@ -467,7 +467,7 @@
                         <div class="tab-pane fade show active" id="list" role="tabpanel"
                              aria-labelledby="list-tab">
                             <br>
-                            <h2>Biểu đồ làm sau</h2>
+
 <!--                            <button id="btnBetween" class="btn btn-outline-primary" onclick="showHoaDonBetween()">Trong-->
 <!--                                khoảng thời gian-->
 <!--                            </button>-->
@@ -691,6 +691,35 @@
                                 </table>
                             </div>
                             <hr>
+                            <h1 style="margin-top: 5%">Biểu đồ tình hình kinh doanh trong 1 tháng</h1>
+                            <form th:action="@{/admin/thong-ke/count-range}" th:method="post" id="form2"
+                                  class="row g-3" onsubmit="return validateDateRange()">
+                                <div class="col-md-3">
+                                    <label class="form-label">Từ ngày:</label>
+                                    <input type="date" name="startDateChart" class="form-control"
+                                           th:value="${#dates.format(startDateChart, 'yyyy-MM-dd') }"
+                                           id="tuNgay"
+                                           required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label class="form-label">Đến ngày:</label>
+                                    <input type="date" name="endDateChart" class="form-control"
+                                           th:value="${#dates.format(endDateChart, 'yyyy-MM-dd') }"
+                                           id="denNgay"
+                                           required>
+                                </div>
+                                <div class="col-md-3">
+                                    <button type="submit" style="margin-top: 11.5%" class="btn btn-primary">Tìm kiếm
+                                    </button>
+                                </div>
+                            </form>
+                            <span id="error-message-start"
+                                  style="color: red;font-size: 14px;font-weight: bold;"></span>
+                            <!--                            <div id="columnchart_material" style="width: 1100px; height: 500px;"></div>-->
+                            <!--                            <button id="change-chart">Change to Classic</button>-->
+                            <br><br>
+                            <div id="chart_div2" style="width: 800px; height: 500px;"></div>
+                            <hr>
                             <h1 style="margin-top: 5%">Danh sách sản phẩm có số lượng sắp hết hàng</h1>
                             <form th:action="@{/admin/thong-ke/sapHetHang}" th:method="post" class="row g-3"
                                   id="myForm">
@@ -865,116 +894,116 @@
 <script src='https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/jquery.dataTables.js'></script>
 <script th:inline="javascript">
     //binh
-    // function showHoaDonNgay() {
-    //     document.getElementById('btnBetween').classList.remove('clickbutton');
-    //     document.getElementById('btnNgay').classList.add('clickbutton');
-    //     document.getElementById('btnThang').classList.remove('clickbutton');
-    //     document.getElementById('hoaDonThang').style.display = 'none';
-    //     document.getElementById('hoaDonNgay').style.display = 'block';
-    //     document.getElementById('doanhThuNgay').style.display = 'block';
-    //     document.getElementById('doanhThuThang').style.display = 'none';
-    //     document.getElementById('top5Ngay').style.display = 'block';
-    //     document.getElementById('top5Thang').style.display = 'none';
-    //     document.getElementById('inputSearch').style.display = 'none';
-    //     document.getElementById('hoaDonBetween').style.display = 'none';
-    //     document.getElementById('doanhThuBetween').style.display = 'none';
-    //     document.getElementById('top5Between').style.display = 'none';
-    //     document.getElementById('hoaDon0Between').style.display = 'none';
-    //     document.getElementById('hoaDon1Between').style.display = 'none';
-    //     document.getElementById('hoaDon2Between').style.display = 'none';
-    //     document.getElementById('hoaDon3Between').style.display = 'none';
-    //     document.getElementById('hoaDon5Between').style.display = 'none';
-    //     document.getElementById('hoaDon6Between').style.display = 'none';
-    //     document.getElementById('hoaDon0Ngay').style.display = 'block';
-    //     document.getElementById('hoaDon1Ngay').style.display = 'block';
-    //     document.getElementById('hoaDon2Ngay').style.display = 'block';
-    //     document.getElementById('hoaDon3Ngay').style.display = 'block';
-    //     document.getElementById('hoaDon5Ngay').style.display = 'block';
-    //     document.getElementById('hoaDon6Ngay').style.display = 'block';
-    //     document.getElementById('hoaDon0Thang').style.display = 'none';
-    //     document.getElementById('hoaDon1Thang').style.display = 'none';
-    //     document.getElementById('hoaDon2Thang').style.display = 'none';
-    //     document.getElementById('hoaDon3Thang').style.display = 'none';
-    //     document.getElementById('hoaDon5Thang').style.display = 'none';
-    //     document.getElementById('hoaDon6Thang').style.display = 'none';
-    //     document.getElementById('chart_div_between').style.display = 'none';
-    //     document.getElementById('chart_div_ngay').style.display = 'block';
-    //     document.getElementById('chart_div_thang').style.display = 'none';
-    // }
-    //binh
-    // function showHoaDonThang() {
-    //     document.getElementById('btnBetween').classList.remove('clickbutton');
-    //     document.getElementById('btnNgay').classList.remove('clickbutton');
-    //     document.getElementById('btnThang').classList.add('clickbutton');
-    //     document.getElementById('hoaDonThang').style.display = 'block';
-    //     document.getElementById('hoaDonNgay').style.display = 'none';
-    //     document.getElementById('doanhThuThang').style.display = 'block';
-    //     document.getElementById('doanhThuNgay').style.display = 'none';
-    //     document.getElementById('top5Thang').style.display = 'block';
-    //     document.getElementById('top5Ngay').style.display = 'none';
-    //     document.getElementById('inputSearch').style.display = 'none';
-    //     document.getElementById('hoaDonBetween').style.display = 'none';
-    //     document.getElementById('doanhThuBetween').style.display = 'none';
-    //     document.getElementById('top5Between').style.display = 'none';
-    //     document.getElementById('hoaDon0Between').style.display = 'none';
-    //     document.getElementById('hoaDon1Between').style.display = 'none';
-    //     document.getElementById('hoaDon2Between').style.display = 'none';
-    //     document.getElementById('hoaDon3Between').style.display = 'none';
-    //     document.getElementById('hoaDon5Between').style.display = 'none';
-    //     document.getElementById('hoaDon6Between').style.display = 'none';
-    //     document.getElementById('hoaDon0Ngay').style.display = 'none';
-    //     document.getElementById('hoaDon1Ngay').style.display = 'none';
-    //     document.getElementById('hoaDon2Ngay').style.display = 'none';
-    //     document.getElementById('hoaDon3Ngay').style.display = 'none';
-    //     document.getElementById('hoaDon5Ngay').style.display = 'none';
-    //     document.getElementById('hoaDon6Ngay').style.display = 'none';
-    //     document.getElementById('hoaDon0Thang').style.display = 'block';
-    //     document.getElementById('hoaDon1Thang').style.display = 'block';
-    //     document.getElementById('hoaDon2Thang').style.display = 'block';
-    //     document.getElementById('hoaDon3Thang').style.display = 'block';
-    //     document.getElementById('hoaDon5Thang').style.display = 'block';
-    //     document.getElementById('hoaDon6Thang').style.display = 'block';
-    //     document.getElementById('chart_div_between').style.display = 'none';
-    //     document.getElementById('chart_div_ngay').style.display = 'none';
-    //     document.getElementById('chart_div_thang').style.display = 'block';
-    // }
-    //binh
-    // function showHoaDonBetween() {
-    //     document.getElementById('btnNgay').classList.remove('clickbutton');
-    //     document.getElementById('btnThang').classList.remove('clickbutton');
-    //     document.getElementById('btnBetween').classList.add('clickbutton');
-    //     document.getElementById('hoaDonThang').style.display = 'none';
-    //     document.getElementById('hoaDonNgay').style.display = 'none';
-    //     document.getElementById('doanhThuThang').style.display = 'none';
-    //     document.getElementById('doanhThuNgay').style.display = 'none';
-    //     document.getElementById('top5Thang').style.display = 'none';
-    //     document.getElementById('top5Ngay').style.display = 'none';
-    //     document.getElementById('top5Between').style.display = 'block';
-    //     document.getElementById('inputSearch').style.display = 'block';
-    //     document.getElementById('hoaDonBetween').style.display = 'block';
-    //     document.getElementById('doanhThuBetween').style.display = 'block';
-    //     document.getElementById('hoaDon0Between').style.display = 'block';
-    //     document.getElementById('hoaDon1Between').style.display = 'block';
-    //     document.getElementById('hoaDon2Between').style.display = 'block';
-    //     document.getElementById('hoaDon3Between').style.display = 'block';
-    //     document.getElementById('hoaDon5Between').style.display = 'block';
-    //     document.getElementById('hoaDon6Between').style.display = 'block';
-    //     document.getElementById('hoaDon0Ngay').style.display = 'none';
-    //     document.getElementById('hoaDon1Ngay').style.display = 'none';
-    //     document.getElementById('hoaDon2Ngay').style.display = 'none';
-    //     document.getElementById('hoaDon3Ngay').style.display = 'none';
-    //     document.getElementById('hoaDon5Ngay').style.display = 'none';
-    //     document.getElementById('hoaDon6Ngay').style.display = 'none';
-    //     document.getElementById('hoaDon0Thang').style.display = 'none';
-    //     document.getElementById('hoaDon1Thang').style.display = 'none';
-    //     document.getElementById('hoaDon2Thang').style.display = 'none';
-    //     document.getElementById('hoaDon3Thang').style.display = 'none';
-    //     document.getElementById('hoaDon5Thang').style.display = 'none';
-    //     document.getElementById('hoaDon6Thang').style.display = 'none';
-    //     document.getElementById('chart_div_between').style.display = 'block';
-    //     document.getElementById('chart_div_ngay').style.display = 'none';
-    //     document.getElementById('chart_div_thang').style.display = 'none';
-    // }
+    function showHoaDonNgay() {
+        document.getElementById('btnBetween').classList.remove('clickbutton');
+        document.getElementById('btnNgay').classList.add('clickbutton');
+        document.getElementById('btnThang').classList.remove('clickbutton');
+        document.getElementById('hoaDonThang').style.display = 'none';
+        document.getElementById('hoaDonNgay').style.display = 'block';
+        document.getElementById('doanhThuNgay').style.display = 'block';
+        document.getElementById('doanhThuThang').style.display = 'none';
+        document.getElementById('top5Ngay').style.display = 'block';
+        document.getElementById('top5Thang').style.display = 'none';
+        document.getElementById('inputSearch').style.display = 'none';
+        document.getElementById('hoaDonBetween').style.display = 'none';
+        document.getElementById('doanhThuBetween').style.display = 'none';
+        document.getElementById('top5Between').style.display = 'none';
+        document.getElementById('hoaDon0Between').style.display = 'none';
+        document.getElementById('hoaDon1Between').style.display = 'none';
+        document.getElementById('hoaDon2Between').style.display = 'none';
+        document.getElementById('hoaDon3Between').style.display = 'none';
+        document.getElementById('hoaDon5Between').style.display = 'none';
+        document.getElementById('hoaDon6Between').style.display = 'none';
+        document.getElementById('hoaDon0Ngay').style.display = 'block';
+        document.getElementById('hoaDon1Ngay').style.display = 'block';
+        document.getElementById('hoaDon2Ngay').style.display = 'block';
+        document.getElementById('hoaDon3Ngay').style.display = 'block';
+        document.getElementById('hoaDon5Ngay').style.display = 'block';
+        document.getElementById('hoaDon6Ngay').style.display = 'block';
+        document.getElementById('hoaDon0Thang').style.display = 'none';
+        document.getElementById('hoaDon1Thang').style.display = 'none';
+        document.getElementById('hoaDon2Thang').style.display = 'none';
+        document.getElementById('hoaDon3Thang').style.display = 'none';
+        document.getElementById('hoaDon5Thang').style.display = 'none';
+        document.getElementById('hoaDon6Thang').style.display = 'none';
+        document.getElementById('chart_div_between').style.display = 'none';
+        document.getElementById('chart_div_ngay').style.display = 'block';
+        document.getElementById('chart_div_thang').style.display = 'none';
+    }
+
+    function showHoaDonThang() {
+        document.getElementById('btnBetween').classList.remove('clickbutton');
+        document.getElementById('btnNgay').classList.remove('clickbutton');
+        document.getElementById('btnThang').classList.add('clickbutton');
+        document.getElementById('hoaDonThang').style.display = 'block';
+        document.getElementById('hoaDonNgay').style.display = 'none';
+        document.getElementById('doanhThuThang').style.display = 'block';
+        document.getElementById('doanhThuNgay').style.display = 'none';
+        document.getElementById('top5Thang').style.display = 'block';
+        document.getElementById('top5Ngay').style.display = 'none';
+        document.getElementById('inputSearch').style.display = 'none';
+        document.getElementById('hoaDonBetween').style.display = 'none';
+        document.getElementById('doanhThuBetween').style.display = 'none';
+        document.getElementById('top5Between').style.display = 'none';
+        document.getElementById('hoaDon0Between').style.display = 'none';
+        document.getElementById('hoaDon1Between').style.display = 'none';
+        document.getElementById('hoaDon2Between').style.display = 'none';
+        document.getElementById('hoaDon3Between').style.display = 'none';
+        document.getElementById('hoaDon5Between').style.display = 'none';
+        document.getElementById('hoaDon6Between').style.display = 'none';
+        document.getElementById('hoaDon0Ngay').style.display = 'none';
+        document.getElementById('hoaDon1Ngay').style.display = 'none';
+        document.getElementById('hoaDon2Ngay').style.display = 'none';
+        document.getElementById('hoaDon3Ngay').style.display = 'none';
+        document.getElementById('hoaDon5Ngay').style.display = 'none';
+        document.getElementById('hoaDon6Ngay').style.display = 'none';
+        document.getElementById('hoaDon0Thang').style.display = 'block';
+        document.getElementById('hoaDon1Thang').style.display = 'block';
+        document.getElementById('hoaDon2Thang').style.display = 'block';
+        document.getElementById('hoaDon3Thang').style.display = 'block';
+        document.getElementById('hoaDon5Thang').style.display = 'block';
+        document.getElementById('hoaDon6Thang').style.display = 'block';
+        document.getElementById('chart_div_between').style.display = 'none';
+        document.getElementById('chart_div_ngay').style.display = 'none';
+        document.getElementById('chart_div_thang').style.display = 'block';
+    }
+
+    function showHoaDonBetween() {
+        document.getElementById('btnNgay').classList.remove('clickbutton');
+        document.getElementById('btnThang').classList.remove('clickbutton');
+        document.getElementById('btnBetween').classList.add('clickbutton');
+        document.getElementById('hoaDonThang').style.display = 'none';
+        document.getElementById('hoaDonNgay').style.display = 'none';
+        document.getElementById('doanhThuThang').style.display = 'none';
+        document.getElementById('doanhThuNgay').style.display = 'none';
+        document.getElementById('top5Thang').style.display = 'none';
+        document.getElementById('top5Ngay').style.display = 'none';
+        document.getElementById('top5Between').style.display = 'block';
+        document.getElementById('inputSearch').style.display = 'block';
+        document.getElementById('hoaDonBetween').style.display = 'block';
+        document.getElementById('doanhThuBetween').style.display = 'block';
+        document.getElementById('hoaDon0Between').style.display = 'block';
+        document.getElementById('hoaDon1Between').style.display = 'block';
+        document.getElementById('hoaDon2Between').style.display = 'block';
+        document.getElementById('hoaDon3Between').style.display = 'block';
+        document.getElementById('hoaDon5Between').style.display = 'block';
+        document.getElementById('hoaDon6Between').style.display = 'block';
+        document.getElementById('hoaDon0Ngay').style.display = 'none';
+        document.getElementById('hoaDon1Ngay').style.display = 'none';
+        document.getElementById('hoaDon2Ngay').style.display = 'none';
+        document.getElementById('hoaDon3Ngay').style.display = 'none';
+        document.getElementById('hoaDon5Ngay').style.display = 'none';
+        document.getElementById('hoaDon6Ngay').style.display = 'none';
+        document.getElementById('hoaDon0Thang').style.display = 'none';
+        document.getElementById('hoaDon1Thang').style.display = 'none';
+        document.getElementById('hoaDon2Thang').style.display = 'none';
+        document.getElementById('hoaDon3Thang').style.display = 'none';
+        document.getElementById('hoaDon5Thang').style.display = 'none';
+        document.getElementById('hoaDon6Thang').style.display = 'none';
+        document.getElementById('chart_div_between').style.display = 'block';
+        document.getElementById('chart_div_ngay').style.display = 'none';
+        document.getElementById('chart_div_thang').style.display = 'none';
+    }
 
     window.onload = function () {
         showHoaDonBetween();
