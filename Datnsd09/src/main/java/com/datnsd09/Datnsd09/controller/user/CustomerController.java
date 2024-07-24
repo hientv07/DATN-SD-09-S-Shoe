@@ -4,12 +4,13 @@ package com.datnsd09.Datnsd09.controller.user;
 import com.datnsd09.Datnsd09.config.PrincipalCustom;
 import com.datnsd09.Datnsd09.entity.*;
 import com.datnsd09.Datnsd09.service.*;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -208,6 +209,19 @@ public class CustomerController {
         }
     }
 
+
+    //giohang
+//    @GetMapping("/user/cart")
+//    public String cart(
+//            Model model) {
+//        KhachHang khachHang = khachHangService.getById(idKhachHang);
+//        List<GioHangChiTiet> listGioHangChiTiet = gioHangChiTietService
+//                .fillAllByIdGioHang(khachHang.getGioHang().getId());
+//        model.addAttribute("soLuongSPGioHangCT",
+//                gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
+//        model.addAttribute("listGioHangChiTiet", listGioHangChiTiet);
+//        return "/customer/cart";
+//    }
     @GetMapping("/user/cart")
     public String cart(Model model) {
 //        // Giả sử bạn có cách lấy ID khách hàng (ví dụ: từ phiên đăng nhập)
@@ -243,7 +257,7 @@ public class CustomerController {
     }
 
     @GetMapping("/user/cart/detele/{id}")
-    public String deleteCart(@PathVariable("id") Long id){
+    public String deleteCart(@PathVariable("id") Long id) {
         gioHangChiTietService.deleteById(id);
         return "redirect:/user/cart";
     }
@@ -252,7 +266,7 @@ public class CustomerController {
     public String updateCart(
             @PathVariable("id") Long id,
             @RequestParam("soLuong") String soLuong
-    ){
+    ) {
         GioHangChiTiet gioHangChiTiet = gioHangChiTietService.fillById(id);
         gioHangChiTiet.setSoLuong(Integer.valueOf(soLuong));
         gioHangChiTietService.update(gioHangChiTiet);
@@ -269,6 +283,7 @@ public class CustomerController {
         gioHangChiTietService.save(khachHang.getGioHang().getId(), listIdString, Integer.valueOf(soLuongAdd));
         return "redirect:/shop";
     }
+
     @PostMapping("/user/gio-hang-chi-tiet/add-fast/{idChiTietSpAdd}/{soLuongAdd}")
     public String addGioHangChiTietNhanh(
             @PathVariable String idChiTietSpAdd,
@@ -279,6 +294,7 @@ public class CustomerController {
         gioHangChiTietService.save(khachHang.getGioHang().getId(), listIdString, Integer.valueOf(soLuongAdd));
         return "redirect:/user/cart";
     }
+
 
     @GetMapping("/user/checkout")
     public String checkout(
@@ -292,7 +308,7 @@ public class CustomerController {
 
         for (GioHangChiTiet gioHangChiTiet : gioHangChiTietService.findAllById(listIdString, khachHang.getGioHang().getId())) {
             if (gioHangChiTiet.getSoLuong() > sanPhamChiTietService.getById(gioHangChiTiet.getChiTietSanPham().getId()).getSoLuong()) {
-                redirectAttributes.addFlashAttribute("checkSoLuongDB","true");
+                redirectAttributes.addFlashAttribute("checkSoLuongDB", "true");
                 return "redirect:/user/cart";
             }
         }
@@ -351,8 +367,8 @@ public class CustomerController {
         List<String> listIdString = Arrays.asList(optionArray);
         for (GioHangChiTiet gioHangChiTiet : gioHangChiTietService.findAllById(listIdString, khachHang.getGioHang().getId())) {
             if (gioHangChiTiet.getSoLuong() > sanPhamChiTietService.getById(gioHangChiTiet.getChiTietSanPham().getId()).getSoLuong()) {
-                redirectAttributes.addFlashAttribute("checkSoLuongDB","true");
-                return "redirect:/user/checkout?options="+idGioHangChiTiet;
+                redirectAttributes.addFlashAttribute("checkSoLuongDB", "true");
+                return "redirect:/user/checkout?options=" + idGioHangChiTiet;
             }
         }
         if (trangThaiLuuDC.equals("0")) {
@@ -369,12 +385,10 @@ public class CustomerController {
             diaChiService.save(diaChi);
         }
         gioHangChiTietService.addHoaDon(listIdString, Long.valueOf(tongTien), Long.valueOf(tongTienAndSale), hoVaTen,
-                soDienThoai, tienShip,tienGiam, email, voucher, diaChiCuThe, ghiChu, khachHang, phuongXaID, quanHuyenID,
+                soDienThoai, tienShip, tienGiam, email, voucher, diaChiCuThe, ghiChu, khachHang, phuongXaID, quanHuyenID,
                 thanhPhoID, khachHang.getGioHang().getId());
         return "redirect:/user/thankyou";
     }
-
-
 
 
     ////////sau
@@ -386,9 +400,36 @@ public class CustomerController {
         }
         KhachHang khachHang = khachHangService.getById(idKhachHang);
         model.addAttribute("khachHang", khachHang);
-//        model.addAttribute("soLuongSPGioHangCT",
-//                gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
+        model.addAttribute("soLuongSPGioHangCT",
+                gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
         return "/customer/thong-tin-khach-hang";
+    }
+
+    @PostMapping("/user/thong-tin-khach-hang/update")
+    public String updateInfo(@Valid @ModelAttribute("khachHang") KhachHang khachHang,
+                             BindingResult result, Model model,
+                             RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            KhachHang kh = khachHangService.getById(idKhachHang);
+            model.addAttribute("soLuongSPGioHangCT", gioHangChiTietService.soLuongSPGioHangCT(kh.getGioHang().getId()));
+            return "/customer/thong-tin-khach-hang";
+        } else if (!khachHang.isValidNgaySinh()) {
+            KhachHang kh = khachHangService.getById(idKhachHang);
+            model.addAttribute("soLuongSPGioHangCT", gioHangChiTietService.soLuongSPGioHangCT(kh.getGioHang().getId()));
+            model.addAttribute("checkNgaySinh", "Năm sinh phải lớn 1900");
+            return "/customer/thong-tin-khach-hang";
+        } else if (!khachHangService.checkEmailSua(khachHang.getId(), khachHang.getEmail())) {
+            KhachHang kh = khachHangService.getById(idKhachHang);
+            model.addAttribute("soLuongSPGioHangCT", gioHangChiTietService.soLuongSPGioHangCT(kh.getGioHang().getId()));
+            model.addAttribute("checkEmailTrung", "Email đã được đăng ký");
+            return "/customer/thong-tin-khach-hang";
+        } else {
+            khachHang.setNgaySua(new Date());
+//            khachHang.setVaiTro(VaiTro.builder().id(Long.valueOf(2)).build());
+            redirectAttributes.addFlashAttribute("checkModal", "modal");
+            khachHangService.update(khachHang);
+        }
+        return "redirect:/user/thong-tin-khach-hang";
     }
 
 
@@ -406,8 +447,8 @@ public class CustomerController {
     }
 
     @GetMapping("/user/thankyou")
-    public String thankYou(Model model){
-        KhachHang khachHang =khachHangService.getById(idKhachHang);
+    public String thankYou(Model model) {
+        KhachHang khachHang = khachHangService.getById(idKhachHang);
 //            model.addAttribute("soLuongSPGioHangCT",
 //                    gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
         return "/customer/thankyou";
@@ -459,6 +500,7 @@ public class CustomerController {
         diaChiService.save(diaChi);
         return "redirect:/user/cart";
     }
+
     @GetMapping("/user/dia-chi/delete/{id}")
     public String deleteDiaChiKhachHang(
             @PathVariable("id") Long idDiaChi,
@@ -512,8 +554,8 @@ public class CustomerController {
     public String diaChiKhachHang(
             Model model) {
         KhachHang khachHang = khachHangService.getById(idKhachHang);
-//        model.addAttribute("soLuongSPGioHangCT",
-//                gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
+        model.addAttribute("soLuongSPGioHangCT",
+                gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
         List<DiaChi> diaChi = diaChiService.getAllByTaiKhoan(idKhachHang);
         model.addAttribute("listDiaChi", diaChi);
         if (diaChi.size() == 5) {
@@ -550,5 +592,79 @@ public class CustomerController {
         return "redirect:/lien-he";
     }
 
+    @GetMapping("/user/don-mua")
+    public String donMua(
+            Model model) {
+        KhachHang khachHang = khachHangService.getById(idKhachHang);
+        model.addAttribute("soLuongSPGioHangCT",
+                gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
+        model.addAttribute("listAllHoaDon", hoaDonService.getAllHoaDonByTaiKhoanOrderByNgaySua(idKhachHang));
+        model.addAttribute("listHDChoXacNhan", hoaDonService.getHoaDonByTaiKhoanByTrangThaiOrderByNgaySua(idKhachHang, 0));
+        model.addAttribute("listHDChoGiao", hoaDonService.getHoaDonByTaiKhoanByTrangThaiOrderByNgaySua(idKhachHang, 1));
+        model.addAttribute("listHDDangGiao", hoaDonService.getHoaDonByTaiKhoanByTrangThaiOrderByNgaySua(idKhachHang, 2));
+        model.addAttribute("listHDHoanThanh", hoaDonService.getHoaDonByTaiKhoanByTrangThaiOrderByNgaySua(idKhachHang, 3));
+        model.addAttribute("listHDDaHuy", hoaDonService.getHoaDonByTaiKhoanByTrangThaiOrderByNgaySua(idKhachHang, 5));
+        model.addAttribute("listHDTraHang", hoaDonService.getHoaDonByTaiKhoanByTrangThaiOrderByNgaySua(idKhachHang, 6));
+        return "/customer/don-mua";
+    }
+
+    @PostMapping("/user/don-mua/mua-lai")
+    public String muaLaiDonMua(
+            @RequestParam String options) {
+        String[] optionArray = options.split(",");
+        List<String> listIdString = Arrays.asList(optionArray);
+        KhachHang khachHang = khachHangService.getById(idKhachHang);
+        gioHangChiTietService.save(khachHang.getGioHang().getId(), listIdString, 1);
+        return "redirect:/user/cart";
+    }
+
+//    @GetMapping("/user/huy-don/{idHoaDon}")
+//    public String huyDon(@PathVariable("idHoaDon") Long idHoaDon,
+//                         @RequestParam("ghiChu") String ghiChu,
+//                         Model model, RedirectAttributes redirectAttributes){
+//        KhachHang khachHang = khachHangService.getById(idKhachHang);
+//        model.addAttribute("soLuongSPGioHangCT",
+//                gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
+//        HoaDon hoaDon = hoaDonService.findById(idHoaDon);
+//        hoaDon.setNgaySua(new Date());
+//        hoaDon.setTrangThai(5);
+//
+//        hoaDonService.saveOrUpdate(HoaDon.builder()
+//                .ghiChu(ghiChu)
+//                .ngayTao(new Date())
+//                .ngaySua(new Date())
+//                .trangThai(5)
+//                .hoaDon(hoaDon)
+//                .build());
+//
+//        hoaDonService.saveOrUpdate(hoaDon);
+//        return "redirect:/user/don-mua";
+//    }
+
+
+    @GetMapping("/user/mat-khau")
+    public String doiMatKhau(Model model) {
+        KhachHang khachHang = khachHangService.getById(idKhachHang);
+        model.addAttribute("soLuongSPGioHangCT",
+                gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
+        return "/customer/doi-mat-khau-khach-hang";
+    }
+
+    @GetMapping("/user/mat-khau/update")
+    public String updateMatKhau(@RequestParam("matKhauCu") String matKhauCu,
+                                @RequestParam("xacNhanmatKhauMoi") String xacNhanmatKhauMoi,
+                                Model model, RedirectAttributes redirectAttributes) {
+        KhachHang khachHang = khachHangService.getById(idKhachHang);
+        if (!passwordEncoder.matches(matKhauCu, khachHang.getMatKhau())) {
+            model.addAttribute("messages", "Mật khẩu cũ không chính xác, vui lòng thử lại");
+        } else {
+            khachHang.setNgaySua(new Date());
+            khachHang.setMatKhau(passwordEncoder.encode(xacNhanmatKhauMoi));
+            khachHangService.update(khachHang);
+            redirectAttributes.addFlashAttribute("checkModal", "modal");
+            return "redirect:/user/mat-khau";
+        }
+        return "/customer/doi-mat-khau-khach-hang";
+    }
 
 }

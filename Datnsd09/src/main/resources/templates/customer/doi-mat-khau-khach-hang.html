@@ -7,12 +7,19 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <link href="../../static/img/favicon.png" rel="icon">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta:300,400,700"/>
     <link rel="stylesheet" href="../../static/fonts/icomoon/style.css"/>
+
+
     <link href="../../../static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="../../../static/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="../../../static/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
+    <link href="../../../static/vendor/quill/quill.snow.css" rel="stylesheet">
+    <link href="../../../static/vendor/quill/quill.bubble.css" rel="stylesheet">
+    <link href="../../../static/vendor/remixicon/remixicon.css" rel="stylesheet">
+    <link href="../../../static/vendor/simple-datatables/style.css" rel="stylesheet">
+
+
     <link rel="stylesheet" href="../../static/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="../../static/css/magnific-popup.css"/>
     <link rel="stylesheet" href="../../static/css/jquery-ui.css"/>
@@ -22,12 +29,10 @@
     <link rel="stylesheet" href="../../static/css/aos.css"/>
 
     <link rel="stylesheet" href="../../static/css/style-customer-template.css"/>
-
-    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
-
 </head>
 
 <body>
+<script src="../../../static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 <div class="site-wrap">
     <header class="site-navbar" role="banner">
         <div class="site-navbar-top">
@@ -98,7 +103,7 @@
                     <div class="col-6 col-md-4 order-3 order-md-3 text-right">
                         <div class="site-top-icons">
                             <ul class="nav nav-pills" style="margin-left: 54%">
-                                <li class="nav-item dropdown">
+                                <li class="nav-item dropdown" >
                                     <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"
                                        role="button" aria-expanded="false"><span class="icon icon-person"></span></a>
                                     <ul class="dropdown-menu">
@@ -144,13 +149,13 @@
                     <ul class="sidebar-nav" id="sidebar-nav">
 
                         <li class="nav-item">
-                            <a class="nav-link " data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
+                            <a class="nav-link" data-bs-target="#components-nav" data-bs-toggle="collapse" href="#">
                                 <i class="bi bi-person-fill"></i><span>Tài khoản của tôi</span><i
                                     class="bi bi-chevron-down ms-auto"></i>
                             </a>
                             <ul id="components-nav" class="nav-content collapse show" data-bs-parent="#sidebar-nav">
                                 <li>
-                                    <a href="/user/thong-tin-khach-hang" class="active">
+                                    <a href="/user/thong-tin-khach-hang">
                                         <i class="bi bi-circle"></i><span>Hồ Sơ</span>
                                     </a>
                                 </li>
@@ -160,8 +165,8 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="/user/mat-khau">
-                                        <i class="bi bi-circle"></i><span>Đổi Mật Khẩu</span>
+                                    <a href="/user/mat-khau" class="active">
+                                        <i class="bi bi-circle" ></i><span>Đổi Mật Khẩu</span>
                                     </a>
                                 </li>
                             </ul>
@@ -179,123 +184,111 @@
             </div>
 
             <div class="col-md-10" style="background-color: white">
-                <h4 style="margin-top: 2%">Hồ Sơ Của Tôi</h4>
-                <p>Quản lý thông tin hồ sơ để bảo mật tài khoản</p>
-                <form class="row g-3" style="width: 80%;margin: auto;margin-top: 5%"
-                      th:action="@{/user/thong-tin-khach-hang/update}" th:object="${khachHang}" method="post">
+                <h4 style="margin-top: 2%">Đổi mật khẩu</h4>
+                <p>Để bảo mật tài khoản, vui lòng không chia sẻ mật khẩu cho người khác</p>
+                <form class="row g-3" style="width: 90%;margin-left: 20%;margin-top: 5%"
+                      th:action="@{/user/mat-khau/update}">
                     <div class="row mb-3">
-                        <input type="hidden" th:field="*{id}">
-                        <input type="hidden" th:field="*{trangThai}">
-                        <input type="hidden" th:field="*{ngayTao}">
-                        <input type="hidden" th:field="*{matKhau}">
-                        <label for="inputEmail3" class="col-sm-3 col-form-label">Tên đăng nhập</label>
-                        <div class="col-sm-9">
-                            <input type="text" th:field="*{tenTaiKhoan}" class="form-control" id="inputEmail3" readonly>
+                        <label for="matKhauCu" class="col-sm-3 col-form-label">Mật khẩu cũ</label>
+                        <div class="col-sm-5">
+                            <input type="password" class="form-control" name="matKhauCu" id="matKhauCu">
+                            <div class="check-loi" id="matKhauCuCheck" style="display: none"></div>
+                            <div class="check-loi" id="messages" th:text="${messages}"></div>
+
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="inputPassword3" class="col-sm-3 col-form-label">Tên</label>
-                        <div class="col-sm-9">
-                            <input type="text" th:field="*{hoVaTen}" class="form-control" id="inputPassword3">
-                            <span class="check-loi" th:errors="*{hoVaTen}"></span>
+                        <label for="matKhauMoi" class="col-sm-3 col-form-label">Mật khẩu mới</label>
+                        <div class="col-sm-5">
+                            <input type="password" class="form-control" name="matKhauMoi" id="matKhauMoi">
+                            <div class="check-loi" id="matKhauMoiCheck" style="display: none"></div>
+
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="inputEmail5" class="col-sm-3 col-form-label">Email</label>
-                        <div class="col-sm-9">
-                            <input type="email" th:field="*{email}" class="form-control" id="inputEmail5">
-                            <span class="check-loi" th:errors="*{email}"></span>
-                            <span class="check-loi" th:text="${checkEmailTrung}"></span>
+                        <label for="xacNhanmatKhauMoi" class="col-sm-3 col-form-label">Xác nhận mật khẩu</label>
+                        <div class="col-sm-5">
+                            <input type="password" class="form-control" name="xacNhanmatKhauMoi" id="xacNhanmatKhauMoi">
+                            <div class="check-loi" id="xacNhanmatKhauMoiCheck" style="display: none"></div>
                         </div>
                     </div>
                     <div class="row mb-3">
-                        <label for="inputPassword6" class="col-sm-3 col-form-label">Số điện thoại</label>
-                        <div class="col-sm-9">
-                            <input type="text" th:field="*{soDienThoai}"  class="form-control" id="inputPassword6">
-                            <span class="check-loi" th:errors="*{soDienThoai}"></span>
-                        </div>
-                        <script>
-                            document.addEventListener("DOMContentLoaded", function() {
-                                var sdt = document.getElementById("inputPassword6")
-                                var ngaySinh = document.getElementById("inputPassword4")
-                                if(sdt.value=='0300000000'){
-                                    sdt.value = ''
-                                }
-                                if(ngaySinh.value=='1900-01-01'){
-                                    ngaySinh.value = ''
-                                }
-                            });
-                        </script>
-                    </div>
-                    <fieldset class="row mb-3">
-                        <label class="col-sm-3 col-form-label">Giới tính</label>
-                        <div class="col-sm-9">
-                            <div style="margin-left: 4%;margin-top: 1%">
-                                <input class="form-check-input" type="radio" th:field="*{gioiTinh}" name="gioiTinh"
-                                       id="gridRadios1"
-                                       value="0" checked>
-                                <label class="form-check-label" for="gridRadios1">
-                                    Nam
-                                </label>
-                                <input class="form-check-input" type="radio" th:field="*{gioiTinh}" name="gioiTinh"
-                                       id="gridRadios2"
-                                       style="margin-left: 5%"
-                                       value="1">
-                                <label class="form-check-label" for="gridRadios2" style="margin-left: 9%">
-                                    Nữ
-                                </label>
-                                <span class="check-loi" th:errors="*{gioiTinh}"></span>
-                            </div>
-                        </div>
-                    </fieldset>
-                    <div class="row mb-3">
-                        <label for="inputPassword4" class="col-sm-3 col-form-label">Ngày sinh</label>
-                        <div class="col-sm-9">
-                            <input type="date" class="form-control" th:field="*{ngaySinh}" id="inputPassword4">
-                            <span class="check-loi" th:errors="*{ngaySinh}"></span>
-                            <span class="check-loi" th:text="${checkNgaySinh}"></span>
-                        </div>
-                    </div>
-                    <div class="row mb-3">
-                        <div class="col" style="margin-left: 50%;margin-top: 5%;margin-bottom: 10%">
-                            <button type="submit" class="btn btn-primary">Lưu</button>
+                        <div class="col" style="margin-left: 25%;margin-top: 5%;margin-bottom: 10%">
+                            <button type="submit" onclick="return checkDoiMatKhau()" class="btn btn-primary">Xác nhận</button>
                         </div>
                     </div>
                 </form>
-                <!--js bật modal khi check-->
-                <script th:if="${checkModal=='modal'}">
-                    window.addEventListener('DOMContentLoaded', (event) => {
-                        // Hiển thị modal
-                        var toast = new bootstrap.Toast(document.getElementById('thongBaoThemThanhCong'));
-                        toast.show();
-                    });
-                </script>
-                <!--js bật modal khi check-->
-                <!-- Modal thông báo check chọn sản phẩm-->
-                <div class="toast-container position-fixed top-50 start-50 translate-middle">
-                    <div id="thongBaoThemThanhCong" class="toast" role="alert" aria-live="assertive" data-bs-delay="1000"
-                         aria-atomic="true"
-                         style="background-color: #7e7e7e;">
-                        <div class="toast-body center-image" style=";display: flex;justify-content: center;align-items: center;">
-                            <img src="../../static/img/successful_notification.png" alt="Notification Image"
-                                 style="margin-top:7%;width: 12%;height: 12%;">
-                        </div>
-                        <div class="toast-body" style="color: white;display: flex;
+            </div>
+        </div>
+    </div>
+    <script>
+        function checkDoiMatKhau() {
+            var check = true;
+
+            var matKhauCu = document.getElementById("matKhauCu")
+            var matKhauCuCheck = document.getElementById("matKhauCuCheck")
+            var messages = document.getElementById("messages")
+            messages.style.display = 'none'
+            matKhauCuCheck.style.display = 'none'
+            if(matKhauCu.value.trim()==''){
+                matKhauCuCheck.style.display = 'block'
+                matKhauCuCheck.innerText = 'Bạn chưa nhập mật khẩu cũ'
+                check = false
+            }
+
+            var matKhauMoi = document.getElementById("matKhauMoi")
+            var matKhauMoiCheck = document.getElementById("matKhauMoiCheck")
+            matKhauMoiCheck.style.display = 'none'
+            if(matKhauMoi.value.trim()==''){
+                matKhauMoiCheck.style.display = 'block'
+                matKhauMoiCheck.innerText = 'Bạn chưa nhập mật khẩu mới'
+                check = false
+            }
+
+            var xacNhanmatKhauMoi = document.getElementById("xacNhanmatKhauMoi")
+            var xacNhanmatKhauMoiCheck = document.getElementById("xacNhanmatKhauMoiCheck")
+            xacNhanmatKhauMoiCheck.style.display = 'none'
+            if(xacNhanmatKhauMoi.value.trim()==''){
+                xacNhanmatKhauMoiCheck.style.display = 'block'
+                xacNhanmatKhauMoiCheck.innerText = 'Bạn chưa nhập xác nhận mật khẩu mới'
+                check = false
+            }else if(matKhauMoi.value != xacNhanmatKhauMoi.value){
+                xacNhanmatKhauMoiCheck.style.display = 'block'
+                xacNhanmatKhauMoiCheck.innerText = 'Mật khẩu và Mật khẩu xác nhận không giống nhau'
+                check = false
+            }
+            return check
+        }
+    </script>
+    <!--js bật modal khi check-->
+    <script th:if="${checkModal=='modal'}">
+        window.addEventListener('DOMContentLoaded', (event) => {
+            // Hiển thị modal
+            var toast = new bootstrap.Toast(document.getElementById('thongBaoThemThanhCong'));
+            toast.show();
+        });
+    </script>
+    <!--js bật modal khi check-->
+    <!-- Modal thông báo check chọn sản phẩm-->
+    <div class="toast-container position-fixed top-50 start-50 translate-middle">
+        <div id="thongBaoThemThanhCong" class="toast" role="alert" aria-live="assertive" data-bs-delay="1000"
+             aria-atomic="true"
+             style="background-color: #7e7e7e;">
+            <div class="toast-body center-image" style=";display: flex;justify-content: center;align-items: center;">
+                <img src="../../static/img/successful_notification.png" alt="Notification Image"
+                     style="margin-top:7%;width: 12%;height: 12%;">
+            </div>
+            <div class="toast-body" style="color: white;display: flex;
             justify-content: center;
             align-items: center;
             color: white;
             margin-bottom: 7%;
             text-align: center;">
-                            Cập nhật hồ sơ
-                        </div>
-                    </div>
-                </div>
-                <!-- Modal thông báo check chọn sản phẩm end-->
+                Cập nhật mật khẩu
             </div>
         </div>
     </div>
-
-
+    <!-- Modal thông báo check chọn sản phẩm end-->
     <footer class="site-footer border-top">
         <div class="container">
             <div class="row">
@@ -350,18 +343,13 @@
                             <li class="email">sshoeshopshoes@gmail.com</li>
                         </ul>
                     </div>
-                </div>
+                </div>x
             </div>
 
         </div>
     </footer>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"
-        integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+"
-        crossorigin="anonymous"></script>
+
 <script src="../../static/js/jquery-3.3.1.min.js"></script>
 <script src="../../static/js/jquery-ui.js"></script>
 <script src="../../static/js/popper.min.js"></script>
