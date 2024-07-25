@@ -186,20 +186,20 @@
                         </section>
                     </div>
 
-<!--                    <div class="col-md-12" th:if="${byHoaDon.trangThai==5}">-->
-<!--                        <section class="section-top-dmct-don-huy">-->
-<!--                            <div class="row" th:each="lshd, iterStat : ${listLichSuHoaDon}"-->
-<!--                                 th:if="${lshd.trangThai == 5}">-->
-<!--                                <div class="col-md-6">-->
-<!--                                    <h4>Đã hủy đơn hàng</h4>-->
-<!--                                    <span th:text="${'vào ' + lshd.ngaySua}"></span>-->
-<!--                                </div>-->
-<!--                                <div class="col-md-6">-->
-<!--                                    <h6 th:text="${'Lý do: ' + lshd.ghiChu}"></h6>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                        </section>-->
-<!--                    </div>-->
+                    <div class="col-md-12" th:if="${byHoaDon.trangThai==5}">
+                        <section class="section-top-dmct-don-huy">
+                            <div class="row" th:each="lshd, iterStat : ${listLichSuHoaDon}"
+                                 th:if="${lshd.trangThai == 5}">
+                                <div class="col-md-6">
+                                    <h4>Đã hủy đơn hàng</h4>
+                                    <span th:text="${'vào ' + lshd.ngaySua}"></span>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6 th:text="${'Lý do: ' + lshd.ghiChu}"></h6>
+                                </div>
+                            </div>
+                        </section>
+                    </div>
 
                     <div class="col-md-12">
 <!--                        <div style="width: 80%;margin: auto;margin-top: 5%;margin-bottom: 5%;">-->
@@ -457,7 +457,7 @@
                                     <h5>Địa Chỉ Nhận Hàng</h5>
                                     <span style="display: block" th:text="${'Tên Khách Hàng: '+ byHoaDon.nguoiNhan}">Nguyễn Ngọc Hiếu</span>
                                     <span style="display: block" th:text="${'Số điện thoại: '+ byHoaDon.sdtNguoiNhan}">0986553564</span>
-                                    <span th:text="${'Địa Chỉ: ' + byHoaDon.diaChiNguoiNhan}"></span>
+                                    <span th:text="${'Địa Chỉ: ' + byHoaDon.diaChiNguoiNhan} +','"></span>
                                     <span id="phuongXaColumn"></span>
                                     <span id="quanHuyenColumn"></span>
                                     <span id="thanhPhoColumn"></span>
@@ -472,27 +472,155 @@
                             </div>
                         </section>
 
+<!--                        <section class="section-mid">-->
+<!--                            <div class="border-duoi-dmct"></div>-->
+<!--                            <div th:each="listHoaDonCT : ${byHoaDon.lstHoaDonChiTiet}">-->
+<!--                                <input type="hidden" th:name="${'listNameChiTietSP2'+byHoaDon.id}"-->
+<!--                                       th:value="${listHoaDonCT.sanPhamChiTiet.id +' '+listHoaDonCT.sanPhamChiTiet.soLuong}">-->
+
+<!--                                <div class="row" th:if="${byHoaDon.trangThai!=6}">-->
+<!--                                    <div class="col-md-10 d-flex align-items-center">-->
+<!--                                        <img class="img-mid"-->
+<!--                                             th:each="anh : ${listHoaDonCT.sanPhamChiTiet.sanPham.listHinhAnhSanPham[0]}"-->
+<!--                                             th:src="${'../../static/img/ImgShoe/'+anh.url}"-->
+<!--                                             alt="">-->
+<!--                                        <div class="divider-line">-->
+<!--                                            <h6 th:text="${listHoaDonCT.sanPhamChiTiet.sanPham.ten}">Giày Nike Air-->
+<!--                                                Max</h6>-->
+<!--                                            <span th:text="${'Phân loại hàng: ' + listHoaDonCT.sanPhamChiTiet.mauSac.ten + ' - ' + listHoaDonCT.sanPhamChiTiet.kichCo.ten}"></span>-->
+<!--                                            <p th:text="${'x'+listHoaDonCT.soLuong}"></p>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="col-md-2 d-flex align-items-center justify-content-center">-->
+<!--                                        <span th:text="${listHoaDonCT.donGia + ' VNĐ'}"></span>-->
+<!--                                    </div>-->
+<!--                                    <div class="border-duoi"></div>-->
+<!--                                </div>-->
+
+<!--                                <div class="row" th:if="${byHoaDon.trangThai==6}">-->
+<!--                                    <div class="col-md-7 d-flex align-items-center">-->
+<!--                                        <img class="img-mid"-->
+<!--                                             th:each="anh : ${listHoaDonCT.sanPhamChiTiet.sanPham.listHinhAnhSanPham[0]}"-->
+<!--                                             th:src="${'../../static/img/ImgShoe/'+anh.url}"-->
+<!--                                             alt="">-->
+<!--                                        <div class="divider-line">-->
+<!--                                            <h6 th:text="${listHoaDonCT.sanPhamChiTiet.sanPham.ten}">Giày Nike Air-->
+<!--                                                Max</h6>-->
+<!--                                            <span th:text="${'Phân loại hàng: ' + listHoaDonCT.sanPhamChiTiet.mauSac.ten + ' - ' + listHoaDonCT.sanPhamChiTiet.kichCo.ten}"></span>-->
+<!--                                            <p th:text="${'x'+listHoaDonCT.soLuong}"></p>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <div class="col-md-2 d-flex align-items-center justify-content-center">-->
+<!--                                        <span th:text="${listHoaDonCT.donGia + ' VNĐ'}"></span>-->
+<!--                                    </div>-->
+
+<!--                                    <div class="col-md-3 d-flex align-items-center justify-content-center">-->
+<!--                                        <h6 th:if="${listHoaDonCT.trangThai==0}">Hàng Đã Nhận</h6>-->
+<!--                                        <h6 th:if="${listHoaDonCT.trangThai==2}">Hàng Hoàn Trả</h6>-->
+<!--                                    </div>-->
+<!--                                    <div class="border-duoi"></div>-->
+<!--                                </div>-->
+
+<!--                            </div>-->
+
+<!--                        </section>-->
+
+<!--                        <section class="section-bottom-table">-->
+<!--                            <table>-->
+<!--                                <tbody th:if="${byHoaDon.trangThai!=6}">-->
+<!--                                <tr>-->
+<!--                                    <td colspan="2">Tổng tiền hàng</td>-->
+<!--                                    <td class="tien-table" th:text="${byHoaDon.tongTien+ ' VNĐ'}">-->
+<!--                                        30000VND-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+<!--                                <tr>-->
+<!--                                    <td colspan="2">Phí vận chuyển</td>-->
+<!--                                    <td class="tien-table" th:text="${byHoaDon.phiShip+ ' VNĐ'}">30000VND</td>-->
+<!--                                </tr>-->
+<!--                                <tr>-->
+<!--                                    <td colspan="2">Tiền giảm</td>-->
+<!--                                    <td class="tien-table"-->
+<!--                                        th:text="${byHoaDon.tienGiam+ ' VNĐ'}">-->
+<!--                                        30000VND-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+<!--                                <tr>-->
+<!--                                    <td colspan="2">Thành tiền</td>-->
+<!--                                    <td class="tong-tien-table"-->
+<!--                                        th:text="${byHoaDon.tongTienKhiGiam + byHoaDon.phiShip+ ' VNĐ'}">30000VND-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+<!--                                </tbody>-->
+
+<!--                                <tbody th:if="${byHoaDon.trangThai==6}">-->
+<!--                                <tr>-->
+<!--                                    <td colspan="2">Tổng tiền hàng</td>-->
+<!--                                    <td class="tien-table" th:text="${byHoaDon.tongTienHoaDon()+ ' VNĐ'}">-->
+<!--                                        30000VND-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+<!--                                <tr>-->
+<!--                                    <td colspan="2">Phí vận chuyển</td>-->
+<!--                                    <td class="tien-table" th:text="${byHoaDon.phiShip+ ' VNĐ'}">30000VND</td>-->
+<!--                                </tr>-->
+<!--                                <tr>-->
+<!--                                    <td colspan="2">Tiền giảm</td>-->
+<!--                                    <td class="tien-table">-->
+<!--                                        <del-->
+<!--                                                th:text="${byHoaDon.tienGiam+ ' VNĐ'}">-->
+<!--                                        </del>-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+<!--                                <tr>-->
+<!--                                    <td colspan="2">Tiền khách thanh toán</td>-->
+<!--                                    <td class="tien-table"-->
+<!--                                        th:text="${byHoaDon.tongTienHoaDon() + byHoaDon.phiShip + ' VNĐ'}">-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+<!--                                <tr>-->
+<!--                                    <td colspan="2">Tổng tiền hoàn trả</td>-->
+<!--                                    <td class="tong-tien-table" th:text="${byHoaDon.tongTienHoaDonHoanTra()+ ' VNĐ'}">-->
+<!--                                        30000VND-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+<!--                                <tr>-->
+<!--                                    <td colspan="2">Tổng tiền thanh toán</td>-->
+<!--                                    <td class="tong-tien-table"-->
+<!--                                        th:if="${byHoaDon.tongTienHoaDonDaNhan()==0}"-->
+<!--                                        th:text="${'0 VNĐ'}">30000VND-->
+<!--                                    </td>-->
+<!--                                    <td class="tong-tien-table"-->
+<!--                                        th:if="${byHoaDon.tongTienHoaDonDaNhan()!=0}"-->
+<!--                                        th:text="${byHoaDon.tongTienHoaDon() + byHoaDon.phiShip - byHoaDon.tienGiam + ' VNĐ'}">30000VNĐ-->
+<!--                                    </td>-->
+<!--                                </tr>-->
+<!--                                </tbody>-->
+
+<!--                            </table>-->
+<!--                        </section>-->
+
                         <section class="section-mid">
                             <div class="border-duoi-dmct"></div>
                             <div th:each="listHoaDonCT : ${byHoaDon.lstHoaDonChiTiet}">
                                 <input type="hidden" th:name="${'listNameChiTietSP2'+byHoaDon.id}"
-                                       th:value="${listHoaDonCT.chiTietSanPham.id +' '+listHoaDonCT.chiTietSanPham.soLuong}">
+                                       th:value="${listHoaDonCT.sanPhamChiTiet.id +' '+listHoaDonCT.sanPhamChiTiet.soLuong}">
 
                                 <div class="row" th:if="${byHoaDon.trangThai!=6}">
                                     <div class="col-md-10 d-flex align-items-center">
                                         <img class="img-mid"
-                                             th:each="anh : ${listHoaDonCT.chiTietSanPham.sanPham.listHinhAnhSanPham[0]}"
+                                             th:each="anh : ${listHoaDonCT.sanPhamChiTiet.sanPham.listHinhAnhSanPham[0]}"
                                              th:src="${'../../static/img/ImgShoe/'+anh.url}"
                                              alt="">
                                         <div class="divider-line">
-                                            <h6 th:text="${listHoaDonCT.chiTietSanPham.sanPham.ten}">Giày Nike Air
+                                            <h6 th:text="${listHoaDonCT.sanPhamChiTiet.sanPham.ten}">Giày Nike Air
                                                 Max</h6>
-                                            <span th:text="${'Phân loại hàng: ' + listHoaDonCT.chiTietSanPham.mauSac.ten + ' - ' + listHoaDonCT.chiTietSanPham.kichCo.ten}"></span>
+                                            <span th:text="${'Phân loại hàng: ' + listHoaDonCT.sanPhamChiTiet.mauSac.ten + ' - ' + listHoaDonCT.sanPhamChiTiet.kichCo.ten}"></span>
                                             <p th:text="${'x'+listHoaDonCT.soLuong}"></p>
                                         </div>
                                     </div>
                                     <div class="col-md-2 d-flex align-items-center justify-content-center">
-                                        <span th:text="${listHoaDonCT.donGia + ' VNĐ'}"></span>
+                                        <span class="price-format" th:attr="data-value=${listHoaDonCT.donGia}"></span>
                                     </div>
                                     <div class="border-duoi"></div>
                                 </div>
@@ -500,19 +628,20 @@
                                 <div class="row" th:if="${byHoaDon.trangThai==6}">
                                     <div class="col-md-7 d-flex align-items-center">
                                         <img class="img-mid"
-                                             th:each="anh : ${listHoaDonCT.chiTietSanPham.sanPham.listHinhAnhSanPham[0]}"
+                                             th:each="anh : ${listHoaDonCT.sanPhamChiTiet.sanPham.listHinhAnhSanPham[0]}"
                                              th:src="${'../../static/img/ImgShoe/'+anh.url}"
                                              alt="">
                                         <div class="divider-line">
-                                            <h6 th:text="${listHoaDonCT.chiTietSanPham.sanPham.ten}">Giày Nike Air
+                                            <h6 th:text="${listHoaDonCT.sanPhamChiTiet.sanPham.ten}">Giày Nike Air
                                                 Max</h6>
-                                            <span th:text="${'Phân loại hàng: ' + listHoaDonCT.chiTietSanPham.mauSac.ten + ' - ' + listHoaDonCT.chiTietSanPham.kichCo.ten}"></span>
+                                            <span th:text="${'Phân loại hàng: ' + listHoaDonCT.sanPhamChiTiet.mauSac.ten + ' - ' + listHoaDonCT.sanPhamChiTiet.kichCo.ten}"></span>
                                             <p th:text="${'x'+listHoaDonCT.soLuong}"></p>
                                         </div>
                                     </div>
                                     <div class="col-md-2 d-flex align-items-center justify-content-center">
-                                        <span th:text="${listHoaDonCT.donGia + ' VNĐ'}"></span>
+                                        <span class="price-format" th:attr="data-value=${listHoaDonCT.donGia}"></span>
                                     </div>
+
                                     <div class="col-md-3 d-flex align-items-center justify-content-center">
                                         <h6 th:if="${listHoaDonCT.trangThai==0}">Hàng Đã Nhận</h6>
                                         <h6 th:if="${listHoaDonCT.trangThai==2}">Hàng Hoàn Trả</h6>
@@ -521,7 +650,6 @@
                                 </div>
 
                             </div>
-
                         </section>
 
                         <section class="section-bottom-table">
@@ -529,82 +657,78 @@
                                 <tbody th:if="${byHoaDon.trangThai!=6}">
                                 <tr>
                                     <td colspan="2">Tổng tiền hàng</td>
-                                    <td class="tien-table" th:text="${byHoaDon.tongTien+ ' VNĐ'}">
-                                        30000VNĐ
-                                    </td>
+                                    <td class="tien-table price-format" th:attr="data-value=${byHoaDon.tongTien}"></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Phí vận chuyển</td>
-                                    <td class="tien-table" th:text="${byHoaDon.phiShip+ ' VNĐ'}">30000VNĐ</td>
+                                    <td class="tien-table price-format" th:attr="data-value=${byHoaDon.phiShip}"></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Tiền giảm</td>
-                                    <td class="tien-table"
-                                        th:text="${byHoaDon.tienGiam+ ' VNĐ'}">
-                                        30000VNĐ
-                                    </td>
+                                    <td class="tien-table price-format" th:attr="data-value=${byHoaDon.tienGiam}"></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Thành tiền</td>
-                                    <td class="tong-tien-table"
-                                        th:text="${byHoaDon.tongTienKhiGiam + byHoaDon.phiShip+ ' VNĐ'}">30000VNĐ
-                                    </td>
+                                    <td class="tong-tien-table price-format" th:attr="data-value=${byHoaDon.tongTienKhiGiam + byHoaDon.phiShip}"></td>
                                 </tr>
                                 </tbody>
 
                                 <tbody th:if="${byHoaDon.trangThai==6}">
                                 <tr>
                                     <td colspan="2">Tổng tiền hàng</td>
-                                    <td class="tien-table" th:text="${byHoaDon.tongTienHoaDon()+ ' VNĐ'}">
-                                        30000VNĐ
-                                    </td>
+                                    <td class="tien-table price-format" th:attr="data-value=${byHoaDon.tongTienHoaDon()}"></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Phí vận chuyển</td>
-                                    <td class="tien-table" th:text="${byHoaDon.phiShip+ ' VNĐ'}">30000VNĐ</td>
+                                    <td class="tien-table price-format" th:attr="data-value=${byHoaDon.phiShip}"></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Tiền giảm</td>
                                     <td class="tien-table">
-                                        <del
-                                                th:text="${byHoaDon.tienGiam+ ' VNĐ'}">
-                                        </del>
+                                        <del class="price-format" th:attr="data-value=${byHoaDon.tienGiam}"></del>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Tiền khách thanh toán</td>
-                                    <td class="tien-table"
-                                        th:text="${byHoaDon.tongTienHoaDon() + byHoaDon.phiShip + ' VNĐ'}">
-                                    </td>
+                                    <td class="tien-table price-format" th:attr="data-value=${byHoaDon.tongTienHoaDon() + byHoaDon.phiShip}"></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Tổng tiền hoàn trả</td>
-                                    <td class="tong-tien-table" th:text="${byHoaDon.tongTienHoaDonHoanTra()+ ' VNĐ'}">
-                                        30000VNĐ
-                                    </td>
+                                    <td class="tong-tien-table price-format" th:attr="data-value=${byHoaDon.tongTienHoaDonHoanTra()}"></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Tổng tiền thanh toán</td>
-                                    <td class="tong-tien-table"
-                                        th:if="${byHoaDon.tongTienHoaDonDaNhan()==0}"
-                                        th:text="${'0 VNĐ'}">30000VNĐ
-                                    </td>
-                                    <td class="tong-tien-table"
-                                        th:if="${byHoaDon.tongTienHoaDonDaNhan()!=0}"
-                                        th:text="${byHoaDon.tongTienHoaDon() + byHoaDon.phiShip - byHoaDon.tienGiam + ' VNĐ'}">30000VNĐ
-                                    </td>
+                                    <td class="tong-tien-table price-format" th:if="${byHoaDon.tongTienHoaDonDaNhan() == 0}" th:attr="data-value=0"></td>
+                                    <td class="tong-tien-table price-format" th:if="${byHoaDon.tongTienHoaDonDaNhan() != 0}" th:attr="data-value=${byHoaDon.tongTienHoaDon() + byHoaDon.phiShip - byHoaDon.tienGiam}"></td>
                                 </tr>
                                 </tbody>
 
                             </table>
                         </section>
 
+
                     </div>
                 </div>
 
             </div>
-
         </div>
+
+        <script>
+            function formatVND(amount) {
+                // Định dạng số với dấu phẩy phân cách hàng nghìn và thêm đuôi "VNĐ"
+                return amount.toLocaleString('vi-VN') + ' VNĐ';
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                // Tìm tất cả các phần tử cần định dạng giá
+                const priceElements = document.querySelectorAll('.price-format');
+                priceElements.forEach(function (element) {
+                    const value = parseInt(element.getAttribute('data-value'), 10);
+                    element.textContent = formatVND(value);
+                });
+            });
+        </script>
+
 
         <!--footer-->
         <footer class="site-footer border-top">
