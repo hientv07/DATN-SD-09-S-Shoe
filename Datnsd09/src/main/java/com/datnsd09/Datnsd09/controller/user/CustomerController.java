@@ -620,31 +620,6 @@ public class CustomerController {
         return "redirect:/lien-he";
     }
 
-//    @GetMapping("/user/don-mua")
-//    public String donMua(
-//            Model model) {
-//        KhachHang khachHang = khachHangService.getById(idKhachHang);
-//        model.addAttribute("soLuongSPGioHangCT",
-//                gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
-//        model.addAttribute("listAllHoaDon", hoaDonService.getAllHoaDonByTaiKhoanOrderByNgaySua(idKhachHang));
-//        model.addAttribute("listHDChoXacNhan", hoaDonService.getHoaDonByTaiKhoanByTrangThaiOrderByNgaySua(idKhachHang, 0));
-//        model.addAttribute("listHDChoGiao", hoaDonService.getHoaDonByTaiKhoanByTrangThaiOrderByNgaySua(idKhachHang, 1));
-//        model.addAttribute("listHDDangGiao", hoaDonService.getHoaDonByTaiKhoanByTrangThaiOrderByNgaySua(idKhachHang, 2));
-//        model.addAttribute("listHDHoanThanh", hoaDonService.getHoaDonByTaiKhoanByTrangThaiOrderByNgaySua(idKhachHang, 3));
-//        model.addAttribute("listHDDaHuy", hoaDonService.getHoaDonByTaiKhoanByTrangThaiOrderByNgaySua(idKhachHang, 5));
-//        model.addAttribute("listHDTraHang", hoaDonService.getHoaDonByTaiKhoanByTrangThaiOrderByNgaySua(idKhachHang, 6));
-//        return "/customer/don-mua";
-//    }
-//
-//    @PostMapping("/user/don-mua/mua-lai")
-//    public String muaLaiDonMua(
-//            @RequestParam String options) {
-//        String[] optionArray = options.split(",");
-//        List<String> listIdString = Arrays.asList(optionArray);
-//        KhachHang khachHang = khachHangService.getById(idKhachHang);
-//        gioHangChiTietService.save(khachHang.getGioHang().getId(), listIdString, 1);
-//        return "redirect:/user/cart";
-//    }
 
 
     @GetMapping("/user/mat-khau")
@@ -670,6 +645,69 @@ public class CustomerController {
             return "redirect:/user/mat-khau";
         }
         return "/customer/doi-mat-khau-khach-hang";
+    }
+    @GetMapping("/user/don-mua")
+    public String donMua(
+            Model model) {
+        KhachHang khachHang = khachHangService.getById(idKhachHang);
+        model.addAttribute("soLuongSPGioHangCT",
+                gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
+        model.addAttribute("listAllHoaDon", hoaDonService.getAllHoaDonByTaiKhoanOrderByNgaySua(idKhachHang));
+        model.addAttribute("listHDChoXacNhan", hoaDonService.getHoaDonByTaiKhoanByTrangThaiOrderByNgaySua(idKhachHang, 0));
+        model.addAttribute("listHDChoGiao", hoaDonService.getHoaDonByTaiKhoanByTrangThaiOrderByNgaySua(idKhachHang, 1));
+        model.addAttribute("listHDDangGiao", hoaDonService.getHoaDonByTaiKhoanByTrangThaiOrderByNgaySua(idKhachHang, 2));
+        model.addAttribute("listHDHoanThanh", hoaDonService.getHoaDonByTaiKhoanByTrangThaiOrderByNgaySua(idKhachHang, 3));
+        model.addAttribute("listHDDaHuy", hoaDonService.getHoaDonByTaiKhoanByTrangThaiOrderByNgaySua(idKhachHang, 5));
+        model.addAttribute("listHDTraHang", hoaDonService.getHoaDonByTaiKhoanByTrangThaiOrderByNgaySua(idKhachHang, 6));
+        return "/customer/don-mua";
+    }
+
+    @PostMapping("/user/don-mua/mua-lai")
+    public String muaLaiDonMua(
+            @RequestParam String options) {
+        String[] optionArray = options.split(",");
+        List<String> listIdString = Arrays.asList(optionArray);
+        KhachHang khachHang = khachHangService.getById(idKhachHang);
+        gioHangChiTietService.save(khachHang.getGioHang().getId(), listIdString, 1);
+        return "redirect:/user/cart";
+    }
+
+    @GetMapping("/user/huy-don/{idHoaDon}")
+    public String huyDon(
+            @PathVariable("idHoaDon") Long idHoaDon,
+            @RequestParam("ghiChu") String ghiChu,
+            Model model,
+            RedirectAttributes redirectAttributes) {
+        KhachHang khachHang = khachHangService.getById(idKhachHang);
+        model.addAttribute("soLuongSPGioHangCT",
+                gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
+        HoaDon hoaDon = hoaDonService.findById(idHoaDon);
+        hoaDon.setNgaySua(new Date());
+        hoaDon.setTrangThai(5);
+
+//        lichSuHoaDonService.saveOrUpdate(LichSuHoaDon.builder()
+//                .ghiChu(ghiChu)
+//                .ngayTao(new Date())
+//                .ngaySua(new Date())
+//                .trangThai(5)
+//                .hoaDon(hoaDon)
+//                .build());
+
+        hoaDonService.saveOrUpdate(hoaDon);
+        return "redirect:/user/don-mua";
+    }
+
+    @GetMapping("/user/don-mua/{idHoaDon}")
+    public String donMuaChiTiet(
+            @PathVariable("idHoaDon") Long idHoaDon,
+            Model model) {
+        KhachHang khachHang = khachHangService.getById(idKhachHang);
+        model.addAttribute("soLuongSPGioHangCT",
+                gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
+        model.addAttribute("byHoaDon", hoaDonService.findById(idHoaDon));
+        model.addAttribute("listLichSuHoaDon", hoaDonService.findByIdhdNgaySuaAsc(idHoaDon));
+        System.out.println(hoaDonService.findById(idHoaDon));
+        return "/customer/don-mua-chi-tiet";
     }
 
 }
