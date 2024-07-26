@@ -146,7 +146,7 @@ public interface SanPhamChiTietRepository extends JpaRepository<SanPhamChiTiet, 
             "where so_luong =0", nativeQuery = true)
     void checkSoLuongBang0();
 
-//    @Query(value = "select * from chi_tiet_san_pham where san_pham_id = :idSanPham and mau_sac_id = :idMauSac and loai_de_id = :idLoaiDe and kich_co_id = :idKichCo", nativeQuery = true)
-//    SanPhamChiTiet findChiTietSanPham(@Param("idSanPham") Long idSanPham, @Param("idMauSac") Long idMauSac,
-//                                      @Param("idLoaiDe") Long idLoaiDe, @Param("idKichCo") Long idKichCo);
+    @Query(value = "select * from chi_tiet_san_pham where san_pham_id = :idSanPham and mau_sac_id = :idMauSac and loai_de_id = :idLoaiDe and kich_co_id = :idKichCo", nativeQuery = true)
+    SanPhamChiTiet findChiTietSanPham(@Param("idSanPham") Long idSanPham, @Param("idMauSac") Long idMauSac,
+                                      @Param("idLoaiDe") Long idLoaiDe, @Param("idKichCo") Long idKichCo);
 }

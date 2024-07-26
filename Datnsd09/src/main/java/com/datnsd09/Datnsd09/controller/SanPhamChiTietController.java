@@ -1,5 +1,7 @@
 package com.datnsd09.Datnsd09.controller;
 
+import com.datnsd09.Datnsd09.config.ExportFileCTSP;
+import com.datnsd09.Datnsd09.config.FileExcelCTSP;
 import com.datnsd09.Datnsd09.config.PrincipalCustom;
 import com.datnsd09.Datnsd09.config.UserInfoUserDetails;
 import com.datnsd09.Datnsd09.entity.SanPham;
@@ -32,6 +34,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.text.NumberFormat;
 import java.util.Date;
 import java.util.List;
@@ -244,20 +247,68 @@ public class SanPhamChiTietController {
         return "redirect:/admin/san-pham-chi-tiet";
     }
 
-//    @GetMapping("/product")
-//    public String getProduct(Model model) {
-//        // Giả sử bạn có một đối tượng chiTietSp
-//        SanPhamChiTiet chiTietSp = new SanPhamChiTiet();
-//        chiTietSp.setGiaHienHanh(12345678L); // ví dụ giá trị số tiền
-//
-//        // Định dạng số tiền
-//        NumberFormat numberFormat = NumberFormat.getInstance(new Locale("vi", "VN"));
-//        String formattedPrice = numberFormat.format(chiTietSp.getGiaHienHanh());
-//
-//        // Thêm giá trị đã định dạng vào model
-//        model.addAttribute("formattedPrice", formattedPrice + " VND");
-//
-//        return "product"; // tên của file HTML Thymeleaf
-//    }
+
+    @PostMapping("import-excel")
+    public String importExcel(
+            @RequestParam("file") MultipartFile file,
+            RedirectAttributes attributes,
+            Model model
+
+    ) throws IOException {
+        UserInfoUserDetails name = principalCustom.getCurrentUserNameAdmin();
+        if (name != null) {
+            model.addAttribute("tenNhanVien", principalCustom.getCurrentUserNameAdmin().getHoVaTen());
+        } else {
+            return "redirect:/login";
+        }
+        if (!file.isEmpty()) {
+//            String directory = "D:\\DATN-SD47\\BE-DATN-SD47";
+//            String fileName = file.getOriginalFilename();
+//            String filePath = directory + "\\" + fileName;
+            FileExcelCTSP importFileExcelCTSP = new FileExcelCTSP();
+            try {
+                importFileExcelCTSP.ImportFile(file, sanPhamRepository, mauSacRepository, kichCoRepository,
+                        loaiDeRepository, sanPhamChiTietRepository, sanPhamChiTietService);
+                if (importFileExcelCTSP.checkLoi() > 0) {
+                    attributes.addFlashAttribute("checkTab", "true");
+                    attributes.addFlashAttribute("checkThongBao", "thanhCong");
+                    attributes.addFlashAttribute("thongBaoLoiImport", "Đã thêm sản phẩm thành công nhưng có một số sản phẩm lỗi.");
+                    return "redirect:/admin/san-pham-chi-tiet";
+                }
+            } catch (Exception e) {
+                attributes.addFlashAttribute("checkTab", "true");
+                attributes.addFlashAttribute("checkThongBao", "thaiBai");
+                attributes.addFlashAttribute("thongBaoLoiImport", "Sai định dạng file");
+                return "redirect:/admin/san-pham-chi-tiet";
+            }
+            attributes.addFlashAttribute("checkThongBao", "thanhCong");
+            return "redirect:/admin/san-pham-chi-tiet";
+        }
+        attributes.addFlashAttribute("checkTab", "true");
+        attributes.addFlashAttribute("thongBaoLoiImport", "Bạn chưa chọn file excel nào");
+        attributes.addFlashAttribute("checkThongBao", "thaiBai");
+        return "redirect:/admin/san-pham-chi-tiet";
+    }
+
+    @GetMapping("export-excel")
+    public String exportExcel(
+            RedirectAttributes attributes
+    ) throws IOException {
+        ExportFileCTSP exportFileCTSP = new ExportFileCTSP();
+        exportFileCTSP.ExportFileExcel(sanPhamChiTietService);
+        attributes.addFlashAttribute("checkThongBao", "thanhCong");
+        return "redirect:/admin/san-pham-chi-tiet";
+    }
+
+    @GetMapping("file-mau-excel")
+    public String fileMauExcel(
+            RedirectAttributes attributes
+    ) throws IOException {
+        ExportFileCTSP exportFileCTSP = new ExportFileCTSP();
+        exportFileCTSP.ExportFileExcelMau(sanPhamChiTietService);
+        attributes.addFlashAttribute("checkTab", "true");
+        attributes.addFlashAttribute("checkThongBao", "thanhCong");
+        return "redirect:/admin/san-pham-chi-tiet";
+    }
 }
 
