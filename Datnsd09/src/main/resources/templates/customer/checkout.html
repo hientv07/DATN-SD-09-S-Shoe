@@ -1185,7 +1185,13 @@
                                 </div>
 
                             </div>
-
+                            <div class="form-group">
+                                <label  class="text-black">Phương thức thanh toán</label>
+                                <div class="">
+                                    <input class="form-check-input" type="radio" name="paymentMethod" value="cash" checked> Tiền mặt
+                                    <input class="form-check-input" type="radio" name="paymentMethod" value="vnpay" > VNPay
+                                </div>
+                            </div>
                             <div class="form-group">
                                 <label for="c_order_notes" class="text-black">Ghi chú</label>
                                 <textarea name="ghiChu" id="c_order_notes" cols="30" rows="5"
@@ -1356,6 +1362,7 @@
                                                             .muted-card {
                                                                 opacity: 0.5; /* hoặc kiểu định dạng mờ khác */
                                                             }
+
                                                         </style>
                                                         <script>
                                                             function handleRadioVoucher(rowIndex) {
@@ -1518,12 +1525,12 @@
                                             var tongTienAndSale = document.getElementById("tongTienAndSale");
                                             tongTienAndSale.value = total.toLocaleString('vi-VN') + ' VND';
 
-// Hiển thị tổng tiền trên trang
+                                            // Hiển thị tổng tiền trên trang
                                             var totalElement = document.getElementById("totalAmount");
                                             totalElement.innerText = total.toLocaleString('vi-VN') + " VND";
 
-// var sale = document.getElementById("sale");
-// giaGiam =  5/100;
+                                            // var sale = document.getElementById("sale");
+                                            // giaGiam =  5/100;
                                             var tienShip = document.getElementById("shippingFeeResult");
                                             var soTienShip = parseInt(tienShip.innerText.replace(/[,.]/g, ''));  // Remove commas or dots before parsing
 
@@ -1545,7 +1552,8 @@
                                     </tbody>
                                 </table>
                                 <div class="form-group">
-                                    <button th:if="${checkDiaChi=='DiaChi'}"
+
+                                    <button th:if="${checkDiaChi=='DiaChi'}" type="submit"
                                             class="btn btn-primary btn-lg py-3 btn-block"
                                             onclick="return checkFormDatHang()">
                                         Đặt hàng
@@ -1667,6 +1675,8 @@
                                         function checkFormDatHang() {
                                             var isValid = true; // Biến để theo dõi trạng thái tổng thể
 
+                                            var paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+
                                             var idGioHangChiTiet = document.getElementById("idGioHangChiTiet");
                                             if (idGioHangChiTiet.value.trim() == '') {
                                                 $('#gioHangNull').modal('show');
@@ -1700,8 +1710,13 @@
                                             }
                                             // Kiểm tra xem tất cả điều kiện đã thỏa mãn chưa
                                             if (isValid) {
+                                                if (paymentMethod === "cash") {
+                                                    $('#xacNhanDatHang').modal('show');
+                                                } else if (paymentMethod === "vnpay") {
+                                                    $('#xacNhanDatHang').modal('show');
+                                                }
                                                 // Hiển thị modal
-                                                $('#xacNhanDatHang').modal('show');
+                                                // $('#xacNhanDatHang').modal('show');
                                             }
                                         }
 

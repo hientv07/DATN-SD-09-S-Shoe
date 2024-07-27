@@ -133,7 +133,7 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
                                    String diaChiCuThe, String ghiChu,
                                    KhachHang taiKhoan, String phuongXaID,
                                    String quanHuyenID, String thanhPhoID,
-                                   Long idGioHang) {
+                                   Long idGioHang , Date ngayThanhToan) {
 
         HoaDon hoaDon = new HoaDon();
         hoaDon.setMaHoaDon("HD" + hoaDon.getId());
@@ -153,6 +153,7 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
         hoaDon.setPhuongXa(phuongXaID);
         hoaDon.setQuanHuyen(quanHuyenID);
         hoaDon.setThanhPho(thanhPhoID);
+        hoaDon.setNgayThanhToan(ngayThanhToan);
         if (voucher != "") {
             hoaDon.setVoucher(Voucher.builder().id(Long.valueOf(voucher)).build());
         }
@@ -160,13 +161,6 @@ public class GioHangChiTietServiceImpl implements GioHangChiTietService {
         hoaDon.setKhachHang(taiKhoan);
         hoaDonRepository.save(hoaDon);
 
-//        hoaDonService.saveOrUpdate(HoaDon.builder()
-//                .ghiChu(ghiChu)
-//                .ngayTao(new Date())
-//                .ngaySua(new Date())
-//                .trangThai(0)
-//                .hoaDon(hoaDon)
-//                .build());
 
         hoaDon.setMaHoaDon("HD" + hoaDon.getId());
 

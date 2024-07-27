@@ -182,7 +182,7 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="formatted-price" th:text="${gioHangCT.tongTien()}"></td>
+                                    <td class="" th:text="${gioHangCT.tongTien()}"></td>
                                     <td>
                                         <a th:href="@{/user/cart/detele/{id}(id=${gioHangCT.id})}" class="btn btn-primary btn-sm">X</a>
                                     </td>
@@ -199,7 +199,7 @@
                 document.addEventListener('DOMContentLoaded', function () {
                     const prices = document.querySelectorAll('.formatted-price');
                     prices.forEach(price => {
-                        let value = parseFloat(price.textContent.trim().replace(/[,.]/g, '')) ;
+                        let value = parseInt(price.textContent.trim().replace(/[,.]/g, '')) ;
                         if (!isNaN(value)) {
                             price.textContent = value.toLocaleString('vi-VN') + ' VNĐ';
                         }

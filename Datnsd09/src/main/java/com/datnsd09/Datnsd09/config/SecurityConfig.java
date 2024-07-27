@@ -84,7 +84,7 @@ public class SecurityConfig {
         return http.csrf().disable()
                 .authorizeHttpRequests()
                 .requestMatchers("/home", "/shop", "/tra-cuu-don-hang/**", "/logout=true", "/login", "/chinh-sach",
-                        "/login-error", "/about", "/lien-he", "/register", "/saveTaiKhoan", "/verify", "/quen-mat-khau",
+                        "/login-error", "/about", "/lien-he", "/register", "/saveTaiKhoan", "/verify", "/quen-mat-khau","/callback",
                         "/them-tai-khoan", "/verify", "/error/403", "/reset-mat-khau", "/xac-minh", "/xac-minh/check").permitAll()
                 .requestMatchers("/static/css/**", "/static/fonts/**", "/static/img/**",
                         "/static/js/**", "/static/scss/**", "/static/vendor/**").permitAll()

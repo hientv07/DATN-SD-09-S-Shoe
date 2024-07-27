@@ -1433,7 +1433,7 @@
                                                                                 .then(response => response.json())
                                                                                 .then(data => {
                                                                                     const shippingFeeResult = document.getElementById('shippingFeeResult');
-                                                                                    const formattedShippingFee = data.data.total.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                                                                                    const formattedShippingFee = data.data.total.toLocaleString('vi-VN') +' VND';
                                                                                     shippingFeeResult.value = `${data.data.total}`; // Thay đổi ở đây
                                                                                     const shippingFeeResult2 = document.getElementById('phi-van-chuyen');
                                                                                     shippingFeeResult2.innerHTML = `${formattedShippingFee}`;
@@ -1458,7 +1458,7 @@
 
                                                                                         // Thực hiện phép cộng
                                                                                         const tongGia = tongTienHoaDon + phiShip - giamGia1;
-                                                                                        const formattedTongGia = tongGia.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                                                                                        const formattedTongGia = tongGia.toLocaleString('vi-VN');
 
                                                                                         // Hiển thị kết quả trong thẻ <h6>
                                                                                         tongGiaValue.textContent = formattedTongGia; // Giữ hai chữ số sau dấu thập phân
@@ -1610,20 +1610,6 @@
 
 
                                                                 </div>
-                                                                <!-- <div class="row">
-                                                                <div class="col">
-                                                                    <h6>Phương thức thanh toán:</h6>
-                                                                </div>
-                                                                <div class="col" style="margin-top: 1%">
-                                                                    <select name="ptht" class="form-control">
-                                                                        <option value="Tiền mặt">Tiền
-                                                                            mặt
-                                                                        </option>
-                                                                        <option value="Online">Online
-                                                                        </option>
-                                                                    </select>
-                                                                </div>
-                                                            </div> -->
                                                                 <div class="row">
                                                                     <div class="col">
                                                                         <h6>Voucher:</h6>
@@ -1712,21 +1698,49 @@
                                                                         </h6>
                                                                     </div>
                                                                 </div>
-                                                                <div th:if="${hoaDon.trangThai==-1||hoaDon.trangThai==4}" class="row">
+                                                                <div class="row" >
+                                                                    <div class="col">
+                                                                        <h6>Phương thức thanh toán :</h6>
+                                                                    </div>
+                                                                    <div class="col align-right">
+                                                                        <input class="form-check-input col-5" type="radio" name="paymentMethod" value="cash" checked onchange="togglePaymentFields()"> Tiền mặt
+                                                                        <input class="form-check-input col-5" type="radio" name="paymentMethod" value="vnpay" onchange="togglePaymentFields()"> VNPay
+                                                                    </div>
+                                                                </div>
+
+                                                                <script>
+                                                                    function togglePaymentFields() {
+                                                                        var paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+                                                                        var cashFields = document.getElementById("cashFields");
+                                                                        var tienKhachTra = document.getElementById("tienKhachTra");
+                                                                        var tongAll = parseFloat(document.getElementById("tongAll").value);
+
+                                                                        if (paymentMethod === "cash") {
+                                                                            cashFields.style.display = "block";
+                                                                            tienKhachTra.value = "";
+                                                                        } else if (paymentMethod === "vnpay") {
+                                                                            cashFields.style.display = "none";
+                                                                            tienKhachTra.value = tongAll;
+                                                                        }
+                                                                    }
+                                                                </script>
+                                                                <div id="cashFields" style="display: block;">
+                                                                    <div th:if="${hoaDon.trangThai==-1||hoaDon.trangThai==4}" class="row">
                                                                     <div class="col">
                                                                         <h6>Tiền khách trả:</h6>
                                                                     </div>
                                                                     <div class="col">
                                                                         <input id="tienKhachTra" class="thong-tin-gia form-control" type="number" oninput="updateTraLai()">
                                                                     </div>
-                                                                </div>
-                                                                <div th:if="${hoaDon.trangThai==-1||hoaDon.trangThai==4}" class="row">
+                                                                     </div>
+                                                                    <div th:if="${hoaDon.trangThai==-1||hoaDon.trangThai==4}" class="row">
                                                                     <div class="col">
                                                                         <h6>Trả lại:</h6>
                                                                     </div>
                                                                     <div class="col">
                                                                         <h6 class="thong-tin-gia"><span id="traLai">0</span></h6>
                                                                     </div>
+                                                                     </div>
                                                                 </div>
                                                                 <div class="row">
                                                                     <div class="col">
@@ -1739,8 +1753,6 @@
                                                                         <input th:value="${hoaDon.tongTienHoaDonKhiGiam()}" type="hidden" id="tongAll" class="price">
                                                                     </div>
                                                                 </div>
-
-
 
                                                             </div>
                                                         </div>
@@ -2142,6 +2154,7 @@
         document.getElementById('giamGiaInput').value = tongTienGiamTheoPhanTram.toFixed(0);
 
         updateTraLai();
+        $('#voucher').modal('hide');
     }
 
     function updateTraLai() {

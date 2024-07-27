@@ -147,7 +147,7 @@
         </li><!-- End Components Nav -->
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/admin/hoa-don/quan-ly">
+            <a class="nav-link collapsed" href="/ban-hang-tai-quay/hoa-don/quan-ly">
                 <i class="bi bi-receipt-cutoff"></i>
                 <span>Quản Lý Hóa Đơn</span>
             </a>
@@ -228,6 +228,7 @@
                                 </button>
                             </div>
                         </div>
+                        <!--     tìm kiếm theo trạng thái end-->
 
                         <!-- Modal thêm sản phẩm -->
                         <div class="modal" id="them-san-pham" tabindex="-1" aria-labelledby="them-san-phamLabel"
@@ -273,7 +274,7 @@
                                                 <label class="form-label"><span class="dau-sao">*</span>Mô
                                                     Tả:</label>
                                                 <textarea class="form-control"
-                                                          placeholder="Nhập thông tin sản phẩm"
+                                                          placeholder="Nhập tên thương hiệu"
                                                           th:field="*{moTa}"></textarea>
                                                 <span class="check-loi" th:errors="*{moTa}"></span>
                                             </div>
@@ -307,9 +308,8 @@
                         </div>
                         <!-- Modal thêm sản phẩm end-->
 
-                        <table id="sanPhamTable" class="display" style="width:100%">
+                        <table id="example" class="display" style="width:100%">
                             <thead>
-                            <!-- Phần tiêu đề bảng -->
                             <tr>
                                 <th>STT</th>
                                 <th>Ảnh</th>
@@ -321,14 +321,17 @@
                                 <th>Trạng Thái</th>
                                 <th>Hành Động</th>
                             </tr>
-                            </thead>
+                            <thead>
                             <tbody>
                             <tr th:each="sanPham,iterStat : ${listSanPham}">
+
                                 <td th:text="${iterStat.index+1}"></td>
                                 <td>
-                                    <div style="margin: auto; width: 144px; height: 144px; object-fit: cover">
-                                        <img th:src="@{'../../../static/img/ImgShoe/' + ${sanPham.listHinhAnhSanPham[0].url}}"
+                                    <div style=" margin: auto; width: 144px;height: 144px;object-fit: cover">
+                                        <img th:each="anh : ${sanPham.listHinhAnhSanPham[0]}"
+                                             th:src="@{'../../../static/img/ImgShoe/' + ${anh.url}}"
                                              class="img-fluid product-thumbnail">
+
                                     </div>
                                 </td>
                                 <td th:text="${sanPham.ma}"></td>
@@ -337,28 +340,46 @@
                                 <td th:text="${sanPham.moTa}"></td>
 
                                 <!-- chạy db theo chiều dọc-->
-<!--                                <td>-->
-<!--                                    <ul style="list-style-type: none; padding: 0; margin: 0; text-align: center;">-->
-<!--                                        <li th:each="ctsp : ${sanPham.listCTSP}" style="margin-bottom: 5px;">-->
-<!--                                            <span th:text="${ctsp.soLuong}"></span>-->
-<!--                                        </li>-->
-<!--                                    </ul>-->
-<!--                                </td>-->
-
-                                <!-- Ẩn số lượng sản phẩm của từng size -->
-                                <td class="quantity-list" th:each="ctsp : ${sanPham.listCTSP}" th:data-quantity="${ctsp.soLuong}" hidden>
-                                    <span th:text="${ctsp.soLuong}"></span>
+                                <td >
+                                    <ul th:id="'productList_' + ${sanPham.ma}" style="list-style-type: none; padding: 0; margin: 0; text-align: center;" hidden>
+                                        <li th:each="ctsp : ${sanPham.listCTSP}" style="margin-bottom: 5px;">
+                                            <span th:text="${ctsp.soLuong}" ></span>
+                                        </li>
+                                    </ul>
+                                    <div th:id="'totalQuantity_' + ${sanPham.ma}"></div>
                                 </td>
 
-                                <!-- Cột để hiển thị tổng số lượng sản phẩm -->
-                                <td class="total-quantity"></td>
 
-                                <!-- Hiển thị trạng thái sản phẩm -->
-                                <td th:classappend="${sanPham.trangThai==0} ? 'trangthaidkd' : 'trangthainkd'">
-                                    <span th:text="${sanPham.trangThai==0} ? 'Đang kinh doanh' : 'Ngừng kinh doanh'"></span>
-                                </td>
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        // Lấy tất cả các phần tử ul trong bảng
+                                        const productLists = document.querySelectorAll('ul[id^="productList_"]');
 
-                                <!-- Chỉnh sửa sản phẩm -->
+                                        productLists.forEach(productList => {
+                                            const items = productList.getElementsByTagName('span');
+                                            let totalQuantity = 0;
+
+                                            for (let i = 0; i < items.length; i++) {
+                                                totalQuantity += parseInt(items[i].textContent.trim());
+                                            }
+
+                                            // Lấy id của sản phẩm
+                                            const productId = productList.id.split('_')[1];
+                                            // Cập nhật tổng số lượng vào div tương ứng
+                                            document.getElementById('totalQuantity_' + productId).textContent =  totalQuantity;
+                                        });
+                                    });
+                                </script>
+
+
+
+                                <!--chạy db theo chiều ngang-->
+                                <!--                                <td th:each="ctsp : ${sanPham.listCTSP}">-->
+                                <!--                                    <span th:text="${ctsp.soLuong}"></span>-->
+                                <!--                                </td>-->
+
+                                <td class="trangthaidkd" th:if="${sanPham.trangThai==0}">Đang kinh doanh</td>
+                                <td class="trangthainkd" th:if="${sanPham.trangThai==1}">Ngừng kinh doanh</td>
                                 <td>
                                     <a th:href="@{/admin/san-pham/view-update/{id}(id=${sanPham.id})}"
                                        class="btn btn-warning">
@@ -366,6 +387,7 @@
                                     </a>
                                 </td>
                             </tr>
+
                             </tbody>
                             <tfoot hidden="hidden">
                             <tr>
@@ -387,22 +409,6 @@
     </section>
 
 </main><!-- End #main -->
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const rows = document.querySelectorAll("#sanPhamTable tbody tr");
-
-        rows.forEach(row => {
-            const quantities = row.querySelectorAll(".quantity-list");
-            let totalQuantity = 0;
-
-            quantities.forEach(quantity => {
-                totalQuantity += parseInt(quantity.getAttribute("data-quantity"));
-            });
-
-            row.querySelector(".total-quantity").textContent = totalQuantity;
-        });
-    });
-</script>
 
 <!--Thông báo thành công-->
 <div class="toast-container position-fixed top-0 end-0 p-3">
@@ -609,5 +615,6 @@
 <!-- Template Main JS File -->
 <script src="../../../static/js/main-off.js"></script>
 </body>
+
 
 </html>

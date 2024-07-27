@@ -2,6 +2,7 @@ package com.datnsd09.Datnsd09.controller;
 
 import com.datnsd09.Datnsd09.config.PrincipalCustom;
 import com.datnsd09.Datnsd09.config.UserInfoUserDetails;
+import com.datnsd09.Datnsd09.config.payment.VNPayConfig;
 import com.datnsd09.Datnsd09.entity.*;
 import com.datnsd09.Datnsd09.service.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -11,10 +12,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Controller
 @RequestMapping("/ban-hang-tai-quay")
@@ -401,6 +404,28 @@ public class BanHangController {
         return true;
     }
 
+    @PostMapping("/hoa-don/chuyen-nhanh")
+    public String chuyenNhanh(
+            @RequestParam Long idHoaDon,
+            @RequestParam String ghiChu,
+            RedirectAttributes redirectAttributes
+
+    ) {
+
+        HoaDon hd = hoaDonService.findById(idHoaDon);
+        if (!checkSlDb(hd)) {
+            thongBao(redirectAttributes, "Có sản phẩm vượt quá số lượng vui lòng kiểm tra lại", 0);
+            return "redirect:/ban-hang-tai-quay/hoa-don/detail/" + idHoaDon;
+        }
+        hd.setTrangThai(hd.getTrangThai() + 1);
+        hd.setNgaySua(new Date());
+        hoaDonService.saveOrUpdate(hd);
+
+        System.out.println(ghiChu + "ghiChu");
+
+        return "redirect:/admin/hoa-don/quan-ly";
+    }
+
     @PostMapping("/hoa-don/thanh-toan")
     public String thanhToan(@RequestParam(defaultValue = "off") String treo,
                             @RequestParam(defaultValue = "off") String giaoHang, @RequestParam Long phiShip,@RequestParam Long idhdc,
@@ -409,7 +434,10 @@ public class BanHangController {
                             @RequestParam(defaultValue = "") String thanhPho,
                             @RequestParam(defaultValue = "") String quanHuyen, @RequestParam(defaultValue = "") String phuongXa,
                             @RequestParam String voucherID, @RequestParam String ghiChuThanhToan,
-                            RedirectAttributes redirectAttributes, @RequestParam(defaultValue = "") String luuDiaChi) {
+                            @RequestParam String paymentMethod,
+                            @RequestParam Map<String, String> allParams,
+                            RedirectAttributes redirectAttributes,
+                            @RequestParam(defaultValue = "") String luuDiaChi) throws UnsupportedEncodingException {
 
         HoaDon hd = hoaDonService.findById(idhdc);
         if (!checkSlDb(hd)) {
@@ -425,165 +453,405 @@ public class BanHangController {
             hd.setTienGiam(giamGia);
         }
 
-        switch (hd.getTrangThai()) {
-            case -1:
-                if (treo.equals("on")) {
-                    hd.setTrangThai(4);
+        if ("vnpay".equals(paymentMethod)) {
+            String vnp_ReturnUrl = "http://localhost:8080/ban-hang-tai-quay/callback";
+            String vnp_Version = "2.1.0";
+            String vnp_Command = "pay";
+            String orderType = "other";
+            long amount = hd.tongTienHoaDonKhiGiam() * 100;
+            String bankCode = "NCB";
 
-                } else if (giaoHang.equals("on")) {
-                    // Giao hàng
-                    hd.setTrangThai(1);
-                    hd.setPhiShip(phiShip);
-                    hd.setSdtNguoiNhan(inputSoDienThoai);
-                    hd.setNguoiNhan(inputHoVaTen);
-                    hd.setDiaChiNguoiNhan(inputDcct);
-                    hd.setGhiChu(inputGhiChu);
-                    hd.setThanhPho(thanhPho);
-                    hd.setQuanHuyen(quanHuyen);
-                    hd.setPhuongXa(phuongXa);
-                    sendMail(hd);
-                    if (luuDiaChi.equals("on") && hd.getKhachHang().getTenTaiKhoan() != null) {
-                        if (hd.getKhachHang().getLstDiaChi().size() < 5) {
-                            DiaChi dc = new DiaChi();
-                            dc.setQuanHuyen(quanHuyen);
-                            dc.setPhuongXa(phuongXa);
-                            dc.setThanhPho(thanhPho);
-                            dc.setDiaChiCuThe(inputDcct);
-                            dc.setKhachHang(hd.getKhachHang());
-                            dc.setNgaySua(new Date());
-                            dc.setNgayTao(new Date());
-                            dc.setTrangThai(1);
-                            diaChiService.save(dc);
+            String vnp_TxnRef = hd.getMaHoaDon();
+            String vnp_IpAddr = "127.0.0.1";
+
+            String vnp_TmnCode = VNPayConfig.vnp_TmnCode;
+
+            Map<String, String> vnp_Params = new HashMap<>();
+            vnp_Params.put("vnp_Version", vnp_Version);
+            vnp_Params.put("vnp_Command", vnp_Command);
+            vnp_Params.put("vnp_TmnCode", vnp_TmnCode);
+            vnp_Params.put("vnp_Amount", String.valueOf(amount));
+            vnp_Params.put("vnp_CurrCode", "VND");
+            vnp_Params.put("vnp_BankCode", bankCode);
+            vnp_Params.put("vnp_TxnRef", vnp_TxnRef);
+            vnp_Params.put("vnp_OrderInfo", "Thanh toan don hang:" + vnp_TxnRef);
+            vnp_Params.put("vnp_OrderType", orderType);
+            vnp_Params.put("vnp_Locale", "vn");
+            vnp_Params.put("vnp_ReturnUrl", vnp_ReturnUrl);
+            vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
+
+            Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
+            String vnp_CreateDate = formatter.format(cld.getTime());
+            vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
+
+            cld.add(Calendar.MINUTE, 15);
+            String vnp_ExpireDate = formatter.format(cld.getTime());
+            vnp_Params.put("vnp_ExpireDate", vnp_ExpireDate);
+
+            List fieldNames = new ArrayList(vnp_Params.keySet());
+            Collections.sort(fieldNames);
+            StringBuilder hashData = new StringBuilder();
+            StringBuilder query = new StringBuilder();
+            Iterator itr = fieldNames.iterator();
+            while (itr.hasNext()) {
+                String fieldName = (String) itr.next();
+                String fieldValue = (String) vnp_Params.get(fieldName);
+                if ((fieldValue != null) && (fieldValue.length() > 0)) {
+                    //Build hash data
+                    hashData.append(fieldName);
+                    hashData.append('=');
+                    hashData.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
+                    //Build query
+                    query.append(URLEncoder.encode(fieldName, StandardCharsets.US_ASCII.toString()));
+                    query.append('=');
+                    query.append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII.toString()));
+                    if (itr.hasNext()) {
+                        query.append('&');
+                        hashData.append('&');
+                    }
+                }
+            }
+            String queryUrl = query.toString();
+            String vnp_SecureHash = VNPayConfig.hmacSHA512(VNPayConfig.secretKey, hashData.toString());
+            queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
+            String paymentUrl = VNPayConfig.vnp_PayUrl + "?" + queryUrl;
+            switch (hd.getTrangThai()) {
+                case -1:
+                    if (treo.equals("on")) {
+                        hd.setTrangThai(4);
+
+                    } else if (giaoHang.equals("on")) {
+                        // Giao hàng
+                        hd.setTrangThai(1);
+                        hd.setPhiShip(phiShip);
+                        hd.setNgayThanhToan(new Date());
+                        hd.setSdtNguoiNhan(inputSoDienThoai);
+                        hd.setNguoiNhan(inputHoVaTen);
+                        hd.setDiaChiNguoiNhan(inputDcct);
+                        hd.setGhiChu(inputGhiChu);
+                        hd.setThanhPho(thanhPho);
+                        hd.setQuanHuyen(quanHuyen);
+                        hd.setPhuongXa(phuongXa);
+                        sendMail(hd);
+                        if (luuDiaChi.equals("on") && hd.getKhachHang().getTenTaiKhoan() != null) {
+                            if (hd.getKhachHang().getLstDiaChi().size() < 5) {
+                                DiaChi dc = new DiaChi();
+                                dc.setQuanHuyen(quanHuyen);
+                                dc.setPhuongXa(phuongXa);
+                                dc.setThanhPho(thanhPho);
+                                dc.setDiaChiCuThe(inputDcct);
+                                dc.setKhachHang(hd.getKhachHang());
+                                dc.setNgaySua(new Date());
+                                dc.setNgayTao(new Date());
+                                dc.setTrangThai(1);
+                                diaChiService.save(dc);
+                            }
+                        }
+                    } else {
+                        // Hoàn thành
+                        hd.setTrangThai(3);
+                        hd.setNgayThanhToan(new Date());
+                        hd.setNgaySua(new Date());
+                        hd.setTongTien(hd.tongTienHoaDon());
+                        hd.setTongTienKhiGiam(hd.tongTienHoaDon() - giamGia);
+                        hd.setPhiShip((long) 0);
+                        hd.setQuanHuyen(null);
+                        hd.setThanhPho(null);
+                        hd.setPhuongXa(null);
+                        sendMail(hd);
+                        if (hd.getNguoiNhan() == null) {
+                            hd.setNguoiNhan("Khách lẻ");
                         }
                     }
-                } else {
-                    // Hoàn thành
-                    hd.setTrangThai(3);
-                    hd.setNgayThanhToan(new Date());
-                    hd.setNgaySua(new Date());
-                    hd.setTongTien(hd.tongTienHoaDon());
-                    hd.setTongTienKhiGiam(hd.tongTienHoaDon() - giamGia);
-                    hd.setPhiShip((long)0);
-                    hd.setQuanHuyen(null);
-                    hd.setThanhPho(null);
-                    hd.setPhuongXa(null);
-                    sendMail(hd);
-                    if (hd.getNguoiNhan() == null) {
-                        hd.setNguoiNhan("Khách lẻ");
-                    }
-
-                }
-                break;
-            case 0:
-                // xác nhận đơn
-                hd.setTrangThai(1);
-                hd.setNgaySua(new Date());
-
-                break;
-            case 1:
-                // Giao hàng
-                hd.setTrangThai(2);
-                hd.setNgaySua(new Date());
-
-                break;
-            case 2:
-                // Giao hàng thành công
-                hd.setTrangThai(3);
-                hd.setNgaySua(new Date());
-                hd.setNgayThanhToan(new Date());
-                System.out.println("updateSoLuong");
-
-                updateSl(hd);
-                break;
-            case 3:
-                HoaDon hdDoiTra = new HoaDon();
-                hdDoiTra.setNguoiNhan(hd.getNguoiNhan());
-                hdDoiTra.setEmailNguoiNhan(hd.getEmailNguoiNhan());
-                hdDoiTra.setNgayTao(new Date());
-                hdDoiTra.setNgaySua(new Date());
-                hdDoiTra.setKhachHang(hd.getKhachHang());
-                hdDoiTra.setQuanHuyen(hd.getQuanHuyen());
-                hdDoiTra.setThanhPho(hd.getThanhPho());
-                hdDoiTra.setPhuongXa(hd.getPhuongXa());
-                hdDoiTra.setLoaiHoaDon(2);
-                hdDoiTra.setTrangThai(7);
-                hdDoiTra.setTongTien((long) 0);
-                hdDoiTra.setTongTienKhiGiam((long) 0);
-                hdDoiTra.setPhiShip((long) 0);
-                hoaDonService.saveOrUpdate(hdDoiTra);
-                hdDoiTra.setMaHoaDon("HD-DOITRA" + hdDoiTra.getId());
-                hoaDonService.saveOrUpdate(hdDoiTra);
-                for (HoaDonChiTiet hdctf : hd.getLstHoaDonChiTiet()) {
-                    if (hdctf.getTrangThai() == 2) {
-                        HoaDonChiTiet hdctn = hdctf;
-                        hdctn.setHoaDon(hdDoiTra);
-                        hoaDonChiTietService.saveOrUpdate(hdctn);
-                    }
-                }
-
-                hd.setNgaySua(new Date());
-                break;
-            case 4:
-                if (giaoHang.equals("on")) {
-                    // Giao hàng
+                    break;
+                case 0:
+                    // xác nhận đơn
                     hd.setTrangThai(1);
-                    hd.setPhiShip(phiShip);
-                    hd.setSdtNguoiNhan(inputSoDienThoai);
-                    hd.setNguoiNhan(inputHoVaTen);
-                    hd.setDiaChiNguoiNhan(inputDcct);
-                    hd.setGhiChu(inputGhiChu);
-                    hd.setThanhPho(thanhPho);
-                    hd.setQuanHuyen(quanHuyen);
-                    hd.setPhuongXa(phuongXa);
+                    hd.setNgaySua(new Date());
 
-                    if (luuDiaChi.equals("on") && hd.getKhachHang().getTenTaiKhoan() != null) {
-                        if (hd.getKhachHang().getLstDiaChi().size() < 5) {
-                            DiaChi dc = new DiaChi();
-                            dc.setQuanHuyen(quanHuyen);
-                            dc.setPhuongXa(phuongXa);
-                            dc.setThanhPho(thanhPho);
-                            dc.setDiaChiCuThe(inputDcct);
-                            dc.setKhachHang(hd.getKhachHang());
-                            dc.setNgaySua(new Date());
-                            dc.setNgayTao(new Date());
-                            dc.setTrangThai(1);
-                            diaChiService.save(dc);
+                    break;
+                case 1:
+                    // Giao hàng
+                    hd.setTrangThai(2);
+                    hd.setNgaySua(new Date());
+
+                    break;
+                case 2:
+                    // Giao hàng thành công
+                    hd.setTrangThai(3);
+                    hd.setNgaySua(new Date());
+                    hd.setNgayThanhToan(new Date());
+                    System.out.println("updateSoLuong");
+                    updateSl(hd);
+                    break;
+                case 3:
+                    HoaDon hdDoiTra = new HoaDon();
+                    hdDoiTra.setNguoiNhan(hd.getNguoiNhan());
+                    hdDoiTra.setEmailNguoiNhan(hd.getEmailNguoiNhan());
+                    hdDoiTra.setNgayTao(new Date());
+                    hdDoiTra.setNgaySua(new Date());
+                    hdDoiTra.setKhachHang(hd.getKhachHang());
+                    hdDoiTra.setQuanHuyen(hd.getQuanHuyen());
+                    hdDoiTra.setThanhPho(hd.getThanhPho());
+                    hdDoiTra.setPhuongXa(hd.getPhuongXa());
+                    hdDoiTra.setLoaiHoaDon(2);
+                    hdDoiTra.setTrangThai(7);
+                    hdDoiTra.setTongTien((long) 0);
+                    hdDoiTra.setTongTienKhiGiam((long) 0);
+                    hdDoiTra.setPhiShip((long) 0);
+                    hoaDonService.saveOrUpdate(hdDoiTra);
+                    hdDoiTra.setMaHoaDon("HD-DOITRA" + hdDoiTra.getId());
+                    hoaDonService.saveOrUpdate(hdDoiTra);
+                    for (HoaDonChiTiet hdctf : hd.getLstHoaDonChiTiet()) {
+                        if (hdctf.getTrangThai() == 2) {
+                            HoaDonChiTiet hdctn = hdctf;
+                            hdctn.setHoaDon(hdDoiTra);
+                            hoaDonChiTietService.saveOrUpdate(hdctn);
                         }
                     }
-                } else {
-                    // Hoàn thành
-                    hd.setTrangThai(3);
-                    hd.setNgayThanhToan(new Date());
+
                     hd.setNgaySua(new Date());
-                    hd.setTongTien(hd.tongTienHoaDon());
-                    hd.setTongTienKhiGiam(hd.tongTienHoaDon() - giamGia);
-                    sendMail(hd);
-                    if (hd.getNguoiNhan() == null) {
-                        hd.setNguoiNhan("Khách lẻ");
+                    break;
+                case 4:
+                    if (giaoHang.equals("on")) {
+                        // Giao hàng
+                        hd.setTrangThai(1);
+                        hd.setPhiShip(phiShip);
+                        hd.setSdtNguoiNhan(inputSoDienThoai);
+                        hd.setNguoiNhan(inputHoVaTen);
+                        hd.setDiaChiNguoiNhan(inputDcct);
+                        hd.setGhiChu(inputGhiChu);
+                        hd.setThanhPho(thanhPho);
+                        hd.setQuanHuyen(quanHuyen);
+                        hd.setPhuongXa(phuongXa);
+
+                        if (luuDiaChi.equals("on") && hd.getKhachHang().getTenTaiKhoan() != null) {
+                            if (hd.getKhachHang().getLstDiaChi().size() < 5) {
+                                DiaChi dc = new DiaChi();
+                                dc.setQuanHuyen(quanHuyen);
+                                dc.setPhuongXa(phuongXa);
+                                dc.setThanhPho(thanhPho);
+                                dc.setDiaChiCuThe(inputDcct);
+                                dc.setKhachHang(hd.getKhachHang());
+                                dc.setNgaySua(new Date());
+                                dc.setNgayTao(new Date());
+                                dc.setTrangThai(1);
+                                diaChiService.save(dc);
+                            }
+                        }
+                    } else {
+                        // Hoàn thành
+                        hd.setTrangThai(3);
+                        hd.setNgayThanhToan(new Date());
+                        hd.setNgaySua(new Date());
+                        hd.setTongTien(hd.tongTienHoaDon());
+                        hd.setTongTienKhiGiam(hd.tongTienHoaDon() - giamGia);
+                        sendMail(hd);
+                        if (hd.getNguoiNhan() == null) {
+                            hd.setNguoiNhan("Khách lẻ");
+                        }
+
                     }
 
-                }
-                // addLichSuHoaDon(hd.getId(), ghiChuThanhToan, 3);
-                // hd.setTrangThai(3);
-                // hd.setNgaySua(new Date());
-                // hd.setNgayThanhToan(new Date());
-                // updateSl(hd);
-                break;
-            case 6:
-                hd.setTrangThai(7);
-            default:
-                break;
+                    break;
+                case 6:
+                    hd.setTrangThai(7);
+                default:
+                    break;
 
-        }
-        hd.setTongTien(hd.tongTienHoaDon() );
-        hd.setTongTienKhiGiam(hd.tongTienHoaDon()  - giamGia);
+            }
+            hd.setTongTien(hd.tongTienHoaDon());
+            hd.setTongTienKhiGiam(hd.tongTienHoaDon() - giamGia);
 
-        hoaDonService.saveOrUpdate(hd);
-        updateSl(hd);
-        if (hd.getTrangThai() == 4) {
-            return "redirect:/ban-hang-tai-quay/hoa-don";
+            hoaDonService.saveOrUpdate(hd);
+            updateSl(hd);
+            if (hd.getTrangThai() == 4) {
+                return "redirect:/ban-hang-tai-quay/hoa-don";
+            }
+            return "redirect:" + paymentUrl;
         }
+
+          if ("cash".equals(paymentMethod)) {
+              switch (hd.getTrangThai()) {
+                  case -1:
+                      if (treo.equals("on")) {
+                          hd.setTrangThai(4);
+
+                      } else if (giaoHang.equals("on")) {
+                          // Giao hàng
+                          hd.setTrangThai(1);
+                          hd.setPhiShip(phiShip);
+                          hd.setNgayThanhToan(new Date());
+                          hd.setSdtNguoiNhan(inputSoDienThoai);
+                          hd.setNguoiNhan(inputHoVaTen);
+                          hd.setDiaChiNguoiNhan(inputDcct);
+                          hd.setGhiChu(inputGhiChu);
+                          hd.setThanhPho(thanhPho);
+                          hd.setQuanHuyen(quanHuyen);
+                          hd.setPhuongXa(phuongXa);
+                          sendMail(hd);
+                          if (luuDiaChi.equals("on") && hd.getKhachHang().getTenTaiKhoan() != null) {
+                              if (hd.getKhachHang().getLstDiaChi().size() < 5) {
+                                  DiaChi dc = new DiaChi();
+                                  dc.setQuanHuyen(quanHuyen);
+                                  dc.setPhuongXa(phuongXa);
+                                  dc.setThanhPho(thanhPho);
+                                  dc.setDiaChiCuThe(inputDcct);
+                                  dc.setKhachHang(hd.getKhachHang());
+                                  dc.setNgaySua(new Date());
+                                  dc.setNgayTao(new Date());
+                                  dc.setTrangThai(1);
+                                  diaChiService.save(dc);
+                              }
+                          }
+                      } else {
+                          // Hoàn thành
+                          hd.setTrangThai(3);
+                          hd.setNgayThanhToan(new Date());
+                          hd.setNgaySua(new Date());
+                          hd.setTongTien(hd.tongTienHoaDon());
+                          hd.setTongTienKhiGiam(hd.tongTienHoaDon() - giamGia);
+                          hd.setPhiShip((long) 0);
+                          hd.setQuanHuyen(null);
+                          hd.setThanhPho(null);
+                          hd.setPhuongXa(null);
+                          sendMail(hd);
+                          if (hd.getNguoiNhan() == null) {
+                              hd.setNguoiNhan("Khách lẻ");
+                          }
+                      }
+                      break;
+                  case 0:
+                      // xác nhận đơn
+                      hd.setTrangThai(1);
+                      hd.setNgaySua(new Date());
+
+                      break;
+                  case 1:
+                      // Giao hàng
+                      hd.setTrangThai(2);
+                      hd.setNgaySua(new Date());
+
+                      break;
+                  case 2:
+                      // Giao hàng thành công
+                      hd.setTrangThai(3);
+                      hd.setNgaySua(new Date());
+                      hd.setNgayThanhToan(new Date());
+                      System.out.println("updateSoLuong");
+                      updateSl(hd);
+                      break;
+                  case 3:
+                      HoaDon hdDoiTra = new HoaDon();
+                      hdDoiTra.setNguoiNhan(hd.getNguoiNhan());
+                      hdDoiTra.setEmailNguoiNhan(hd.getEmailNguoiNhan());
+                      hdDoiTra.setNgayTao(new Date());
+                      hdDoiTra.setNgaySua(new Date());
+                      hdDoiTra.setKhachHang(hd.getKhachHang());
+                      hdDoiTra.setQuanHuyen(hd.getQuanHuyen());
+                      hdDoiTra.setThanhPho(hd.getThanhPho());
+                      hdDoiTra.setPhuongXa(hd.getPhuongXa());
+                      hdDoiTra.setLoaiHoaDon(2);
+                      hdDoiTra.setTrangThai(7);
+                      hdDoiTra.setTongTien((long) 0);
+                      hdDoiTra.setTongTienKhiGiam((long) 0);
+                      hdDoiTra.setPhiShip((long) 0);
+                      hoaDonService.saveOrUpdate(hdDoiTra);
+                      hdDoiTra.setMaHoaDon("HD-DOITRA" + hdDoiTra.getId());
+                      hoaDonService.saveOrUpdate(hdDoiTra);
+                      for (HoaDonChiTiet hdctf : hd.getLstHoaDonChiTiet()) {
+                          if (hdctf.getTrangThai() == 2) {
+                              HoaDonChiTiet hdctn = hdctf;
+                              hdctn.setHoaDon(hdDoiTra);
+                              hoaDonChiTietService.saveOrUpdate(hdctn);
+                          }
+                      }
+
+                      hd.setNgaySua(new Date());
+                      break;
+                  case 4:
+                      if (giaoHang.equals("on")) {
+                          // Giao hàng
+                          hd.setTrangThai(1);
+                          hd.setPhiShip(phiShip);
+                          hd.setSdtNguoiNhan(inputSoDienThoai);
+                          hd.setNguoiNhan(inputHoVaTen);
+                          hd.setDiaChiNguoiNhan(inputDcct);
+                          hd.setGhiChu(inputGhiChu);
+                          hd.setThanhPho(thanhPho);
+                          hd.setQuanHuyen(quanHuyen);
+                          hd.setPhuongXa(phuongXa);
+
+                          if (luuDiaChi.equals("on") && hd.getKhachHang().getTenTaiKhoan() != null) {
+                              if (hd.getKhachHang().getLstDiaChi().size() < 5) {
+                                  DiaChi dc = new DiaChi();
+                                  dc.setQuanHuyen(quanHuyen);
+                                  dc.setPhuongXa(phuongXa);
+                                  dc.setThanhPho(thanhPho);
+                                  dc.setDiaChiCuThe(inputDcct);
+                                  dc.setKhachHang(hd.getKhachHang());
+                                  dc.setNgaySua(new Date());
+                                  dc.setNgayTao(new Date());
+                                  dc.setTrangThai(1);
+                                  diaChiService.save(dc);
+                              }
+                          }
+                      } else {
+                          // Hoàn thành
+                          hd.setTrangThai(3);
+                          hd.setNgayThanhToan(new Date());
+                          hd.setNgaySua(new Date());
+                          hd.setTongTien(hd.tongTienHoaDon());
+                          hd.setTongTienKhiGiam(hd.tongTienHoaDon() - giamGia);
+                          sendMail(hd);
+                          if (hd.getNguoiNhan() == null) {
+                              hd.setNguoiNhan("Khách lẻ");
+                          }
+
+                      }
+
+                      break;
+                  case 6:
+                      hd.setTrangThai(7);
+                  default:
+                      break;
+
+              }
+            hd.setTongTien(hd.tongTienHoaDon());
+            hd.setTongTienKhiGiam(hd.tongTienHoaDon() - giamGia);
+
+            hoaDonService.saveOrUpdate(hd);
+            updateSl(hd);
+            if (hd.getTrangThai() == 4) {
+                return "redirect:/ban-hang-tai-quay/hoa-don";
+            }
+        }
+
         return "redirect:/ban-hang-tai-quay/hoa-don/detail/" + idhdc;
+    }
+
+
+    @GetMapping("/callback")
+    public String vnPayCallback(@RequestParam Map<String, String> allParams,
+
+                                RedirectAttributes redirectAttributes) {
+        String vnp_ResponseCode = allParams.get("vnp_ResponseCode");
+        String vnp_TxnRef = allParams.get("vnp_TxnRef");
+
+        HoaDon hd = hoaDonService.findByMa(vnp_TxnRef);
+
+        if ("00".equals(vnp_ResponseCode)) { // Kiểm tra mã phản hồi thành công từ VNPay
+
+            thongBao(redirectAttributes, "Thành công", 1);
+            return "redirect:/ban-hang-tai-quay/hoa-don/detail/" + hd.getId();
+        } else {
+            hd.setTrangThai(-1); // Cập nhật trạng thái thất bại
+            hoaDonService.saveOrUpdate(hd);
+
+            redirectAttributes.addFlashAttribute("message", "Thanh toán thất bại. Vui lòng thử lại.");
+            return "redirect:/ban-hang-tai-quay/hoa-don/detail/" + hd.getId();
+        }
     }
 
     private void updateSl(HoaDon hd) {
@@ -808,19 +1076,7 @@ public class BanHangController {
         return "redirect:/ban-hang-tai-quay/doi-tra/HD" + idhdc;
 
     }
-//    public void addLichSuHoaDon(Long idHoaDon, String ghiChu, Integer trangThai) {
-//        HoaDon hd = hoaDonService.findById(idHoaDon);
-//        LichSuHoaDon lshd = new LichSuHoaDon();
-//        lshd.setHoaDon(hd);
-//        lshd.setGhiChu(ghiChu);
-//        lshd.setTrangThai(trangThai);
-//        // lshd.setNgayTao(new Date());
-//        lshd.setNgaySua(new Date());
-//        TaiKhoan tk = nhanVienService.getById(idTk);
-//        System.out.println(tk + "====================");
-//        lshd.setNguoiSua(tk.getHoVaTen());
-//        lichSuHoaDonService.saveOrUpdate(lshd);
-//    }
+
     @PostMapping("/doi-tra/xac-nhan")
     public String xacNhan(@RequestParam String lyDo,@RequestParam Long idhdc) {
         Long tongTienHoanTra;

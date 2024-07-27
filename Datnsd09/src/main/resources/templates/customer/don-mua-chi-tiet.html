@@ -754,7 +754,8 @@
                                 </tr>
                                 <tr>
                                     <td colspan="2">Phương thức Thanh toán</td>
-                                    <td class="tien-table">Thanh toán khi nhận hàng</td>
+                                    <td class="tien-table" th:if="${byHoaDon.ngayThanhToan == null}">Thanh toán khi nhận hàng</td>
+                                    <td class="tien-table" th:if="${byHoaDon.ngayThanhToan != null}">Đã thanh toán VNPay </td>
                                 </tr>
                                 </tbody>
 
