@@ -13,6 +13,7 @@ import java.util.List;
 public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, Long> {
     @Query("Select hdct from HoaDonChiTiet hdct where hdct.hoaDon.id=:idHoaDon")
     List<HoaDonChiTiet> findByIdHoaDon(@Param("idHoaDon") Long idHoaDon);
+
     //Thống kê bình
     //top san pham ban chay chuyen ngay
     @Query("SELECT hdct.sanPhamChiTiet.sanPham.ten, SUM(hdct.soLuong), SUM(hdct.donGia) " +
@@ -26,14 +27,26 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, Lo
             @Param("startDate") Date startDate,
             @Param("endDate") Date endDate);
 
-    @Query("SELECT COALESCE(SUM(hdct.soLuong), 0) " +
-            "FROM HoaDonChiTiet hdct " +
-            "JOIN hdct.hoaDon hd " +
-            "WHERE hdct.trangThai = 0 " +
-            "AND (hd.trangThai = 3 OR hd.trangThai = 6) " +
-            "AND hd.ngayTao BETWEEN :startDate AND :endDate")
+    //    @Query("SELECT COALESCE(SUM(hdct.soLuong), 0) " +
+//            "FROM HoaDonChiTiet hdct " +
+////            "JOIN hdct.hoaDon hd " +
+//            "WHERE hdct.trangThai = 0 " +
+////            "AND (hd.trangThai = 3 OR hd.trangThai = 6) " +
+//            "AND hdct.ngayTao BETWEEN :startDate AND :endDate")
+//    Integer sumSanPhamBanDuocBetween(@Param("startDate") Date startDate,
+//                                     @Param("endDate") Date endDate);
+    @Query("select COALESCE(SUM(hd.soLuong), 0) from HoaDonChiTiet hd where hd.trangThai=0 " +
+            "and (hd.hoaDon.trangThai =3 or hd.hoaDon.trangThai = 6) " +
+            "and CAST(hd.hoaDon.ngayTao AS DATE) BETWEEN :startDate AND :endDate")
     Integer sumSanPhamBanDuocBetween(@Param("startDate") Date startDate,
-                                     @Param("endDate") Date endDate);
+                                    @Param("endDate") Date endDate);
+
+    //get all tổng sp bán dc
+    @Query("select SUM(hd.soLuong) " +
+            "from HoaDonChiTiet hd " +
+            "where hd.trangThai=0 " +
+            "and (hd.hoaDon.trangThai = 3 or hd.hoaDon.trangThai = 6)")
+    Integer sumSanPhamHoaDonAll();
 
     ///thong ke
     @Query("SELECT hdct.sanPhamChiTiet.sanPham.ten, SUM(hdct.soLuong), SUM(hdct.donGia) " +
@@ -44,12 +57,6 @@ public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, Lo
             "ORDER BY SUM(hdct.soLuong) DESC")
     List<Object[]> findByTongSoLuongBetweenGetAll();
 
-    //get all tổng sp bán dc
-    @Query("select SUM(hd.soLuong) " +
-            "from HoaDonChiTiet hd " +
-            "where hd.trangThai=0 " +
-            "and (hd.hoaDon.trangThai = 3 or hd.hoaDon.trangThai = 6)")
-    Integer sumSanPhamHoaDonAll();
 
     @Query("SELECT CAST(hd.hoaDon.ngayTao AS DATE) AS ngay, \n" +
             "       SUM(DISTINCT hd.hoaDon.tongTienKhiGiam) AS sumHoaDon,\n" +

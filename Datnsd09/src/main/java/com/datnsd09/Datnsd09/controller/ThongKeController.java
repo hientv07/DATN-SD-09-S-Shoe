@@ -91,7 +91,7 @@ public class ThongKeController {
         Integer countHoaDon2 = hoaDonService.countHoaDon(2);
         Integer countHoaDon3 = hoaDonService.countHoaDon(3);
         Integer countHoaDon4 = hoaDonService.countHoaDon(4);
-        Integer countHoaDon5 = hoaDonService.countHoaDon(5);
+       // Integer countHoaDon5 = hoaDonService.countHoaDon(5);
         if (countHoaDonChoXacNhan == null) {
             model.addAttribute("countHoaDonChoXacNhanBetween", countHoaDon0);
         }else{
@@ -119,12 +119,12 @@ public class ThongKeController {
         }
 
         //bán chạy
-        List<Object[]> thongKeSanPham = (List<Object[]>) model.asMap().get("thongKeBetween");
+        List<Object[]> thongKeSanPhamBetween = (List<Object[]>) model.asMap().get("thongKeBetween");
         List<Object[]> thongKeSanPhamAll = hoaDonChiTietService.findByTongSoLuongBetweenGetAll();
-        if (thongKeSanPham == null) {
+        if (thongKeSanPhamBetween == null) {
             model.addAttribute("thongKeBetween", thongKeSanPhamAll);
         }else{
-            model.addAttribute("thongKeBetween", thongKeSanPham);
+            model.addAttribute("thongKeBetween", thongKeSanPhamBetween);
         }
         Integer soLuong = 50;
         List<Object[]>danhSachSapHetHang10 = sanPhamChiTietService.danhSachSapHetHang(soLuong);
