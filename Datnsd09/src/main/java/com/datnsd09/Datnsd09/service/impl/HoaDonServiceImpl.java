@@ -3,9 +3,11 @@ package com.datnsd09.Datnsd09.service.impl;
 
 import com.datnsd09.Datnsd09.entity.HoaDon;
 import com.datnsd09.Datnsd09.entity.HoaDonChiTiet;
+import com.datnsd09.Datnsd09.repository.HoaDonChiTietRepository;
 import com.datnsd09.Datnsd09.repository.HoaDonRepository;
 import com.datnsd09.Datnsd09.service.HoaDonService;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -20,6 +22,9 @@ public class HoaDonServiceImpl implements HoaDonService {
 
     @Autowired
     HoaDonRepository hoaDonRepository;
+
+    @Autowired
+    private HoaDonChiTietRepository hoaDonChiTietRepository;
 
     @Autowired
     private JavaMailSender javaMailSender;
@@ -38,8 +43,24 @@ public class HoaDonServiceImpl implements HoaDonService {
     }
 
     @Override
+    @Transactional
     public void deleteById(Long id) {
+        // Xóa tất cả các bản ghi liên quan trong hoa_don_chi_tiet
+        hoaDonChiTietRepository.deleteByHoaDonId(id);
+
+        // Xóa HoaDon
         hoaDonRepository.deleteById(id);
+    }
+
+    @Override
+    public Long getLastestId() {
+        HoaDon latestHoaDon = hoaDonRepository.findTopByOrderByIdDesc();
+        return latestHoaDon != null ? latestHoaDon.getId() : null;
+    }
+
+    @Override
+    public HoaDon findFirstByOrderByIdDesc() {
+        return hoaDonRepository.findFirstByOrderByIdDesc();
     }
 
     @Override

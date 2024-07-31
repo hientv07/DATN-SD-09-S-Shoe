@@ -59,6 +59,10 @@ public interface HoaDonService {
 
     Integer countHoaDonAll();
 
+    Long getLastestId();
+
+    HoaDon findFirstByOrderByIdDesc();
+
     Long sumGiaTriHoaDonAll();
     //trạng thái hoa don
     Integer countHoaDon(Integer trangThai);

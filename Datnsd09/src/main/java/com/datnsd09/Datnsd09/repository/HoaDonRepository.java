@@ -23,6 +23,11 @@ public interface HoaDonRepository extends JpaRepository<HoaDon,Long> {
     @Query("Select hd from HoaDon hd where hd.maHoaDon=:ma")
     HoaDon findByMa(@Param("ma") String ma);
 
+    @Query("SELECT hd FROM HoaDon hd ORDER BY hd.id DESC")
+    HoaDon findTopByOrderByIdDesc();
+
+    HoaDon findFirstByOrderByIdDesc();
+
     @Query(value = "select * from hoa_don where ma_hoa_don = :maDonHang and sdt_nguoi_nhan = :sdt",nativeQuery = true)
     HoaDon finByHoaDonMaHDSdt(@Param("maDonHang") String maDonHang,@Param("sdt") String sdt);
 

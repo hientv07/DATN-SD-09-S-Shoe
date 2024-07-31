@@ -385,7 +385,7 @@ public class CustomerController {
             long amount = Long.valueOf(tongTienAndSale) * 100;
             String bankCode = "NCB";
 
-            String vnp_TxnRef = VNPayConfig.getRandomNumber(5);
+            String vnp_TxnRef = String.valueOf(hoaDonService.findFirstByOrderByIdDesc().getId()+1);
             String vnp_IpAddr = "127.0.0.1";
 
             String vnp_TmnCode = VNPayConfig.vnp_TmnCode;
@@ -441,6 +441,7 @@ public class CustomerController {
             queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
             String paymentUrl = VNPayConfig.vnp_PayUrl + "?" + queryUrl;
             System.out.println(paymentUrl);
+
             gioHangChiTietService.addHoaDon(listIdString, Long.valueOf(tongTien), Long.valueOf(tongTienAndSale), hoVaTen,
                     soDienThoai, tienShip, tienGiam, email, voucher, diaChiCuThe, ghiChu, khachHang, phuongXaID, quanHuyenID,
                     thanhPhoID, khachHang.getGioHang().getId(), new Date());
@@ -463,15 +464,11 @@ public class CustomerController {
         String vnp_TxnRef = allParams.get("vnp_TxnRef");
 
         HoaDon hd = hoaDonService.findByMa(vnp_TxnRef);
-
         if ("00".equals(vnp_ResponseCode)) { // Kiểm tra mã phản hồi thành công từ VNPay
             return "redirect:/user/thankyou";
         } else {
-            hd.setTrangThai(-1); // Cập nhật trạng thái thất bại
-            hoaDonService.saveOrUpdate(hd);
-
-            redirectAttributes.addFlashAttribute("message", "Thanh toán thất bại. Vui lòng thử lại.");
-            return "redirect:/ban-hang-tai-quay/hoa-don/detail/" + hd.getId();
+            hoaDonService.deleteById(Long.parseLong(vnp_TxnRef));
+            return "redirect:/user/sorry";
         }
     }
 
@@ -540,6 +537,14 @@ public class CustomerController {
 //            model.addAttribute("soLuongSPGioHangCT",
 //                    gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
         return "/customer/thankyou";
+    }
+
+    @GetMapping("/user/sorry")
+    public String sorry(Model model) {
+        KhachHang khachHang = khachHangService.getById(idKhachHang);
+//            model.addAttribute("soLuongSPGioHangCT",
+//                    gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
+        return "/customer/sorry";
     }
 
     @GetMapping("/about")

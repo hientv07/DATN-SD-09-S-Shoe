@@ -132,28 +132,7 @@
                 <ul class="site-menu js-clone-nav d-none d-md-block">
                     <li>
                         <a href="/home">Trang chủ</a>
-                        <!-- <ul class="dropdown">
-                    <li><a href="#">Menu One</a></li>
-                    <li><a href="#">Menu Two</a></li>
-                    <li><a href="#">Menu Three</a></li>
-                    <li class="has-children">
-                      <a href="#">Sub Menu</a>
-                      <ul class="dropdown">
-                        <li><a href="#">Menu One</a></li>
-                        <li><a href="#">Menu Two</a></li>
-                        <li><a href="#">Menu Three</a></li>
-                      </ul>
                     </li>
-                  </ul> -->
-                    </li>
-                    <!-- <li>
-                  <a href="about.html">Về chúng tôi</a>
-                  <ul class="dropdown">
-                  <li><a href="#">Menu One</a></li>
-                  <li><a href="#">Menu Two</a></li>
-                  <li><a href="#">Menu Three</a></li>
-                </ul>
-                </li> -->
                     <li><a href="/shop">Sản phẩm</a></li>
                     <li><a href="/lien-he">Liên hệ</a></li>
                     <li><a href="/chinh-sach">Chính Sách</a></li>
@@ -163,17 +142,6 @@
         </nav>
     </header>
 
-    <!--    <div class="bg-light py-3">-->
-    <!--        <div class="container">-->
-    <!--            <div class="row">-->
-    <!--                <div class="col-md-12 mb-0">-->
-    <!--                    <a href="/home">Home</a> <span class="mx-2 mb-0">/</span>-->
-    <!--                    <a href="/user/cart">Cart</a> <span class="mx-2 mb-0">/</span>-->
-    <!--                    <strong class="text-black">Checkout</strong>-->
-    <!--                </div>-->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--    </div>-->
 
     <div class="site-section">
         <div class="container" style="max-width: 90%">
@@ -218,12 +186,12 @@
                                     </p>
 
                                 </td>
-                                <td  th:text="${gioHangCT.chiTietSanPham.giaHienHanh}"></td>
+                                <td  th:text="${gioHangCT.chiTietSanPham.giaHienHanh}" class="formatted-price"></td>
 
                                 <td th:text="${gioHangCT.soLuong}">
                                 </td>
 
-                                <td  th:text="${gioHangCT.tongTien()}"></td>
+                                <td  th:text="${gioHangCT.tongTien()}" class="formatted-price"></td>
                             </tr>
                             </tbody>
                         </table>
@@ -1187,9 +1155,16 @@
                             </div>
                             <div class="form-group">
                                 <label  class="text-black">Phương thức thanh toán</label>
-                                <div class="">
-                                    <input class="form-check-input" type="radio" name="paymentMethod" value="cash" checked> Tiền mặt
-                                    <input class="form-check-input" type="radio" name="paymentMethod" value="vnpay" > VNPay
+                                <div class="form-check">
+                                    <div class="row">
+                                        <input class="form-check-input " type="radio" name="paymentMethod" value="cash" checked>
+                                        <label>Thanh toán khi nhận hàng</label>
+                                    </div>
+                                    <div class="row">
+                                        <input class="form-check-input " type="radio" name="paymentMethod" value="vnpay" >
+                                        <label>Thanh toán VNPay</label>
+                                    </div>
+
                                 </div>
                             </div>
                             <div class="form-group">

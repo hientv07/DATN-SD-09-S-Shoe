@@ -1,7 +1,9 @@
 package com.datnsd09.Datnsd09.repository;
 
 import com.datnsd09.Datnsd09.entity.HoaDonChiTiet;
+import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -13,6 +15,11 @@ import java.util.List;
 public interface HoaDonChiTietRepository extends JpaRepository<HoaDonChiTiet, Long> {
     @Query("Select hdct from HoaDonChiTiet hdct where hdct.hoaDon.id=:idHoaDon")
     List<HoaDonChiTiet> findByIdHoaDon(@Param("idHoaDon") Long idHoaDon);
+
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM HoaDonChiTiet h WHERE h.hoaDon.id = :hoaDonId")
+    void deleteByHoaDonId(Long hoaDonId);
 
     //Thống kê bình
     //top san pham ban chay chuyen ngay
