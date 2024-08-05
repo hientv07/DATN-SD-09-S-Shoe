@@ -544,7 +544,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-2 d-flex align-items-center justify-content-center">
-                                        <span th:text="${listHoaDonCT.donGia + ' VND'}"></span>
+                                        <span class="formatted-price"  th:text="${listHoaDonCT.donGia}"></span>
                                     </div>
                                     <div class="border-duoi"></div>
                                 </div>
@@ -563,7 +563,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-2 d-flex align-items-center justify-content-center">
-                                        <span th:text="${listHoaDonCT.donGia + ' VND'}"></span>
+                                        <span class="formatted-price"  th:text="${listHoaDonCT.donGia}"></span>
                                     </div>
                                     <div class="col-md-3 d-flex align-items-center justify-content-center">
                                         <h6 th:if="${listHoaDonCT.trangThai==0}">Hàng Đã Nhận</h6>
@@ -686,30 +686,41 @@
                             </script>
                         </section>
 
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                const prices = document.querySelectorAll('.formatted-price');
+                                prices.forEach(price => {
+                                    let value = parseInt(price.textContent.trim().replace(/[,.]/g, '')) ;
+                                    if (!isNaN(value)) {
+                                        price.textContent = value.toLocaleString('vi-VN') + ' VNĐ';
+                                    }
+                                });
+                            });
+                        </script>
                         <section class="section-bottom-table">
                             <table>
                                 <tbody th:if="${byHoaDon.trangThai!=6}">
                                 <tr>
                                     <td colspan="2">Tổng tiền hàng</td>
-                                    <td class="tien-table" th:text="${byHoaDon.tongTien+ ' VND'}">
+                                    <td class="tien-table formatted-price"  th:text="${byHoaDon.tongTien}">
                                         30000VND
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Phí vận chuyển</td>
-                                    <td class="tien-table" th:text="${byHoaDon.phiShip+ ' VND'}">30000VND</td>
+                                    <td class="tien-table formatted-price" th:text="${byHoaDon.phiShip}">30000VND</td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Tiền giảm</td>
-                                    <td class="tien-table"
-                                        th:text="${byHoaDon.tienGiam+ ' VND'}">
+                                    <td class="tien-table formatted-price"
+                                        th:text="${byHoaDon.tienGiam}">
                                         30000VND
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Thành tiền</td>
-                                    <td class="tong-tien-table"
-                                        th:text="${byHoaDon.tongTienKhiGiam + byHoaDon.phiShip + ' VND'}">30000VND
+                                    <td class="tong-tien-table formatted-price"
+                                        th:text="${byHoaDon.tongTienKhiGiam + byHoaDon.phiShip}">30000VND
                                     </td>
                                 </tr>
                                 <tr>
@@ -722,31 +733,31 @@
                                 <tbody th:if="${byHoaDon.trangThai==6}">
                                 <tr>
                                     <td colspan="2">Tổng tiền hàng</td>
-                                    <td class="tien-table" th:text="${byHoaDon.tongTienHoaDon()+ ' VND'}">
+                                    <td class="tien-table formatted-price" th:text="${byHoaDon.tongTienHoaDon()}">
                                         30000VND
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Phí vận chuyển</td>
-                                    <td class="tien-table" th:text="${byHoaDon.phiShip+ ' VND'}"></td>
+                                    <td class="tien-table formatted-price" th:text="${byHoaDon.phiShip}"></td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Tiền giảm</td>
-                                    <td class="tien-table">
+                                    <td class="tien-table formatted-price">
                                         <del
-                                                th:text="${byHoaDon.tienGiam+ ' VND'}">
+                                                th:text="${byHoaDon.tienGiam}">
                                         </del>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Tiền khách thanh toán</td>
-                                    <td class="tien-table"
-                                        th:text="${byHoaDon.tongTienHoaDon() + byHoaDon.phiShip + ' VND'}">
+                                    <td class="tien-table formatted-price"
+                                        th:text="${byHoaDon.tongTienHoaDon() + byHoaDon.phiShip}">
                                     </td>
                                 </tr>
                                 <tr>
                                     <td colspan="2">Tổng tiền hoàn trả</td>
-                                    <td class="tong-tien-table" th:text="${byHoaDon.tongTienHoaDonHoanTra()+ ' VND'}">
+                                    <td class="tong-tien-table formatted-price" th:text="${byHoaDon.tongTienHoaDonHoanTra()}">
                                     </td>
 
                                 </tr>

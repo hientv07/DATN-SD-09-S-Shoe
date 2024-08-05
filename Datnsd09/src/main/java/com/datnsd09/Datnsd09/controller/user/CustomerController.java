@@ -335,6 +335,7 @@ public class CustomerController {
             @RequestParam("tongTien") String tongTien,
             @RequestParam("tienGiam") String tienGiam,
             @RequestParam("tongTienAndSale") String tongTienAndSale,
+//            @RequestParam("tongTienAndSale") String tongTienAndSale,
             @RequestParam("hoVaTen") String hoVaTen,
             @RequestParam("soDienThoai") String soDienThoai,
             @RequestParam("tienShip") String tienShip,
@@ -355,6 +356,9 @@ public class CustomerController {
         tienGiam = tienGiam.replaceAll("[^\\d]", "");
         tongTienAndSale = tongTienAndSale.replaceAll("[^\\d]", "");
         tienShip = tienShip.replaceAll("[^\\d]", "");
+
+//        long tienThanhToan;
+//        tienThanhToan = tongTienAndSale + tienShip;
 
         KhachHang khachHang = khachHangService.getById(idKhachHang);
         List<String> listIdString = Arrays.asList(optionArray);
@@ -506,7 +510,6 @@ public class CustomerController {
             return "/customer/thong-tin-khach-hang";
         } else {
             khachHang.setNgaySua(new Date());
-//            khachHang.setVaiTro(VaiTro.builder().id(Long.valueOf(2)).build());
             redirectAttributes.addFlashAttribute("checkModal", "modal");
             khachHangService.update(khachHang);
         }
@@ -534,16 +537,16 @@ public class CustomerController {
     @GetMapping("/user/thankyou")
     public String thankYou(Model model) {
         KhachHang khachHang = khachHangService.getById(idKhachHang);
-//            model.addAttribute("soLuongSPGioHangCT",
-//                    gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
+            model.addAttribute("soLuongSPGioHangCT",
+                    gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
         return "/customer/thankyou";
     }
 
     @GetMapping("/user/sorry")
     public String sorry(Model model) {
         KhachHang khachHang = khachHangService.getById(idKhachHang);
-//            model.addAttribute("soLuongSPGioHangCT",
-//                    gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
+            model.addAttribute("soLuongSPGioHangCT",
+                    gioHangChiTietService.soLuongSPGioHangCT(khachHang.getGioHang().getId()));
         return "/customer/sorry";
     }
 

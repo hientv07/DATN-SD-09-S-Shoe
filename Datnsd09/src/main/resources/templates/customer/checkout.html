@@ -1248,7 +1248,190 @@
                                     </select>
                                     <span class="check-loi" id="checkLoiPhuongXa" style="display: none"></span>
                                 </div>
+                                <script th:inline="javascript">
+                                    document.addEventListener('DOMContentLoaded', function () {
+                                        var citySelect = document.getElementById('citySelect');
+                                        var districtSelect = document.getElementById('districtSelect');
+                                        var wardSelect = document.getElementById('wardSelect');
 
+                                        fetch('https://online-gateway.ghn.vn/shiip/public-api/master-data/province', {
+                                            method: 'GET',
+                                            headers: {
+                                                'token': 'd900c67f-742d-11ee-96dc-de6f804954c9',
+                                                'Content-Type': 'application/json',
+                                            },
+                                        })
+                                            .then(response => response.json())
+                                            .then(data => {
+                                                // Xử lý dữ liệu khi API trả về thành công
+                                                populateSelect(citySelect, data.data, 'ProvinceID', 'ProvinceName');
+                                            })
+                                            .catch(error => {
+                                                console.error('Lỗi khi tải dữ liệu thành phố:', error);
+                                            });
+
+                                        // Sự kiện khi chọn thành phố
+                                        citySelect.addEventListener('change', function () {
+                                            // Lấy ID của thành phố đã chọn
+                                            var selectedCityId = this.value;
+
+                                            console.log(selectedCityId);
+                                            // var thanhPhoDetail = document.getElementById("thanhPhoID")
+                                            // thanhPhoDetail.value = selectedCityId
+                                            // Kiểm tra nếu giá trị thành phố đã được chọn
+                                            if (selectedCityId) {
+                                                // Xóa hết các quận/huyện hiện tại trước khi tải mới
+                                                districtSelect.innerHTML = '<option value="">Chọn quận/huyện</option>';
+                                                // Gọi hàm để tải và populate quận/huyện dựa trên ID của thành phố
+                                                populateDistricts(selectedCityId);
+                                            }
+                                        });
+
+                                        // Sự kiện khi chọn quận
+                                        districtSelect.addEventListener('change', function () {
+                                            // Lấy ID của quận đã chọn
+                                            var selectedDistrictId = this.value;
+                                            console.log(selectedDistrictId)
+                                            // var quanHuyenDetail = document.getElementById("quanHuyenID")
+                                            // quanHuyenDetail.value = selectedDistrictId
+                                            // Kiểm tra nếu giá trị quận đã được chọn
+                                            if (selectedDistrictId) {
+                                                // Xóa hết các quận/huyện hiện tại trước khi tải mới
+                                                wardSelect.innerHTML = '<option value="">Chọn xã/phường</option>';
+                                                // Gọi hàm để tải và populate quận/huyện dựa trên ID của thành phố
+                                                populateWard(selectedDistrictId);
+                                            }
+                                        });
+
+                                        // Hàm để tải và populate quận/huyện
+                                        function populateDistricts(selectedCityId) {
+                                            fetch(`https://online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=${selectedCityId}`, {
+                                                method: 'GET',
+                                                headers: {
+                                                    'token': 'd900c67f-742d-11ee-96dc-de6f804954c9',
+                                                    'Content-Type': 'application/json',
+                                                },
+                                            })
+                                                .then(response => response.json())
+                                                .then(data => {
+                                                    // Xử lý dữ liệu khi API trả về thành công
+                                                    populateSelect(districtSelect, data.data, 'DistrictID', 'DistrictName');
+
+                                                })
+                                                .catch(error => {
+                                                    console.error('Lỗi khi tải dữ liệu quận:', error);
+                                                });
+                                        }
+
+                                        // Hàm để tải và populate xã phường
+                                        function populateWard(selectedDistrictId) {
+                                            fetch(`https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=${selectedDistrictId}`, {
+                                                method: 'GET',
+                                                headers: {
+                                                    'token': 'd900c67f-742d-11ee-96dc-de6f804954c9',
+                                                    'Content-Type': 'application/json',
+                                                },
+                                            })
+                                                .then(response => response.json())
+                                                .then(data => {
+                                                    // Xử lý dữ liệu khi API trả về thành công
+                                                    populateSelect(wardSelect, data.data, 'WardCode', 'WardName');
+
+                                                })
+                                                .catch(error => {
+                                                    console.error('Lỗi khi tải dữ liệu xã:', error);
+                                                });
+                                        }
+
+                                        // Hàm để populate dropdown
+                                        function populateSelect(select, data, idKey, textKey) {
+                                            // select.innerHTML = '<option value="">Chọn thành phố</option>';
+                                            data.forEach(item => {
+                                                var option = document.createElement('option');
+                                                option.value = item[idKey];
+                                                option.text = item[textKey];
+                                                select.appendChild(option);
+                                            });
+                                        }
+                                    });
+
+                                    function countShippingFee() {
+                                        var thanhPhoID = document.getElementById("citySelect")
+                                        var quanHuyenSelect = document.getElementById("districtSelect")
+                                        var phuongXaSelect = document.getElementById("wardSelect")
+
+                                        // Thực hiện các thao tác khác dựa trên giá trị của secondTdValue
+
+                                        const shippingInfo = {
+                                            // weight: parseFloat(weight),
+                                            service_type_id: 2,
+                                            // from_district_id: 3440,
+                                            to_district_id: Number(quanHuyenSelect.value),
+                                            to_ward_code: phuongXaSelect.value,
+                                            height: 30, //cao cm
+                                            length: 30, //chieu dai cm
+                                            weight: 1000, //can nang (g)
+                                            width: 30, //rong cm
+                                            insurance_value: 0,
+                                            coupon: null,
+                                            items: [
+                                                {
+                                                    "name": "TEST1",
+                                                    "quantity": 1,
+                                                    "height": 20,
+                                                    "weight": 1,
+                                                    "length": 20,
+                                                    "width": 20
+                                                }
+                                            ]
+                                        };
+                                        console.log(shippingInfo)
+
+                                        fetch('https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee', {
+                                            method: 'POST',
+                                            headers: {
+                                                'Content-Type': 'application/json',
+                                                'Token': '0c4a5894-7fc8-11ee-96dc-de6f804954c9', // Replace with your GHN API token
+                                                // 'shop_id': 4689281
+                                            },
+                                            body: JSON.stringify(shippingInfo)
+                                        })
+                                            .then(response => response.json())
+                                            .then(data => {
+
+
+                                                const shippingFeeResult = document.getElementById('shippingFeeResult');
+                                                const tienShip = document.getElementById('tienShip');
+                                                tienShip.value = `${data.data.total}`;  // assuming tienShip is an input element
+                                                shippingFeeResult.innerHTML = `${parseInt(data.data.total).toLocaleString('vi-VN')} VND`;
+
+// tổng tiền khi giảm
+                                                var totalElementSale = document.getElementById("totalAmountAndSale");
+
+// tổng tiền khi giảm input
+                                                var tongTienAndSale = document.getElementById("tongTienAndSale");
+
+// tổng tiền
+                                                var tongTienHang = document.getElementById("totalAmount");
+
+// voucher
+                                                var moneyVoucher = document.getElementById("moneyVoucher");
+
+                                                var tienVoucher = parseInt(moneyVoucher.innerText.replace(/[,.]/g, ''));  // remove any commas or dots before parsing
+                                                var tongTien = document.getElementById("tongTien");
+                                                var tongTienHangInt = parseInt(tongTienHang.innerText.replace(/[,.]/g, ''));  // remove any commas or dots before parsing
+
+// tính toán lại tổng tiền sau khi giảm giá
+                                                tongTienAndSale.value = (tongTienHangInt - tienVoucher).toLocaleString('vi-VN') + ' VND';
+                                                totalElementSale.innerHTML = `${(parseInt(data.data.total) + tongTienHangInt - tienVoucher).toLocaleString('vi-VN')} VND`;
+
+                                                console.log(data);
+
+                                            })
+                                            .catch(error => console.error('Error:', error));
+                                    }
+
+                                </script>
                             </div>
 
                             <div class="form-group row">
@@ -1271,6 +1454,19 @@
                                        style="color: black;margin-bottom: 1%">
                                     Lưu địa chỉ cho lần sau
                                 </label>
+                            </div>
+                            <div class="form-group">
+                                <label  class="text-black">Phương thức thanh toán</label>
+                                <div class="form-check">
+                                    <div class="row">
+                                        <input class="form-check-input " type="radio" name="paymentMethod" value="cash" checked>
+                                        <label>Thanh toán khi nhận hàng</label>
+                                    </div>
+                                    <div class="row">
+                                        <input class="form-check-input " type="radio" name="paymentMethod" value="vnpay" >
+                                        <label>Thanh toán VNPay</label>
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="c_order_notes" class="text-black">Ghi chú</label>

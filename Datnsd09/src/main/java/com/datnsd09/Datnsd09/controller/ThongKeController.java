@@ -90,7 +90,7 @@ public class ThongKeController {
         Integer countHoaDon1 = hoaDonService.countHoaDon(1);
         Integer countHoaDon2 = hoaDonService.countHoaDon(2);
         Integer countHoaDon3 = hoaDonService.countHoaDon(3);
-        Integer countHoaDon4 = hoaDonService.countHoaDon(4);
+        Integer countHoaDon5 = hoaDonService.countHoaDon(5);
        // Integer countHoaDon5 = hoaDonService.countHoaDon(5);
         if (countHoaDonChoXacNhan == null) {
             model.addAttribute("countHoaDonChoXacNhanBetween", countHoaDon0);
@@ -113,7 +113,7 @@ public class ThongKeController {
             model.addAttribute("countHoaDonHoanThanhBetween", countHoaDonHoanThanh);
         }
         if (countHoaDonDaHuy == null) {
-            model.addAttribute("countHoaDonDaHuyBetween", countHoaDon4);
+            model.addAttribute("countHoaDonDaHuyBetween", countHoaDon5);
         }else{
             model.addAttribute("countHoaDonDaHuyBetween", countHoaDonDaHuy);
         }
@@ -147,7 +147,7 @@ public class ThongKeController {
         Integer countHoaDonChoGiaoBetween = hoaDonService.countHoaDonTrangThaiBetween(startDate,endDate,1);
         Integer countHoaDonDangGiaoBetween = hoaDonService.countHoaDonTrangThaiBetween(startDate, endDate, 2);
         Integer countHoaDonHoanThanhBetween = hoaDonService.countHoaDonTrangThaiBetween(startDate,endDate,3);
-        Integer countHoaDonDaHuyBetween = hoaDonService.countHoaDonTrangThaiBetween(startDate,endDate,4);
+        Integer countHoaDonDaHuyBetween = hoaDonService.countHoaDonTrangThaiBetween(startDate,endDate,5);
         //
         redirectAttributes.addFlashAttribute("countHoaDonChoXacNhanBetween", countHoaDonChoXacNhanBetween);
         redirectAttributes.addFlashAttribute("countHoaDonChoGiaoBetween", countHoaDonChoGiaoBetween);

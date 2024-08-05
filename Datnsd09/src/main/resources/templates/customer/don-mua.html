@@ -299,19 +299,30 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2 d-flex align-items-center justify-content-center">
-                                                        <span th:text="${listHoaDonCT.donGia + ' VND'}"></span>
+                                                        <span class="formatted-price" th:text="${listHoaDonCT.donGia}"></span>
                                                     </div>
                                                     <div class="border-duoi"></div>
                                                 </div>
                                             </a>
                                         </section>
+                                        <script>
+                                            document.addEventListener('DOMContentLoaded', function () {
+                                                const prices = document.querySelectorAll('.formatted-price');
+                                                prices.forEach(price => {
+                                                    let value = parseInt(price.textContent.trim().replace(/[,.]/g, '')) ;
+                                                    if (!isNaN(value)) {
+                                                        price.textContent = value.toLocaleString('vi-VN') + ' VNĐ';
+                                                    }
+                                                });
+                                            });
+                                        </script>
                                         <section class="section-bottom">
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="divider-line">
                                                         <h6>Thành tiền:</h6>
-                                                        <h5 th:if="${allHoaDon.trangThai!=6}" th:text="${ allHoaDon.tongTienHoaDonDaNhan() + allHoaDon.phiShip - allHoaDon.tienGiam + ' VND'}"></h5>
-                                                        <h5 th:if="${allHoaDon.trangThai==6}" th:text="${allHoaDon.tongTienHoaDon() + allHoaDon.phiShip + ' VND'}"></h5>
+                                                        <h5  class="formatted-price" th:if="${allHoaDon.trangThai!=6}" th:text="${ allHoaDon.tongTienHoaDonDaNhan() + allHoaDon.phiShip - allHoaDon.tienGiam}"></h5>
+                                                        <h5 class="formatted-price" th:if="${allHoaDon.trangThai==6}" th:text="${allHoaDon.tongTienHoaDon() + allHoaDon.phiShip }"></h5>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12">
@@ -673,7 +684,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2 d-flex align-items-center justify-content-center">
-                                                        <span th:text="${listHoaDonCT.donGia + ' VND'}"></span>
+                                                        <span class="formatted-price" th:text="${listHoaDonCT.donGia}"></span>
                                                     </div>
                                                     <div class="border-duoi"></div>
                                                 </div>
@@ -684,8 +695,8 @@
                                                 <div class="col-md-12">
                                                     <div class="divider-line">
                                                         <h6>Thành tiền:</h6>
-                                                        <h5 th:if="${allHoaDon.trangThai!=6}" th:text="${ allHoaDon.tongTienHoaDonDaNhan() + allHoaDon.phiShip - allHoaDon.tienGiam + ' VND'}"></h5>
-                                                        <h5 th:if="${allHoaDon.trangThai==6}" th:text="${allHoaDon.tongTienHoaDon() + allHoaDon.phiShip + ' VND'}"></h5>
+                                                        <h5 class="formatted-price" th:if="${allHoaDon.trangThai!=6}" th:text="${ allHoaDon.tongTienHoaDonDaNhan() + allHoaDon.phiShip - allHoaDon.tienGiam}"></h5>
+                                                        <h5 class="formatted-price" th:if="${allHoaDon.trangThai==6}" th:text="${allHoaDon.tongTienHoaDon() + allHoaDon.phiShip }"></h5>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12">
@@ -839,7 +850,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2 d-flex align-items-center justify-content-center">
-                                                        <span th:text="${listHoaDonCT.donGia + ' VND'}"></span>
+                                                        <span class="formatted-price" th:text="${listHoaDonCT.donGia}"></span>
                                                     </div>
                                                     <div class="border-duoi"></div>
                                                 </div>
@@ -850,8 +861,8 @@
                                                 <div class="col-md-12">
                                                     <div class="divider-line">
                                                         <h6>Thành tiền:</h6>
-                                                        <h5 th:if="${allHoaDon.trangThai!=6}" th:text="${ allHoaDon.tongTienHoaDonDaNhan() + allHoaDon.phiShip - allHoaDon.tienGiam + ' VND'}"></h5>
-                                                        <h5 th:if="${allHoaDon.trangThai==6}" th:text="${allHoaDon.tongTienHoaDon() + allHoaDon.phiShip + ' VND'}"></h5>                                                    </div>
+                                                        <h5 class="formatted-price" th:if="${allHoaDon.trangThai!=6}" th:text="${ allHoaDon.tongTienHoaDonDaNhan() + allHoaDon.phiShip - allHoaDon.tienGiam}"></h5>
+                                                        <h5 class="formatted-price" th:if="${allHoaDon.trangThai==6}" th:text="${allHoaDon.tongTienHoaDon() + allHoaDon.phiShip}"></h5>                                                    </div>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="divider-line1">
@@ -1004,7 +1015,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2 d-flex align-items-center justify-content-center">
-                                                        <span th:text="${listHoaDonCT.donGia + ' VND'}"></span>
+                                                        <span class="formatted-price" th:text="${listHoaDonCT.donGia}"></span>
                                                     </div>
                                                     <div class="border-duoi"></div>
                                                 </div>
@@ -1015,8 +1026,8 @@
                                                 <div class="col-md-12">
                                                     <div class="divider-line">
                                                         <h6>Thành tiền:</h6>
-                                                        <h5 th:if="${allHoaDon.trangThai!=6}" th:text="${ allHoaDon.tongTienHoaDonDaNhan() + allHoaDon.phiShip - allHoaDon.tienGiam + ' VND'}"></h5>
-                                                        <h5 th:if="${allHoaDon.trangThai==6}" th:text="${allHoaDon.tongTienHoaDon() + allHoaDon.phiShip + ' VND'}"></h5>                                                    </div>
+                                                        <h5 class="formatted-price" th:if="${allHoaDon.trangThai!=6}" th:text="${ allHoaDon.tongTienHoaDonDaNhan() + allHoaDon.phiShip - allHoaDon.tienGiam}"></h5>
+                                                        <h5 class="formatted-price" th:if="${allHoaDon.trangThai==6}" th:text="${allHoaDon.tongTienHoaDon() + allHoaDon.phiShip}"></h5>                                                    </div>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="divider-line1">
@@ -1098,7 +1109,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2 d-flex align-items-center justify-content-center">
-                                                        <span th:text="${listHoaDonCT.donGia + ' VND'}"></span>
+                                                        <span class="formatted-price" th:text="${listHoaDonCT.donGia}"></span>
                                                     </div>
                                                     <div class="border-duoi"></div>
                                                 </div>
@@ -1109,8 +1120,8 @@
                                                 <div class="col-md-12">
                                                     <div class="divider-line">
                                                         <h6>Thành tiền:</h6>
-                                                        <h5 th:if="${allHoaDon.trangThai!=6}" th:text="${ allHoaDon.tongTienHoaDonDaNhan() + allHoaDon.phiShip - allHoaDon.tienGiam + ' VND'}"></h5>
-                                                        <h5 th:if="${allHoaDon.trangThai==6}" th:text="${allHoaDon.tongTienHoaDon() + allHoaDon.phiShip + ' VND'}"></h5>                                                    </div>
+                                                        <h5 class="formatted-price" th:if="${allHoaDon.trangThai!=6}" th:text="${ allHoaDon.tongTienHoaDonDaNhan() + allHoaDon.phiShip - allHoaDon.tienGiam}"></h5>
+                                                        <h5 class="formatted-price" th:if="${allHoaDon.trangThai==6}" th:text="${allHoaDon.tongTienHoaDon() + allHoaDon.phiShip}"></h5>                                                    </div>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="divider-line1">
@@ -1305,7 +1316,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2 d-flex align-items-center justify-content-center">
-                                                        <span th:text="${listHoaDonCT.donGia + ' VND'}"></span>
+                                                        <span class="formatted-price" th:text="${listHoaDonCT.donGia}"></span>
                                                     </div>
                                                     <div class="border-duoi"></div>
                                                 </div>
@@ -1316,8 +1327,8 @@
                                                 <div class="col-md-12">
                                                     <div class="divider-line">
                                                         <h6>Thành tiền:</h6>
-                                                        <h5 th:if="${allHoaDon.trangThai!=6}" th:text="${ allHoaDon.tongTienHoaDonDaNhan() + allHoaDon.phiShip - allHoaDon.tienGiam + ' VND'}"></h5>
-                                                        <h5 th:if="${allHoaDon.trangThai==6}" th:text="${allHoaDon.tongTienHoaDon() + allHoaDon.phiShip + ' VND'}"></h5>                                                    </div>
+                                                        <h5 class="formatted-price" th:if="${allHoaDon.trangThai!=6}" th:text="${ allHoaDon.tongTienHoaDonDaNhan() + allHoaDon.phiShip - allHoaDon.tienGiam}"></h5>
+                                                        <h5 class="formatted-price" th:if="${allHoaDon.trangThai==6}" th:text="${allHoaDon.tongTienHoaDon() + allHoaDon.phiShip}"></h5>                                                    </div>
                                                 </div>
                                                 <div class="col-md-12">
                                                     <div class="divider-line1">
@@ -1515,7 +1526,7 @@
                                                         </div>
                                                     </div>
                                                     <div class="col-md-2 d-flex align-items-center justify-content-center">
-                                                        <span th:text="${listHoaDonCT.donGia + ' VND'}"></span>
+                                                        <span class="formatted-price" th:text="${listHoaDonCT.donGia}"></span>
                                                     </div>
                                                     <div class="border-duoi"></div>
                                                 </div>
@@ -1526,8 +1537,8 @@
                                                 <div class="col-md-12">
                                                     <div class="divider-line">
                                                         <h6>Thành tiền:</h6>
-                                                        <h5 th:if="${allHoaDon.trangThai!=6}" th:text="${ allHoaDon.tongTienHoaDonDaNhan() + allHoaDon.phiShip - allHoaDon.tienGiam + ' VND'}"></h5>
-                                                        <h5 th:if="${allHoaDon.trangThai==6}" th:text="${allHoaDon.tongTienHoaDon() + allHoaDon.phiShip + ' VND'}"></h5>
+                                                        <h5 class="formatted-price" th:if="${allHoaDon.trangThai!=6}" th:text="${ allHoaDon.tongTienHoaDonDaNhan() + allHoaDon.phiShip - allHoaDon.tienGiam}"></h5>
+                                                        <h5 class="formatted-price" th:if="${allHoaDon.trangThai==6}" th:text="${allHoaDon.tongTienHoaDon() + allHoaDon.phiShip}"></h5>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-12">
