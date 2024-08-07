@@ -478,7 +478,7 @@
                             if (!isMauSacSelected) {
                                 console.log("Vui lòng chọn một màu sắc.");
                                 fillErro.innerHTML = '';
-                                fillErro.innerText = 'Vui lòng chọn Phân loại hàng';
+                                fillErro.innerText = 'Vui lòng chọn màu sắc';
                                 fillErro.style = 'color: red'
                                 return false;
                             }
@@ -497,7 +497,7 @@
                             if (!isSizeSelected) {
                                 console.log("Vui lòng chọn một màu sắc.");
                                 fillErro.innerHTML = '';
-                                fillErro.innerText = 'Vui lòng chọn Phân loại hàng';
+                                fillErro.innerText = 'Vui lòng chọn kích cỡ';
                                 fillErro.style = 'color: red';
                                 return false;
                             }
@@ -570,7 +570,8 @@
                         <span class="divider"></span>
 
                         <div class="product-btn-group">
-                            <button onclick="themVaoGioHangNhanh()" class="button buy-now"><i class='bx bxs-zap'></i>Thêm Nhanh
+                            <button onclick="themVaoGioHangNhanh()" class="button buy-now"><i class='bx bxs-zap'></i>
+                                Thêm Nhanh
                             </button>
                             <button onclick="return themVaoGioHang()" id="buttonAddCart" class="button add-cart">
                                 <i class='bx bxs-cart'></i> Thêm vào giỏ
