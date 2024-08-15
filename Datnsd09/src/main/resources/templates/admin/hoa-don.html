@@ -68,16 +68,6 @@
                         <span>Nhân Viên</span>
                     </li>
 
-                    <!--                    <li>-->
-                    <!--                        <hr class="dropdown-divider">-->
-                    <!--                    </li>-->
-
-                    <!--                    <li>-->
-                    <!--                        <a class="dropdown-item d-flex align-items-center" href="users-profile.html">-->
-                    <!--                            <i class="bi bi-person"></i>-->
-                    <!--                            <span>Thông tin của tôi</span>-->
-                    <!--                        </a>-->
-                    <!--                    </li>-->
 
                     <li>
                         <hr class="dropdown-divider">
@@ -287,6 +277,8 @@
                             </li>
 
                         </ul>
+
+
                         <form  method="post" action="/ban-hang-tai-quay/hoa-don/chuyen-nhanh">
 
                             <div class="tab-content" id="ex2-content">
@@ -318,8 +310,8 @@
 
                                                 <td th:text="${hd.nguoiNhan}"></td>
                                                 <td th:text="${hd.sdtNguoiNhan}">0377463664</td>
-                                                <td th:if="${hd.trangThai!=6}" th:text="${hd.tongTienKhiGiam+hd.phiShip}">2.000.000</td>
-                                                <td th:if="${hd.trangThai==6}"  th:text="${hd.tongTienKhiGiam}">2.000.000</td>
+                                                <td th:if="${hd.trangThai!=6}" th:text="${hd.tongTienKhiGiam+hd.phiShip}" class="formatted-price">0</td>
+                                                <td th:if="${hd.trangThai==6}"  th:text="${hd.tongTienKhiGiam}" class="formatted-price">0</td>
                                                 <!-- <td th:text="${#dates.format(hd.ngayTao, 'HH:mm dd/MM/yyyy')}"></td> -->
                                                 <td th:text="${hd.getStringTrangThai}">Trạng thái</td>
                                                 <td>
@@ -355,9 +347,6 @@
                                             </tfoot>
                                         </table>
 
-
-
-
                                     </div>
                                 </div>
                                 <div class="tab-pane fade show" id="ex3-tabs-1" role="tabpanel"
@@ -387,8 +376,8 @@
                                                 <td th:text="${hd.loaiHoaDon}==1?'Online':'Offline'">Online</td>
                                                 <td th:text="${hd.nguoiNhan}"></td>
                                                 <td th:text="${hd.sdtNguoiNhan}">0377463664</td>
-                                                <td th:if="${hd.trangThai!=6}" th:text="${hd.tongTienKhiGiam+hd.phiShip}">2.000.000</td>
-                                                <td th:if="${hd.trangThai==6}"  th:text="${hd.tongTienKhiGiam}">2.000.000</td>
+                                                <td th:if="${hd.trangThai!=6}" th:text="${hd.tongTienKhiGiam+hd.phiShip}" class="formatted-price">0</td>
+                                                <td th:if="${hd.trangThai==6}"  th:text="${hd.tongTienKhiGiam}" class="formatted-price">0</td>
                                                 <!-- <td th:text="${#dates.format(hd.ngayTao, 'HH:mm dd/MM/yyyy')}"></td> -->
                                                 <td th:text="${hd.getStringTrangThai}">Trạng thái</td>
                                                 <td>
@@ -451,8 +440,8 @@
                                                 <td th:text="${hd.loaiHoaDon}==1?'Online':'Offline'">Online</td>
                                                 <td th:text="${hd.nguoiNhan}"></td>
                                                 <td th:text="${hd.sdtNguoiNhan}">0377463664</td>
-                                                <td th:if="${hd.trangThai!=6}" th:text="${hd.tongTienKhiGiam+hd.phiShip}">2.000.000</td>
-                                                <td th:if="${hd.trangThai==6}"  th:text="${hd.tongTienKhiGiam}">2.000.000</td>
+                                                <td th:if="${hd.trangThai!=6}" th:text="${hd.tongTienKhiGiam+hd.phiShip}" class="formatted-price">0</td>
+                                                <td th:if="${hd.trangThai==6}"  th:text="${hd.tongTienKhiGiam}" class="formatted-price">0</td>
 
                                                 <!-- <td th:text="${#dates.format(hd.ngayTao, 'HH:mm dd/MM/yyyy')}"></td> -->
                                                 <td th:text="${hd.getStringTrangThai}">Trạng thái</td>
@@ -518,8 +507,8 @@
                                                 <td th:text="${hd.loaiHoaDon}==1?'Online':'Offline'">Online</td>
                                                 <td th:text="${hd.nguoiNhan}"></td>
                                                 <td th:text="${hd.sdtNguoiNhan}">0377463664</td>
-                                                <td th:if="${hd.trangThai!=6}" th:text="${hd.tongTienKhiGiam+hd.phiShip}">2.000.000</td>
-                                                <td th:if="${hd.trangThai==6}"  th:text="${hd.tongTienKhiGiam}">2.000.000</td>
+                                                <td th:if="${hd.trangThai!=6}" th:text="${hd.tongTienKhiGiam+hd.phiShip}" class="formatted-price">0</td>
+                                                <td th:if="${hd.trangThai==6}"  th:text="${hd.tongTienKhiGiam}" class="formatted-price">0</td>
                                                 <!-- <td th:text="${#dates.format(hd.ngayTao, 'HH:mm dd/MM/yyyy')}"></td> -->
                                                 <td th:text="${hd.getStringTrangThai}">Trạng thái</td>
                                                 <td>
@@ -583,8 +572,8 @@
                                                 <td th:text="${hd.loaiHoaDon}==1?'Online':'Offline'">Online</td>
                                                 <td th:text="${hd.nguoiNhan}"></td>
                                                 <td th:text="${hd.sdtNguoiNhan}">0377463664</td>
-                                                <td th:if="${hd.trangThai!=6}" th:text="${hd.tongTienKhiGiam+hd.phiShip}">2.000.000</td>
-                                                <td th:if="${hd.trangThai==6}"  th:text="${hd.tongTienKhiGiam}">2.000.000</td>
+                                                <td th:if="${hd.trangThai!=6}" th:text="${hd.tongTienKhiGiam+hd.phiShip}" class="formatted-price">0</td>
+                                                <td th:if="${hd.trangThai==6}"  th:text="${hd.tongTienKhiGiam}" class="formatted-price">0</td>
 
                                                 <!-- <td th:text="${#dates.format(hd.ngayTao, 'HH:mm dd/MM/yyyy')}"></td> -->
                                                 <td th:text="${hd.getStringTrangThai}">Trạng thái</td>
@@ -644,8 +633,8 @@
                                                 <td th:text="${hd.loaiHoaDon}==1?'Online':'Offline'">Online</td>
                                                 <td th:text="${hd.nguoiNhan}"></td>
                                                 <td th:text="${hd.sdtNguoiNhan}">0377463664</td>
-                                                <td th:if="${hd.trangThai!=6}" th:text="${hd.tongTienKhiGiam+hd.phiShip}">2.000.000</td>
-                                                <td th:if="${hd.trangThai==6}"  th:text="${hd.tongTienKhiGiam}">2.000.000</td>
+                                                <td th:if="${hd.trangThai!=6}" th:text="${hd.tongTienKhiGiam+hd.phiShip}" class="formatted-price">0</td>
+                                                <td th:if="${hd.trangThai==6}"  th:text="${hd.tongTienKhiGiam}" class="formatted-price">0</td>
 
                                                 <!-- <td th:text="${#dates.format(hd.ngayTao, 'HH:mm dd/MM/yyyy')}"></td> -->
                                                 <td th:text="${hd.getStringTrangThai}">Trạng thái</td>
@@ -707,8 +696,8 @@
                                                 <td th:text="${hd.loaiHoaDon}==1?'Online':'Offline'">Online</td>
                                                 <td th:text="${hd.nguoiNhan}"></td>
                                                 <td th:text="${hd.sdtNguoiNhan}">0377463664</td>
-                                                <td th:if="${hd.trangThai!=6}" th:text="${hd.tongTienKhiGiam+hd.phiShip}">2.000.000</td>
-                                                <td th:if="${hd.trangThai==6}"  th:text="${hd.tongTienKhiGiam}">2.000.000</td>
+                                                <td th:if="${hd.trangThai!=6}" th:text="${hd.tongTienKhiGiam+hd.phiShip}" class="formatted-price">0</td>
+                                                <td th:if="${hd.trangThai==6}"  th:text="${hd.tongTienKhiGiam}" class="formatted-price">0</td>
 
                                                 <!-- <td th:text="${#dates.format(hd.ngayTao, 'HH:mm dd/MM/yyyy')}"></td> -->
                                                 <td>
@@ -772,8 +761,8 @@
                                                 <td th:text="${hd.loaiHoaDon}==1?'Online':'Offline'">Online</td>
                                                 <td th:text="${hd.nguoiNhan}"></td>
                                                 <td th:text="${hd.sdtNguoiNhan}">0377463664</td>
-                                                <td th:if="${hd.trangThai!=6}" th:text="${hd.tongTienKhiGiam+hd.phiShip}">2.000.000</td>
-                                                <td th:if="${hd.trangThai==6}"  th:text="${hd.tongTienKhiGiam}">2.000.000</td>
+                                                <td th:if="${hd.trangThai!=6}" th:text="${hd.tongTienKhiGiam+hd.phiShip}" class="formatted-price">0</td>
+                                                <td th:if="${hd.trangThai==6}"  th:text="${hd.tongTienKhiGiam}" class="formatted-price">0</td>
 
                                                 <!-- <td th:text="${#dates.format(hd.ngayTao, 'HH:mm dd/MM/yyyy')}"></td> -->
                                                 <td th:text="${hd.getStringTrangThai()}"></td>
@@ -1081,6 +1070,18 @@
 
 <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i
         class="bi bi-arrow-up-short"></i></a>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const prices = document.querySelectorAll('.formatted-price');
+        prices.forEach(price => {
+            let value = parseInt(price.textContent.trim().replace(/[,.]/g, '')) ;
+            if (!isNaN(value)) {
+                price.textContent = value.toLocaleString('vi-VN');
+            }
+        });
+    });
+</script>
 
 <!--    thư viện của bảng tích hợp tìm kiếm-->
 <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js'></script>

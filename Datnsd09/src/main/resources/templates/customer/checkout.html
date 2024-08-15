@@ -1403,7 +1403,7 @@
                                                 const shippingFeeResult = document.getElementById('shippingFeeResult');
                                                 const tienShip = document.getElementById('tienShip');
                                                 tienShip.value = `${data.data.total}`;  // assuming tienShip is an input element
-                                                shippingFeeResult.innerHTML = `${parseInt(data.data.total).toLocaleString('vi-VN')} VND`;
+                                                shippingFeeResult.innerHTML = `${parseInt(data.data.total)}`;
 
 // tổng tiền khi giảm
                                                 var totalElementSale = document.getElementById("totalAmountAndSale");
@@ -1575,7 +1575,7 @@
 
                                                                 var tienGiam = document.getElementById("tienGiam");
 
-                                                                var shippingFeeResultInt = parseInt(shippingFeeResult.innerText);
+                                                                var shippingFeeResultInt = parseInt(shippingFeeResult.innerText.replace(/[,.]/g, ''));
                                                                 var tongTien = document.getElementById("tongTien");
                                                                 var tongTienHangInt = parseInt(tongTienHang.innerText.replace(/[,.]/g, ''));
 
@@ -1584,13 +1584,14 @@
                                                                     tongTienGiamTheoPhanTram = giaTriGiam
                                                                 }
                                                                 console.log("số tiền được giảm là: " + tongTienGiamTheoPhanTram)
+
                                                                 detailVoucher.value = (-tongTienGiamTheoPhanTram).toLocaleString('vi-VN')+ ' VND';
                                                                 moneyVoucher.innerText = tongTienGiamTheoPhanTram.toLocaleString('vi-VN')+ ' VND';
 
                                                                 tienGiam.value = tongTienGiamTheoPhanTram.toLocaleString('vi-VN')+ ' VND';
                                                                 tongTienAndSale.value =  (tongTienHangInt - tongTienGiamTheoPhanTram).toLocaleString('vi-VN')+ ' VND';
-                                                                totalElementSale.innerHTML = (shippingFeeResultInt + tongTienHangInt - tongTienGiamTheoPhanTram).toLocaleString('vi-VN')+ ' VND';
-
+                                                                totalElementSale.innerText = (shippingFeeResultInt + tongTienHangInt - tongTienGiamTheoPhanTram).toLocaleString('vi-VN')+ ' VND';
+                                                                console.log(shippingFeeResultInt);
                                                                 $('#voucher').modal('hide')
                                                             }
 

@@ -47,6 +47,18 @@
 
 <body>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const prices = document.querySelectorAll('.formatted-price');
+        prices.forEach(price => {
+            let value = parseInt(price.textContent.trim().replace(/[,.]/g, '')) ;
+            if (!isNaN(value)) {
+                price.textContent = value.toLocaleString('vi-VN') + ' VNĐ';
+            }
+        });
+    });
+</script>
+
 <div class="hoaDonTong">
     <!-- ======= Header ======= -->
     <header id="header" class="header fixed-top d-flex align-items-center">

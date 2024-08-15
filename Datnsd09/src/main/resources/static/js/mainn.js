@@ -185,13 +185,13 @@ if (checkGHCTValue.startsWith('true')) {
         var giaTriCotThu5 = 0; // Khởi tạo giá trị tổng thanh toán
 
         selectedCheckboxes.each(function () {
-            giaTriCotThu5 += parseInt($(this).closest('tr').find('td:eq(5)').text()) || 0;
+            giaTriCotThu5 += parseInt($(this).closest('tr').find('td:eq(5)').text().replace(/[,.]/g, '')) || 0;
         });
 
         // Cập nhật giá trị tổng thanh toán
         var tongThanhToan = document.getElementById("tongTienCart");
         tongThanhToan.innerHTML = '';
-        tongThanhToan.innerText = giaTriCotThu5 + ' VND';
+        tongThanhToan.innerText = giaTriCotThu5.toLocaleString('vi-VN')+ ' VNĐ';
     });
 
 } else {

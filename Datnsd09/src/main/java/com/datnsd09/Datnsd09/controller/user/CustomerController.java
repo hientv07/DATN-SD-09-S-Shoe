@@ -335,7 +335,6 @@ public class CustomerController {
             @RequestParam("tongTien") String tongTien,
             @RequestParam("tienGiam") String tienGiam,
             @RequestParam("tongTienAndSale") String tongTienAndSale,
-//            @RequestParam("tongTienAndSale") String tongTienAndSale,
             @RequestParam("hoVaTen") String hoVaTen,
             @RequestParam("soDienThoai") String soDienThoai,
             @RequestParam("tienShip") String tienShip,
@@ -357,8 +356,6 @@ public class CustomerController {
         tongTienAndSale = tongTienAndSale.replaceAll("[^\\d]", "");
         tienShip = tienShip.replaceAll("[^\\d]", "");
 
-//        long tienThanhToan;
-//        tienThanhToan = tongTienAndSale + tienShip;
 
         KhachHang khachHang = khachHangService.getById(idKhachHang);
         List<String> listIdString = Arrays.asList(optionArray);
@@ -386,7 +383,7 @@ public class CustomerController {
             String vnp_Version = "2.1.0";
             String vnp_Command = "pay";
             String orderType = "other";
-            long amount = Long.valueOf(tongTienAndSale) * 100;
+            long amount = (Long.valueOf(tongTienAndSale) + Long.valueOf(tienShip)) * 100;
             String bankCode = "NCB";
 
             String vnp_TxnRef = String.valueOf(hoaDonService.findFirstByOrderByIdDesc().getId()+1);

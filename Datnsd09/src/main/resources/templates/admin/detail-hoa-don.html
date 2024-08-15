@@ -46,6 +46,17 @@
             <i class="bi bi-list toggle-sidebar-btn"></i>
         </div><!-- End Logo -->
 
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const prices = document.querySelectorAll('.formatted-price');
+                prices.forEach(price => {
+                    let value = parseInt(price.textContent.trim().replace(/[,.]/g, '')) ;
+                    if (!isNaN(value)) {
+                        price.textContent = value.toLocaleString('vi-VN') + ' VND';
+                    }
+                });
+            });
+        </script>
 
         <nav class="header-nav ms-auto">
             <ul class="d-flex align-items-center">
@@ -1613,7 +1624,7 @@
                                                                                             </h6>
                                                                                             <span>Đơn giá:
                                                                                                             <span
-                                                                                                                    class="gia">
+                                                                                                                    class="gia formatted-price">
                                                                                                                 [[${ctsp.giaHienHanh}]]
                                                                                                                 VND</span></span>
                                                                                             <p>Loại đế:
@@ -1626,7 +1637,7 @@
                                                                             <td>
                                                                                 [[${ctsp.soLuong}]]
                                                                             </td>
-                                                                            <td class="price">
+                                                                            <td class="price formatted-price">
                                                                                 [[${ctsp.giaHienHanh}]]VND
                                                                             </td>
                                                                             <td>
@@ -1707,7 +1718,7 @@
                                                                                     ]
                                                                                 </h6>
                                                                                 <span>Đơn giá: <span
-                                                                                        class="gia">
+                                                                                        class="gia formatted-price">
                                                                                                 [[${obj.donGia}]]
                                                                                                 VND</span></span>
                                                                                 <p>Loại đế:
@@ -1728,7 +1739,7 @@
                                                                                 trả</span>
                                                                 </td>
                                                                 <td>
-                                                                    <div class="price-table">
+                                                                    <div class="price-table formatted-price">
                                                                         [[${obj.tongTien()}]] VND
                                                                     </div>
                                                                 </td>
@@ -2242,9 +2253,9 @@
     document.addEventListener('DOMContentLoaded', function () {
         const prices = document.querySelectorAll('.price');
         prices.forEach(price => {
-            let value = parseInt(price.textContent.trim().replace(/,/g, ''));
+            let value = parseInt(price.textContent.trim().replace(/[,.]/g, '')) ;
             if (!isNaN(value)) {
-                price.textContent = value.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+                price.textContent = value.toLocaleString('vi-VN') + ' VND';
             }
         });
     });

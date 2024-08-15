@@ -62,10 +62,10 @@
                 </a><!-- End Profile Iamge Icon -->
 
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
-<!--                    <li class="dropdown-header">-->
-<!--                        <h6 th:text="${tenNhanVien}"></h6>-->
-<!--                        <span>Nhân Viên</span>-->
-<!--                    </li>-->
+                    <li class="dropdown-header">
+                        <h6 th:text="${tenNhanVien}"></h6>
+                        <span>Nhân Viên</span>
+                    </li>
 
                     <!--                    <li>-->
                     <!--                        <hr class="dropdown-divider">-->
@@ -82,12 +82,12 @@
                         <hr class="dropdown-divider">
                     </li>
 
-<!--                    <li>-->
-<!--                        <a class="dropdown-item d-flex align-items-center" th:href="@{/logout}">-->
-<!--                            <i class="bi bi-box-arrow-right"></i>-->
-<!--                            <span>Đăng Xuất</span>-->
-<!--                        </a>-->
-<!--                    </li>-->
+                    <li>
+                        <a class="dropdown-item d-flex align-items-center" th:href="@{/logout}">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>Đăng Xuất</span>
+                        </a>
+                    </li>
 
                 </ul><!-- End Profile Dropdown Items -->
             </li><!-- End Profile Nav -->
@@ -202,6 +202,18 @@
     <div class="pagetitle">
         <h1>Quản Lý Voucher</h1>
     </div><!-- End Page Title -->
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const prices = document.querySelectorAll('.formatted-price');
+            prices.forEach(price => {
+                let value = parseInt(price.textContent.trim().replace(/[,.]/g, '')) ;
+                if (!isNaN(value)) {
+                    price.textContent = value.toLocaleString('vi-VN') + ' VND';
+                }
+            });
+        });
+    </script>
 
     <section class="section">
         <div class="row">
@@ -404,11 +416,9 @@
                                 <td th:text="${iterStat.index+1}"></td>
                                 <td th:text="${voucher.maVoucher}"></td>
                                 <td th:text="${voucher.tenVoucher}"></td>
-                                <!--                                <td th:text="${voucher.giaTriDonToiThieu}"></td>-->
-                                <td th:text="${voucher.giaTriDonToiThieu+' VND'}"></td>
+                                <td th:text="${voucher.giaTriDonToiThieu}" class="formatted-price"></td>
                                 <td th:text="${voucher.phanTramGiam + '%'}"></td>
-                                <!--                                <td th:text="${voucher.giamToiDa}"></td>-->
-                                <td th:text="${voucher.giamToiDa+' VND'}"></td>
+                                <td th:text="${voucher.giamToiDa}" class="formatted-price"></td>
                                 <td th:text="${voucher.soLuong}"></td>
                                 <td class="trangthaidkd" th:if="${voucher.trangThai==0}">Đang diễn ra</td>
                                 <td class="trangthainkd" th:if="${voucher.trangThai==1}">Đã kết thúc</td>

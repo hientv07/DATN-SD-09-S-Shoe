@@ -7,6 +7,7 @@ import com.datnsd09.Datnsd09.entity.*;
 import com.datnsd09.Datnsd09.service.*;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -43,6 +44,12 @@ public class BanHangController {
 
     @Autowired
     VoucherService voucherService;
+
+    @Autowired
+    GioHangService gioHangService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     HttpServletRequest request;
@@ -1006,6 +1013,83 @@ public class BanHangController {
         // hoaDonService.deleteById(hdDoiTra.getId()); // Xóa luôn hóa đơn đổi trả tạm
 
         return "redirect:/ban-hang-tai-quay/hoa-don/detail/" + idhdc;
+    }
+
+    @PostMapping("/khach-hang/them-nhanh")
+    public String add(@ModelAttribute("khachHang") KhachHang taiKhoan,@RequestParam Long idhdc,
+                      Model model,
+                      RedirectAttributes redirectAttributes,
+                      HttpServletRequest request,
+                      @RequestParam("email") String email) {
+        String random3 = ranDom1();
+        KhachHang userInfo = taiKhoan;
+        KhachHang taiKhoanEntity = new KhachHang();
+        taiKhoanEntity.setNgaySinh(taiKhoan.getNgaySinh());
+        if (!taiKhoanEntity.isValidNgaySinh()) {
+            redirectAttributes.addFlashAttribute("checkModal", "modal");
+            redirectAttributes.addFlashAttribute("checkThongBao", "thaiBai");
+            redirectAttributes.addFlashAttribute("checkNgaySinh", "ngaySinh");
+            return "redirect:/ban-hang-tai-quay/hoa-don/" + idhdc;
+        } else if (!khachHangService.checkTenTaiKhoanTrung(taiKhoan.getTenTaiKhoan())) {
+            redirectAttributes.addFlashAttribute("checkModal", "modal");
+            redirectAttributes.addFlashAttribute("checkThongBao", "thaiBai");
+            redirectAttributes.addFlashAttribute("checkTenTrung", "Tên tài khoản đã tồn tại");
+            redirectAttributes.addFlashAttribute("checkEmailTrung", "Email đã tồn tại");
+            return "redirect:/ban-hang-tai-quay/hoa-don/" + idhdc;
+        } else if (!khachHangService.checkEmail(taiKhoan.getEmail())) {
+            redirectAttributes.addFlashAttribute("checkModal", "modal");
+            redirectAttributes.addFlashAttribute("checkThongBao", "thaiBai");
+            redirectAttributes.addFlashAttribute("checkEmailTrung", "Email đã tồn tại");
+            return "redirect:/ban-hang-tai-quay/hoa-don/" + idhdc;
+        } else {
+            redirectAttributes.addFlashAttribute("checkThongBao", "thanhCong");
+            String url = request.getRequestURL().toString();
+            System.out.println(url);
+            url = url.replace(request.getServletPath(), "");
+            khachHangService.sendEmail(userInfo, url, random3);
+            System.out.println(userInfo);
+            userInfo.setNgayTao(new Date());
+            userInfo.setNgaySua(new Date());
+            userInfo.setMatKhau(passwordEncoder.encode(random3));
+            VaiTro vaiTro = new VaiTro();
+            vaiTro.setId(Long.valueOf(2));
+            userInfo.setVaiTro("ROLE_USER");
+            userInfo.setTrangThai(0);
+            khachHangService.update(userInfo);
+
+            GioHang gioHang = new GioHang();
+            gioHang.setMaGioHang("GH" + gioHangService.genMaTuDong());
+            gioHang.setGhiChu("");
+            gioHang.setNgaySua(new Date());
+            gioHang.setNgayTao(new Date());
+            gioHang.setKhachHang(KhachHang.builder().id(userInfo.getId()).build());
+            gioHang.setTrangThai(0);
+            gioHangService.save(gioHang);
+
+            return "redirect:/ban-hang-tai-quay/hoa-don/" + idhdc;
+        }
+    }
+
+    public String ranDom1() {
+        // Khai báo một mảng chứa 6 số nguyên ngẫu nhiên
+        String ran = "";
+        int[] randomNumbers = new int[6];
+
+        // Tạo một đối tượng Random
+        Random random = new Random();
+
+        // Đổ số nguyên ngẫu nhiên vào mảng
+        for (int i = 0; i < 6; i++) {
+            randomNumbers[i] = random.nextInt(100); // Giới hạn số ngẫu nhiên từ 0 đến 99
+        }
+
+        // In ra các số nguyên ngẫu nhiên trong mảng
+        System.out.println("Dãy 6 số nguyên ngẫu nhiên:");
+        for (int number : randomNumbers) {
+            ran = ran + number;
+            System.out.println(number);
+        }
+        return ran;
     }
 
 }
