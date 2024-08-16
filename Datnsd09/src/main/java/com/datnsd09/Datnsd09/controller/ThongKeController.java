@@ -54,6 +54,12 @@ public class ThongKeController {
     public String hienThi(Model model,
                           RedirectAttributes redirectAttributes
                           ){
+        UserInfoUserDetails name = principalCustom.getCurrentUserNameAdmin();
+        if (name != null) {
+            model.addAttribute("tenNhanVien", principalCustom.getCurrentUserNameAdmin().getHoVaTen());
+        } else {
+            return "redirect:/login";
+        }
 //
         //tong sp bans được
         Integer sumSanPham = (Integer) model.asMap().get("sumSanPham");
