@@ -37,13 +37,13 @@ public class ThuongHieuController {
             model.addAttribute("checkModal", "modal");
             model.addAttribute("checkThongBao", "thaiBai");
             model.addAttribute("listThuongHieu", thuongHieuService.getAll());
-            return "/admin/thuong-hieu/thương-hieu";
+            return "/admin/thuong-hieu/thuong-hieu";
         } else if (!thuongHieuService.checkTenTrung(thuongHieu.getTen())) {
             model.addAttribute("checkModal", "modal");
             model.addAttribute("checkThongBao", "thaiBai");
             model.addAttribute("checkTenTrung", "Thương hiệu đã tồn tại");
             model.addAttribute("listThuongHieu", thuongHieuService.getAll());
-            return "/admin/thuong-hieu/thương-hieu";
+            return "/admin/thuong-hieu/thuong-hieu";
         } else {
             redirectAttributes.addFlashAttribute("checkThongBao", "thanhCong");
             thuongHieu.setNgayTao(new Date());
