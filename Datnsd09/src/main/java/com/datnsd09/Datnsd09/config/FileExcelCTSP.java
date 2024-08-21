@@ -68,7 +68,6 @@ public class FileExcelCTSP {
                     SanPham sanPham = sanPhamRepository.findSanPhamByTen(sanPhamStr);
                     MauSac mauSac = mauSacRepository.findMauSacByTen(mauSacStr);
                     KichCo kichThuoc = kichThuocRepository.findKichCoByTen(Integer.parseInt(kichThuocStr));
-
                     LoaiDe deGiay = deGiayRepository.findDeGiayByTen(deGiayStr);
                     if (sanPham == null || mauSac == null || kichThuoc == null || deGiay == null) {
                         listIndex.add(index);
@@ -103,6 +102,7 @@ public class FileExcelCTSP {
                         chiTietSanPhamCheck.setGiaHienHanh(Long.valueOf(giaBan));
                         chiTietSanPhamService.saveExcel(chiTietSanPhamCheck);
                     }
+
                     workbook.close();
 
                 } catch (Exception e) {

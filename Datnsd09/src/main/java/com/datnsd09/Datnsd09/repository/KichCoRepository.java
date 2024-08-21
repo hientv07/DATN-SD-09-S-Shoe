@@ -17,6 +17,6 @@ public interface KichCoRepository extends JpaRepository<KichCo,Long> {
     @Query(value = "select * from kich_co where trang_thai = 1", nativeQuery = true)
     List<KichCo> fillAllNgungHoatDong();
 
-    @Query(value = "SELECT * FROM kich_co WHERE LOWER(ten) = LOWER(:name)",nativeQuery = true)
+    @Query(value = "SELECT * FROM kich_co WHERE LOWER(ten_kich_co) = LOWER(:name)",nativeQuery = true)
     KichCo findKichCoByTen(@Param("name") Integer name);
 }

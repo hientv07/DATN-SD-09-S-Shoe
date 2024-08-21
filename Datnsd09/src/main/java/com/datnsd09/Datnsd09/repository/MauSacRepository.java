@@ -16,6 +16,6 @@ public interface MauSacRepository extends JpaRepository<MauSac,Long> {
     @Query(value = "select * from mau_sac where trang_thai = 1",nativeQuery = true)
     List<MauSac> fillAllNgungHoatDong();
 
-    @Query(value = "SELECT * FROM mau_sac WHERE LOWER(ten) = LOWER(:name)", nativeQuery = true)
+    @Query(value = "SELECT * FROM mau_sac WHERE LOWER(ten_mau) = LOWER(:name)", nativeQuery = true)
     MauSac findMauSacByTen(@Param("name") String name);
 }

@@ -13,10 +13,7 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.text.NumberFormat;
@@ -25,7 +22,9 @@ import java.util.Locale;
 
 @Entity
 @Table(name = "chi_tiet_san_pham")
-@Data
+//
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

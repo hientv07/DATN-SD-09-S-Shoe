@@ -16,6 +16,6 @@ public interface LoaiDeRepository extends JpaRepository<LoaiDe,Long> {
     @Query(value = "select * from loai_de where trang_thai = 1",nativeQuery = true)
     List<LoaiDe> fillAllNgungHoatDong();
 
-    @Query(value = "SELECT * FROM loai_de WHERE LOWER(ten) = LOWER(:name)", nativeQuery = true)
+    @Query(value = "SELECT * FROM loai_de WHERE LOWER(ten_ld) = LOWER(:name)", nativeQuery = true)
     LoaiDe findDeGiayByTen(@Param("name") String name);
 }
