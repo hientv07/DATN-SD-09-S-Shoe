@@ -1507,7 +1507,7 @@
                                                                 <div class="col-md-7">
                                                                     <div class="card-body">
                                                                         <h5 class="card-title" style="margin-bottom: -3px" th:text="${'Giảm '+ voucher.phanTramGiam + '%'}"></h5>
-                                                                        <small class="text-body-secondary" style="display: block" th:text="${'Giảm tối đa ' + voucher.giamToiDa + ' VND'}"></small>
+                                                                        <small class="text-body-secondary" style="display: block" th:text="${'Giảm tối đa ' + voucher.giamToiDa + ' VND'} "></small>
                                                                         <small class="text-body-secondary" style="display: block" id="donToiThieu" th:text="${'Đơn Tối Thiểu '+ voucher.giaTriDonToiThieu + ' VND'}"></small>
                                                                         <small class="text-body-secondary" style="display: block" th:text="${'Số Lượng '+voucher.soLuong}"></small>
                                                                         <small class="text-body-secondary" style="display: block" th:text="${'Hạn Sử Dụng '+#temporals.format(voucher.ngayKetThuc, 'hh:mm dd/MM/yyyy')}"></small>
@@ -1579,7 +1579,7 @@
                                                                 var tongTien = document.getElementById("tongTien");
                                                                 var tongTienHangInt = parseInt(tongTienHang.innerText.replace(/[,.]/g, ''));
 
-                                                                var tongTienGiamTheoPhanTram = ((tongTienHangInt * phamTramGiam) / 100).toFixed(0)
+                                                                var tongTienGiamTheoPhanTram = parseInt(((tongTienHangInt * phamTramGiam) / 100).toFixed(0), 10);
                                                                 if (tongTienGiamTheoPhanTram > giaTriGiam) {
                                                                     tongTienGiamTheoPhanTram = giaTriGiam
                                                                 }
@@ -1608,24 +1608,32 @@
                                                                     var thongBao = card.querySelector('#thongBaoThieuTien');
 
                                                                     // Nếu giá trị voucherGiaTriDonToiThieu nhỏ hơn totalAmount, làm mờ radio button
-                                                                    if (voucherGiaTriDonToiThieu > totalAmount) {
+                                                                    if (voucherGiaTriDonToiThieu >= totalAmount) {
                                                                         radio.classList.add('muted-radio');
                                                                         card.classList.add('muted-card');
+
+                                                                        // Tính số tiền cần mua thêm
+                                                                        var tienCanMuaThem = voucherGiaTriDonToiThieu - totalAmount;
+
+                                                                        // Định dạng lại số tiền cần mua thêm
+                                                                        var formattedTienCanMuaThem = tienCanMuaThem.toLocaleString('vi-VN')+ ' VND';
 
                                                                         // Thêm thông báo cho mỗi thẻ voucher không đủ điều kiện
                                                                         thongBao.innerHTML = '';
 
                                                                         thongBao.style.display = 'block';
-                                                                        thongBao.innerText += 'Mua thêm ' + (voucherGiaTriDonToiThieu - totalAmount).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }) + ' để sử dụng Voucher cho mã ';
+                                                                        thongBao.innerText = 'Mua thêm ' + formattedTienCanMuaThem + ' để sử dụng Voucher ';
                                                                     } else {
                                                                         radio.classList.remove('muted-radio');
                                                                         card.classList.remove('muted-card');
+                                                                        thongBao.style.display = 'none';
                                                                     }
                                                                 });
 
                                                                 // Hiển thị modal
                                                                 $('#voucher').modal('show');
                                                             }
+
 
                                                             function boChonVoucher() {
                                                                 location.reload();
@@ -1745,6 +1753,7 @@
                                                 </div>
                                                 <div class="modal-body">
                                                     <p>Bạn có xác nhận đặt hàng không!</p>
+                                                    <h8 class="text-danger " >Lưu ý: Khi đặt hàng sẽ không thể thay đổi thông tin đơn hàng </h8>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <button type="submit" form="form1" onclick="buttonDatHang()"

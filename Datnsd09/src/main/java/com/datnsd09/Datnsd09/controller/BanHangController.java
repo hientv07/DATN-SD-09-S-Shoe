@@ -524,6 +524,57 @@ public class BanHangController {
             queryUrl += "&vnp_SecureHash=" + vnp_SecureHash;
             String paymentUrl = VNPayConfig.vnp_PayUrl + "?" + queryUrl;
 
+            if (giaoHang.equals("on")) {
+                // Giao hàng
+                hd.setTrangThai(1);
+                hd.setPhiShip(phiShip);
+                hd.setNgayThanhToan(new Date());
+                hd.setSdtNguoiNhan(inputSoDienThoai);
+                hd.setNguoiNhan(inputHoVaTen);
+                hd.setDiaChiNguoiNhan(inputDcct);
+                hd.setGhiChu(inputGhiChu);
+                hd.setThanhPho(thanhPho);
+                hd.setQuanHuyen(quanHuyen);
+                hd.setPhuongXa(phuongXa);
+                sendMail(hd);
+                if (luuDiaChi.equals("on") && hd.getKhachHang().getTenTaiKhoan() != null) {
+                    if (hd.getKhachHang().getLstDiaChi().size() < 5) {
+                        DiaChi dc = new DiaChi();
+                        dc.setQuanHuyen(quanHuyen);
+                        dc.setPhuongXa(phuongXa);
+                        dc.setThanhPho(thanhPho);
+                        dc.setDiaChiCuThe(inputDcct);
+                        dc.setKhachHang(hd.getKhachHang());
+                        dc.setNgaySua(new Date());
+                        dc.setNgayTao(new Date());
+                        dc.setTrangThai(1);
+                        diaChiService.save(dc);
+                    }
+                }
+            } else {
+                // Hoàn thành
+                hd.setTrangThai(3);
+                hd.setNgayThanhToan(new Date());
+                hd.setNgaySua(new Date());
+                hd.setTongTien(hd.tongTienHoaDon());
+                hd.setTongTienKhiGiam(hd.tongTienHoaDon() - giamGia);
+                hd.setPhiShip((long) 0);
+                hd.setQuanHuyen(null);
+                hd.setThanhPho(null);
+                hd.setPhuongXa(null);
+                sendMail(hd);
+                if (hd.getNguoiNhan() == null) {
+                    hd.setNguoiNhan("Khách lẻ");
+                }
+            }
+            hd.setTongTien(hd.tongTienHoaDon());
+            hd.setTongTienKhiGiam(hd.tongTienHoaDon() - giamGia);
+
+
+
+            if (hd.getTrangThai() == 4) {
+                return "redirect:/ban-hang-tai-quay/hoa-don";
+            }
             return "redirect:" + paymentUrl;
         }
         switch (hd.getTrangThai()) {
@@ -695,34 +746,15 @@ public class BanHangController {
         HoaDon hd = hoaDonService.findByMa(vnp_TxnRef);
 
         if ("00".equals(vnp_ResponseCode)) { // Kiểm tra mã phản hồi thành công từ VNPay
-            hd.setTrangThai(3);
-            hd.setNgayThanhToan(new Date());
-            hd.setNgaySua(new Date());
-            hd.setTongTien(hd.tongTienHoaDon());
-            hd.setTongTienKhiGiam(hd.tongTienHoaDonKhiGiam());
-            hd.setPhiShip((long) 0);
-            hd.setQuanHuyen(null);
-            hd.setThanhPho(null);
-            hd.setPhuongXa(null);
-            sendMail(hd);
-            if (hd.getNguoiNhan() == null) {
-                hd.setNguoiNhan("Khách lẻ");
-            }
-            hd.setTongTien(hd.tongTienHoaDon());
-            hd.setTongTienKhiGiam(hd.tongTienHoaDonKhiGiam());
-
-            hoaDonService.saveOrUpdate(hd);
             updateSl(hd);
-            if (hd.getTrangThai() == 4) {
-                return "redirect:/ban-hang-tai-quay/hoa-don";
-            }
+            hoaDonService.saveOrUpdate(hd);
             thongBao(redirectAttributes, "Thành công", 1);
             return "redirect:/ban-hang-tai-quay/hoa-don/detail/" + hd.getId();
         } else {
-            hd.setTrangThai(-1); // Cập nhật trạng thái thất bại
+            hd.setTrangThai(5); // Cập nhật trạng thái thất bại
             hoaDonService.saveOrUpdate(hd);
             redirectAttributes.addFlashAttribute("message", "Thanh toán thất bại. Vui lòng thử lại.");
-            return "redirect:/ban-hang-tai-quay/hoa-don/" + hd.getId();
+            return "redirect:/ban-hang-tai-quay/hoa-don/detail/" + hd.getId();
         }
     }
 

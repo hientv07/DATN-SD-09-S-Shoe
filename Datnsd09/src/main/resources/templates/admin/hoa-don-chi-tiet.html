@@ -162,13 +162,13 @@
                 <span>Quản Lý Hóa Đơn</span>
             </a>
         </li>
-        <!-- End Forms Nav -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="/ban-hang-tai-quay/doi-tra">
-                <i class="bi bi-truck"></i>
-                <span>Trả hàng</span>
-            </a>
-        </li><!-- End Forms Nav -->
+<!--        &lt;!&ndash; End Forms Nav &ndash;&gt;-->
+<!--        <li class="nav-item">-->
+<!--            <a class="nav-link collapsed" href="/ban-hang-tai-quay/doi-tra">-->
+<!--                <i class="bi bi-truck"></i>-->
+<!--                <span>Trả hàng</span>-->
+<!--            </a>-->
+<!--        </li>&lt;!&ndash; End Forms Nav &ndash;&gt;-->
 
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#tables-nav" data-bs-toggle="collapse" href="#">
@@ -285,7 +285,7 @@
                                 <div th:if="${hoaDon.trangThai !=-1}">
                                     <h1 style="text-align: center;">[[${hoaDon.maHoaDon}]] - Chờ thanh toán</h1>
                                     <a class="btn btn-link" style="float: left;margin-top: 1%;"
-                                       href="/ban-hang-tai-quay/hoa-don/quan-ly">
+                                       href="/admin/hoa-don/quan-ly">
                                         <i class=" bi bi-arrow-left-circle-fill"></i>
                                     </a>
                                 </div>
@@ -1878,19 +1878,19 @@
                                                             trả
                                                             hàng
                                                         </button>
-                                                        <div th:case="6" class="">
-                                                            <!-- <button id="thanhToan"  type="button"
-                                                            data-bs-toggle="modal" data-bs-target="#ghiChuThanhToan"
-                                                            style="float: right;" class="btn btn-success">Từ chối
-                                                        </button> -->
-                                                            <button id="thanhToan" type="button"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#ghiChuThanhToan"
-                                                                    style="float: right;" class="btn btn-success">Xác
-                                                                nhận
-                                                                trả hàng
-                                                            </button>
-                                                        </div>
+<!--                                                        <div th:case="6" class="">-->
+<!--                                                            &lt;!&ndash; <button id="thanhToan"  type="button"-->
+<!--                                                            data-bs-toggle="modal" data-bs-target="#ghiChuThanhToan"-->
+<!--                                                            style="float: right;" class="btn btn-success">Từ chối-->
+<!--                                                        </button> &ndash;&gt;-->
+<!--                                                            <button id="thanhToan" type="button"-->
+<!--                                                                    data-bs-toggle="modal"-->
+<!--                                                                    data-bs-target="#ghiChuThanhToan"-->
+<!--                                                                    style="float: right;" class="btn btn-success">Xác-->
+<!--                                                                nhận-->
+<!--                                                                trả hàng-->
+<!--                                                            </button>-->
+<!--                                                        </div>-->
 
                                                         <button id="thanhToan" th:case="4" type="button"
                                                                 data-bs-toggle="modal" data-bs-target="#ghiChuThanhToan"
