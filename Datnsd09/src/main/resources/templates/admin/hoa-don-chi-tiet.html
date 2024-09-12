@@ -1648,7 +1648,7 @@
                                                                                                         <div class="card-body">
                                                                                                             <h3 th:text="${voucher.tenVoucher}"></h3>
                                                                                                             <h5 class="card-title" style="margin-bottom: -3px" th:text="${'Giảm '+ voucher.phanTramGiam + '%'}"></h5>
-                                                                                                            <small class="text-body-secondary" style="display: block" th:text="${'Giảm tối đa '+voucher.giamToiDa+ ' VND'}"></small>
+                                                                                                            <small class="text-body-secondary" style="display: block" th:text="${'Giảm tối đa '+ voucher.giamToiDa + ' VND'}"></small>
                                                                                                             <small id="donToiThieu" class="text-body-secondary" style="display: block" th:text="${'Đơn Tối Thiểu '+voucher.giaTriDonToiThieu+ ' VND'}"></small>
                                                                                                             <small class="text-body-secondary" style="display: block" th:text="${'Số Lượng '+voucher.soLuong}"></small>
                                                                                                             <small class="text-body-secondary" style="display: block" th:text="${#temporals.format(voucher.ngayKetThuc, 'HH:mm dd/MM/yyyy')}"></small>

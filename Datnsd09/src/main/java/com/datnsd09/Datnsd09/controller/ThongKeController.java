@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -61,6 +62,22 @@ public class ThongKeController {
             return "redirect:/login";
         }
 //
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        Date startDateChart = calendar.getTime();
+
+        Date endDateChart = new Date();
+        if (model.asMap().get("startDateChart") != null) {
+            startDateChart = (Date) model.asMap().get("startDateChart");
+        }
+        if (model.asMap().get("endDateChart") != null) {
+            endDateChart = (Date) model.asMap().get("endDateChart");
+        }
+        List<Object[]> thongKeSP = hoaDonChiTietService.thongKeSanPhamTheoNgay(startDateChart, endDateChart);
+
+        model.addAttribute("startDateChart", startDateChart);
+        model.addAttribute("endDateChart", endDateChart);
+        model.addAttribute("thongKeSP", thongKeSP);
         //tong sp bans được
         Integer sumSanPham = (Integer) model.asMap().get("sumSanPham");
         Integer sumSanPhamAll = hoaDonChiTietService.sumSanPhamHoaDonAll();
@@ -98,6 +115,13 @@ public class ThongKeController {
         Integer countHoaDon3 = hoaDonService.countHoaDon(3);
         Integer countHoaDon5 = hoaDonService.countHoaDon(5);
        // Integer countHoaDon5 = hoaDonService.countHoaDon(5);
+
+        ///danh sach sap heets
+        List<Object[]> danhSachSapHetHangAll = (List<Object[]>) model.asMap().get("danhSachSapHetHang");
+        Integer soLuong = 50;
+        List<Object[]>danhSachSapHetHang10 = sanPhamChiTietService.danhSachSapHetHang(soLuong);
+
+
         if (countHoaDonChoXacNhan == null) {
             model.addAttribute("countHoaDonChoXacNhanBetween", countHoaDon0);
         }else{
@@ -123,6 +147,11 @@ public class ThongKeController {
         }else{
             model.addAttribute("countHoaDonDaHuyBetween", countHoaDonDaHuy);
         }
+        if (danhSachSapHetHangAll == null){
+            model.addAttribute("danhSachSapHetHang",danhSachSapHetHang10);
+        }else{
+            model.addAttribute("danhSachSapHetHang",danhSachSapHetHangAll);
+        }
 
         //bán chạy
         List<Object[]> thongKeSanPhamBetween = (List<Object[]>) model.asMap().get("thongKeBetween");
@@ -132,8 +161,7 @@ public class ThongKeController {
         }else{
             model.addAttribute("thongKeBetween", thongKeSanPhamBetween);
         }
-        Integer soLuong = 50;
-        List<Object[]>danhSachSapHetHang10 = sanPhamChiTietService.danhSachSapHetHang(soLuong);
+
         model.addAttribute("listSapHetHang",danhSachSapHetHang10);
         return "/admin/thong-ke/thong-ke";
     }

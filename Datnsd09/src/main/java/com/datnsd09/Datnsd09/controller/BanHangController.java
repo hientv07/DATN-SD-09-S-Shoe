@@ -562,19 +562,14 @@ public class BanHangController {
                 hd.setQuanHuyen(null);
                 hd.setThanhPho(null);
                 hd.setPhuongXa(null);
-                sendMail(hd);
+
                 if (hd.getNguoiNhan() == null) {
                     hd.setNguoiNhan("Khách lẻ");
                 }
             }
             hd.setTongTien(hd.tongTienHoaDon());
             hd.setTongTienKhiGiam(hd.tongTienHoaDon() - giamGia);
-
-
-
-            if (hd.getTrangThai() == 4) {
-                return "redirect:/ban-hang-tai-quay/hoa-don";
-            }
+            hoaDonService.saveOrUpdate(hd);
             return "redirect:" + paymentUrl;
         }
         switch (hd.getTrangThai()) {
@@ -746,8 +741,8 @@ public class BanHangController {
         HoaDon hd = hoaDonService.findByMa(vnp_TxnRef);
 
         if ("00".equals(vnp_ResponseCode)) { // Kiểm tra mã phản hồi thành công từ VNPay
+            sendMail(hd);
             updateSl(hd);
-            hoaDonService.saveOrUpdate(hd);
             thongBao(redirectAttributes, "Thành công", 1);
             return "redirect:/ban-hang-tai-quay/hoa-don/detail/" + hd.getId();
         } else {
